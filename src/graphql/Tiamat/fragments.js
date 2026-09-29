@@ -638,6 +638,8 @@ Fragments.parking = {
       parkingProperties {
         spaces {
           parkingUserType
+          parkingVehicleType
+          parkingStayType
           numberOfSpaces
           numberOfSpacesWithRechargePoint
         }

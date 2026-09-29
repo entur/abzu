@@ -289,6 +289,62 @@ helpers.mapPathLinkToVariables = (pathLinks) => {
   });
 };
 
+helpers.capacityForAllUsers = (totalCapacity, existingProperties) => {
+  const total = Number(totalCapacity);
+
+  if (isNaN(total)) {
+    return totalCapacity;
+  }
+
+  const otherSpaces = (existingProperties?.[0]?.spaces || []).filter(
+    (space) => space.parkingUserType !== "allUsers",
+  );
+  const otherTotal = otherSpaces.reduce(
+    (sum, space) => sum + (Number(space.numberOfSpaces) || 0),
+    0,
+  );
+
+  return Math.max(total - otherTotal, 0);
+};
+
+helpers.mergeParkingSpaces = (existingProperties, updates) => {
+  const properties = (existingProperties || []).map((property) => ({
+    ...property,
+    spaces: (property.spaces || []).map((space) => ({ ...space })),
+  }));
+
+  if (!properties.length) {
+    properties.push({ spaces: [] });
+  }
+
+  const spaces = properties[0].spaces;
+
+  updates.forEach((update) => {
+    const { parkingUserType, ...values } = update;
+    const changes = Object.entries(values).filter(
+      ([, value]) => value !== undefined && value !== null,
+    );
+    const index = spaces.findIndex(
+      (space) => space.parkingUserType === parkingUserType,
+    );
+
+    if (index === -1) {
+      // Do not create an entry that would carry no value at all.
+      if (!changes.length) {
+        return;
+      }
+      spaces.push({ parkingUserType, ...Object.fromEntries(changes) });
+      return;
+    }
+
+    changes.forEach(([key, value]) => {
+      spaces[index][key] = value;
+    });
+  });
+
+  return properties;
+};
+
 helpers.mapParkingToVariables = (parkingArr, parentRef) => {
   return parkingArr.map((source) => {
     let parking = {
@@ -319,34 +375,40 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       source.numberOfSpacesWithRechargePoint ||
       source.numberOfSpacesForRegisteredDisabledUserType
     ) {
-      parking.parkingProperties = [
-        {
-          spaces: [
-            {
-              parkingUserType: "allUsers",
-              numberOfSpaces: source.numberOfSpaces,
-              numberOfSpacesWithRechargePoint:
-                source.numberOfSpacesWithRechargePoint,
-            },
-            {
-              parkingUserType: "registeredDisabled",
-              numberOfSpaces:
-                source.numberOfSpacesForRegisteredDisabledUserType,
-            },
-          ],
-        },
-      ];
+      parking.parkingProperties = helpers.mergeParkingSpaces(
+        source.parkingProperties,
+        [
+          {
+            parkingUserType: "allUsers",
+            numberOfSpaces: source.numberOfSpaces,
+            numberOfSpacesWithRechargePoint:
+              source.numberOfSpacesWithRechargePoint,
+          },
+          {
+            parkingUserType: "registeredDisabled",
+            numberOfSpaces: source.numberOfSpacesForRegisteredDisabledUserType,
+          },
+        ],
+      );
     } else if (source.parkingType === PARKING_TYPE.BIKE_PARKING) {
-      parking.parkingProperties = [
-        {
-          spaces: [
-            {
-              parkingUserType: "allUsers",
-              numberOfSpaces: source.totalCapacity,
-            },
-          ],
-        },
-      ];
+      // The bicycle editor edits one "capacity" number, and it shows the value
+      // Tiamat stores in totalCapacity. Tiamat derives totalCapacity from the
+      // sum of every space entry, and it ignores the totalCapacity the client
+      // sends. So give allUsers the capacity that is left after the entries
+      // this editor does not show. Without this subtraction each save adds
+      // those entries to the total a second time.
+      parking.parkingProperties = helpers.mergeParkingSpaces(
+        source.parkingProperties,
+        [
+          {
+            parkingUserType: "allUsers",
+            numberOfSpaces: helpers.capacityForAllUsers(
+              source.totalCapacity,
+              source.parkingProperties,
+            ),
+          },
+        ],
+      );
     }
 
     parking.name = {
