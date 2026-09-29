@@ -735,6 +735,24 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.CHANGED_PARKING_SECURE:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingSecure(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_PARKING_LIGHTING:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingLighting(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.CHANGED_PARKING_PAYMENT_PROCESS:
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingPaymentProcess(

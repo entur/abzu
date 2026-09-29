@@ -401,6 +401,9 @@ const verboseParkingFragment = gql`
     parkingLayout
     parkingPaymentProcess
     rechargingAvailable
+    secure
+    lighting
+    parentSiteRef
     parkingProperties {
       spaces {
         parkingUserType

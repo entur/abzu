@@ -635,6 +635,9 @@ Fragments.parking = {
       parkingLayout
       parkingPaymentProcess
       rechargingAvailable
+      secure
+      lighting
+      parentSiteRef
       parkingProperties {
         spaces {
           parkingUserType

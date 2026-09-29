@@ -150,7 +150,10 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           }
           renderValue={(selected) =>
             selected ? (
-              formatMessage({ id: `parking_layout_${selected}` })
+              formatMessage({
+                id: `parking_layout_${selected}`,
+                defaultMessage: selected,
+              })
             ) : (
               <em>{formatMessage({ id: "parking_layout_undefined" })}</em>
             )
@@ -168,7 +171,10 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             <MenuItem key={key} value={key}>
               <Checkbox checked={key === parkingLayout} />
               <ListItemText
-                primary={formatMessage({ id: `parking_layout_${key}` })}
+                primary={formatMessage({
+                  id: `parking_layout_${key}`,
+                  defaultMessage: key,
+                })}
               />
             </MenuItem>
           ))}
