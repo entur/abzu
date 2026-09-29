@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import Parking from "../models/Parking";
 import { parkingTitleMessageId } from "../models/parkingType";
+import { parkingVehicleTypeLabel } from "../models/parkingVehicleType";
 
 const makeParking = ({
   parkingType,
@@ -167,5 +168,28 @@ describe("Parking space lookup with a partial spaces array (DPO-5044)", () => {
     expect(parking.hasFullFieldSet).toBe(true);
     expect(parking.isForPedalCycle).toBe(true);
     expect(parking.toClient().numberOfSpaces).toBe(10);
+  });
+});
+
+describe("Parking vehicle type label (DPO-5044)", () => {
+  const formatMessage = ({ id }) =>
+    ({
+      parking_vehicle_type_car: "Auto",
+      parking_vehicle_type_pedalCycle: "Polkupyörä",
+    })[id] ?? id;
+
+  it("translates a type this repository names", () => {
+    expect(parkingVehicleTypeLabel("car", formatMessage)).toBe("Auto");
+    expect(parkingVehicleTypeLabel("pedalCycle", formatMessage)).toBe(
+      "Polkupyörä",
+    );
+  });
+
+  // 23 dev parkings hold `motorcycle`, which this repository does not name.
+  // Measured against dev on 2026-09-29.
+  it("shows a NeTEx type this repository does not name", () => {
+    expect(parkingVehicleTypeLabel("motorcycle", formatMessage)).toBe(
+      "motorcycle",
+    );
   });
 });

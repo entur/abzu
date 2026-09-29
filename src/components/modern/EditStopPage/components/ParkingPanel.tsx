@@ -30,7 +30,7 @@ import {
 import React from "react";
 import { useIntl } from "react-intl";
 import { parkingTitleMessageId } from "../../../../models/parkingType";
-import { parkingVehicleTypes } from "../../../../models/parkingVehicleType";
+import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
@@ -69,11 +69,8 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
 
   const hasFullFieldSet = Boolean(parking.hasFullFieldSet);
   const isForPedalCycle = Boolean(parking.isForPedalCycle);
-  // Only known types have a message. An unknown type gets no label, so it is
-  // safer to omit it than to print a message key.
-  const knownVehicleTypes: string[] = parkingVehicleTypes;
-  const vehicleTypes = (parking.parkingVehicleTypes ?? []).filter((type) =>
-    knownVehicleTypes.includes(type),
+  const vehicleTypeLabels = (parking.parkingVehicleTypes ?? []).map((type) =>
+    parkingVehicleTypeLabel(type, formatMessage),
   );
 
   const displayName =
@@ -177,14 +174,10 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
         />
 
         {/* Vehicle types — read-only. Tiamat owns this field. */}
-        {vehicleTypes.length > 0 && (
+        {vehicleTypeLabels.length > 0 && (
           <TextField
             label={formatMessage({ id: "parking_vehicle_types" })}
-            value={vehicleTypes
-              .map((type) =>
-                formatMessage({ id: `parking_vehicle_type_${type}` }),
-              )
-              .join(", ")}
+            value={vehicleTypeLabels.join(", ")}
             slotProps={{ input: { readOnly: true } }}
             size="small"
             fullWidth
