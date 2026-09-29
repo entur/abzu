@@ -175,6 +175,7 @@ describe("Parking vehicle type label (DPO-5044)", () => {
   const formatMessage = ({ id }) =>
     ({
       parking_vehicle_type_car: "Auto",
+      parking_vehicle_type_motorcycle: "Moottoripyörä",
       parking_vehicle_type_pedalCycle: "Polkupyörä",
     })[id] ?? id;
 
@@ -185,11 +186,19 @@ describe("Parking vehicle type label (DPO-5044)", () => {
     );
   });
 
-  // 23 dev parkings hold `motorcycle`, which this repository does not name.
-  // Measured against dev on 2026-09-29.
-  it("shows a NeTEx type this repository does not name", () => {
+  // 23 dev parkings hold `motorcycle`. Measured against dev on 2026-09-29.
+  // Before this repository named the type, the editor saw the raw value.
+  it("translates motorcycle, which dev data carries", () => {
     expect(parkingVehicleTypeLabel("motorcycle", formatMessage)).toBe(
-      "motorcycle",
+      "Moottoripyörä",
+    );
+  });
+
+  // `camperCar` is a NeTEx ParkingVehicleEnumeration value that this
+  // repository does not name. No parking in dev carries it.
+  it("shows a NeTEx type this repository does not name", () => {
+    expect(parkingVehicleTypeLabel("camperCar", formatMessage)).toBe(
+      "camperCar",
     );
   });
 });
