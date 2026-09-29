@@ -93,7 +93,6 @@ class Parking {
       parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
       secure: parking.secure,
       lighting: parking.lighting,
-      parentSiteRef: parking.parentSiteRef,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),

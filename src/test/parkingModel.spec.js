@@ -42,18 +42,16 @@ describe("Parking model - layout enumeration", () => {
 });
 
 describe("Parking model - toClient carries the facility fields", () => {
-  test("carries secure, lighting and parentSiteRef", () => {
+  test("carries secure and lighting", () => {
     const client = new Parking(
       baseParking({
         secure: true,
         lighting: "wellLit",
-        parentSiteRef: "NSR:StopPlace:7",
       }),
     ).toClient();
 
     expect(client.secure).toBe(true);
     expect(client.lighting).toBe("wellLit");
-    expect(client.parentSiteRef).toBe("NSR:StopPlace:7");
   });
 
   test("leaves the facility fields undefined when Tiamat holds none", () => {
@@ -61,6 +59,5 @@ describe("Parking model - toClient carries the facility fields", () => {
 
     expect(client.secure).toBeUndefined();
     expect(client.lighting).toBeUndefined();
-    expect(client.parentSiteRef).toBeUndefined();
   });
 });

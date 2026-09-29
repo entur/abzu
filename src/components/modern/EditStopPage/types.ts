@@ -66,7 +66,6 @@ export interface Parking {
   rechargingAvailable?: boolean | null;
   secure?: boolean | null;
   lighting?: string | null;
-  parentSiteRef?: string | null;
   totalCapacity?: number | string;
   parkingVehicleTypes?: string[];
   numberOfSpaces?: number | string;

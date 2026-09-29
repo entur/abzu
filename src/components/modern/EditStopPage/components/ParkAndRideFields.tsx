@@ -158,16 +158,6 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
         </Select>
       </FormControl>
 
-      {parking.parentSiteRef && (
-        <TextField
-          label={formatMessage({ id: "parking_parent_site_ref" })}
-          value={parking.parentSiteRef}
-          size="small"
-          fullWidth
-          slotProps={{ input: { readOnly: true } }}
-        />
-      )}
-
       {/* Payment process (multi-select) */}
       <FormControl fullWidth size="small" disabled={fieldDisabled}>
         <InputLabel>

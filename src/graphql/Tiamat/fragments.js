@@ -637,7 +637,6 @@ Fragments.parking = {
       rechargingAvailable
       secure
       lighting
-      parentSiteRef
       parkingProperties {
         spaces {
           parkingUserType
