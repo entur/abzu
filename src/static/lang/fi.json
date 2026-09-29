@@ -777,5 +777,6 @@
   "parking_item_title_unknown": "Pysäköinti (tuntematon tyyppi)",
   "parking_vehicle_types": "Ajoneuvotyypit",
   "parking_vehicle_type_car": "Auto",
+  "parking_vehicle_type_motorcycle": "Moottoripyörä",
   "parking_vehicle_type_pedalCycle": "Polkupyörä"
 }

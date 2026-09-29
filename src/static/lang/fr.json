@@ -777,5 +777,6 @@
   "parking_item_title_unknown": "Stationnement (type inconnu)",
   "parking_vehicle_types": "Types de véhicules",
   "parking_vehicle_type_car": "Voiture",
+  "parking_vehicle_type_motorcycle": "Moto",
   "parking_vehicle_type_pedalCycle": "Vélo"
 }
