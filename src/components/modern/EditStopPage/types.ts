@@ -61,6 +61,8 @@ export interface Parking {
   id?: string;
   name?: string;
   parkingType?: string;
+  hasFullFieldSet?: boolean;
+  isForPedalCycle?: boolean;
   parkingLayout?: string;
   parkingPaymentProcess?: string[];
   rechargingAvailable?: boolean | null;

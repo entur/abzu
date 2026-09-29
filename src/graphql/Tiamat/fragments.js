@@ -633,6 +633,7 @@ Fragments.parking = {
         toDate
       }
       parkingLayout
+      parkingType
       parkingPaymentProcess
       rechargingAvailable
       secure

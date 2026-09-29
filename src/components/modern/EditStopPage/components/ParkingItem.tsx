@@ -24,6 +24,7 @@ import {
   useElementStatusEnabled,
 } from "../../Shared/ElementStatus";
 import { ParkingItemProps } from "../types";
+import { parkingTitleMessageId } from "../../../../models/parkingType";
 
 /**
  * Navigable parking row — clicking opens the ParkingPanel
@@ -80,7 +81,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
             noWrap
             sx={{ display: "block" }}
           >
-            {formatMessage({ id: `parking_item_title_${parking.parkingType}` })}
+            {formatMessage({ id: parkingTitleMessageId(parking.parkingType) })}
           </Typography>
         )}
         {parking.id && (

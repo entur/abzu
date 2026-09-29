@@ -42,6 +42,7 @@ export interface MapParking {
   id: string;
   name?: string;
   parkingType: string;
+  isForPedalCycle?: boolean;
   location?: LatLng;
   totalCapacity?: number;
   hasExpired?: boolean;

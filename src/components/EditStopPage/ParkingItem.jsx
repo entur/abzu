@@ -26,7 +26,8 @@ import {
   AccessibilityLimitation as AccessibilityLimitationEnum,
   AccessibilityLimitationType,
 } from "../../models/AccessibilityLimitation";
-import PARKING_TYPE from "../../models/parkingType";
+import { parkingTitleMessageId } from "../../models/parkingType";
+import { parkingVehicleTypes } from "../../models/parkingVehicleType";
 import { getIn } from "../../utils";
 import { injectIntl } from "../../utils/injectIntl";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
@@ -169,6 +170,12 @@ class ParkingItem extends React.Component {
 
     const { formatMessage } = intl;
 
+    // Read-only. Tiamat owns the vehicle types. An unknown type has no
+    // message, so it is safer to omit it than to print a message key.
+    const vehicleTypeLabels = (parking.parkingVehicleTypes || [])
+      .filter((type) => parkingVehicleTypes.includes(type))
+      .map((type) => formatMessage({ id: `parking_vehicle_type_${type}` }));
+
     let totalCapacity = parking.totalCapacity || 0;
 
     const stepFreeAccess = getIn(
@@ -179,7 +186,7 @@ class ParkingItem extends React.Component {
       AccessibilityLimitationType.UNKNOWN,
     );
 
-    if (parkingType === PARKING_TYPE.PARK_AND_RIDE) {
+    if (parking.hasFullFieldSet) {
       const numberOfSpaces = Number(parking.numberOfSpaces);
       const numberOfSpacesForRegisteredDisabledUserType = Number(
         parking.numberOfSpacesForRegisteredDisabledUserType,
@@ -212,7 +219,7 @@ class ParkingItem extends React.Component {
             this.setState({ coordinatesDialogOpen: true })
           }
         >
-          {formatMessage({ id: `parking_item_title_${parkingType}` })}
+          {formatMessage({ id: parkingTitleMessageId(parkingType) })}
           {parking.hasExpired && (
             <ToolTippable
               toolTipText={formatMessage({ id: "parking_expired" })}
@@ -259,7 +266,17 @@ class ParkingItem extends React.Component {
               style={{ width: "95%", marginTop: 15, marginLeft: 5 }}
             />
 
-            {parkingType === PARKING_TYPE.PARK_AND_RIDE ? (
+            {vehicleTypeLabels.length > 0 && (
+              <TextField
+                label={formatMessage({ id: "parking_vehicle_types" })}
+                disabled
+                variant="standard"
+                value={vehicleTypeLabels.join(", ")}
+                style={{ width: "95%", marginTop: 15, marginLeft: 5 }}
+              />
+            )}
+
+            {parking.hasFullFieldSet ? (
               <ParkingItemPayAndRideExpandedFields
                 disabled={disabled}
                 hasExpired={parking.hasExpired}

@@ -33,7 +33,8 @@ import {
   getStopPlaceWithAll,
   saveParking,
 } from "../../../../actions/TiamatActions.modern";
-import PARKING_TYPE from "../../../../models/parkingType";
+import { parkingTitleMessageId } from "../../../../models/parkingType";
+import { parkingVehicleTypes } from "../../../../models/parkingVehicleType";
 import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
 import { useAppDispatch } from "../../../../store/hooks";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
@@ -46,9 +47,12 @@ const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
 /**
  * Full parking editor panel.
  *
- * Renders a different field set depending on `parkingType`:
- * - parkAndRide: layout, payment process, recharging, space counts, step-free accessibility
- * - bikeParking: total capacity only
+ * Renders a different field set depending on which fields Tiamat holds:
+ * - full field set: layout, payment process, recharging, space counts, step-free accessibility
+ * - reduced field set: total capacity only
+ *
+ * The header icon follows the vehicle types, not the field set. A parking can
+ * hold the full field set and still be for bicycles.
  *
  * Saves directly via saveParking mutation (no ConfirmSaveDialog).
  */
@@ -68,7 +72,14 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   const parking = stopPlace.parking?.[parkingIndex];
   if (!parking) return null;
 
-  const isParkAndRide = parking.parkingType === PARKING_TYPE.PARK_AND_RIDE;
+  const hasFullFieldSet = Boolean(parking.hasFullFieldSet);
+  const isForPedalCycle = Boolean(parking.isForPedalCycle);
+  // Only known types have a message. An unknown type gets no label, so it is
+  // safer to omit it than to print a message key.
+  const knownVehicleTypes: string[] = parkingVehicleTypes;
+  const vehicleTypes = (parking.parkingVehicleTypes ?? []).filter((type) =>
+    knownVehicleTypes.includes(type),
+  );
 
   const displayName =
     parking.name ||
@@ -77,7 +88,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
 
   // Derived total capacity for parkAndRide
   const derivedCapacity = (() => {
-    if (!isParkAndRide) return null;
+    if (!hasFullFieldSet) return null;
     const n = Number(parking.numberOfSpaces) || 0;
     const d = Number(parking.numberOfSpacesForRegisteredDisabledUserType) || 0;
     return n + d;
@@ -122,10 +133,10 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             <ArrowBackIcon fontSize="small" />
           </IconButton>
         </Tooltip>
-        {isParkAndRide ? (
-          <LocalParkingIcon sx={{ fontSize: "1.3rem", flexShrink: 0 }} />
-        ) : (
+        {isForPedalCycle ? (
           <DirectionsBikeIcon sx={{ fontSize: "1.3rem", flexShrink: 0 }} />
+        ) : (
+          <LocalParkingIcon sx={{ fontSize: "1.3rem", flexShrink: 0 }} />
         )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
@@ -134,7 +145,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <Typography variant="caption" color="text.secondary">
               {formatMessage({
-                id: `parking_item_title_${parking.parkingType || "parkAndRide"}`,
+                id: parkingTitleMessageId(parking.parkingType),
               })}
             </Typography>
             {isExpired && (
@@ -181,7 +192,22 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           fullWidth
         />
 
-        {isParkAndRide ? (
+        {/* Vehicle types — read-only. Tiamat owns this field. */}
+        {vehicleTypes.length > 0 && (
+          <TextField
+            label={formatMessage({ id: "parking_vehicle_types" })}
+            value={vehicleTypes
+              .map((type) =>
+                formatMessage({ id: `parking_vehicle_type_${type}` }),
+              )
+              .join(", ")}
+            slotProps={{ input: { readOnly: true } }}
+            size="small"
+            fullWidth
+          />
+        )}
+
+        {hasFullFieldSet ? (
           <ParkAndRideFields
             parking={parking}
             parkingIndex={parkingIndex}
