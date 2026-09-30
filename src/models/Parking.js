@@ -50,6 +50,27 @@ class Parking {
     return this.findNumberOfSpaces("registeredDisabled", "numberOfSpaces");
   }
 
+  // True when Tiamat holds more than one entry for userType. The editor shows
+  // and edits only the first one, so editing it would silently fold the
+  // other entries' counts into the number it saves.
+  hasAmbiguousEntries(userType) {
+    if (!(this.parking.parkingProperties?.length > 0)) {
+      return false;
+    }
+
+    const spaces = this.parking.parkingProperties.slice().shift().spaces || [];
+
+    return spaces.filter((v) => v.parkingUserType === userType).length > 1;
+  }
+
+  get numberOfSpacesIsAmbiguous() {
+    return this.hasAmbiguousEntries("allUsers");
+  }
+
+  get numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous() {
+    return this.hasAmbiguousEntries("registeredDisabled");
+  }
+
   get parkingType() {
     if (this.parking.parkingType) {
       return this.parking.parkingType;
@@ -90,6 +111,13 @@ class Parking {
       numberOfSpacesForRegisteredDisabledUserType: this.isParkAndRide
         ? this.numberOfSpacesForRegisteredDisabledUserType
         : null,
+      // Not gated by isParkAndRide: a bicycle parking's totalCapacity field
+      // also folds every non-allUsers entry into one number (see
+      // capacityForAllUsers in mapToQueryVariables.js), so it needs the same
+      // guard whenever Tiamat holds more than one allUsers entry.
+      numberOfSpacesIsAmbiguous: this.numberOfSpacesIsAmbiguous,
+      numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous:
+        this.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous,
       parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,

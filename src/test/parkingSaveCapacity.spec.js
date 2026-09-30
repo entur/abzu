@@ -172,6 +172,76 @@ describe("Parking model - the save path needs the original capacity entries", ()
   });
 });
 
+describe("Parking model - detecting entries the editor cannot tell apart", () => {
+  // Two allUsers entries split by vehicle type (car, motorcycle), plus one
+  // registeredDisabled entry.
+  const twoAllUsersEntries = [
+    {
+      spaces: [
+        { parkingUserType: "registeredDisabled", numberOfSpaces: 2 },
+        {
+          parkingUserType: "allUsers",
+          parkingVehicleType: "motorcycle",
+          numberOfSpaces: 10,
+        },
+        {
+          parkingUserType: "allUsers",
+          parkingVehicleType: "car",
+          numberOfSpaces: 247,
+        },
+      ],
+    },
+  ];
+
+  test("flags allUsers as ambiguous when two entries share that user type", () => {
+    const parking = new Parking({
+      parkingVehicleTypes: ["car", "motorcycle"],
+      totalCapacity: 259,
+      parkingProperties: twoAllUsersEntries,
+    }).toClient();
+
+    expect(parking.numberOfSpacesIsAmbiguous).toBe(true);
+    expect(parking.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous).toBe(
+      false,
+    );
+  });
+
+  test("flags neither field when every user type occurs once", () => {
+    const parking = new Parking({
+      parkingVehicleTypes: ["car"],
+      totalCapacity: 43,
+      parkingProperties: [
+        {
+          spaces: [
+            { parkingUserType: "allUsers", numberOfSpaces: 40 },
+            { parkingUserType: "registeredDisabled", numberOfSpaces: 3 },
+          ],
+        },
+      ],
+    }).toClient();
+
+    expect(parking.numberOfSpacesIsAmbiguous).toBe(false);
+    expect(parking.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous).toBe(
+      false,
+    );
+  });
+
+  test("a bicycle parking also reports the flag, since its totalCapacity field folds allUsers in too", () => {
+    // Two allUsers entries can share one vehicle type (e.g. both
+    // pedalCycle), so distinguishing entries by vehicle type would not
+    // help here either. The bike editor's one totalCapacity field would
+    // silently absorb the second entry on save, the same way the
+    // park-and-ride fields would.
+    const parking = new Parking({
+      parkingVehicleTypes: ["pedalCycle"],
+      totalCapacity: 30,
+      parkingProperties: twoAllUsersEntries,
+    }).toClient();
+
+    expect(parking.numberOfSpacesIsAmbiguous).toBe(true);
+  });
+});
+
 describe("mapParkingToVariables - a bicycle capacity does not grow on repeated saves", () => {
   // Tiamat ignores the totalCapacity the client sends. It sets totalCapacity to
   // the sum of every space entry instead. These tests model that rule.
