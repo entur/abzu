@@ -55,6 +55,45 @@ describe("mapParkingToVariables - a save keeps the capacity entries it does not 
     expect(findSpace(parking, "registeredDisabled").numberOfSpaces).toBe(4);
   });
 
+  test("an unedited park-and-ride save leaves the stored total unchanged", () => {
+    // Tiamat recomputes totalCapacity from every entry. The editor reads the
+    // first entry of each user type, and the merge writes back to that same
+    // entry, so a save with no edit puts each value back where it came from.
+    const stored = [
+      {
+        spaces: [
+          { parkingUserType: "registeredDisabled", numberOfSpaces: 2 },
+          {
+            parkingUserType: "allUsers",
+            parkingVehicleType: "car",
+            numberOfSpaces: 247,
+          },
+          {
+            parkingUserType: "allUsers",
+            parkingVehicleType: "motorcycle",
+            numberOfSpaces: 10,
+          },
+        ],
+      },
+    ];
+
+    const parking = new Parking({
+      parkingType: PARKING_TYPE.PARK_AND_RIDE,
+      parkingVehicleTypes: ["car", "motorcycle"],
+      totalCapacity: 259,
+      parkingProperties: stored,
+    }).toClient();
+
+    const [saved] = helpers.mapParkingToVariables([parking], "NSR:StopPlace:1");
+
+    const total = spacesOf(saved).reduce(
+      (sum, space) => sum + (space.numberOfSpaces || 0),
+      0,
+    );
+    expect(total).toBe(259);
+    expect(spacesOf(saved)).toEqual(stored[0].spaces);
+  });
+
   test("a bicycle parking save keeps a registeredDisabled entry", () => {
     const [parking] = helpers.mapParkingToVariables(
       [
