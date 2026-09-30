@@ -274,6 +274,10 @@ class ParkingItem extends React.Component {
                 numberOfSpacesForRegisteredDisabledUserType={
                   parking.numberOfSpacesForRegisteredDisabledUserType
                 }
+                numberOfSpacesIsAmbiguous={parking.numberOfSpacesIsAmbiguous}
+                numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous={
+                  parking.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous
+                }
                 handleSetParkingLayout={this.handleSetParkingLayout.bind(this)}
                 handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(
                   this,
@@ -297,7 +301,11 @@ class ParkingItem extends React.Component {
               <TextField
                 variant="standard"
                 hintText={translations.capacity}
-                disabled={disabled || parking.hasExpired}
+                disabled={
+                  disabled ||
+                  parking.hasExpired ||
+                  parking.numberOfSpacesIsAmbiguous
+                }
                 label={translations.capacity}
                 onChange={(event) => {
                   this.handleSetTotalCapacity(event.target.value);
