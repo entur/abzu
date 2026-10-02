@@ -36,7 +36,6 @@ import { MarkerPopup } from "./MarkerPopup";
 import type { FocusedElement, MapParking, MapStopPlace } from "./types";
 
 const PARKING_SIZE = 34;
-const BIKE_PARKING_TYPE = "bikeParking";
 
 interface ParkingMarkerItemProps {
   parking: MapParking;
@@ -65,7 +64,9 @@ const ParkingMarkerItem = ({
   if (!parking.location) return null;
 
   const [lat, lng] = parking.location;
-  const isBike = parking.parkingType === BIKE_PARKING_TYPE;
+  // NeTEx answers "which vehicle" with the vehicle types, not the parking
+  // type. A park-and-ride parking can be for bicycles.
+  const isBike = parking.isForPedalCycle ?? false;
   const titleFallbackKey = isBike
     ? "parking_item_title_bikeParking"
     : "parking_item_title_parkAndRide";

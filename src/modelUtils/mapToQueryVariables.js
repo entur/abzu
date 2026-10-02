@@ -314,6 +314,14 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.rechargingAvailable = source.rechargingAvailable;
     }
 
+    if (source.secure !== undefined && source.secure !== null) {
+      parking.secure = source.secure;
+    }
+
+    if (source.lighting) {
+      parking.lighting = source.lighting;
+    }
+
     if (
       source.numberOfSpaces ||
       source.numberOfSpacesWithRechargePoint ||

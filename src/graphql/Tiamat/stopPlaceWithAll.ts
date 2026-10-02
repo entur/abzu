@@ -399,8 +399,11 @@ const verboseParkingFragment = gql`
       toDate
     }
     parkingLayout
+    parkingType
     parkingPaymentProcess
     rechargingAvailable
+    secure
+    lighting
     parkingProperties {
       spaces {
         parkingUserType

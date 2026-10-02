@@ -214,9 +214,12 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
               canEdit={canEdit}
               onDeleteParking={onDeleteParking}
               onNavigateToParking={(index) => {
-                const parkingType =
-                  stopPlace.parking?.[index]?.parkingType ?? "parkAndRide";
-                dispatch(StopPlaceActions.setElementFocus(index, parkingType));
+                // The focus type is an internal enum with two values. It is
+                // not the NeTEx parking type.
+                const focusType = stopPlace.parking?.[index]?.isForPedalCycle
+                  ? "bikeParking"
+                  : "parkAndRide";
+                dispatch(StopPlaceActions.setElementFocus(index, focusType));
               }}
               onAddParking={onAddParking}
             />
