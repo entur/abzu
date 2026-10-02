@@ -61,3 +61,130 @@ describe("Parking model - toClient carries the facility fields", () => {
     expect(client.lighting).toBeUndefined();
   });
 });
+
+const parkAndRideWithOnlyAllUsersSpaces = {
+  id: "NSR:Parking:1",
+  name: { value: "Park and ride without disabled spaces" },
+  parkingVehicleTypes: ["car"],
+  parkingProperties: [
+    {
+      spaces: [
+        {
+          parkingUserType: "allUsers",
+          numberOfSpaces: 2049,
+          numberOfSpacesWithRechargePoint: null,
+        },
+      ],
+    },
+  ],
+};
+
+const parkAndRideWithAllUserTypes = {
+  id: "NSR:Parking:2",
+  name: { value: "Park and ride with disabled spaces" },
+  parkingVehicleTypes: ["car"],
+  parkingProperties: [
+    {
+      spaces: [
+        {
+          parkingUserType: "allUsers",
+          numberOfSpaces: 100,
+          numberOfSpacesWithRechargePoint: 4,
+        },
+        { parkingUserType: "registeredDisabled", numberOfSpaces: 6 },
+      ],
+    },
+  ],
+};
+
+const carParkingWithoutParkingProperties = {
+  id: "NSR:Parking:3",
+  name: { value: "Park and ride without parking properties" },
+  parkingVehicleTypes: ["car"],
+  totalCapacity: 40,
+};
+
+const carParkingWithoutSpaces = {
+  id: "NSR:Parking:4",
+  name: { value: "Park and ride without a capacity list" },
+  parkingVehicleTypes: ["car"],
+  totalCapacity: 12,
+  parkingProperties: [{ spaces: null }],
+};
+
+const bicycleParking = {
+  id: "NSR:Parking:5",
+  name: { value: "Bicycle parking" },
+  parkingVehicleTypes: ["pedalCycle"],
+  parkingProperties: [
+    { spaces: [{ parkingUserType: "allUsers", numberOfSpaces: 72 }] },
+  ],
+};
+
+describe("Parking - models", () => {
+  test("returns 0 when the requested user type has no spaces", () => {
+    const parking = new Parking(parkAndRideWithOnlyAllUsersSpaces);
+
+    expect(parking.numberOfSpacesForRegisteredDisabledUserType).toEqual(0);
+  });
+
+  test("keeps a null field value when the user type does match", () => {
+    const parking = new Parking(parkAndRideWithOnlyAllUsersSpaces);
+
+    expect(parking.numberOfSpacesWithRechargePoint).toBeNull();
+  });
+
+  test("maps a park and ride that has no disabled spaces", () => {
+    const clientParking = new Parking(
+      parkAndRideWithOnlyAllUsersSpaces,
+    ).toClient();
+
+    expect(clientParking.numberOfSpaces).toEqual(2049);
+    expect(clientParking.numberOfSpacesWithRechargePoint).toBeNull();
+    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
+      0,
+    );
+  });
+
+  test("keeps the counts of a park and ride that has every user type", () => {
+    const clientParking = new Parking(parkAndRideWithAllUserTypes).toClient();
+
+    expect(clientParking.numberOfSpaces).toEqual(100);
+    expect(clientParking.numberOfSpacesWithRechargePoint).toEqual(4);
+    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
+      6,
+    );
+  });
+
+  test("falls back to the total capacity when there are no parking properties", () => {
+    const clientParking = new Parking(
+      carParkingWithoutParkingProperties,
+    ).toClient();
+
+    expect(clientParking.numberOfSpaces).toEqual(40);
+    expect(clientParking.numberOfSpacesWithRechargePoint).toEqual(0);
+    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
+      0,
+    );
+  });
+
+  test("maps a park and ride whose parking properties carry no capacity list", () => {
+    const clientParking = new Parking(carParkingWithoutSpaces).toClient();
+
+    expect(clientParking.numberOfSpaces).toEqual(0);
+    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
+      0,
+    );
+  });
+
+  test("leaves the space counts empty for a parking that is not a park and ride", () => {
+    const clientParking = new Parking(bicycleParking).toClient();
+
+    expect(clientParking.parkingType).toEqual("bikeParking");
+    expect(clientParking.numberOfSpaces).toBeNull();
+    expect(clientParking.numberOfSpacesWithRechargePoint).toBeNull();
+    expect(
+      clientParking.numberOfSpacesForRegisteredDisabledUserType,
+    ).toBeNull();
+  });
+});

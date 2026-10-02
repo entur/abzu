@@ -23,12 +23,18 @@ class Parking {
   }
 
   findNumberOfSpaces(userType, lookupKey) {
-    return this.parking.parkingProperties?.length > 0
-      ? this.parking.parkingProperties
-          .slice()
-          .shift()
-          .spaces.find((v) => v.parkingUserType === userType)[lookupKey]
-      : 0;
+    if (!(this.parking.parkingProperties?.length > 0)) {
+      return 0;
+    }
+
+    // A parking does not have to hold an entry for every user type. Abzu
+    // itself writes a bicycle parking with an allUsers entry alone.
+    const spaces = this.parking.parkingProperties
+      .slice()
+      .shift()
+      .spaces?.find((v) => v.parkingUserType === userType);
+
+    return spaces ? spaces[lookupKey] : 0;
   }
 
   get numberOfSpaces() {
