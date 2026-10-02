@@ -30,6 +30,7 @@ import {
 import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
+import { LightingEnum } from "../../../../models/Lighting";
 import { parkingLayouts } from "../../../../models/parkingLayout";
 import { parkingPaymentProcesses } from "../../../../models/parkingPaymentProcess";
 import { useAppDispatch } from "../../../../store/hooks";
@@ -70,6 +71,17 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
         <Select
           value={parking.parkingLayout || ""}
           label={formatMessage({ id: "parking_layout" })}
+          displayEmpty
+          renderValue={(selected: string) =>
+            selected ? (
+              formatMessage({
+                id: `parking_layout_${selected}`,
+                defaultMessage: selected,
+              })
+            ) : (
+              <em>{formatMessage({ id: "parking_layout_undefined" })}</em>
+            )
+          }
           onChange={(e) =>
             dispatch(
               StopPlaceActions.changeParkingLayout(
@@ -79,12 +91,68 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
             )
           }
         >
-          <MenuItem value="">
-            <em>{formatMessage({ id: "parking_layout_undefined" })}</em>
-          </MenuItem>
           {parkingLayouts.map((layout) => (
             <MenuItem key={layout} value={layout}>
-              {formatMessage({ id: `parking_layout_${layout}` })}
+              {formatMessage({
+                id: `parking_layout_${layout}`,
+                defaultMessage: layout,
+              })}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Secure, lighting and the parent stop place reference */}
+      <FormControlLabel
+        control={
+          <Switch
+            checked={!!parking.secure}
+            onChange={(e) =>
+              dispatch(
+                StopPlaceActions.changeParkingSecure(
+                  parkingIndex,
+                  e.target.checked,
+                ),
+              )
+            }
+            disabled={fieldDisabled}
+            size="small"
+          />
+        }
+        label={formatMessage({ id: "parking_secure" })}
+      />
+
+      <FormControl fullWidth size="small" disabled={fieldDisabled}>
+        <InputLabel>{formatMessage({ id: "parking_lighting" })}</InputLabel>
+        <Select
+          value={parking.lighting || ""}
+          label={formatMessage({ id: "parking_lighting" })}
+          displayEmpty
+          renderValue={(selected: string) =>
+            selected ? (
+              formatMessage({
+                id: `lighting_${selected.toLowerCase()}`,
+                defaultMessage: selected,
+              })
+            ) : (
+              <em>—</em>
+            )
+          }
+          onChange={(e) =>
+            dispatch(
+              StopPlaceActions.changeParkingLighting(
+                parkingIndex,
+                e.target.value,
+              ),
+            )
+          }
+        >
+          {Object.values(LightingEnum).map((value) => (
+            <MenuItem key={value} value={value}>
+              {formatMessage({
+                id: `lighting_${value.toLowerCase()}`,
+                defaultMessage: value,
+              })}
             </MenuItem>
           ))}
         </Select>

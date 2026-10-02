@@ -863,6 +863,20 @@ helpers.changeParkingLayout = (original, payload) => {
   return copy;
 };
 
+helpers.changeParkingSecure = (original, payload) => {
+  const { index, secure } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].secure = secure;
+  return copy;
+};
+
+helpers.changeParkingLighting = (original, payload) => {
+  const { index, lighting } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].lighting = lighting;
+  return copy;
+};
+
 helpers.changeParkingPaymentProcess = (original, payload) => {
   const { index, parkingPaymentProcess } = payload;
   const copy = JSON.parse(JSON.stringify(original));
