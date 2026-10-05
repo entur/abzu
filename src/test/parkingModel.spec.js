@@ -12,8 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { describe, expect, test } from "vitest";
 import Parking from "../models/Parking";
+import helpers from "../modelUtils/mapToQueryVariables";
 import { parkingLayouts } from "../models/parkingLayout";
+import { parkingPaymentProcesses } from "../models/parkingPaymentProcess";
 
 const baseParking = (overrides = {}) => ({
   id: "NSR:Parking:1",
@@ -177,5 +180,80 @@ describe("Parking - models", () => {
     expect(
       clientParking.numberOfSpacesForRegisteredDisabledUserType,
     ).toBeNull();
+  });
+});
+
+window.config = {
+  defaultLanguageCode: "nor",
+};
+
+const mockParking = (overrides = {}) => ({
+  id: "NSR:Parking:1",
+  name: { value: "Test parking" },
+  geometry: { coordinates: [10, 60] },
+  parkingVehicleTypes: ["car"],
+  validBetween: {},
+  totalCapacity: 10,
+  accessibilityAssessment: null,
+  ...overrides,
+});
+
+describe("Parking model - paymentMethods", () => {
+  test("T1: toClient carries paymentMethods", () => {
+    const parking = new Parking(
+      mockParking({ paymentMethods: ["cash", "debitCard"] }),
+    );
+    expect(parking.toClient().paymentMethods).toEqual(["cash", "debitCard"]);
+  });
+
+  test("T3: a save that does not touch the field keeps the stored values", () => {
+    const parking = new Parking(
+      mockParking({
+        paymentMethods: ["cash", "debitCard"],
+        totalCapacity: 20,
+      }),
+    );
+    const client = parking.toClient();
+    expect(client.paymentMethods).toEqual(["cash", "debitCard"]);
+    expect(client.totalCapacity).toBe(20);
+  });
+});
+
+describe("mapParkingToVariables - paymentMethods", () => {
+  test("T2: the save path sends paymentMethods", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ paymentMethods: ["cash", "debitCard"] })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.paymentMethods).toEqual(["cash", "debitCard"]);
+  });
+
+  test("T4: an emptied list reaches Tiamat as an empty list", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ paymentMethods: [] })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.paymentMethods).toEqual([]);
+  });
+
+  test("T5: a value the editor cannot label survives a save", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ paymentMethods: ["voucher", "cash"] })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.paymentMethods).toEqual(["voucher", "cash"]);
+  });
+});
+
+describe("parkingPaymentProcess model", () => {
+  test("T6: offers Tiamat's nine values and falls back on a tenth", () => {
+    expect(parkingPaymentProcesses).toHaveLength(9);
+    expect(parkingPaymentProcesses).toContain("payAtExitBoothManualCollection");
+
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ parkingPaymentProcess: ["payByPlate"] })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.parkingPaymentProcess).toEqual(["payByPlate"]);
   });
 });

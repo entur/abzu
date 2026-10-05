@@ -33,6 +33,7 @@ import { StopPlaceActions } from "../../../../actions";
 import { LightingEnum } from "../../../../models/Lighting";
 import { parkingLayouts } from "../../../../models/parkingLayout";
 import { parkingPaymentProcesses } from "../../../../models/parkingPaymentProcess";
+import { paymentMethods } from "../../../../models/paymentMethod";
 import { useAppDispatch } from "../../../../store/hooks";
 import { Parking } from "../types";
 
@@ -45,7 +46,7 @@ interface ParkAndRideFieldsProps {
 }
 
 /**
- * All Park-and-Ride–specific fields: layout, payment process, capacity, recharging, accessibility.
+ * All Park-and-Ride–specific fields: layout, payment process, payment methods, capacity, recharging, accessibility.
  * Extracted from ParkingPanel to keep that component within the file size limit.
  */
 export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
@@ -173,7 +174,14 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
               ? formatMessage({ id: "parking_payment_process_undefined" })
               : selected
                   .map((k) =>
-                    formatMessage({ id: `parking_payment_process_${k}` }),
+                    // defaultMessage falls back to the raw enum value so a
+                    // stop place holding a value with no translated label
+                    // still renders something readable instead of an empty
+                    // string.
+                    formatMessage({
+                      id: `parking_payment_process_${k}`,
+                      defaultMessage: k,
+                    }),
                   )
                   .join(", ")
           }
@@ -197,6 +205,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
               <ListItemText
                 primary={formatMessage({
                   id: `parking_payment_process_${key}`,
+                  defaultMessage: key,
                 })}
                 secondary={
                   key === "payByPrepaidToken"
@@ -205,6 +214,57 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
                       })
                     : undefined
                 }
+              />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Payment methods (multi-select) */}
+      <FormControl fullWidth size="small" disabled={fieldDisabled}>
+        <InputLabel>
+          {formatMessage({ id: "parking_payment_methods" })}
+        </InputLabel>
+        <Select
+          multiple
+          value={parking.paymentMethods || []}
+          label={formatMessage({ id: "parking_payment_methods" })}
+          renderValue={(selected: string[]) =>
+            selected.length === 0
+              ? formatMessage({ id: "parking_payment_methods_undefined" })
+              : selected
+                  .map((k) =>
+                    // defaultMessage falls back to the raw enum value so a
+                    // stop place holding a value with no translated label
+                    // still renders something readable instead of an empty
+                    // string.
+                    formatMessage({
+                      id: `parking_payment_methods_${k}`,
+                      defaultMessage: k,
+                    }),
+                  )
+                  .join(", ")
+          }
+          onChange={(e) =>
+            dispatch(
+              StopPlaceActions.changeParkingPaymentMethods(
+                parkingIndex,
+                e.target.value as string[],
+              ),
+            )
+          }
+        >
+          {paymentMethods.map((key) => (
+            <MenuItem key={key} value={key}>
+              <Checkbox
+                checked={(parking.paymentMethods || []).indexOf(key) > -1}
+                size="small"
+              />
+              <ListItemText
+                primary={formatMessage({
+                  id: `parking_payment_methods_${key}`,
+                  defaultMessage: key,
+                })}
               />
             </MenuItem>
           ))}

@@ -217,6 +217,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
                   .map((key) => {
                     return formatMessage({
                       id: `parking_payment_process_${key}`,
+                      defaultMessage: key,
                     });
                   })
                   .join(", ");
@@ -243,6 +244,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
                   <ListItemText
                     primary={formatMessage({
                       id: `parking_payment_process_${key}`,
+                      defaultMessage: key,
                     })}
                     secondary={
                       key === `payByPrepaidToken`
