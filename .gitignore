@@ -34,3 +34,7 @@ public/bootstrap.json
 # Deployments that are entitled to it place the files into build/fonts/ at deploy
 # time; copy them into public/fonts/ locally for development.
 public/fonts/Entur-Nationale-*
+
+# Raw feedback corpus, triage records and working notes for the modern UI.
+# Contains verbatim quotes and screenshots from named colleagues — kept local.
+.claude/context/master-feedback/

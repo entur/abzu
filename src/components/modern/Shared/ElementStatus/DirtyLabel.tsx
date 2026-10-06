@@ -14,8 +14,7 @@ limitations under the Licence. */
 
 import { Box } from "@mui/material";
 import React from "react";
-
-const DOT_SIZE = 6;
+import { UnsavedDot } from "./UnsavedDot";
 
 interface DirtyLabelProps {
   /** Caller folds in the affordance toggle; this component just renders. */
@@ -35,17 +34,6 @@ export const DirtyLabel = ({ dirty, children }: DirtyLabelProps) => (
     sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
   >
     {children}
-    {dirty && (
-      <Box
-        component="span"
-        sx={{
-          width: DOT_SIZE,
-          height: DOT_SIZE,
-          borderRadius: "50%",
-          bgcolor: "warning.main",
-          flexShrink: 0,
-        }}
-      />
-    )}
+    {dirty && <UnsavedDot />}
   </Box>
 );

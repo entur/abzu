@@ -24,8 +24,6 @@ interface UseStopPlaceDialogsReturn {
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
   versionsDialogOpen: boolean;
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
   handleOpenSaveDialog: () => void;
   handleCloseSaveDialog: () => void;
   handleOpenGoBackDialog: () => void;
@@ -44,10 +42,6 @@ interface UseStopPlaceDialogsReturn {
   handleCloseAltNamesDialog: () => void;
   handleOpenVersionsDialog: () => void;
   handleCloseVersionsDialog: () => void;
-  handleOpenInfoDialog: () => void;
-  handleCloseInfoDialog: () => void;
-  handleOpenNameDescriptionDialog: () => void;
-  handleCloseNameDescriptionDialog: () => void;
 }
 
 /**
@@ -65,9 +59,6 @@ export const useStopPlaceDialogs = (): UseStopPlaceDialogsReturn => {
   const [tagsDialogOpen, setTagsDialogOpen] = useState(false);
   const [altNamesDialogOpen, setAltNamesDialogOpen] = useState(false);
   const [versionsDialogOpen, setVersionsDialogOpen] = useState(false);
-  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
-  const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
-    useState(false);
 
   // Save dialog
   const handleOpenSaveDialog = useCallback(() => {
@@ -150,24 +141,6 @@ export const useStopPlaceDialogs = (): UseStopPlaceDialogsReturn => {
     setVersionsDialogOpen(false);
   }, []);
 
-  // Info dialog
-  const handleOpenInfoDialog = useCallback(() => {
-    setInfoDialogOpen(true);
-  }, []);
-
-  const handleCloseInfoDialog = useCallback(() => {
-    setInfoDialogOpen(false);
-  }, []);
-
-  // Name/description dialog
-  const handleOpenNameDescriptionDialog = useCallback(() => {
-    setNameDescriptionDialogOpen(true);
-  }, []);
-
-  const handleCloseNameDescriptionDialog = useCallback(() => {
-    setNameDescriptionDialogOpen(false);
-  }, []);
-
   return {
     confirmSaveDialogOpen,
     confirmGoBackOpen,
@@ -196,11 +169,5 @@ export const useStopPlaceDialogs = (): UseStopPlaceDialogsReturn => {
     versionsDialogOpen,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,
-    infoDialogOpen,
-    handleOpenInfoDialog,
-    handleCloseInfoDialog,
-    nameDescriptionDialogOpen,
-    handleOpenNameDescriptionDialog,
-    handleCloseNameDescriptionDialog,
   };
 };

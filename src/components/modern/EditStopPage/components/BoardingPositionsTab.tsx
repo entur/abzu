@@ -12,7 +12,6 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import {
   Box,
@@ -28,12 +27,11 @@ import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import { CopyIdButton } from "../../Shared";
-import { Quay, StopPlace } from "../types";
+import { Quay } from "../types";
 
 interface BoardingPositionsTabProps {
   quay: Quay;
   quayIndex: number;
-  stopPlace: StopPlace;
   canEdit: boolean;
 }
 
@@ -44,7 +42,6 @@ interface BoardingPositionsTabProps {
 export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
   quay,
   quayIndex,
-  stopPlace,
   canEdit,
 }) => {
   const { formatMessage } = useIntl();
@@ -71,26 +68,6 @@ export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
           {formatMessage({ id: "boarding_positions_tab_label" })}
         </Typography>
         <Chip label={quay.boardingPositions?.length ?? 0} size="small" />
-        <Tooltip title={formatMessage({ id: "new_boarding_position" })}>
-          <span>
-            <IconButton
-              size="small"
-              color="primary"
-              disabled={!canEdit}
-              onClick={() => {
-                dispatch(StopPlaceActions.setElementFocus(quayIndex, "quay"));
-                dispatch(
-                  StopPlaceActions.addElementToStop(
-                    "boardingPosition",
-                    quay.location || stopPlace.location || [0, 0],
-                  ),
-                );
-              }}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </span>
-        </Tooltip>
       </Box>
       <Divider />
 

@@ -176,9 +176,11 @@ declare module "@mui/material/styles" {
   // Add tertiary palette color
   interface Palette {
     tertiary?: PaletteColor;
+    multimodal?: PaletteColor;
   }
 
   interface PaletteOptions {
     tertiary?: PaletteColorOptions;
+    multimodal?: PaletteColorOptions;
   }
 }

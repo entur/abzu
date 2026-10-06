@@ -11,5 +11,7 @@ export { QuaysSection } from "./QuaysSection";
 export { StopPlaceDialogs } from "./StopPlaceDialogs";
 export { StopPlaceGeneralSection } from "./StopPlaceGeneralSection";
 export { StopPlaceHeader } from "./StopPlaceHeader";
+export { StopPlaceActionBar } from "./StopPlaceActionBar";
+export { StopPlaceTabStrip } from "./StopPlaceTabStrip";
 export { StopPlaceView } from "./StopPlaceView";
 export { TimetableDialog } from "./TimetableDialog";

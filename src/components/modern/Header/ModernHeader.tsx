@@ -18,7 +18,9 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
+import { push } from "redux-first-history";
 import { UserActions } from "../../../actions";
+import AppRoutes from "../../../routes";
 import { useAuth } from "../../../auth/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
@@ -35,10 +37,14 @@ import {
   AppLogo,
   EnvironmentBadge,
   HeaderSearch,
-  NavigationMenu,
+  HelpControl,
+  LanguageControl,
+  NavigationLine,
+  SettingsControl,
   UserSection,
 } from "./components";
 import { useHeaderSlotContent } from "./HeaderSlotContext";
+import { useLastMapLocation } from "./hooks/useLastMapLocation";
 
 interface ModernHeaderProps {
   config: {
@@ -57,30 +63,40 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const { environmentBadge, environment } = useEnvironmentStyles();
   const { themeConfig } = useAbzuTheme();
   const headerSlotContent = useHeaderSlotContent();
+  const getLastMapLocation = useLastMapLocation();
 
+  /* Stop places and parent stop places share one dirty flag and one route
+     prefix; groups have their own of each. Both have to be consulted, or
+     leaving a half-edited group discards it without asking. */
   const stopHasBeenModified = useSelector(
     (state: any) => state.stopPlace.stopHasBeenModified,
   );
-  const isDisplayingReports = useSelector(
-    (state: any) => state.router.location.pathname === "/reports",
+  const groupHasBeenModified = useSelector(
+    (state: any) => state.stopPlacesGroup.isModified,
   );
-  const isDisplayingEditStopPlace = useSelector(
-    (state: any) => state.router.location.pathname.indexOf("/stop_place/") > -1,
+  const pathname = useSelector((state: any) => state.router.location.pathname);
+
+  const isDisplayingReports = pathname === `/${AppRoutes.REPORTS}`;
+  const isEditingStopPlace = pathname.includes(`/${AppRoutes.STOP_PLACE}/`);
+  const isEditingGroup = pathname.includes(
+    `/${AppRoutes.GROUP_OF_STOP_PLACE}/`,
   );
+
+  const hasUnsavedChanges =
+    (isEditingStopPlace && stopHasBeenModified) ||
+    (isEditingGroup && groupHasBeenModified);
   const preferredName = useSelector((state: any) => state.user.preferredName);
 
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = React.useState(false);
   const [actionOnDone, setActionOnDone] = React.useState<string>("GoToMain");
 
   const handleConfirmChangeRoute = (nextAction: () => void, action: string) => {
-    if (isDisplayingReports) {
+    if (!hasUnsavedChanges) {
       nextAction();
-    } else if (stopHasBeenModified && isDisplayingEditStopPlace) {
-      setIsConfirmDialogOpen(true);
-      setActionOnDone(action);
-    } else {
-      nextAction();
+      return;
     }
+    setIsConfirmDialogOpen(true);
+    setActionOnDone(action);
   };
 
   const handleConfirm = () => {
@@ -93,6 +109,9 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
       case "GoToReports":
         goToReports();
         break;
+      case "ReturnToMap":
+        returnToMap();
+        break;
       default:
         break;
     }
@@ -102,8 +121,15 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
     dispatch(UserActions.navigateTo("/", ""));
   };
 
+  /* Switching between the map and Reports is a tab change, not "go home":
+     pushing the route directly skips the NAVIGATE_TO reset, so the map
+     position and the open stop place or group survive the round trip. */
   const goToReports = () => {
-    dispatch(UserActions.navigateTo("reports", ""));
+    dispatch(push(import.meta.env.BASE_URL + AppRoutes.REPORTS));
+  };
+
+  const returnToMap = () => {
+    dispatch(push(getLastMapLocation()));
   };
 
   const handleLogin = () => {
@@ -180,15 +206,21 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             isMobile={isMobile}
           />
 
-          <NavigationMenu
-            config={config}
-            onConfirmChangeRoute={handleConfirmChangeRoute}
-            onGoToReports={() =>
-              handleConfirmChangeRoute(goToReports, "GoToReports")
-            }
-            isMobile={isMobile}
-          />
+          <LanguageControl />
+
+          <HelpControl extPath={config.extPath} />
+
+          <SettingsControl isMobile={isMobile} />
         </Toolbar>
+
+        <NavigationLine
+          onReturnToMap={() =>
+            handleConfirmChangeRoute(returnToMap, "ReturnToMap")
+          }
+          onNavigateToReports={() =>
+            handleConfirmChangeRoute(goToReports, "GoToReports")
+          }
+        />
       </AppBar>
 
       <ConfirmDialog

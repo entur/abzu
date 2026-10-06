@@ -13,16 +13,26 @@
  * limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
+import {
+  hasChangedKey,
+  useElementStatusEnabled,
+  UnsavedDot,
+  useStopPlaceDirtyKeys,
+} from "../../Shared/ElementStatus";
 import { StopPlace } from "../types";
+import { PanelToggleIcon } from "../../Shared";
+
+/** The header owns no fields of its own; it mirrors the stop place name. */
+const HEADER_NAME_KEYS = ["name"] as const;
+
+const MODALITY_ICON_SIZE = 32;
 
 const NAME_FONT_SIZE_SHORT = "1.5rem";
 const NAME_FONT_SIZE_MEDIUM = "1.3rem";
@@ -65,6 +75,10 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
   isExpanded,
 }) => {
   const { formatMessage } = useIntl();
+  const isStatusEnabled = useElementStatusEnabled();
+  const dirtyKeys = useStopPlaceDirtyKeys();
+  const isNameDirty =
+    isStatusEnabled && hasChangedKey(dirtyKeys, HEADER_NAME_KEYS);
   const nameLength = stopName?.length ?? 0;
   const nameFontSize = resolveFontSize(nameLength);
 
@@ -84,18 +98,35 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
           <ModalityIconImg
             type={stopPlace.stopPlaceType || "other"}
             submode={stopPlace.submode}
-            svgStyle={{ width: 24, height: 24 }}
+            svgStyle={{ width: MODALITY_ICON_SIZE, height: MODALITY_ICON_SIZE }}
           />
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: 600, fontSize: nameFontSize, lineHeight: 1.2 }}
-            noWrap={nameLength > NAME_LENGTH_THRESHOLD_MEDIUM}
+          {/* The dot is a sibling, not a child: an inline-flex wrapper inside the
+              Typography would defeat the noWrap ellipsis on long names. */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              minWidth: 0,
+            }}
           >
-            {stopName}
-          </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 600,
+                fontSize: nameFontSize,
+                lineHeight: 1.2,
+                minWidth: 0,
+              }}
+              noWrap={nameLength > NAME_LENGTH_THRESHOLD_MEDIUM}
+            >
+              {stopName}
+            </Typography>
+            {isNameDirty && <UnsavedDot />}
+          </Box>
           {stopPlace.topographicPlace && (
             <Typography
               variant="caption"
@@ -125,40 +156,46 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
           )}
         </Box>
 
-        <CenterMapButton location={stopPlace.location} />
+        {/* Actions on the stop place itself: where it is, and saving it as a favourite. */}
+        <Box sx={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <CenterMapButton location={stopPlace.location} />
 
-        {stopPlace.id && (
-          <FavoriteButton
-            id={stopPlace.id}
-            name={stopPlace.name}
-            entityType={Entities.STOP_PLACE}
-            stopPlaceType={stopPlace.stopPlaceType}
-            submode={stopPlace.submode}
-            topographicPlace={stopPlace.topographicPlace}
-            parentTopographicPlace={stopPlace.parentTopographicPlace}
-            location={stopPlace.location}
-          />
-        )}
+          {stopPlace.id && (
+            <FavoriteButton
+              id={stopPlace.id}
+              name={stopPlace.name}
+              entityType={Entities.STOP_PLACE}
+              stopPlaceType={stopPlace.stopPlaceType}
+              submode={stopPlace.submode}
+              topographicPlace={stopPlace.topographicPlace}
+              parentTopographicPlace={stopPlace.parentTopographicPlace}
+              location={stopPlace.location}
+            />
+          )}
+        </Box>
 
-        <Tooltip
-          title={formatMessage({ id: isExpanded ? "collapse" : "expand" })}
-        >
-          <IconButton size="small" onClick={onToggle}>
-            {isExpanded ? (
-              <ExpandLessIcon fontSize="small" />
-            ) : (
-              <ExpandMoreIcon fontSize="small" />
-            )}
-          </IconButton>
-        </Tooltip>
+        {/* Separates the two kinds of action: the group above acts on the stop
+            place, the group below acts on this panel. They were one flat row. */}
+        <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 1 }} />
 
-        {onClose && (
-          <Tooltip title={formatMessage({ id: "close" })}>
-            <IconButton size="small" onClick={onClose}>
-              <CloseIcon fontSize="small" />
+        {/* Window controls: what happens to the panel, not to the stop place. */}
+        <Box sx={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <Tooltip
+            title={formatMessage({ id: isExpanded ? "collapse" : "expand" })}
+          >
+            <IconButton size="small" onClick={onToggle}>
+              <PanelToggleIcon isExpanded={isExpanded} />
             </IconButton>
           </Tooltip>
-        )}
+
+          {onClose && (
+            <Tooltip title={formatMessage({ id: "close" })}>
+              <IconButton size="small" onClick={onClose}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Box>
       </Box>
 
       {stopPlace.hasExpired && (

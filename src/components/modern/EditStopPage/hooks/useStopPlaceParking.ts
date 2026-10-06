@@ -84,19 +84,11 @@ export const useStopPlaceParking = (
     [dispatch],
   );
 
-  const handleAddParking = useCallback(
-    (type: string, position: [number, number]) => {
-      dispatch(StopPlaceActions.addElementToStop(type, position));
-    },
-    [dispatch],
-  );
-
   return {
     handleDeleteParking,
     handleConfirmDeleteParking,
     handleParkingNameChange,
     handleParkingTypeChange,
     handleParkingCapacityChange,
-    handleAddParking,
   };
 };

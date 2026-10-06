@@ -13,6 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { SxProps, Theme } from "@mui/material";
+import {
+  appChromeTop,
+  belowAppChromePanelMaxHeight,
+  HEADER_HEIGHT_DESKTOP,
+  HEADER_HEIGHT_MOBILE,
+} from "./Header/headerMetrics";
 
 /**
  * Centralized MUI theme-dependent styles for modern UI components
@@ -26,13 +32,12 @@ import { SxProps, Theme } from "@mui/material";
 export const mapControlPanelContainer = (_theme: Theme): SxProps<Theme> => ({
   position: "absolute",
   // Raw px, not spacing units — sx only applies the spacing scale to m/p/gap.
-  // Bottom-anchored to match .modern-map-controls-buttons, so the panel grows
-  // upward from the control card and stays clear of the header's nav menu.
-  bottom: 56,
+  // Top-anchored to match .modern-map-controls-buttons, so the panel grows
+  // downward from the control card.
+  top: 2,
   right: 2,
   width: 320,
-  // Capped so even the tallest panel cannot reach the nav menu's drop zone.
-  maxHeight: "calc(100vh - 420px)",
+  maxHeight: "calc(100vh - 200px)",
   zIndex: 999,
   overflow: "hidden",
   display: "flex",
@@ -142,7 +147,7 @@ export const dialogCloseButton = (theme: Theme): SxProps<Theme> => ({
 // ============================================================================
 
 export const headerToolbar: SxProps<Theme> = {
-  minHeight: { xs: 56, sm: 64 },
+  minHeight: { xs: HEADER_HEIGHT_MOBILE, sm: HEADER_HEIGHT_DESKTOP },
   px: { xs: 1, sm: 2 },
   width: "100%",
 };
@@ -166,6 +171,32 @@ export const headerSearchContainer: SxProps<Theme> = {
   justifyContent: "center",
   mx: 2,
 };
+
+/**
+ * The outlined-search treatment shared by the main page search and the report
+ * page search.
+ *
+ * The two search bars do different jobs — one looks up stop places live, the
+ * other submits a report query — but they sit in the same header slot and must
+ * read as the same control. Defined once so they cannot drift apart again.
+ */
+export const searchFieldSx = (theme: Theme) => ({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: 2,
+    backgroundColor: theme.palette.background.default,
+    "&:hover": {
+      "& > fieldset": {
+        borderColor: theme.palette.primary.main,
+      },
+    },
+    "&.Mui-focused": {
+      "& > fieldset": {
+        borderWidth: 0,
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+});
 
 // ============================================================================
 // Header Search Styles
@@ -201,11 +232,11 @@ export const headerSearchMobilePanel = (
   isElevated: boolean,
 ): SxProps<Theme> => ({
   position: "fixed",
-  top: 64,
+  top: appChromeTop,
   left: 8,
   right: 8,
   zIndex: isElevated ? theme.zIndex.modal + 5 : theme.zIndex.modal + 2,
-  maxHeight: "calc(100vh - 80px)",
+  maxHeight: belowAppChromePanelMaxHeight,
   overflow: "auto",
 });
 
@@ -277,29 +308,8 @@ export const menuItemPrimary = (theme: Theme): SxProps<Theme> => ({
   },
 });
 
-export const menuItemSecondary = (theme: Theme): SxProps<Theme> => ({
-  py: 0.5,
-  px: 2,
-  borderRadius: 1,
-  mx: 1,
-  mb: 0.5,
-  fontSize: "0.875rem",
-  "&:hover": {
-    backgroundColor: theme.palette.action.hover,
-  },
-});
-
-export const menuItemIconPrimary = (theme: Theme): SxProps<Theme> => ({
-  minWidth: 36,
-  color: theme.palette.primary.main,
-});
-
 export const menuItemIconSecondary: SxProps<Theme> = {
   minWidth: 32,
-};
-
-export const menuListIndented: SxProps<Theme> = {
-  pl: 2,
 };
 
 export const emptyCheckbox: SxProps<Theme> = {

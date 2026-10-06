@@ -35,7 +35,13 @@ import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
 import type { FocusedElement, MapParking, MapStopPlace } from "./types";
 
-const PARKING_SIZE = 34;
+const PARKING_SIZE = 30;
+/* Parking is the one map element drawn as a square. Stop places, quays,
+   boarding positions and neighbours are all circles, so shape — not just
+   colour — tells parking apart at a glance, the way a road sign does. Lightly
+   rounded so it reads as a sign rather than a hard box; scaled with the marker
+   so the proportion holds at every zoom. */
+const PARKING_CORNER_RADIUS = 6;
 const BIKE_PARKING_TYPE = "bikeParking";
 
 interface ParkingMarkerItemProps {
@@ -118,7 +124,7 @@ const ParkingMarkerItem = ({
               position: "relative",
               width: Math.round(PARKING_SIZE * scale),
               height: Math.round(PARKING_SIZE * scale),
-              borderRadius: "50%",
+              borderRadius: `${Math.round(PARKING_CORNER_RADIUS * scale)}px`,
               // Focus is shown by the ring and scale only, never by recolouring —
               // matches QuayMarkers so the base colour always identifies the type.
               bgcolor: "info.main",

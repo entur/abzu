@@ -12,9 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Check } from "@mui/icons-material";
 import {
-  Box,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -26,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { ConfigContext } from "../../../../config/ConfigContext";
 import { defaultOSMTileLayer } from "../../../../config/mapDefaults";
+import { SettingIndicator } from "../../Shared";
 
 export const MapLayersPanel: React.FC = () => {
   const theme = useTheme();
@@ -66,11 +65,7 @@ export const MapLayersPanel: React.FC = () => {
           sx={settingItemStyle}
         >
           <ListItemIcon sx={{ minWidth: 32 }}>
-            {activeBaselayer === tile.name ? (
-              <Check fontSize="small" color="primary" />
-            ) : (
-              <Box sx={{ width: 20, height: 20 }} />
-            )}
+            <SettingIndicator checked={activeBaselayer === tile.name} />
           </ListItemIcon>
           <ListItemText
             primary={tile.name}

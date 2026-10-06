@@ -18,6 +18,7 @@ import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { Entities } from "../../../../models/Entities";
 import { useAppSelector } from "../../../../store/hooks";
+import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import type { LatLng } from "../markers/types";
 
 const FILL_OPACITY = 0.15;
@@ -86,13 +87,18 @@ export const StopGroupLayer = () => {
   const activeSearchResult = useAppSelector(
     (state) => (state.stopPlace as any).activeSearchResult as any,
   );
+  const isEditingGroup = useIsEditingGroup();
 
   const groups = useMemo((): GroupPolygon[] => {
     const result: GroupPolygon[] = [];
 
-    const memberLocations = (members ?? [])
-      .map((m) => m.location)
-      .filter((loc): loc is LatLng => !!loc);
+    /* Only while the group is actually open — see useIsEditingGroup. The
+       search-result polygon below is independent of the route. */
+    const memberLocations = isEditingGroup
+      ? (members ?? [])
+          .map((m) => m.location)
+          .filter((loc): loc is LatLng => !!loc)
+      : [];
 
     if (memberLocations.length) {
       result.push({ name: groupName ?? "", locations: memberLocations });
@@ -117,7 +123,7 @@ export const StopGroupLayer = () => {
     }
 
     return result;
-  }, [members, groupName, activeSearchResult]);
+  }, [members, groupName, activeSearchResult, isEditingGroup]);
 
   const geoJson = useMemo(() => buildGeoJson(groups), [groups]);
 

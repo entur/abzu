@@ -29,6 +29,7 @@ import {
 import React from "react";
 import { useIntl } from "react-intl";
 import { SearchInputProps } from "../types";
+import { searchFieldSx } from "../../styles";
 import { searchInputContainer, searchLoadingText } from "./SearchInput.styles";
 
 export const SearchInput: React.FC<SearchInputProps> = ({
@@ -169,26 +170,11 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                 },
               }}
               sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                  backgroundColor: theme.palette.background.default,
-                  "&:hover": {
-                    "& > fieldset": {
-                      borderColor: theme.palette.primary.main,
-                    },
-                  },
-                  "&.Mui-focused": {
-                    "& > fieldset": {
-                      borderWidth: 0,
-                      borderColor: theme.palette.primary.main,
-                    },
-                  },
-                  "&.Mui-expanded": {
-                    "& > fieldset": {
-                      borderWidth: 0,
-                      border: "none",
-                    },
-                  },
+                ...searchFieldSx(theme),
+                /* Autocomplete-only: the popup owns the border while expanded. */
+                "& .MuiOutlinedInput-root.Mui-expanded > fieldset": {
+                  borderWidth: 0,
+                  border: "none",
                 },
               }}
             />
