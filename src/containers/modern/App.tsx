@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { ComponentToggle } from "@entur/react-component-toggle";
+import { Box } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
@@ -42,13 +43,19 @@ import { StopPlace } from "./StopPlace";
 import { StopPlaces } from "./StopPlaces";
 
 /**
- * Persistent map — always mounted on stop and group routes, never torn down
- * between navigations. Lives inside <Router> so useMatch is available.
+ * Persistent map — mounted once and never torn down between navigations, so
+ * the camera and loaded tiles survive a visit to Reports. It is hidden there
+ * with `visibility` rather than `display`: the canvas keeps its size, so
+ * MapLibre needs no resize when it shows again, and hidden elements take no
+ * pointer events. Lives inside <Router> so useMatch is available.
  */
 const PersistentMap = () => {
   const matchReports = useMatch(`/${AppRoutes.REPORTS}`);
-  if (matchReports) return null;
-  return <ModernEditStopMap />;
+  return (
+    <Box sx={{ visibility: matchReports ? "hidden" : "visible" }}>
+      <ModernEditStopMap />
+    </Box>
+  );
 };
 
 const Settings = new SettingsManager();

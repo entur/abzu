@@ -33,7 +33,7 @@ const HOVERED_TAB_OPACITY = 0.08;
 const TAB_INSET = 4;
 
 interface NavigationLineProps {
-  onNavigateToMain: () => void;
+  onReturnToMap: () => void;
   onNavigateToReports: () => void;
 }
 
@@ -48,7 +48,7 @@ interface NavigationLineProps {
  * not.
  */
 export const NavigationLine: React.FC<NavigationLineProps> = ({
-  onNavigateToMain,
+  onReturnToMap,
   onNavigateToReports,
 }) => {
   const { formatMessage } = useIntl();
@@ -69,7 +69,7 @@ export const NavigationLine: React.FC<NavigationLineProps> = ({
       onNavigateToReports();
       return;
     }
-    onNavigateToMain();
+    onReturnToMap();
   };
 
   return (

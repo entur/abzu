@@ -18,6 +18,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
+import { push } from "redux-first-history";
 import { UserActions } from "../../../actions";
 import AppRoutes from "../../../routes";
 import { useAuth } from "../../../auth/auth";
@@ -43,6 +44,7 @@ import {
   UserSection,
 } from "./components";
 import { useHeaderSlotContent } from "./HeaderSlotContext";
+import { useLastMapLocation } from "./hooks/useLastMapLocation";
 
 interface ModernHeaderProps {
   config: {
@@ -61,6 +63,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const { environmentBadge, environment } = useEnvironmentStyles();
   const { themeConfig } = useAbzuTheme();
   const headerSlotContent = useHeaderSlotContent();
+  const getLastMapLocation = useLastMapLocation();
 
   /* Stop places and parent stop places share one dirty flag and one route
      prefix; groups have their own of each. Both have to be consulted, or
@@ -106,6 +109,9 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
       case "GoToReports":
         goToReports();
         break;
+      case "ReturnToMap":
+        returnToMap();
+        break;
       default:
         break;
     }
@@ -115,8 +121,15 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
     dispatch(UserActions.navigateTo("/", ""));
   };
 
+  /* Switching between the map and Reports is a tab change, not "go home":
+     pushing the route directly skips the NAVIGATE_TO reset, so the map
+     position and the open stop place or group survive the round trip. */
   const goToReports = () => {
-    dispatch(UserActions.navigateTo("reports", ""));
+    dispatch(push(import.meta.env.BASE_URL + AppRoutes.REPORTS));
+  };
+
+  const returnToMap = () => {
+    dispatch(push(getLastMapLocation()));
   };
 
   const handleLogin = () => {
@@ -201,8 +214,8 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
         </Toolbar>
 
         <NavigationLine
-          onNavigateToMain={() =>
-            handleConfirmChangeRoute(goToMain, "GoToMain")
+          onReturnToMap={() =>
+            handleConfirmChangeRoute(returnToMap, "ReturnToMap")
           }
           onNavigateToReports={() =>
             handleConfirmChangeRoute(goToReports, "GoToReports")
