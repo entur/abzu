@@ -19,6 +19,7 @@ import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../../actions";
+import AppRoutes from "../../../routes";
 import { useAuth } from "../../../auth/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
@@ -61,29 +62,38 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const { themeConfig } = useAbzuTheme();
   const headerSlotContent = useHeaderSlotContent();
 
+  /* Stop places and parent stop places share one dirty flag and one route
+     prefix; groups have their own of each. Both have to be consulted, or
+     leaving a half-edited group discards it without asking. */
   const stopHasBeenModified = useSelector(
     (state: any) => state.stopPlace.stopHasBeenModified,
   );
-  const isDisplayingReports = useSelector(
-    (state: any) => state.router.location.pathname === "/reports",
+  const groupHasBeenModified = useSelector(
+    (state: any) => state.stopPlacesGroup.isModified,
   );
-  const isDisplayingEditStopPlace = useSelector(
-    (state: any) => state.router.location.pathname.indexOf("/stop_place/") > -1,
+  const pathname = useSelector((state: any) => state.router.location.pathname);
+
+  const isDisplayingReports = pathname === `/${AppRoutes.REPORTS}`;
+  const isEditingStopPlace = pathname.includes(`/${AppRoutes.STOP_PLACE}/`);
+  const isEditingGroup = pathname.includes(
+    `/${AppRoutes.GROUP_OF_STOP_PLACE}/`,
   );
+
+  const hasUnsavedChanges =
+    (isEditingStopPlace && stopHasBeenModified) ||
+    (isEditingGroup && groupHasBeenModified);
   const preferredName = useSelector((state: any) => state.user.preferredName);
 
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = React.useState(false);
   const [actionOnDone, setActionOnDone] = React.useState<string>("GoToMain");
 
   const handleConfirmChangeRoute = (nextAction: () => void, action: string) => {
-    if (isDisplayingReports) {
+    if (!hasUnsavedChanges) {
       nextAction();
-    } else if (stopHasBeenModified && isDisplayingEditStopPlace) {
-      setIsConfirmDialogOpen(true);
-      setActionOnDone(action);
-    } else {
-      nextAction();
+      return;
     }
+    setIsConfirmDialogOpen(true);
+    setActionOnDone(action);
   };
 
   const handleConfirm = () => {
