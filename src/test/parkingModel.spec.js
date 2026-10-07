@@ -25,18 +25,9 @@ const baseParking = (overrides = {}) => ({
 });
 
 describe("Parking model - layout enumeration", () => {
-  test("holds every value Tiamat's ParkingLayoutEnumeration holds", () => {
+  test("offers only the layout values the NeTEx Nordic profile allows", () => {
     expect(parkingLayouts.slice().sort()).toEqual(
-      [
-        "covered",
-        "cycleHire",
-        "multistorey",
-        "openSpace",
-        "other",
-        "roadside",
-        "undefined",
-        "underground",
-      ].sort(),
+      ["multistorey", "openSpace", "roadside", "underground"].sort(),
     );
   });
 });
