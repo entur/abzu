@@ -71,7 +71,6 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
         <Select
           value={parking.parkingLayout || ""}
           label={formatMessage({ id: "parking_layout" })}
-          displayEmpty
           renderValue={(selected: string) =>
             selected ? (
               formatMessage({
@@ -130,7 +129,6 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
         <Select
           value={parking.lighting || ""}
           label={formatMessage({ id: "parking_lighting" })}
-          displayEmpty
           renderValue={(selected: string) =>
             selected ? (
               formatMessage({
