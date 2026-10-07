@@ -91,6 +91,9 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
             )
           }
         >
+          <MenuItem value="">
+            <em>{formatMessage({ id: "parking_layout_undefined" })}</em>
+          </MenuItem>
           {parkingLayouts.map((layout) => (
             <MenuItem key={layout} value={layout}>
               {formatMessage({
