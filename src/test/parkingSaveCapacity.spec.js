@@ -382,4 +382,57 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
       numberOfSpaces: 7,
     });
   });
+
+  test("two allUsers entries keep their counts over repeated saves", () => {
+    let properties = [
+      {
+        spaces: [
+          {
+            parkingUserType: "allUsers",
+            parkingVehicleType: "pedalCycle",
+            numberOfSpaces: 5,
+          },
+          {
+            parkingUserType: "allUsers",
+            parkingVehicleType: "motorcycle",
+            numberOfSpaces: 3,
+          },
+        ],
+      },
+    ];
+    let totalCapacity = 8;
+
+    for (let round = 0; round < 3; round += 1) {
+      const saved = save({
+        parkingType: PARKING_TYPE.BIKE_PARKING,
+        totalCapacity,
+        parkingProperties: properties,
+      });
+      properties = saved.parkingProperties;
+      totalCapacity = tiamatTotal(saved);
+    }
+
+    expect(totalCapacity).toBe(8);
+    expect(properties[0].spaces.map((space) => space.numberOfSpaces)).toEqual([
+      5, 3,
+    ]);
+  });
+
+  test("a missing total keeps the stored allUsers count", () => {
+    const saved = save({
+      parkingType: PARKING_TYPE.BIKE_PARKING,
+      totalCapacity: null,
+      parkingProperties: [
+        {
+          spaces: [
+            { parkingUserType: "allUsers", numberOfSpaces: 20 },
+            { parkingUserType: "registeredDisabled", numberOfSpaces: 3 },
+          ],
+        },
+      ],
+    });
+
+    expect(findSpace(saved, "allUsers").numberOfSpaces).toBe(20);
+    expect(tiamatTotal(saved)).toBe(23);
+  });
 });

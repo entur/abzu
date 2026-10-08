@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { hasExpired } from "../modelUtils/validBetween";
 import { getIn } from "../utils/";
 import PARKING_TYPE from "./parkingType";
+import PARKING_USER_TYPE from "./parkingUserType";
 import PARKING_VEHICLE_TYPE from "./parkingVehicleType";
 
 class Parking {
@@ -33,7 +34,10 @@ class Parking {
 
   get numberOfSpaces() {
     if (this.parking.parkingProperties?.length) {
-      return this.findNumberOfSpaces("allUsers", "numberOfSpaces");
+      return this.findNumberOfSpaces(
+        PARKING_USER_TYPE.ALL_USERS,
+        "numberOfSpaces",
+      );
     } else {
       return this.parking.totalCapacity;
     }
@@ -41,13 +45,16 @@ class Parking {
 
   get numberOfSpacesWithRechargePoint() {
     return this.findNumberOfSpaces(
-      "allUsers",
+      PARKING_USER_TYPE.ALL_USERS,
       "numberOfSpacesWithRechargePoint",
     );
   }
 
   get numberOfSpacesForRegisteredDisabledUserType() {
-    return this.findNumberOfSpaces("registeredDisabled", "numberOfSpaces");
+    return this.findNumberOfSpaces(
+      PARKING_USER_TYPE.REGISTERED_DISABLED,
+      "numberOfSpaces",
+    );
   }
 
   // True when Tiamat holds more than one entry for userType. The editor shows
@@ -64,11 +71,11 @@ class Parking {
   }
 
   get numberOfSpacesIsAmbiguous() {
-    return this.hasAmbiguousEntries("allUsers");
+    return this.hasAmbiguousEntries(PARKING_USER_TYPE.ALL_USERS);
   }
 
   get numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous() {
-    return this.hasAmbiguousEntries("registeredDisabled");
+    return this.hasAmbiguousEntries(PARKING_USER_TYPE.REGISTERED_DISABLED);
   }
 
   get parkingType() {

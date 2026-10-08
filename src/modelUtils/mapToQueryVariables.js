@@ -18,6 +18,7 @@ import {
   defaultLimitations,
 } from "../models/AccessibilityLimitation";
 import PARKING_TYPE from "../models/parkingType";
+import PARKING_USER_TYPE from "../models/parkingUserType";
 import {
   netexifyBoardingPositions,
   netexifyPlaceEquipment,
@@ -290,15 +291,26 @@ helpers.mapPathLinkToVariables = (pathLinks) => {
 };
 
 helpers.capacityForAllUsers = (totalCapacity, existingProperties) => {
+  // Number(null) is 0. Return a missing total unchanged so that the merge
+  // keeps the stored entry instead of writing 0 into it.
+  if (totalCapacity === null || totalCapacity === undefined) {
+    return totalCapacity;
+  }
+
   const total = Number(totalCapacity);
 
   if (isNaN(total)) {
     return totalCapacity;
   }
 
-  const otherSpaces = (existingProperties?.[0]?.spaces || []).filter(
-    (space) => space.parkingUserType !== "allUsers",
+  // Subtract every entry except the one mergeParkingSpaces writes into. That
+  // is the first allUsers entry. A second allUsers entry is also an entry the
+  // editor does not show.
+  const spaces = existingProperties?.[0]?.spaces || [];
+  const targetIndex = spaces.findIndex(
+    (space) => space.parkingUserType === PARKING_USER_TYPE.ALL_USERS,
   );
+  const otherSpaces = spaces.filter((_, index) => index !== targetIndex);
   const otherTotal = otherSpaces.reduce(
     (sum, space) => sum + (Number(space.numberOfSpaces) || 0),
     0,
@@ -379,13 +391,13 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
         source.parkingProperties,
         [
           {
-            parkingUserType: "allUsers",
+            parkingUserType: PARKING_USER_TYPE.ALL_USERS,
             numberOfSpaces: source.numberOfSpaces,
             numberOfSpacesWithRechargePoint:
               source.numberOfSpacesWithRechargePoint,
           },
           {
-            parkingUserType: "registeredDisabled",
+            parkingUserType: PARKING_USER_TYPE.REGISTERED_DISABLED,
             numberOfSpaces: source.numberOfSpacesForRegisteredDisabledUserType,
           },
         ],
@@ -401,7 +413,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
         source.parkingProperties,
         [
           {
-            parkingUserType: "allUsers",
+            parkingUserType: PARKING_USER_TYPE.ALL_USERS,
             numberOfSpaces: helpers.capacityForAllUsers(
               source.totalCapacity,
               source.parkingProperties,
