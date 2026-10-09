@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { hasExpired } from "../modelUtils/validBetween";
 import { getIn } from "../utils/";
 import PARKING_TYPE from "./parkingType";
+import PARKING_USER_TYPE from "./parkingUserType";
 import PARKING_VEHICLE_TYPE from "./parkingVehicleType";
 
 class Parking {
@@ -39,7 +40,10 @@ class Parking {
 
   get numberOfSpaces() {
     if (this.parking.parkingProperties?.length) {
-      return this.findNumberOfSpaces("allUsers", "numberOfSpaces");
+      return this.findNumberOfSpaces(
+        PARKING_USER_TYPE.ALL_USERS,
+        "numberOfSpaces",
+      );
     } else {
       return this.parking.totalCapacity;
     }
@@ -47,13 +51,37 @@ class Parking {
 
   get numberOfSpacesWithRechargePoint() {
     return this.findNumberOfSpaces(
-      "allUsers",
+      PARKING_USER_TYPE.ALL_USERS,
       "numberOfSpacesWithRechargePoint",
     );
   }
 
   get numberOfSpacesForRegisteredDisabledUserType() {
-    return this.findNumberOfSpaces("registeredDisabled", "numberOfSpaces");
+    return this.findNumberOfSpaces(
+      PARKING_USER_TYPE.REGISTERED_DISABLED,
+      "numberOfSpaces",
+    );
+  }
+
+  // True when Tiamat holds more than one entry for userType. The editor shows
+  // and edits only the first one, so editing it would silently fold the
+  // other entries' counts into the number it saves.
+  hasAmbiguousEntries(userType) {
+    if (!(this.parking.parkingProperties?.length > 0)) {
+      return false;
+    }
+
+    const spaces = this.parking.parkingProperties.slice().shift().spaces || [];
+
+    return spaces.filter((v) => v.parkingUserType === userType).length > 1;
+  }
+
+  get numberOfSpacesIsAmbiguous() {
+    return this.hasAmbiguousEntries(PARKING_USER_TYPE.ALL_USERS);
+  }
+
+  get numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous() {
+    return this.hasAmbiguousEntries(PARKING_USER_TYPE.REGISTERED_DISABLED);
   }
 
   get parkingType() {
@@ -96,12 +124,20 @@ class Parking {
       numberOfSpacesForRegisteredDisabledUserType: this.isParkAndRide
         ? this.numberOfSpacesForRegisteredDisabledUserType
         : null,
+      // Not gated by isParkAndRide: a bicycle parking's totalCapacity field
+      // also folds every non-allUsers entry into one number (see
+      // capacityForAllUsers in mapToQueryVariables.js), so it needs the same
+      // guard whenever Tiamat holds more than one allUsers entry.
+      numberOfSpacesIsAmbiguous: this.numberOfSpacesIsAmbiguous,
+      numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous:
+        this.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous,
       parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
       validBetween: parking.validBetween,
       accessibilityAssessment: parking.accessibilityAssessment,
+      parkingProperties: parking.parkingProperties,
     };
     let coordinates = getIn(parking, ["geometry", "coordinates"], null);
 

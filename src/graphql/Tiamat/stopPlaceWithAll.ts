@@ -404,6 +404,8 @@ const verboseParkingFragment = gql`
     parkingProperties {
       spaces {
         parkingUserType
+        parkingVehicleType
+        parkingStayType
         numberOfSpaces
         numberOfSpacesWithRechargePoint
       }
