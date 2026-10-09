@@ -118,6 +118,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     numberOfSpaces,
     numberOfSpacesWithRechargePoint,
     numberOfSpacesForRegisteredDisabledUserType,
+    numberOfSpacesIsAmbiguous,
+    numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous,
     handleSetParkingLayout,
     handleSetParkingPaymentProcess,
     handleSetRechargingAvailable,
@@ -150,7 +152,10 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           }
           renderValue={(selected) =>
             selected ? (
-              formatMessage({ id: `parking_layout_${selected}` })
+              formatMessage({
+                id: `parking_layout_${selected}`,
+                defaultMessage: selected,
+              })
             ) : (
               <em>{formatMessage({ id: "parking_layout_undefined" })}</em>
             )
@@ -168,7 +173,10 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             <MenuItem key={key} value={key}>
               <Checkbox checked={key === parkingLayout} />
               <ListItemText
-                primary={formatMessage({ id: `parking_layout_${key}` })}
+                primary={formatMessage({
+                  id: `parking_layout_${key}`,
+                  defaultMessage: key,
+                })}
               />
             </MenuItem>
           ))}
@@ -262,7 +270,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           <LocalParking style={parkingIconStyles()} />
           <TextField
             variant="standard"
-            disabled={disabled || hasExpired}
+            disabled={disabled || hasExpired || numberOfSpacesIsAmbiguous}
             label={formatMessage({
               id: "parking_number_of_spaces",
             })}
@@ -286,7 +294,11 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             label={formatMessage({
               id: "parking_number_of_spaces_for_registered_disabled_user_type",
             })}
-            disabled={disabled || hasExpired}
+            disabled={
+              disabled ||
+              hasExpired ||
+              numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous
+            }
             onChange={(event) => {
               handleSetNumberOfSpacesForRegisteredDisabledUserType(
                 event.target.value,

@@ -21,6 +21,10 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import { ConfigContext } from "../../config/ConfigContext";
+import {
+  defaultCenterPosition,
+  defaultOSMTileLayer,
+} from "../../config/mapDefaults";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
 import { DynamicTileLayer } from "./DynamicTileLayer";
@@ -29,7 +33,6 @@ import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import MultiPolylineList from "./PathLink";
 import StopPlaceGroupList from "./StopPlaceGroupList";
-import { defaultCenterPosition, defaultOSMTileLayer } from "./mapDefaults";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -122,56 +125,58 @@ export const LeafLetMap = ({
           handleMapMoveEnd(event, map);
         }}
       >
-        <LayersControl position="topright">
-          {(mapConfig?.baseLayers || defaultBaseLayers).map((layer) => {
-            return (
-              <BaseLayer
-                key={layer.name}
-                checked={getCheckedBaseLayerByValue(layer.name)}
-                name={layer.name}
+        <>
+          <LayersControl position="topright">
+            {(mapConfig?.baseLayers || defaultBaseLayers).map((layer) => {
+              return (
+                <BaseLayer
+                  key={layer.name}
+                  checked={getCheckedBaseLayerByValue(layer.name)}
+                  name={layer.name}
+                >
+                  {layer.component ? (
+                    <ComponentToggle
+                      feature={layer.componentName}
+                      componentProps={layer}
+                    />
+                  ) : (
+                    <DynamicTileLayer
+                      attribution={layer.attribution}
+                      url={layer.url}
+                      maxZoom={layer.maxZoom}
+                      maxNativeZoom={layer.maxNativeZoom}
+                    />
+                  )}
+                </BaseLayer>
+              );
+            })}
+            {mapConfig?.overlays?.map((overlay) => (
+              <Overlay
+                key={overlay.name}
+                name={overlay.name}
+                checked={getCheckedOverlayByValue(overlay.name)}
               >
-                {layer.component ? (
+                {overlay.component ? (
                   <ComponentToggle
-                    feature={layer.componentName}
-                    componentProps={layer}
+                    feature={overlay.componentName}
+                    componentProps={overlay}
                   />
                 ) : (
                   <DynamicTileLayer
-                    attribution={layer.attribution}
-                    url={layer.url}
-                    maxZoom={layer.maxZoom}
-                    maxNativeZoom={layer.maxNativeZoom}
+                    attribution={overlay.attribution}
+                    url={overlay.url}
+                    maxZoom={overlay.maxZoom}
+                    maxNativeZoom={overlay.maxNativeZoom}
                   />
                 )}
-              </BaseLayer>
-            );
-          })}
-          {mapConfig?.overlays?.map((overlay) => (
-            <Overlay
-              key={overlay.name}
-              name={overlay.name}
-              checked={getCheckedOverlayByValue(overlay.name)}
-            >
-              {overlay.component ? (
-                <ComponentToggle
-                  feature={overlay.componentName}
-                  componentProps={overlay}
-                />
-              ) : (
-                <DynamicTileLayer
-                  attribution={overlay.attribution}
-                  url={overlay.url}
-                  maxZoom={overlay.maxZoom}
-                  maxNativeZoom={overlay.maxNativeZoom}
-                />
-              )}
-            </Overlay>
-          ))}
-        </LayersControl>
-        <FareZones position="topright" />
-        <TariffZones position="topright" />
-        <ScaleControl imperial={false} position="bottomright" />
-        <ZoomControl position="bottomright" />
+              </Overlay>
+            ))}
+          </LayersControl>
+          <FareZones position="topright" />
+          <TariffZones position="topright" />
+          <ScaleControl imperial={false} position="bottomright" />
+          <ZoomControl position="bottomright" />
+        </>
         <MarkerList
           changeCoordinates={handleChangeCoordinates}
           markers={markers}

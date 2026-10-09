@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
 import React from "react";
 import { colors as rechargingAvailableColors } from "../../models/rechargingAvailable";
 import { injectIntl } from "../../utils/injectIntl";
@@ -111,7 +112,7 @@ class RechargingAvailablePopover extends React.Component {
           targetOrigin={{ horizontal: "left", vertical: "top" }}
           onClose={this.handleClosePopover.bind(this)}
         >
-          {rechargingAvailableMenuItems}
+          <MenuList>{rechargingAvailableMenuItems}</MenuList>
         </Popover>
       </div>
     );

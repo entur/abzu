@@ -66,6 +66,16 @@ Fragments.groupOfStopPlaces = {
         ... on StopPlace {
           stopPlaceType
           submode
+          topographicPlace {
+            name {
+              value
+            }
+            parentTopographicPlace {
+              name {
+                value
+              }
+            }
+          }
           adjacentSites {
             ref
           }
@@ -84,6 +94,16 @@ Fragments.groupOfStopPlaces = {
         ... on ParentStopPlace {
           id
           version
+          topographicPlace {
+            name {
+              value
+            }
+            parentTopographicPlace {
+              name {
+                value
+              }
+            }
+          }
           children {
             id
             version
@@ -615,9 +635,13 @@ Fragments.parking = {
       parkingLayout
       parkingPaymentProcess
       rechargingAvailable
+      secure
+      lighting
       parkingProperties {
         spaces {
           parkingUserType
+          parkingVehicleType
+          parkingStayType
           numberOfSpaces
           numberOfSpacesWithRechargePoint
         }

@@ -43,6 +43,9 @@ export const initialState = {
   removedFavorites: [],
   activeElementTab: 0,
   activeBaselayer: Settings.getMapLayer(),
+  uiMode: Settings.getUIMode(),
+  membershipDisplay: Settings.getMembershipDisplay(),
+  elementStatusDisplay: Settings.getElementStatusDisplay(),
   activeOverlays: Settings.getActiveOverlays(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
@@ -298,6 +301,14 @@ const userReducer = (state = initialState, action) => {
         },
       });
 
+    case types.SET_KEY_VALUES_ORIGIN:
+      return Object.assign({}, state, {
+        keyValuesOrigin: {
+          type: action.payload.type,
+          index: action.payload.index,
+        },
+      });
+
     case types.CLOSED_KEY_VALUES_DIALOG:
       return Object.assign({}, state, {
         keyValuesDialogOpen: false,
@@ -341,6 +352,24 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         auth: action.payload,
+      };
+
+    case types.CHANGED_UI_MODE:
+      return {
+        ...state,
+        uiMode: action.payload,
+      };
+
+    case types.CHANGED_MEMBERSHIP_DISPLAY:
+      return {
+        ...state,
+        membershipDisplay: action.payload,
+      };
+
+    case types.CHANGED_ELEMENT_STATUS_DISPLAY:
+      return {
+        ...state,
+        elementStatusDisplay: action.payload,
       };
 
     default:

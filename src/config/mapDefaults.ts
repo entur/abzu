@@ -1,4 +1,4 @@
-import { TileLayer } from "../../config/ConfigContext";
+import { TileLayer } from "./ConfigContext";
 
 export const defaultCenterPosition = [64.349421, 16.809082];
 

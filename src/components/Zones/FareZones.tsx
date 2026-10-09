@@ -21,7 +21,9 @@ export const FareZones: React.FC<FareZonesProps> = ({ position }) => {
       controlPosition={position}
       controlTitle={formatMessage({ id: "tariffZones" })}
       getZoneLabel={(fareZone: FareZone) =>
-        `${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`
+        fareZone.privateCode
+          ? `${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`
+          : `${fareZone.name.value} (${fareZone.id})`
       }
       getZoneColor={(fareZone) =>
         getColorByCodespace(fareZone.id?.split(":")[0] || "default")

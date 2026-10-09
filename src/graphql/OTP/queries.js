@@ -11,6 +11,8 @@ export const findStopPlaceUsage = gql`
             name
           }
           id
+          name
+          publicCode
           serviceJourneys {
             id
             activeDates
@@ -32,6 +34,8 @@ export const findQuayUsage = gql`
           name
         }
         id
+        name
+        publicCode
         serviceJourneys {
           id
           activeDates

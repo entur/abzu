@@ -31,7 +31,7 @@ jobs:
       - run: npm run test -- run --coverage --coverage.reporter=lcov --reporter=vitest-sonar-reporter --outputFile.vitest-sonar-reporter=test-report.xml --reporter=default
       - name: SonarQube Scan
         if: github.event.pull_request.head.repo.fork == false
-        uses: sonarsource/sonarqube-scan-action@v8.2.1
+        uses: sonarsource/sonarqube-scan-action@v8.3.0
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
           SONAR_HOST_URL: https://sonarcloud.io
@@ -68,7 +68,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@v1.2.10
     with:
       gcp_project_id: ent-ror-abzu-dev
       environment: dev

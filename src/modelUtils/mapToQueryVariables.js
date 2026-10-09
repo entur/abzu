@@ -18,6 +18,7 @@ import {
   defaultLimitations,
 } from "../models/AccessibilityLimitation";
 import PARKING_TYPE from "../models/parkingType";
+import PARKING_USER_TYPE from "../models/parkingUserType";
 import {
   netexifyBoardingPositions,
   netexifyPlaceEquipment,
@@ -289,6 +290,73 @@ helpers.mapPathLinkToVariables = (pathLinks) => {
   });
 };
 
+helpers.capacityForAllUsers = (totalCapacity, existingProperties) => {
+  // Number(null) is 0. Return a missing total unchanged so that the merge
+  // keeps the stored entry instead of writing 0 into it.
+  if (totalCapacity === null || totalCapacity === undefined) {
+    return totalCapacity;
+  }
+
+  const total = Number(totalCapacity);
+
+  if (isNaN(total)) {
+    return totalCapacity;
+  }
+
+  // Subtract every entry except the one mergeParkingSpaces writes into. That
+  // is the first allUsers entry. A second allUsers entry is also an entry the
+  // editor does not show.
+  const spaces = existingProperties?.[0]?.spaces || [];
+  const targetIndex = spaces.findIndex(
+    (space) => space.parkingUserType === PARKING_USER_TYPE.ALL_USERS,
+  );
+  const otherSpaces = spaces.filter((_, index) => index !== targetIndex);
+  const otherTotal = otherSpaces.reduce(
+    (sum, space) => sum + (Number(space.numberOfSpaces) || 0),
+    0,
+  );
+
+  return Math.max(total - otherTotal, 0);
+};
+
+helpers.mergeParkingSpaces = (existingProperties, updates) => {
+  const properties = (existingProperties || []).map((property) => ({
+    ...property,
+    spaces: (property.spaces || []).map((space) => ({ ...space })),
+  }));
+
+  if (!properties.length) {
+    properties.push({ spaces: [] });
+  }
+
+  const spaces = properties[0].spaces;
+
+  updates.forEach((update) => {
+    const { parkingUserType, ...values } = update;
+    const changes = Object.entries(values).filter(
+      ([, value]) => value !== undefined && value !== null,
+    );
+    const index = spaces.findIndex(
+      (space) => space.parkingUserType === parkingUserType,
+    );
+
+    if (index === -1) {
+      // Do not create an entry that would carry no value at all.
+      if (!changes.length) {
+        return;
+      }
+      spaces.push({ parkingUserType, ...Object.fromEntries(changes) });
+      return;
+    }
+
+    changes.forEach(([key, value]) => {
+      spaces[index][key] = value;
+    });
+  });
+
+  return properties;
+};
+
 helpers.mapParkingToVariables = (parkingArr, parentRef) => {
   return parkingArr.map((source) => {
     let parking = {
@@ -314,39 +382,53 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.rechargingAvailable = source.rechargingAvailable;
     }
 
+    if (source.secure !== undefined && source.secure !== null) {
+      parking.secure = source.secure;
+    }
+
+    if (source.lighting) {
+      parking.lighting = source.lighting;
+    }
+
     if (
       source.numberOfSpaces ||
       source.numberOfSpacesWithRechargePoint ||
       source.numberOfSpacesForRegisteredDisabledUserType
     ) {
-      parking.parkingProperties = [
-        {
-          spaces: [
-            {
-              parkingUserType: "allUsers",
-              numberOfSpaces: source.numberOfSpaces,
-              numberOfSpacesWithRechargePoint:
-                source.numberOfSpacesWithRechargePoint,
-            },
-            {
-              parkingUserType: "registeredDisabled",
-              numberOfSpaces:
-                source.numberOfSpacesForRegisteredDisabledUserType,
-            },
-          ],
-        },
-      ];
+      parking.parkingProperties = helpers.mergeParkingSpaces(
+        source.parkingProperties,
+        [
+          {
+            parkingUserType: PARKING_USER_TYPE.ALL_USERS,
+            numberOfSpaces: source.numberOfSpaces,
+            numberOfSpacesWithRechargePoint:
+              source.numberOfSpacesWithRechargePoint,
+          },
+          {
+            parkingUserType: PARKING_USER_TYPE.REGISTERED_DISABLED,
+            numberOfSpaces: source.numberOfSpacesForRegisteredDisabledUserType,
+          },
+        ],
+      );
     } else if (source.parkingType === PARKING_TYPE.BIKE_PARKING) {
-      parking.parkingProperties = [
-        {
-          spaces: [
-            {
-              parkingUserType: "allUsers",
-              numberOfSpaces: source.totalCapacity,
-            },
-          ],
-        },
-      ];
+      // The bicycle editor edits one "capacity" number, and it shows the value
+      // Tiamat stores in totalCapacity. Tiamat derives totalCapacity from the
+      // sum of every space entry, and it ignores the totalCapacity the client
+      // sends. So give allUsers the capacity that is left after the entries
+      // this editor does not show. Without this subtraction each save adds
+      // those entries to the total a second time.
+      parking.parkingProperties = helpers.mergeParkingSpaces(
+        source.parkingProperties,
+        [
+          {
+            parkingUserType: PARKING_USER_TYPE.ALL_USERS,
+            numberOfSpaces: helpers.capacityForAllUsers(
+              source.totalCapacity,
+              source.parkingProperties,
+            ),
+          },
+        ],
+      );
     }
 
     parking.name = {

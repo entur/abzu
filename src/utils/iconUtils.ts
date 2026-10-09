@@ -10,13 +10,13 @@ import multiModal from "../static/icons/modalities/multiModal.png";
 import noInformation from "../static/icons/modalities/no-information.png";
 import railReplacementBus from "../static/icons/modalities/railReplacement.png";
 import railStation from "../static/icons/modalities/rails-without-box.png";
+import funicularSvg from "../static/icons/modalities/svg/funicular.svg";
 import onstreetTram from "../static/icons/modalities/tram-without-box.png";
 
 import airportSvg from "../static/icons/modalities/svg/airplane-withoutBox.svg";
 import onstreetBusSvg from "../static/icons/modalities/svg/bus-withoutBox.svg";
 import busStationSvg from "../static/icons/modalities/svg/busstation-withoutBox.svg";
 import ferryStopSvg from "../static/icons/modalities/svg/ferry-withoutBox.svg";
-import funicularSvg from "../static/icons/modalities/svg/funicular.svg";
 import harbourPortSvg from "../static/icons/modalities/svg/harbour_port.svg";
 import liftStationSvg from "../static/icons/modalities/svg/lift.svg";
 import noInformationSvg from "../static/icons/modalities/svg/no-information.svg";
@@ -71,20 +71,21 @@ export const getIconByModality = (type: Modalities, isMultimodal: boolean) => {
     other: noInformation,
   };
 
-  const stopType = modalityMap[type] || noInformation;
-
-  return stopType;
+  return modalityMap[type] || noInformation;
 };
 
 export const getSvgIconByTypeOrSubmode = (
-  submode: Submodes,
-  type: Modalities,
+  submode: Submodes | string | undefined,
+  type: Modalities | string | undefined,
 ) => {
   const submodeMap = {
     railReplacementBus: railReplacementBusSvg,
     funicular: funicularSvg,
   };
-  return submodeMap[submode] || getSvgIconIdByModality(type);
+  return (
+    (submode ? submodeMap[submode as Submodes] : undefined) ||
+    getSvgIconIdByModality(type as Modalities)
+  );
 };
 
 export const getSvgIconIdByModality = (type: Modalities) => {
