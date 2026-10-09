@@ -12,18 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-const parkingPaymentProcess = Object.freeze({
-  free: "free",
-  payAtBay: "payAtBay",
-  payAndDisplay: "payAndDisplay",
-  payAtExitBoothManualCollection: "payAtExitBoothManualCollection",
-  payAtMachineOnFootPriorToExit: "payAtMachineOnFootPriorToExit",
-  payByPrepaidToken: "payByPrepaidToken",
-  payByMobileDevice: "payByMobileDevice",
-  undefined: "undefined",
+const paymentMethod = Object.freeze({
+  cash: "cash",
+  cashAndCard: "cashAndCard",
+  coin: "coin",
+  banknote: "banknote",
+  creditCard: "creditCard",
+  debitCard: "debitCard",
+  cardsOnly: "cardsOnly",
+  contactlessPaymentCard: "contactlessPaymentCard",
+  mobilePhone: "mobilePhone",
+  mobileApp: "mobileApp",
   other: "other",
 });
 
-export const parkingPaymentProcesses = Object.values(parkingPaymentProcess);
+export const paymentMethods = Object.values(paymentMethod);
 
-export default parkingPaymentProcess;
+export default paymentMethod;

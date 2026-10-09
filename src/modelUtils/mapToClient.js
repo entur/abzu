@@ -884,6 +884,13 @@ helpers.changeParkingPaymentProcess = (original, payload) => {
   return copy;
 };
 
+helpers.changeParkingPaymentMethods = (original, payload) => {
+  const { index, paymentMethods } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].paymentMethods = paymentMethods;
+  return copy;
+};
+
 helpers.changeParkingRechargingAvailable = (original, payload) => {
   const { index, rechargingAvailable } = payload;
   const copy = JSON.parse(JSON.stringify(original));
