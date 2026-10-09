@@ -64,7 +64,10 @@ export interface Parking {
   parkingLayout?: string;
   parkingPaymentProcess?: string[];
   rechargingAvailable?: boolean | null;
+  secure?: boolean | null;
+  lighting?: string | null;
   totalCapacity?: number | string;
+  parkingVehicleTypes?: string[];
   numberOfSpaces?: number | string;
   numberOfSpacesWithRechargePoint?: number | string;
   numberOfSpacesForRegisteredDisabledUserType?: number | string;

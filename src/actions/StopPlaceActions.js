@@ -454,6 +454,24 @@ StopPlaceActions.changeParkingLayout = (index, parkingLayout) => (dispatch) => {
   );
 };
 
+StopPlaceActions.changeParkingSecure = (index, secure) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_PARKING_SECURE, {
+      index,
+      secure,
+    }),
+  );
+};
+
+StopPlaceActions.changeParkingLighting = (index, lighting) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_PARKING_LIGHTING, {
+      index,
+      lighting,
+    }),
+  );
+};
+
 StopPlaceActions.changeParkingPaymentProcess =
   (index, parkingPaymentProcess) => (dispatch) => {
     dispatch(
