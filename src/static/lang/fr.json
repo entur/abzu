@@ -773,5 +773,10 @@
   "changelog_save_filter_title": "Nommez votre filtre",
   "changelog_delete_filter": "Supprimer le filtre",
   "changelog_results_count": "points d'arrêt trouvés",
-  "changelog_results_truncated": "(affichage des 300 premiers résultats – affinez votre recherche pour en voir plus)"
+  "changelog_results_truncated": "(affichage des 300 premiers résultats – affinez votre recherche pour en voir plus)",
+  "parking_item_title_unknown": "Stationnement (type inconnu)",
+  "parking_vehicle_types": "Types de véhicules",
+  "parking_vehicle_type_car": "Voiture",
+  "parking_vehicle_type_motorcycle": "Moto",
+  "parking_vehicle_type_pedalCycle": "Vélo"
 }

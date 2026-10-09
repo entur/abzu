@@ -773,5 +773,10 @@
   "changelog_save_filter_title": "Nimeä suodatin",
   "changelog_delete_filter": "Poista suodatin",
   "changelog_results_count": "pysäkkiä löytyi",
-  "changelog_results_truncated": "(näytetään 300 ensimmäistä tulosta – tarkenna hakua nähdäksesi enemmän)"
+  "changelog_results_truncated": "(näytetään 300 ensimmäistä tulosta – tarkenna hakua nähdäksesi enemmän)",
+  "parking_item_title_unknown": "Pysäköinti (tuntematon tyyppi)",
+  "parking_vehicle_types": "Ajoneuvotyypit",
+  "parking_vehicle_type_car": "Auto",
+  "parking_vehicle_type_motorcycle": "Moottoripyörä",
+  "parking_vehicle_type_pedalCycle": "Polkupyörä"
 }

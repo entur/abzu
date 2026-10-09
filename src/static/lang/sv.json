@@ -774,5 +774,10 @@
   "changelog_save_filter_title": "Namnge ditt filter",
   "changelog_delete_filter": "Ta bort filter",
   "changelog_results_count": "hållplatser hittades",
-  "changelog_results_truncated": "(visar de 300 första resultaten – begränsa din sökning för att se fler)"
+  "changelog_results_truncated": "(visar de 300 första resultaten – begränsa din sökning för att se fler)",
+  "parking_item_title_unknown": "Parkering (okänd typ)",
+  "parking_vehicle_types": "Fordonstyper",
+  "parking_vehicle_type_car": "Bil",
+  "parking_vehicle_type_motorcycle": "Motorcykel",
+  "parking_vehicle_type_pedalCycle": "Cykel"
 }

@@ -20,4 +20,16 @@ const parkingType = Object.freeze({
 
 export const parkingTypes = Object.values(parkingType);
 
+// Tiamat stores a NeTEx ParkingTypeEnumeration value. Only two of those values
+// have a title message. Everything else, and an absent type, gets the fallback.
+export const titledParkingTypes = Object.freeze([
+  parkingType.PARK_AND_RIDE,
+  parkingType.BIKE_PARKING,
+]);
+
+export const parkingTitleMessageId = (type) =>
+  titledParkingTypes.includes(type)
+    ? `parking_item_title_${type}`
+    : `parking_item_title_${parkingType.UNKNOWN}`;
+
 export default parkingType;

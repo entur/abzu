@@ -778,5 +778,10 @@
   "changelog_save_filter_title": "Name your filter",
   "changelog_delete_filter": "Delete filter",
   "changelog_results_count": "stop places found",
-  "changelog_results_truncated": "(showing first 300 results — narrow your search to see more)"
+  "changelog_results_truncated": "(showing first 300 results — narrow your search to see more)",
+  "parking_item_title_unknown": "Parking (unknown type)",
+  "parking_vehicle_types": "Vehicle types",
+  "parking_vehicle_type_car": "Car",
+  "parking_vehicle_type_motorcycle": "Motorcycle",
+  "parking_vehicle_type_pedalCycle": "Bicycle"
 }
