@@ -24,8 +24,8 @@ const bicycleSpaces = [
   { spaces: [{ parkingUserType: "allUsers", numberOfSpaces: 10 }] },
 ];
 
-describe("Parking field-set predicate (DPO-5044)", () => {
-  // One case per row of the plan's predicate table.
+describe("Parking field-set predicate", () => {
+  // One case per combination of stored type and vehicle types.
   const rows = [
     ["parkAndRide", ["car"], true],
     ["parkAndRide", ["pedalCycle"], true],
@@ -68,7 +68,7 @@ describe("Parking field-set predicate (DPO-5044)", () => {
   });
 });
 
-describe("Parking vehicle signal (DPO-5044, R16)", () => {
+describe("Parking vehicle signal", () => {
   it("reports a bicycle parking that Tiamat stores as parkAndRide", () => {
     const parking = makeParking({
       parkingType: "parkAndRide",
@@ -99,7 +99,7 @@ describe("Parking vehicle signal (DPO-5044, R16)", () => {
   });
 });
 
-describe("Parking title message id (DPO-5044)", () => {
+describe("Parking title message id", () => {
   it("keeps the two titled types", () => {
     expect(parkingTitleMessageId("parkAndRide")).toBe(
       "parking_item_title_parkAndRide",
@@ -118,10 +118,9 @@ describe("Parking title message id (DPO-5044)", () => {
   });
 });
 
-describe("Parking space lookup with a partial spaces array (DPO-5044)", () => {
-  // The 524 target parkings hold a stored type and an allUsers entry alone.
-  // Reading the stored type gives them the full field set, so toClient() now
-  // reads the registeredDisabled entry that they do not have.
+describe("Parking space lookup with a partial spaces array", () => {
+  // A parking with a stored type and only an allUsers entry gets the full
+  // field set, so toClient() reads a registeredDisabled entry that is not there.
   it("maps a bicycle parking that holds only an allUsers entry", () => {
     const parking = makeParking({
       parkingType: "parkAndRide",
@@ -171,7 +170,7 @@ describe("Parking space lookup with a partial spaces array (DPO-5044)", () => {
   });
 });
 
-describe("Parking vehicle type label (DPO-5044)", () => {
+describe("Parking vehicle type label", () => {
   const formatMessage = ({ id }) =>
     ({
       parking_vehicle_type_car: "Auto",
@@ -186,16 +185,14 @@ describe("Parking vehicle type label (DPO-5044)", () => {
     );
   });
 
-  // 23 dev parkings hold `motorcycle`. Measured against dev on 2026-09-29.
-  // Before this repository named the type, the editor saw the raw value.
-  it("translates motorcycle, which dev data carries", () => {
+  it("translates motorcycle", () => {
     expect(parkingVehicleTypeLabel("motorcycle", formatMessage)).toBe(
       "Moottoripyörä",
     );
   });
 
   // `camperCar` is a NeTEx ParkingVehicleEnumeration value that this
-  // repository does not name. No parking in dev carries it.
+  // repository does not name.
   it("shows a NeTEx type this repository does not name", () => {
     expect(parkingVehicleTypeLabel("camperCar", formatMessage)).toBe(
       "camperCar",
