@@ -18,7 +18,6 @@ import DeleteIcon from "@mui/icons-material/DeleteForever";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import SaveIcon from "@mui/icons-material/Save";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import {
   Box,
@@ -43,6 +42,7 @@ import { QuayPanelProps } from "../types";
 import { BoardingPositionsTab } from "./BoardingPositionsTab";
 import { KeyValuesTab } from "./KeyValuesTab";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
+import { getQuayTitle } from "../../Shared/quayLabels";
 
 /**
  * Full quay editor panel.
@@ -58,7 +58,6 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   canEdit,
   onBack,
   onDelete,
-  onSave,
   onPublicCodeChange,
   onPrivateCodeChange,
   onDescriptionChange,
@@ -109,10 +108,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   const quay = stopPlace.quays?.[quayIndex];
   if (!quay) return null;
 
-  const displayCode =
-    quay.publicCode ||
-    quay.id ||
-    `${formatMessage({ id: "quay" })} ${quayIndex + 1}`;
+  const displayCode = getQuayTitle(quay, quayIndex, formatMessage);
 
   const privateCodeValue =
     typeof quay.privateCode === "object"
@@ -344,18 +340,6 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
             onClick={() => onDelete(quayIndex)}
           >
             {formatMessage({ id: "delete_quay" })}
-          </Button>
-        )}
-        {canEdit && (
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            startIcon={<SaveIcon />}
-            onClick={onSave}
-            sx={{ ml: "auto" }}
-          >
-            {formatMessage({ id: "save" })}
           </Button>
         )}
       </Box>

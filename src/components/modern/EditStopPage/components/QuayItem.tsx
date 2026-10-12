@@ -24,6 +24,7 @@ import {
   useElementStatusEnabled,
 } from "../../Shared/ElementStatus";
 import { QuayItemProps } from "../types";
+import { getQuayTitle } from "../../Shared/quayLabels";
 
 /** Matches QuayMarkers' marker-scale transition and MarkerPopup's timeout, so focus-change feels like one motion. */
 const FOCUS_TRANSITION_MS = 200;
@@ -45,10 +46,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
 
   const isGhost = status === "deleted";
 
-  const displayCode =
-    quay.publicCode ||
-    quay.id ||
-    `${formatMessage({ id: "quay" })} ${index + 1}`;
+  const displayCode = getQuayTitle(quay, index, formatMessage);
 
   return (
     <Box

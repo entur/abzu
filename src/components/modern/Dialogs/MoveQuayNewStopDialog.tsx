@@ -35,6 +35,8 @@ import { useIntl } from "react-intl";
 import { UserActions } from "../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
+  getModalityAllowance,
+  isModalityAllowed,
   isStopPlaceTypeValid,
   StopNameAndTypeFields,
   useHiddenStopTypes,
@@ -74,6 +76,7 @@ export const MoveQuayNewStopDialog = () => {
       (state as any).stopPlace?.current as {
         id?: string;
         quays?: SelectableQuay[];
+        permissions?: Parameters<typeof getModalityAllowance>[0];
       } | null,
   );
   const stopHasBeenModified = useAppSelector(
@@ -101,6 +104,9 @@ export const MoveQuayNewStopDialog = () => {
   }, [open, movingQuay?.id]);
 
   const allQuays: SelectableQuay[] = currentStop?.quays ?? [];
+  // The new stop gets the moved quays' location; the current stop's
+  // permissions are the closest known proxy for what may be chosen (F-18).
+  const allowance = getModalityAllowance(currentStop?.permissions);
   const currentStopId = currentStop?.id;
 
   const enableConfirm =
@@ -108,6 +114,7 @@ export const MoveQuayNewStopDialog = () => {
     selectedQuayIds.length > 0 &&
     newStopName.trim().length > 0 &&
     isStopPlaceTypeValid(newStopType, hiddenStopTypes) &&
+    isModalityAllowed(allowance, newStopType, null) &&
     (!stopHasBeenModified || changesUnderstood);
 
   const handleToggleQuay = (quayId: string) => {
@@ -196,6 +203,7 @@ export const MoveQuayNewStopDialog = () => {
             stopType={newStopType}
             onNameChange={setNewStopName}
             onStopTypeChange={setNewStopType}
+            allowance={allowance}
           />
         </Box>
 

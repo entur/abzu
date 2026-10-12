@@ -30,6 +30,8 @@ import type {
   FocusedElement,
   MapStopPlace,
 } from "./types";
+import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 
 const BP_SIZE = 26;
 
@@ -38,6 +40,8 @@ interface BoardingPositionItemProps {
   bpIndex: number;
   quayIndex: number;
   focused: boolean;
+  /** Read-only users can neither drag nor retype the position. */
+  disabled: boolean;
 }
 
 const BoardingPositionItem = ({
@@ -45,10 +49,12 @@ const BoardingPositionItem = ({
   bpIndex,
   quayIndex,
   focused,
+  disabled,
 }: BoardingPositionItemProps) => {
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const [isEditingCoordinates, setIsEditingCoordinates] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
@@ -80,7 +86,7 @@ const BoardingPositionItem = ({
       <Marker
         latitude={lat}
         longitude={lng}
-        draggable
+        draggable={!disabled}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         anchor="center"
@@ -148,6 +154,28 @@ const BoardingPositionItem = ({
         lat={lat}
         lng={lng}
         minWidth={180}
+        onEditCoordinates={
+          disabled
+            ? undefined
+            : () => {
+                setPopupAnchor(null);
+                setIsEditingCoordinates(true);
+              }
+        }
+      />
+      <MarkerCoordinatesDialog
+        open={isEditingCoordinates}
+        lat={lat}
+        lng={lng}
+        onClose={() => setIsEditingCoordinates(false)}
+        onSubmit={(position) =>
+          dispatch(
+            StopPlaceActions.changeElementPosition(
+              { markerIndex: bpIndex, type: "boarding-position", quayIndex },
+              position,
+            ),
+          )
+        }
       />
     </>
   );
@@ -170,6 +198,8 @@ export const BoardingPositionMarkers = () => {
   if (!current?.quays?.length) return null;
   if (focusedElement?.type !== "quay" || focusedElement.index < 0) return null;
 
+  const disabled =
+    !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;
   const focusedQuayIndex = focusedElement.index;
   const quay = current.quays[focusedQuayIndex];
   if (!quay) return null;
@@ -186,6 +216,7 @@ export const BoardingPositionMarkers = () => {
             focusedBP?.quayIndex === focusedQuayIndex &&
             focusedBP?.index === bpIndex
           }
+          disabled={disabled}
         />
       ))}
     </>

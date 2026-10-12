@@ -12,7 +12,14 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import { Box, Drawer, Slide, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Drawer,
+  Slide,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, {
   useCallback,
   useEffect,
@@ -42,6 +49,7 @@ import { useEditStopPage } from "./hooks/useEditStopPage";
 import { DEFAULT_STOP_PLACE_TAB } from "./stopPlaceTabs";
 import { EditStopPageProps } from "./types";
 import { appChromeTop, belowAppChromeHeight } from "../Header/headerMetrics";
+import { getModalityAllowance } from "../Shared/StopNameAndType";
 
 const DRAWER_WIDTH_DESKTOP = 450;
 const DRAWER_WIDTH_TABLET = 380;
@@ -216,6 +224,15 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     setView({ type: "stopPlace" });
   }, [currentStopId]);
 
+  // Discard can remove the element a panel shows (an unsaved quay or
+  // parking); go back to the stop instead of rendering an empty panel.
+  const isShownElementMissing =
+    (view.type === "quay" && !stopPlace?.quays?.[view.index]) ||
+    (view.type === "parking" && !stopPlace?.parking?.[view.index]);
+  useEffect(() => {
+    if (isShownElementMissing) handleBackToStopPlace();
+  }, [isShownElementMissing, handleBackToStopPlace]);
+
   if (!stopPlace) return null;
 
   const drawerWidth = isMobile
@@ -242,26 +259,44 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleBackToStopPlace();
   };
 
+  /* The whole stop is saved as one version, so quay and parking views use the
+     stop's own Discard/Save, not a panel button that looked element-scoped
+     (F-24). Deactivating the stop isn't offered next to "Delete quay". */
+  const withStopActions = (panel: React.ReactNode) => (
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <Box sx={{ flex: 1, minHeight: 0 }}>{panel}</Box>
+      <Divider />
+      <StopPlaceActionBar
+        stopPlace={stopPlace}
+        canEdit={canEdit}
+        canDelete={false}
+        isModified={isModified}
+        onOpenTerminateDialog={handleOpenTerminateDialog}
+        onOpenUndoDialog={handleOpenUndoDialog}
+        onOpenSaveDialog={handleOpenSaveDialog}
+      />
+    </Box>
+  );
+
   const renderDrawerContent = () => {
     if (view.type === "quay") {
-      return (
+      return withStopActions(
         <QuayPanel
           quayIndex={view.index}
           stopPlace={stopPlace}
           canEdit={canEdit}
           onBack={handleBackToStopPlace}
           onDelete={handleDeleteQuay}
-          onSave={handleOpenSaveDialog}
           onPublicCodeChange={handleQuayPublicCodeChange}
           onPrivateCodeChange={handleQuayPrivateCodeChange}
           onDescriptionChange={handleQuayDescriptionChange}
           onCompassBearingChange={handleQuayCompassBearingChange}
-        />
+        />,
       );
     }
 
     if (view.type === "parking") {
-      return (
+      return withStopActions(
         <ParkingPanel
           parkingIndex={view.index}
           stopPlace={stopPlace}
@@ -271,8 +306,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           onNameChange={handleParkingNameChange}
           onTypeChange={handleParkingTypeChange}
           onCapacityChange={handleParkingCapacityChange}
-          onSave={handleOpenSaveDialog}
-        />
+        />,
       );
     }
 
@@ -401,6 +435,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
       {/* New stop wizard — shown automatically when a freshly placed stop loads */}
       <NewStopWizard
         open={!!stopPlace.isNewStop && !wizardConfirmed}
+        allowance={getModalityAllowance(stopPlace.permissions)}
         onConfirm={(name, stopType) => {
           handleNameChange(name);
           // Sets type, transportMode and submode together (F-15b).

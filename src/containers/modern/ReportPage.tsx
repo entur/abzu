@@ -13,7 +13,18 @@
  * limitations under the Licence. */
 
 import { ReportPage as ReportPageComponent } from "../../components/modern/ReportPage/ReportPage";
+import type { TopographicChip } from "../../components/modern/ReportPage/types";
 import { extractQueryParamsFromUrl } from "../../utils/URLhelpers";
+
+const toChips = (
+  ids: string | undefined,
+  type: TopographicChip["type"],
+): TopographicChip[] =>
+  (ids ? ids.split(",") : []).filter(Boolean).map((id) => ({
+    id,
+    type,
+    text: id,
+  }));
 
 /**
  * Modern container for the Report page
@@ -34,6 +45,13 @@ const ReportPage: React.FC = () => {
     stopTypeFilter: fromURL.stopPlaceType
       ? fromURL.stopPlaceType.split(",")
       : [],
+    // Place filters were written to the URL but never read back. The ids
+    // become chips here; the page then loads their names.
+    topoiChips: [
+      ...toChips(fromURL.municipalityReference, "municipality"),
+      ...toChips(fromURL.countyReference, "county"),
+      ...toChips(fromURL.countryReference, "country"),
+    ],
   };
 
   return <ReportPageComponent initialState={initialState} />;

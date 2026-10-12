@@ -36,6 +36,8 @@ interface StopPlacePopupProps {
   lat: number;
   lng: number;
   onOpen?: () => void;
+  /** Opens the exact-coordinates dialog (F-76); omitted when read-only. */
+  onEditCoordinates?: () => void;
 }
 
 /**
@@ -49,6 +51,7 @@ export const StopPlacePopup = ({
   lat,
   lng,
   onOpen,
+  onEditCoordinates,
 }: StopPlacePopupProps) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
@@ -126,6 +129,7 @@ export const StopPlacePopup = ({
       id={stopPlace.id}
       lat={lat}
       lng={lng}
+      onEditCoordinates={onEditCoordinates}
       minWidth={220}
     >
       {onOpen && (

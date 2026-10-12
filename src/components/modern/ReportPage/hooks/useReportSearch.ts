@@ -13,19 +13,26 @@
  * limitations under the Licence. */
 
 import { useCallback, useState } from "react";
+import { replace } from "redux-first-history";
 import {
   findStopForReport,
   getParkingForMultipleStopPlaces,
 } from "../../../../actions/TiamatActions.modern";
+import AppRoutes from "../../../../routes";
 import { useAppDispatch } from "../../../../store/hooks";
-import { buildReportSearchQuery } from "../../../../utils/URLhelpers";
 import { FilterState } from "../types";
+import { hasReportCriteria } from "../utils/reportCriteria";
+import { toReportQueryString } from "../utils/reportQueryString";
 
 export interface UseReportSearchResult {
   isLoading: boolean;
   activePageIndex: number;
+  /** Searches, or first asks when nothing narrows the search (F-65). */
   handleSearch: () => void;
   handleSelectPage: (pageIndex: number) => void;
+  isConfirmingFullSearch: boolean;
+  confirmFullSearch: () => void;
+  cancelFullSearch: () => void;
 }
 
 export const useReportSearch = (
@@ -34,8 +41,9 @@ export const useReportSearch = (
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [activePageIndex, setActivePageIndex] = useState(0);
+  const [isConfirmingFullSearch, setIsConfirmingFullSearch] = useState(false);
 
-  const handleSearch = useCallback(() => {
+  const runSearch = useCallback(() => {
     const {
       searchQuery,
       topoiChips,
@@ -92,7 +100,15 @@ export const useReportSearch = (
             stopPlaceIds.push(stopPlaces[i].id);
           }
         }
-        buildReportSearchQuery({ ...queryVariables, showFutureAndExpired });
+        // Through the router (not raw pushState), so the Reports tab can
+        // bring the user back to this search (F-65).
+        dispatch(
+          replace(
+            `${import.meta.env.BASE_URL}${AppRoutes.REPORTS}${toReportQueryString(
+              { ...queryVariables, showFutureAndExpired },
+            )}`,
+          ),
+        );
         if (stopPlaceIds.length > 0) {
           dispatch(getParkingForMultipleStopPlaces(stopPlaceIds)).then(() => {
             setIsLoading(false);
@@ -108,9 +124,30 @@ export const useReportSearch = (
       });
   }, [filters, dispatch]);
 
+  const handleSearch = useCallback(() => {
+    if (hasReportCriteria(filters)) {
+      runSearch();
+      return;
+    }
+    setIsConfirmingFullSearch(true);
+  }, [filters, runSearch]);
+
+  const confirmFullSearch = useCallback(() => {
+    setIsConfirmingFullSearch(false);
+    runSearch();
+  }, [runSearch]);
+
   const handleSelectPage = useCallback((pageIndex: number) => {
     setActivePageIndex(pageIndex);
   }, []);
 
-  return { isLoading, activePageIndex, handleSearch, handleSelectPage };
+  return {
+    isLoading,
+    activePageIndex,
+    handleSearch,
+    handleSelectPage,
+    isConfirmingFullSearch,
+    confirmFullSearch,
+    cancelFullSearch: () => setIsConfirmingFullSearch(false),
+  };
 };

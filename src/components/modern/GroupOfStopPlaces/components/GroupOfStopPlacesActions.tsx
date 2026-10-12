@@ -15,7 +15,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { GroupOfStopPlacesActionsProps } from "../types";
 
@@ -31,13 +31,14 @@ export const GroupOfStopPlacesActions: React.FC<
   canEdit,
   canDelete,
   hasName,
+  hasMembers,
   onRemove,
   onUndo,
   onSave,
 }) => {
   const { formatMessage } = useIntl();
 
-  const isSaveDisabled = !isModified || !hasName || !canEdit;
+  const isSaveDisabled = !isModified || !hasName || !hasMembers || !canEdit;
   const isUndoDisabled = !isModified || !canEdit;
 
   return (
@@ -63,6 +64,15 @@ export const GroupOfStopPlacesActions: React.FC<
           >
             {formatMessage({ id: "remove" })}
           </Button>
+        )}
+        {canEdit && !hasMembers && (
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ width: "100%", order: -1 }}
+          >
+            {formatMessage({ id: "group_requires_members" })}
+          </Typography>
         )}
         {canEdit && (
           <>

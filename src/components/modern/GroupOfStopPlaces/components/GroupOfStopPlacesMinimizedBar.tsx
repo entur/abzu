@@ -83,6 +83,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
       canEdit={canEdit}
       canDelete={canDelete}
       hasName={!!groupOfStopPlaces?.name}
+      hasMembers={(groupOfStopPlaces?.members?.length ?? 0) > 0}
       onRemove={onOpenDelete}
       onUndo={onOpenUndo}
       onSave={onOpenSave}

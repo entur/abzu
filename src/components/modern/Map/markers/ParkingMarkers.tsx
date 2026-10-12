@@ -34,6 +34,7 @@ import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
 import type { FocusedElement, MapParking, MapStopPlace } from "./types";
+import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 
 const PARKING_SIZE = 30;
 /* Parking is the one map element drawn as a square. Stop places, quays,
@@ -63,6 +64,7 @@ const ParkingMarkerItem = ({
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const [isEditingCoordinates, setIsEditingCoordinates] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
@@ -176,6 +178,14 @@ const ParkingMarkerItem = ({
         id={parking.id}
         lat={lat}
         lng={lng}
+        onEditCoordinates={
+          disabled
+            ? undefined
+            : () => {
+                setPopupAnchor(null);
+                setIsEditingCoordinates(true);
+              }
+        }
       >
         <Typography
           variant="caption"
@@ -204,6 +214,20 @@ const ParkingMarkerItem = ({
           />
         )}
       </MarkerPopup>
+      <MarkerCoordinatesDialog
+        open={isEditingCoordinates}
+        lat={lat}
+        lng={lng}
+        onClose={() => setIsEditingCoordinates(false)}
+        onSubmit={(position) =>
+          dispatch(
+            StopPlaceActions.changeElementPosition(
+              { markerIndex: index, type: "parking" },
+              position,
+            ),
+          )
+        }
+      />
     </>
   );
 };

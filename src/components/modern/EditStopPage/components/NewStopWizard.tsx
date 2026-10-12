@@ -22,7 +22,9 @@ import {
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import {
+  isModalityAllowed,
   isStopPlaceTypeValid,
+  ModalityAllowance,
   StopNameAndTypeFields,
   useHiddenStopTypes,
 } from "../../Shared/StopNameAndType";
@@ -31,16 +33,25 @@ interface Props {
   open: boolean;
   onConfirm: (name: string, stopType: string) => void;
   onCancel: () => void;
+  /** The new stop's location permissions; illegal types are disabled (F-18). */
+  allowance?: ModalityAllowance | null;
 }
 
-export const NewStopWizard = ({ open, onConfirm, onCancel }: Props) => {
+export const NewStopWizard = ({
+  open,
+  onConfirm,
+  onCancel,
+  allowance = null,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [name, setName] = useState("");
   const [stopType, setStopType] = useState("");
   const hiddenStopTypes = useHiddenStopTypes();
 
   const canConfirm =
-    name.trim().length > 0 && isStopPlaceTypeValid(stopType, hiddenStopTypes);
+    name.trim().length > 0 &&
+    isStopPlaceTypeValid(stopType, hiddenStopTypes) &&
+    isModalityAllowed(allowance, stopType, null);
 
   const handleConfirm = () => {
     onConfirm(name.trim(), stopType);
@@ -80,6 +91,7 @@ export const NewStopWizard = ({ open, onConfirm, onCancel }: Props) => {
           onNameChange={setName}
           onStopTypeChange={setStopType}
           autoFocus
+          allowance={allowance}
         />
       </DialogContent>
       <DialogActions>

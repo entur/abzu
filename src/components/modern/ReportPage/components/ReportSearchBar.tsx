@@ -12,13 +12,10 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import FilterListIcon from "@mui/icons-material/FilterList";
 import {
-  Badge,
   Box,
   Button,
   CircularProgress,
-  IconButton,
   InputAdornment,
   TextField,
   useTheme,
@@ -31,26 +28,21 @@ const LOADING_SPINNER_SIZE = 14;
 interface ReportSearchBarProps {
   searchQuery: string;
   isLoading: boolean;
-  activeFilterCount: number;
-  filterPanelOpen: boolean;
   onQueryChange: (value: string) => void;
   onSearch: () => void;
-  onToggleFilterPanel: () => void;
 }
 
 /**
  * Report search bar rendered inside the AppBar header slot.
  * Styled to match the main-page SearchInput: solid rounded white box on the AppBar.
- * The filter toggle and search button live inside the field as end adornments.
+ * The search button lives inside the field. The filter toggle lives only in
+ * the toolbar below; a second copy here was confusing (F-63).
  */
 export const ReportSearchBar: React.FC<ReportSearchBarProps> = ({
   searchQuery,
   isLoading,
-  activeFilterCount,
-  filterPanelOpen,
   onQueryChange,
   onSearch,
-  onToggleFilterPanel,
 }) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
@@ -76,24 +68,6 @@ export const ReportSearchBar: React.FC<ReportSearchBarProps> = ({
           input: {
             endAdornment: (
               <>
-                <InputAdornment position="end">
-                  <IconButton
-                    size="small"
-                    onClick={onToggleFilterPanel}
-                    aria-label={formatMessage({
-                      id: filterPanelOpen ? "close_filters" : "toggle_filters",
-                    })}
-                    sx={{
-                      color: filterPanelOpen
-                        ? theme.palette.warning.main
-                        : theme.palette.action.active,
-                    }}
-                  >
-                    <Badge badgeContent={activeFilterCount} color="error">
-                      <FilterListIcon fontSize="small" />
-                    </Badge>
-                  </IconButton>
-                </InputAdornment>
                 {/* A named action, not a bare magnifier: this search only runs when
                     submitted, unlike the main page's search-as-you-type. */}
                 <InputAdornment position="end">

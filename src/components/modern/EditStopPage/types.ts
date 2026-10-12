@@ -87,6 +87,15 @@ export interface StopPlace {
   description?: string;
   stopPlaceType?: string;
   submode?: string | null;
+  /** Tiamat's per-stop (or, for a new stop, per-location) permissions. */
+  permissions?: {
+    canEdit?: boolean;
+    canDelete?: boolean;
+    allowedStopPlaceTypes?: string[];
+    bannedStopPlaceTypes?: string[];
+    allowedSubmodes?: string[];
+    bannedSubmodes?: string[];
+  };
   quays?: Quay[];
   parking?: Parking[];
   tags?: Tag[];
@@ -172,7 +181,6 @@ export interface QuayPanelProps {
   canEdit: boolean;
   onBack: () => void;
   onDelete: (index: number) => void;
-  onSave: () => void;
   onPublicCodeChange: (index: number, value: string) => void;
   onPrivateCodeChange: (index: number, value: string) => void;
   onDescriptionChange: (index: number, value: string) => void;
@@ -188,8 +196,6 @@ export interface ParkingPanelProps {
   onNameChange: (index: number, value: string) => void;
   onTypeChange: (index: number, value: string) => void;
   onCapacityChange: (index: number, value: string) => void;
-  /** Opens the stop's save dialog; parking is saved with the whole stop. */
-  onSave: () => void;
 }
 
 export interface StopPlaceViewProps {

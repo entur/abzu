@@ -33,6 +33,7 @@ import { useMarkerScale } from "../hooks/useMarkerScale";
 import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
 import { useConfirmLeave } from "../../Shared/UnsavedChangesGuard";
+import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 
 const MARKER_SIZE = 40;
 const CHILD_MARKER_SIZE = 34;
@@ -126,6 +127,7 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
 export const StopPlaceMarker = () => {
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const [isEditingCoordinates, setIsEditingCoordinates] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
@@ -253,6 +255,23 @@ export const StopPlaceMarker = () => {
         stopPlace={current}
         lat={lat}
         lng={lng}
+        onEditCoordinates={
+          disabled
+            ? undefined
+            : () => {
+                setPopupAnchor(null);
+                setIsEditingCoordinates(true);
+              }
+        }
+      />
+      <MarkerCoordinatesDialog
+        open={isEditingCoordinates}
+        lat={lat}
+        lng={lng}
+        onClose={() => setIsEditingCoordinates(false)}
+        onSubmit={(position) =>
+          dispatch(StopPlaceActions.changeCurrentStopPosition(position))
+        }
       />
 
       {isParent &&

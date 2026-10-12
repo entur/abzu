@@ -17,12 +17,16 @@ import LinkIcon from "@mui/icons-material/Link";
 import MergeIcon from "@mui/icons-material/MergeType";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { StopPlacesGroupActions, UserActions } from "../../../../actions";
+import { getNeighbourStopPlaceQuays } from "../../../../actions/TiamatActions.modern";
 import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { getStopPermissions } from "../../../../utils/permissionsUtils";
 import { MarkerPopup } from "./MarkerPopup";
 import type { NeighbourStop } from "./types";
 import { useConfirmLeave } from "../../Shared/UnsavedChangesGuard";
@@ -57,6 +61,9 @@ export const NeighbourStopPopup = ({
   const currentStopPlace = useAppSelector(
     (state) => (state as any).stopPlace?.current,
   );
+  const areQuaysShown = useAppSelector(
+    (state) => !!(state as any).stopPlace?.neighbourStopQuays?.[stop.id],
+  );
 
   const isEditingGroup = !!groupCurrent?.id;
   const isEditingStop = !!currentStopPlace?.id;
@@ -79,19 +86,34 @@ export const NeighbourStopPopup = ({
   const showAddToGroup = isEditingGroup && canEdit && !isGroupMember;
   const showRemoveFromGroup = isEditingGroup && canEdit && isGroupMember;
 
+  const isCurrentStopParent = !!currentStopPlace?.isParent;
+  const canEditCurrentStop = !!getStopPermissions(currentStopPlace).canEdit;
+
+  // Tiamat refuses to merge from a child of a multimodal stop ("Cannot merge
+  // from childs of multi modal stop places", checked on dev for F-47), so the
+  // child must be detached first. Merging into a multimodal or read-only stop
+  // isn't offered either (legacy rule).
   const showMergeStop =
     hasSavedId &&
     !expired &&
     !stop.isParent &&
     !stop.isChildOfParent &&
     canEdit &&
-    isEditingStop;
+    isEditingStop &&
+    !isCurrentStopParent &&
+    canEditCurrentStop;
+
+  // Shows the neighbour's quays on the map so one can be moved to the open
+  // stop (F-46). Parents have no quays of their own.
+  const showQuaysToggle =
+    hasSavedId && isEditingStop && !isCurrentStopParent && !stop.isParent;
 
   const hasActions =
     showAddToGroup ||
     showRemoveFromGroup ||
     showMergeStop ||
-    showConnectAdjacent;
+    showConnectAdjacent ||
+    showQuaysToggle;
 
   const handleOpen = () => {
     onClose();
@@ -111,6 +133,15 @@ export const NeighbourStopPopup = ({
   const handleMergeStop = () => {
     onClose();
     dispatch(UserActions.showMergeStopDialog(stop.id, stop.name));
+  };
+
+  const handleToggleQuays = () => {
+    onClose();
+    dispatch(
+      areQuaysShown
+        ? UserActions.hideQuaysForNeighbourStop(stop.id)
+        : getNeighbourStopPlaceQuays(stop.id),
+    );
   };
 
   const handleConnectAdjacent = () => {
@@ -176,6 +207,21 @@ export const NeighbourStopPopup = ({
                 fullWidth
               >
                 {formatMessage({ id: "merge_stop_here" })}
+              </Button>
+            )}
+            {showQuaysToggle && (
+              <Button
+                size="small"
+                variant="outlined"
+                startIcon={
+                  areQuaysShown ? <VisibilityOffIcon /> : <VisibilityIcon />
+                }
+                onClick={handleToggleQuays}
+                fullWidth
+              >
+                {formatMessage({
+                  id: areQuaysShown ? "hide_quays" : "show_quays",
+                })}
               </Button>
             )}
             {showConnectAdjacent && (
