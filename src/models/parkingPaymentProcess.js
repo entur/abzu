@@ -14,14 +14,9 @@ limitations under the Licence. */
 
 const parkingPaymentProcess = Object.freeze({
   free: "free",
-  payAtBay: "payAtBay",
   payAndDisplay: "payAndDisplay",
-  payAtExitBoothManualCollection: "payAtExitBoothManualCollection",
-  payAtMachineOnFootPriorToExit: "payAtMachineOnFootPriorToExit",
   payByPrepaidToken: "payByPrepaidToken",
   payByMobileDevice: "payByMobileDevice",
-  undefined: "undefined",
-  other: "other",
 });
 
 export const parkingPaymentProcesses = Object.values(parkingPaymentProcess);

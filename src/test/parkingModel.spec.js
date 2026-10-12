@@ -246,9 +246,13 @@ describe("mapParkingToVariables - paymentMethods", () => {
 });
 
 describe("parkingPaymentProcess model", () => {
-  test("T6: offers Tiamat's nine values and falls back on a tenth", () => {
-    expect(parkingPaymentProcesses).toHaveLength(9);
-    expect(parkingPaymentProcesses).toContain("payAtExitBoothManualCollection");
+  test("T6: offers the four NeTEx Nordic values and keeps a stored value outside them", () => {
+    expect([...parkingPaymentProcesses].sort()).toEqual([
+      "free",
+      "payAndDisplay",
+      "payByMobileDevice",
+      "payByPrepaidToken",
+    ]);
 
     const [variables] = helpers.mapParkingToVariables(
       [mockParking({ parkingPaymentProcess: ["payByPlate"] })],
