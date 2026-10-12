@@ -27,6 +27,7 @@ import {
   VersionsDialog,
 } from "../../Dialogs";
 import { useAppSelector } from "../../../../store/hooks";
+import { countRemainingSavedChildren } from "../utils/stagedChildChanges";
 
 interface ParentStopPlaceDialogsProps {
   stopPlace: any;
@@ -52,7 +53,7 @@ interface ParentStopPlaceDialogsProps {
   versionsLoading?: boolean;
 
   // Dialog handlers
-  handleSave: (userInput: any) => void;
+  handleSave: (userInput: { comment: string }) => Promise<void>;
   handleCloseSaveDialog: () => void;
   handleGoBack: () => void;
   handleCancelGoBack: () => void;
@@ -150,6 +151,19 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   const serverTimeDiff = useAppSelector(
     (state) => (state.user as any).serverTimeDiff,
   );
+  /* Only saved children count: removing a staged (unsaved) attach doesn't
+     touch the server, and staged ones don't keep the parent alive. */
+  const isRemovingSavedChild = Boolean(
+    originalStopPlace?.children?.some(
+      (child: { id?: string }) => child.id === removingChildId,
+    ),
+  );
+  const isRemovingLastSavedChild =
+    isRemovingSavedChild &&
+    countRemainingSavedChildren(
+      originalStopPlace?.children,
+      stopPlace?.children,
+    ) === 1;
 
   return (
     <>
@@ -158,7 +172,6 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
         open={confirmSaveDialogOpen}
         handleConfirm={handleSave}
         handleClose={handleCloseSaveDialog}
-        errorMessage=""
       />
 
       {/* Go Back Confirmation Dialog */}
@@ -203,7 +216,7 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
           handleClose={handleCloseRemoveChildDialog}
           handleConfirm={handleRemoveChild}
           stopPlaceId={removingChildId}
-          isLastChild={stopPlace?.children?.length === 1}
+          isLastChild={isRemovingLastSavedChild}
           isLoading={false}
         />
       )}

@@ -33,12 +33,13 @@ import {
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { UserActions } from "../../../actions";
-import {
-  getStopPlaceWithAll,
-  moveQuaysToNewStop,
-} from "../../../actions/TiamatActions.modern";
-import * as types from "../../../actions/Types";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import {
+  isStopPlaceTypeValid,
+  StopNameAndTypeFields,
+  useHiddenStopTypes,
+} from "../Shared/StopNameAndType";
+import { useMoveQuaysToNewStop } from "./hooks/useMoveQuaysToNewStop";
 
 interface SelectableQuay {
   id: string;
@@ -49,7 +50,8 @@ interface SelectableQuay {
 /**
  * Dialog for moving one or more quays out of the current stop into a brand-new stop place.
  * Triggered from QuayPopup "Move to New Stop Place" → UserActions.moveQuayToNewStopPlace.
- * Lets the user select additional quays from the same stop to move alongside the initiating quay.
+ * Lets the user select additional quays from the same stop to move alongside the initiating quay,
+ * and asks for the new stop's name and type: a stop can't be saved without them (F-40).
  */
 export const MoveQuayNewStopDialog = () => {
   const { formatMessage } = useIntl();
@@ -81,12 +83,20 @@ export const MoveQuayNewStopDialog = () => {
   const [selectedQuayIds, setSelectedQuayIds] = useState<string[]>([]);
   const [changesUnderstood, setChangesUnderstood] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [newStopName, setNewStopName] = useState("");
+  const [newStopType, setNewStopType] = useState("");
+  const [hasMoveFailed, setHasMoveFailed] = useState(false);
+  const hiddenStopTypes = useHiddenStopTypes();
+  const moveQuaysToNewStop = useMoveQuaysToNewStop();
 
   // Pre-select the initiating quay whenever the dialog opens
   useEffect(() => {
     if (open && movingQuay) {
       setSelectedQuayIds([movingQuay.id]);
       setChangesUnderstood(false);
+      setNewStopName("");
+      setNewStopType("");
+      setHasMoveFailed(false);
     }
   }, [open, movingQuay?.id]);
 
@@ -96,6 +106,8 @@ export const MoveQuayNewStopDialog = () => {
   const enableConfirm =
     !isLoading &&
     selectedQuayIds.length > 0 &&
+    newStopName.trim().length > 0 &&
+    isStopPlaceTypeValid(newStopType, hiddenStopTypes) &&
     (!stopHasBeenModified || changesUnderstood);
 
   const handleToggleQuay = (quayId: string) => {
@@ -114,23 +126,16 @@ export const MoveQuayNewStopDialog = () => {
   const handleConfirm = () => {
     if (selectedQuayIds.length === 0 || !currentStopId || !movingQuay) return;
 
-    const fromVersionComment = `Flyttet ${selectedQuayIds.join(", ")} til nytt stoppested`;
-    const toVersionComment = `Flyttet ${selectedQuayIds.join(", ")} fra ${movingQuay.stopPlaceId ?? currentStopId}`;
-
     setIsLoading(true);
-    dispatch(
-      moveQuaysToNewStop(selectedQuayIds, fromVersionComment, toVersionComment),
-    )
-      .then((response: any) => {
-        const newStopId = response?.data?.moveQuaysToStop?.id ?? null;
-        dispatch(UserActions.openSnackbar(types.SUCCESS));
-        handleClose();
-        dispatch(getStopPlaceWithAll(currentStopId)).then(() => {
-          if (newStopId) {
-            dispatch(UserActions.openSuccessfullyCreatedNewStop(newStopId));
-          }
-        });
-      })
+    setHasMoveFailed(false);
+    moveQuaysToNewStop({
+      quayIds: selectedQuayIds,
+      sourceStopId: movingQuay.stopPlaceId ?? currentStopId,
+      name: newStopName.trim(),
+      stopType: newStopType,
+    })
+      .then(handleClose)
+      .catch(() => setHasMoveFailed(true))
       .finally(() => {
         setIsLoading(false);
       });
@@ -185,10 +190,27 @@ export const MoveQuayNewStopDialog = () => {
           })}
         </List>
 
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 1.5 }}>
+          <StopNameAndTypeFields
+            name={newStopName}
+            stopType={newStopType}
+            onNameChange={setNewStopName}
+            onStopTypeChange={setNewStopType}
+          />
+        </Box>
+
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography variant="body2" color="text.secondary">
             {formatMessage({ id: "move_quay_new_stop_info" })}
           </Typography>
+
+          {hasMoveFailed && (
+            <Alert severity="error">
+              {formatMessage({
+                id: "humanReadableErrorCodes.ERROR_STOP_PLACE",
+              })}
+            </Alert>
+          )}
 
           {stopHasBeenModified && (
             <>

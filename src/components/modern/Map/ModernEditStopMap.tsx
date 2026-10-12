@@ -31,6 +31,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { AddElementFab } from "./controls/AddElementFab";
 import { MapControls } from "./controls/MapControls";
 import { useMapComponentLayers } from "./hooks/useMapComponentLayers";
+import { maplibreLib } from "./maplibreLib";
 import { FareZonesLayer } from "./layers/FareZonesLayer";
 import { GroupEdgesLayer } from "./layers/GroupEdgesLayer";
 import { MultimodalEdgesLayer } from "./layers/MultimodalEdgesLayer";
@@ -128,6 +129,26 @@ export const ModernEditStopMap = () => {
     // currentStopId intentionally excluded — this only reacts to the toggle
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showExpiredStops, dispatch]);
+
+  // The open stop is left out of the neighbour query because the editor draws
+  // it. When the editor closes or switches stop, that stop has to come back
+  // as a neighbour now, not on the next pan (F-61).
+  const previousStopIdRef = useRef(currentStopId);
+  useEffect(() => {
+    const previousStopId = previousStopIdRef.current;
+    previousStopIdRef.current = currentStopId;
+    if (!previousStopId || previousStopId === currentStopId) return;
+
+    const map = mapRef.current?.getMap();
+    if (!map || map.getZoom() <= NEIGHBOUR_STOPS_MIN_ZOOM) return;
+    dispatch(
+      getNeighbourStops(
+        currentStopId,
+        map.getBounds(),
+        neighbourStateRef.current.showExpiredStops,
+      ),
+    );
+  }, [currentStopId, dispatch]);
 
   const initialViewState = useMemo(
     () => ({
@@ -246,6 +267,7 @@ export const ModernEditStopMap = () => {
     >
       <Map
         ref={mapRef}
+        mapLib={maplibreLib}
         initialViewState={initialViewState}
         style={{ width: "100%", height: "100%" }}
         mapStyle={mapStyle}

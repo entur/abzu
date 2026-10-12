@@ -191,7 +191,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleCloseVersionsDialog,
     handleNameChange,
     handleDescriptionChange,
-    handleTypeChange,
     handleSubmodeChange,
     handleWeightingChange,
     handleAddTag,
@@ -272,6 +271,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           onNameChange={handleParkingNameChange}
           onTypeChange={handleParkingTypeChange}
           onCapacityChange={handleParkingCapacityChange}
+          onSave={handleOpenSaveDialog}
         />
       );
     }
@@ -403,7 +403,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         open={!!stopPlace.isNewStop && !wizardConfirmed}
         onConfirm={(name, stopType) => {
           handleNameChange(name);
-          handleTypeChange(stopType);
+          // Sets type, transportMode and submode together (F-15b).
+          handleSubmodeChange(stopType, null);
           setWizardConfirmed(true);
         }}
         onCancel={handleGoBack}

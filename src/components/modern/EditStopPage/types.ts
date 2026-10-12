@@ -86,7 +86,7 @@ export interface StopPlace {
   name: string;
   description?: string;
   stopPlaceType?: string;
-  submode?: string;
+  submode?: string | null;
   quays?: Quay[];
   parking?: Parking[];
   tags?: Tag[];
@@ -121,7 +121,7 @@ export interface StopPlaceGeneralSectionProps {
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   /** Single atomic modality change — sets stop type + submode together. */
-  onModalityChange: (stopPlaceType: string, submode: string) => void;
+  onModalityChange: (stopPlaceType: string, submode: string | null) => void;
   onWeightingChange: (value: string) => void;
   version?: number;
   onOpenVersions: () => void;
@@ -188,6 +188,8 @@ export interface ParkingPanelProps {
   onNameChange: (index: number, value: string) => void;
   onTypeChange: (index: number, value: string) => void;
   onCapacityChange: (index: number, value: string) => void;
+  /** Opens the stop's save dialog; parking is saved with the whole stop. */
+  onSave: () => void;
 }
 
 export interface StopPlaceViewProps {
@@ -205,7 +207,7 @@ export interface StopPlaceViewProps {
   onDeleteParking: (index: number) => void;
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
-  onSubmodeChange: (stopPlaceType: string, submode: string) => void;
+  onSubmodeChange: (stopPlaceType: string, submode: string | null) => void;
   onWeightingChange: (value: string) => void;
   onOpenSaveDialog: () => void;
   onOpenUndoDialog: () => void;
@@ -232,7 +234,7 @@ export interface StopPlaceDialogsProps {
   versionsDialogOpen: boolean;
   versions: any[];
   versionsLoading: boolean;
-  handleSave: (userInput: any) => void;
+  handleSave: (userInput: { comment: string }) => Promise<void>;
   handleCloseSaveDialog: () => void;
   handleGoBack: () => void;
   handleCancelGoBack: () => void;
@@ -290,7 +292,7 @@ export interface UseEditStopPageReturn {
   // Dialog handlers
   handleOpenSaveDialog: () => void;
   handleCloseSaveDialog: () => void;
-  handleSave: (userInput: any) => void;
+  handleSave: (userInput: { comment: string }) => Promise<void>;
   handleAllowUserToGoBack: () => void;
   handleGoBack: () => void;
   handleCancelGoBack: () => void;
@@ -324,7 +326,7 @@ export interface UseEditStopPageReturn {
   handleNameChange: (value: string) => void;
   handleDescriptionChange: (value: string) => void;
   handleTypeChange: (type: string) => void;
-  handleSubmodeChange: (stopPlaceType: string, submode: string) => void;
+  handleSubmodeChange: (stopPlaceType: string, submode: string | null) => void;
   handleWeightingChange: (value: string) => void;
   handleAddTag: (idReference: string, name: string, comment: string) => any;
   handleGetTags: (idReference: string) => any;

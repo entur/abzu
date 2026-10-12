@@ -18,15 +18,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import stopTypes from "../../../../models/stopTypes";
+import {
+  isStopPlaceTypeValid,
+  StopNameAndTypeFields,
+  useHiddenStopTypes,
+} from "../../Shared/StopNameAndType";
 
 interface Props {
   open: boolean;
@@ -38,8 +37,10 @@ export const NewStopWizard = ({ open, onConfirm, onCancel }: Props) => {
   const { formatMessage } = useIntl();
   const [name, setName] = useState("");
   const [stopType, setStopType] = useState("");
+  const hiddenStopTypes = useHiddenStopTypes();
 
-  const canConfirm = name.trim().length > 0 && stopType.length > 0;
+  const canConfirm =
+    name.trim().length > 0 && isStopPlaceTypeValid(stopType, hiddenStopTypes);
 
   const handleConfirm = () => {
     onConfirm(name.trim(), stopType);
@@ -73,31 +74,13 @@ export const NewStopWizard = ({ open, onConfirm, onCancel }: Props) => {
           pt: "16px !important",
         }}
       >
-        <TextField
-          label={formatMessage({ id: "new_stop_wizard_name_label" })}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+        <StopNameAndTypeFields
+          name={name}
+          stopType={stopType}
+          onNameChange={setName}
+          onStopTypeChange={setStopType}
           autoFocus
-          fullWidth
-          size="small"
-          required
         />
-        <FormControl size="small" fullWidth required>
-          <InputLabel>
-            {formatMessage({ id: "new_stop_wizard_type_label" })}
-          </InputLabel>
-          <Select
-            value={stopType}
-            label={formatMessage({ id: "new_stop_wizard_type_label" })}
-            onChange={(e) => setStopType(e.target.value)}
-          >
-            {Object.keys(stopTypes).map((key) => (
-              <MenuItem key={key} value={key}>
-                {formatMessage({ id: `stopTypes_${key}_name` })}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel} color="inherit">

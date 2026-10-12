@@ -25,6 +25,9 @@ import {
 import formatHelpers from "../../../../../modelUtils/mapToClient";
 import Routes from "../../../../../routes/";
 import { MenuItem } from "../../types";
+import { useConfirmLeave } from "../../../Shared/UnsavedChangesGuard";
+import { setMarkerOnMap } from "../../../../../actions/StopPlaceActions.modern";
+import { useFlyToCoordinates } from "./useFlyToCoordinates";
 
 /**
  * Hook for managing search and selection handlers
@@ -41,6 +44,8 @@ export const useSearchHandlers = (
   setPendingNavigationId: (id: string | null) => void,
 ) => {
   const dispatch = useDispatch() as any;
+  const confirmLeave = useConfirmLeave();
+  const flyToCoordinates = useFlyToCoordinates();
 
   // Debounced search function
   const debouncedSearch = useMemo(
@@ -113,7 +118,7 @@ export const useSearchHandlers = (
   );
 
   // Handle selection of search result
-  const handleNewRequest = useCallback(
+  const openSearchResult = useCallback(
     (_event: any, result: MenuItem) => {
       if (
         result &&
@@ -125,9 +130,8 @@ export const useSearchHandlers = (
           result.id === "coordinates" &&
           (result.element as any).coordinates
         ) {
-          const coords = (result.element as any).coordinates;
-          // Center map on coordinates without creating a marker (zoom 14 = neighborhood view)
-          dispatch(UserActions.setCenterAndZoom(coords, 14));
+          // Move the map there without creating a marker.
+          flyToCoordinates((result.element as any).coordinates);
           setStopPlaceSearchValue("");
           dispatch(UserActions.setSearchText(""));
           dispatch(UserActions.clearSearchResults());
@@ -173,7 +177,7 @@ export const useSearchHandlers = (
                   data.stopPlace,
                 );
                 if (stopPlaces.length) {
-                  dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+                  dispatch(setMarkerOnMap(stopPlaces[0]));
                 }
               }
               dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
@@ -185,7 +189,7 @@ export const useSearchHandlers = (
               setPendingNavigationId(null);
             });
         } else {
-          dispatch(StopPlaceActions.setMarkerOnMap(element));
+          dispatch(setMarkerOnMap(element));
           // Navigate to edit page after setting marker
           dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
           setLoadingSelection(false);
@@ -198,11 +202,25 @@ export const useSearchHandlers = (
     },
     [
       dispatch,
+      flyToCoordinates,
       setLoadingSelection,
       setLoadingStopPlaceName,
       setStopPlaceSearchValue,
       setPendingNavigationId,
     ],
+  );
+
+  /* Opening a result leaves the current editor, so ask about unsaved changes
+     before anything is fetched. Coordinate results only move the map. */
+  const handleNewRequest = useCallback(
+    (event: any, result: MenuItem) => {
+      if (result?.id === "coordinates") {
+        openSearchResult(event, result);
+        return;
+      }
+      confirmLeave(() => openSearchResult(event, result));
+    },
+    [openSearchResult, confirmLeave],
   );
 
   return {

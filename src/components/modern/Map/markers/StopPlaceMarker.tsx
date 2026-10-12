@@ -32,6 +32,7 @@ import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
+import { useConfirmLeave } from "../../Shared/UnsavedChangesGuard";
 
 const MARKER_SIZE = 40;
 const CHILD_MARKER_SIZE = 34;
@@ -51,6 +52,7 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
   const scale = useMarkerScale();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const confirmLeave = useConfirmLeave();
 
   if (!child.location) return null;
 
@@ -59,8 +61,11 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
 
   const handleOpen = () => {
     setPopupAnchor(null);
-    dispatch(StopPlaceActions.setStopPlaceLoading(true));
-    navigate(`/${AppRoutes.STOP_PLACE}/${child.id}`);
+    // Ask before the loading state is set, so staying leaves nothing behind.
+    confirmLeave(() => {
+      dispatch(StopPlaceActions.setStopPlaceLoading(true));
+      navigate(`/${AppRoutes.STOP_PLACE}/${child.id}`);
+    });
   };
 
   return (

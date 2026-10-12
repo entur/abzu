@@ -14,9 +14,10 @@ limitations under the Licence. */
 
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import { createSelector } from "@reduxjs/toolkit";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
+import { useParams } from "react-router-dom";
 import { UserActions } from "../../actions";
 import { getStopPlaceWithAll } from "../../actions/TiamatActions.modern";
 import { EditParentStopPlace } from "../../components/modern/EditParentStopPlace";
@@ -25,6 +26,8 @@ import { LoadingDialog } from "../../components/modern/Shared";
 import { LoadTimerBadge } from "../../components/modern/Shared/LoadTimerBadge";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { RootState } from "../../store/store";
+
+const NEW_STOP_ROUTE_ID = "new";
 
 const selectStopPlaceProps = createSelector(
   (state: RootState) => state,
@@ -58,40 +61,34 @@ export const StopPlace = () => {
 
   const [title, setTitle] = useState(formatMessage({ id: "_title" }));
 
+  /* Built from scratch each time: appending to the previous title made the
+     location repeat once per render (F-45). */
   useEffect(() => {
     if (!stopPlace) return;
     if (stopPlace.isNewStop) {
       setTitle(formatMessage({ id: "_title_new_stop" }));
       return;
     }
-    if (originalStopPlace?.name) {
-      setTitle(originalStopPlace.name);
-    }
-    if (stopPlace.topographicPlace) {
-      setTitle(
-        (prev) =>
-          `${prev}, ${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`,
-      );
-    }
-  }, [stopPlace]);
+    const name = originalStopPlace?.name ?? "";
+    setTitle(
+      stopPlace.topographicPlace
+        ? `${name}, ${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`
+        : name,
+    );
+  }, [stopPlace, originalStopPlace, formatMessage]);
 
-  const idFromPath = useMemo(
-    () =>
-      window.location.pathname
-        .substring(window.location.pathname.lastIndexOf("/"))
-        .replace("/", ""),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [window.location.pathname],
-  );
+  /* The id comes from the router, not window.location, so moving between two
+     /stop_place/:stopId URLs always reloads (F-51). */
+  const { stopId = "" } = useParams<{ stopId: string }>();
 
   useEffect(() => {
-    if (idFromPath === "new" && !stopPlace) {
+    if (stopId === NEW_STOP_ROUTE_ID && !stopPlace) {
       dispatch(UserActions.navigateTo("/", ""));
       return;
     }
 
-    if (idFromPath && idFromPath !== "new") {
-      dispatch(getStopPlaceWithAll(idFromPath))
+    if (stopId && stopId !== NEW_STOP_ROUTE_ID) {
+      dispatch(getStopPlaceWithAll(stopId))
         .then((response: any) => {
           if (!response.data.stopPlace.length) {
             setError({ showErrorDialog: true, resourceNotFound: true });
@@ -101,7 +98,8 @@ export const StopPlace = () => {
           setError({ showErrorDialog: true, resourceNotFound: false });
         });
     }
-  }, [idFromPath]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stopId]);
 
   const isLoading = (!stopPlace && !error.showErrorDialog) || stopPlaceLoading;
 
@@ -120,7 +118,7 @@ export const StopPlace = () => {
       >
         <DialogContent>
           {error.resourceNotFound
-            ? formatMessage({ id: "error_stopPlace_404" }) + idFromPath
+            ? formatMessage({ id: "error_stopPlace_404" }) + stopId
             : formatMessage({ id: "error_unable_to_load_stop" })}
         </DialogContent>
         <DialogActions>

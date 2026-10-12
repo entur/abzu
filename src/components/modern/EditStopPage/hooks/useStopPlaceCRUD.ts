@@ -15,24 +15,12 @@ limitations under the Licence. */
 import { useCallback } from "react";
 import { StopPlaceActions, UserActions } from "../../../../actions";
 import {
-  deleteParking,
-  deleteQuay,
   deleteStopPlace,
-  getNeighbourStops,
   getStopPlaceVersions,
-  getStopPlaceWithAll,
-  saveParking,
-  savePathLink,
-  saveStopPlaceBasedOnType,
   terminateStop,
 } from "../../../../actions/TiamatActions.modern";
-import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
-import {
-  shouldMutateParking,
-  shouldMutatePathLinks,
-} from "../../../../modelUtils/shouldMutate";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { findStagedDeletions } from "../utils/stagedDeletions";
+import { useAppDispatch } from "../../../../store/hooks";
+import { useStopPlaceSave } from "./useStopPlaceSave";
 
 /**
  * Hook for CRUD operations on regular stop places
@@ -49,101 +37,11 @@ export const useStopPlaceCRUD = (
 ) => {
   const dispatch = useAppDispatch();
 
-  const pathLink = useAppSelector((state) => (state.stopPlace as any).pathLink);
-  const originalPathLink = useAppSelector(
-    (state) => (state.stopPlace as any).originalPathLink,
-  );
-  const originalStopPlace = useAppSelector(
-    (state) => (state.stopPlace as any).originalCurrent,
-  );
-
-  const handleSave = useCallback(
-    (userInput: any) => {
-      if (!stopPlace) return;
-
-      if (!stopPlace.name?.trim() || !stopPlace.stopPlaceType) {
-        onCloseSaveDialog();
-        onOpenRequiredFieldsMissing();
-        return;
-      }
-
-      onCloseSaveDialog();
-
-      const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
-        pathLink ?? [],
-      );
-      const needsPathLinkSave = shouldMutatePathLinks(
-        pathLinkVariables,
-        pathLink,
-        originalPathLink,
-      );
-      const needsParkingSave = shouldMutateParking(stopPlace.parking);
-
-      // Quay and parking removals are staged in local state only, so commit them
-      // here. Deleting before the stop save means the arrays we then send already
-      // match server state, and bailing out on validation above touches nothing.
-      // Parking especially needs the explicit call: shouldMutateParking() is false
-      // for an empty list, so removing the last parking would otherwise save nothing.
-      const stagedDeletions = [
-        ...findStagedDeletions(originalStopPlace?.quays, stopPlace.quays).map(
-          (quayId) => deleteQuay({ stopPlaceId: stopPlace.id, quayId }),
-        ),
-        ...findStagedDeletions(
-          originalStopPlace?.parking,
-          stopPlace.parking,
-        ).map((parkingId) => deleteParking(parkingId)),
-      ];
-
-      const saveStop = () =>
-        dispatch(saveStopPlaceBasedOnType(stopPlace, userInput)).then(
-          (id: string) => {
-            const parkingVariables =
-              mapToMutationVariables.mapParkingToVariables(
-                stopPlace.parking,
-                stopPlace.id || id,
-              );
-
-            const finish = () => {
-              dispatch(getStopPlaceVersions(id));
-              dispatch(getNeighbourStops(id, activeMap?.getBounds()));
-              dispatch(getStopPlaceWithAll(id, true));
-            };
-
-            if (needsPathLinkSave) {
-              dispatch(savePathLink(pathLinkVariables)).then(() => {
-                if (needsParkingSave) {
-                  dispatch(saveParking(parkingVariables)).then(finish);
-                } else {
-                  finish();
-                }
-              });
-            } else if (needsParkingSave) {
-              dispatch(saveParking(parkingVariables)).then(finish);
-            } else {
-              finish();
-            }
-          },
-        );
-
-      if (!stagedDeletions.length) {
-        saveStop();
-        return;
-      }
-
-      Promise.all(stagedDeletions.map((deletion) => dispatch(deletion))).then(
-        saveStop,
-      );
-    },
-    [
-      stopPlace,
-      originalStopPlace,
-      pathLink,
-      originalPathLink,
-      dispatch,
-      activeMap,
-      onCloseSaveDialog,
-      onOpenRequiredFieldsMissing,
-    ],
+  const handleSave = useStopPlaceSave(
+    stopPlace,
+    activeMap,
+    onCloseSaveDialog,
+    onOpenRequiredFieldsMissing,
   );
 
   const handleAllowUserToGoBack = useCallback(() => {
@@ -154,8 +52,11 @@ export const useStopPlaceCRUD = (
     return false;
   }, [isModified, dispatch]);
 
+  /* The user confirmed discarding, so discard first: the unsaved-changes
+     guard then lets the navigation through without asking again. */
   const handleGoBack = useCallback(() => {
     onCloseGoBackDialog();
+    dispatch(StopPlaceActions.discardChangesForEditingStop());
     dispatch(UserActions.navigateTo("/", ""));
   }, [dispatch, onCloseGoBackDialog]);
 

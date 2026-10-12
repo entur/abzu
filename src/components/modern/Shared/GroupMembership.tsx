@@ -22,6 +22,7 @@ import { UserActions } from "../../../actions";
 import { getGroupOfStopPlacesById } from "../../../actions/TiamatActions.modern";
 import Routes from "../../../routes/";
 import { LoadingDialog } from "./LoadingDialog";
+import { useConfirmLeave } from "./UnsavedChangesGuard";
 
 interface Group {
   id: string;
@@ -39,29 +40,31 @@ interface GroupMembershipProps {
 export const GroupMembership: React.FC<GroupMembershipProps> = ({ groups }) => {
   const { formatMessage } = useIntl();
   const dispatch = useDispatch() as any;
+  const confirmLeave = useConfirmLeave();
   const [loading, setLoading] = useState(false);
   const [loadingName, setLoadingName] = useState("");
 
   const handleNavigate = useCallback(
-    (id: string, name: string) => {
-      flushSync(() => {
-        setLoading(true);
-        setLoadingName(name);
-      });
-
-      dispatch(getGroupOfStopPlacesById(id))
-        .then(() => {
-          dispatch(
-            UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, id),
-          );
-          // Loading stays true — component unmounts when new panel renders
-        })
-        .catch(() => {
-          setLoading(false);
-          setLoadingName("");
+    (id: string, name: string) =>
+      confirmLeave(() => {
+        flushSync(() => {
+          setLoading(true);
+          setLoadingName(name);
         });
-    },
-    [dispatch],
+
+        dispatch(getGroupOfStopPlacesById(id))
+          .then(() => {
+            dispatch(
+              UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, id),
+            );
+            // Loading stays true — component unmounts when new panel renders
+          })
+          .catch(() => {
+            setLoading(false);
+            setLoadingName("");
+          });
+      }),
+    [dispatch, confirmLeave],
   );
 
   if (!groups || groups.length === 0) return null;

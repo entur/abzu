@@ -81,33 +81,37 @@ import * as types from "./Types";
  * first load and when navigating between stops (where the old stop is still
  * present in Redux state).
  *
- * @param networkOnly - Force a network request even if cached data is
- * available. Pass true after any mutation (save, delete, terminate) to ensure
- * stale Apollo cache entries are bypassed. Default false uses cache-first so
- * navigating back to a recently viewed stop is instant.
+ * Always network-only: merge, move and detach mutations run with no-cache, so
+ * a cached copy of an affected stop is stale the moment they succeed. Serving
+ * it would show quays on two stops, or an expired stop as active.
  */
 export const getStopPlaceWithAll =
-  (id: string, networkOnly = false) =>
+  (id: string) =>
   async (dispatch: AppDispatch, getState: () => RootState): Promise<any> => {
     dispatch(createThunk(types.SET_STOP_PLACE_LOADING, true));
 
     const payload = {
       query: stopPlaceWithAll,
-      fetchPolicy: (networkOnly ? "network-only" : "cache-first") as
-        "network-only" | "cache-first",
+      fetchPolicy: "network-only" as const,
       variables: { id },
       context: await getContext((getState() as any).user.auth),
     };
 
-    return (getTiamatClient() as any).query(payload).then((result: any) => {
-      dispatch(
-        createApolloThunk(
-          types.APOLLO_QUERY_RESULT,
-          result,
-          payload.query,
-          payload.variables,
-        ),
-      );
-      return result;
-    });
+    return (getTiamatClient() as any)
+      .query(payload)
+      .then((result: any) => {
+        dispatch(
+          createApolloThunk(
+            types.APOLLO_QUERY_RESULT,
+            result,
+            payload.query,
+            payload.variables,
+          ),
+        );
+        return result;
+      })
+      .catch((error: unknown) => {
+        dispatch(createThunk(types.SET_STOP_PLACE_LOADING, false));
+        throw error;
+      });
   };

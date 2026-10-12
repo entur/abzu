@@ -13,6 +13,10 @@ export default defineConfig({
     port: process.env.PORT ? Number(process.env.PORT) : 9000,
   },
   publicDir: 'public',
+  // MapLibre starts its worker with { type: "module" } (see maplibreLib.ts).
+  worker: {
+    format: 'es',
+  },
   build: {
     outDir: 'build',
     sourcemap: true,
@@ -37,5 +41,7 @@ export default defineConfig({
     }
   },
 
-  define: process.env.NODE_ENV === 'development' ? { global: 'window' } : {},
+  // globalThis, not window: dev also applies this to the MapLibre worker,
+  // where window doesn't exist and the worker would fail to start.
+  define: process.env.NODE_ENV === 'development' ? { global: 'globalThis' } : {},
 });

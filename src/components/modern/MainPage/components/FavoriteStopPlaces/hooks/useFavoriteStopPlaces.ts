@@ -27,6 +27,8 @@ import {
   FavoriteStopPlace,
   FavoriteStopPlacesManager,
 } from "../../../../../../utils/favoriteStopPlaces";
+import { useConfirmLeave } from "../../../../Shared/UnsavedChangesGuard";
+import { setMarkerOnMap } from "../../../../../../actions/StopPlaceActions.modern";
 
 /**
  * Hook for managing favorite stop places
@@ -39,6 +41,7 @@ export const useFavoriteStopPlaces = (
 ) => {
   const dispatch = useDispatch() as any;
   const favoriteManager = FavoriteStopPlacesManager.getInstance();
+  const confirmLeave = useConfirmLeave();
 
   const [favorites, setFavorites] = useState<FavoriteStopPlace[]>([]);
   const [loadingSelection, setLoadingSelection] = useState(false);
@@ -51,68 +54,76 @@ export const useFavoriteStopPlaces = (
 
   // Handle favorite selection and navigation
   const handleSelectFavorite = useCallback(
-    (favorite: FavoriteStopPlace) => {
-      // Close panels if callback provided
-      if (onClose) {
-        onClose();
-      }
+    (favorite: FavoriteStopPlace) =>
+      confirmLeave(() => {
+        // Close panels if callback provided
+        if (onClose) {
+          onClose();
+        }
 
-      if (onLoadingChange) {
-        onLoadingChange(true, favorite.name || "");
-      } else {
-        // Fallback: force a synchronous render when no external handler is provided.
-        flushSync(() => {
-          setLoadingSelection(true);
-          setLoadingStopPlaceName(favorite.name || "");
-        });
-      }
-
-      const stopPlaceId = favorite.id;
-      const entityType = favorite.entityType;
-
-      // Determine the route for navigation
-      const route =
-        entityType === Entities.GROUP_OF_STOP_PLACE
-          ? Routes.GROUP_OF_STOP_PLACE
-          : Routes.STOP_PLACE;
-
-      if (stopPlaceId && entityType === Entities.GROUP_OF_STOP_PLACE) {
-        // Fetch group of stop places data
-        dispatch(getGroupOfStopPlacesById(stopPlaceId))
-          .then(() => {
-            dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
-          })
-          .finally(() => {
-            setLoadingSelection(false);
-            setLoadingStopPlaceName("");
-            onLoadingChange?.(false, "");
+        if (onLoadingChange) {
+          onLoadingChange(true, favorite.name || "");
+        } else {
+          // Fallback: force a synchronous render when no external handler is provided.
+          flushSync(() => {
+            setLoadingSelection(true);
+            setLoadingStopPlaceName(favorite.name || "");
           });
-      } else if (stopPlaceId) {
-        // Loading is cleared in HeaderSearch once state.stopPlace.current.id
-        // matches stopPlaceId — HeaderSearch never unmounts, so the effect is
-        // guaranteed to fire even though this component closes before the fetch ends.
-        dispatch(getStopPlaceById(stopPlaceId))
-          .then(({ data }: any) => {
-            if (data.stopPlace && data.stopPlace.length) {
-              const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
-                data.stopPlace,
-              );
-              if (stopPlaces.length) {
-                dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+        }
+
+        const stopPlaceId = favorite.id;
+        const entityType = favorite.entityType;
+
+        // Determine the route for navigation
+        const route =
+          entityType === Entities.GROUP_OF_STOP_PLACE
+            ? Routes.GROUP_OF_STOP_PLACE
+            : Routes.STOP_PLACE;
+
+        if (stopPlaceId && entityType === Entities.GROUP_OF_STOP_PLACE) {
+          // Fetch group of stop places data
+          dispatch(getGroupOfStopPlacesById(stopPlaceId))
+            .then(() => {
+              dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
+            })
+            .finally(() => {
+              setLoadingSelection(false);
+              setLoadingStopPlaceName("");
+              onLoadingChange?.(false, "");
+            });
+        } else if (stopPlaceId) {
+          // Loading is cleared in HeaderSearch once state.stopPlace.current.id
+          // matches stopPlaceId — HeaderSearch never unmounts, so the effect is
+          // guaranteed to fire even though this component closes before the fetch ends.
+          dispatch(getStopPlaceById(stopPlaceId))
+            .then(({ data }: any) => {
+              if (data.stopPlace && data.stopPlace.length) {
+                const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
+                  data.stopPlace,
+                );
+                if (stopPlaces.length) {
+                  dispatch(setMarkerOnMap(stopPlaces[0]));
+                }
               }
-            }
-            dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
-            onPendingNavigation?.(stopPlaceId);
-          })
-          .catch(() => {
-            setLoadingSelection(false);
-            setLoadingStopPlaceName("");
-            onPendingNavigation?.(null);
-            onLoadingChange?.(false, "");
-          });
-      }
-    },
-    [dispatch, onClose, onLoadingChange, onPendingNavigation, favoriteManager],
+              dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
+              onPendingNavigation?.(stopPlaceId);
+            })
+            .catch(() => {
+              setLoadingSelection(false);
+              setLoadingStopPlaceName("");
+              onPendingNavigation?.(null);
+              onLoadingChange?.(false, "");
+            });
+        }
+      }),
+    [
+      dispatch,
+      onClose,
+      onLoadingChange,
+      onPendingNavigation,
+      favoriteManager,
+      confirmLeave,
+    ],
   );
 
   // Handle removing a single favorite

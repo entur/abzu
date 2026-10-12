@@ -17,6 +17,10 @@ import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Button } from "@mui/material";
 import { useIntl } from "react-intl";
+import {
+  isStopPlaceTypeValid,
+  useHiddenStopTypes,
+} from "../../Shared/StopNameAndType";
 import { StopPlace } from "../types";
 
 interface StopPlaceActionBarProps {
@@ -46,6 +50,12 @@ export const StopPlaceActionBar = ({
   onOpenSaveDialog,
 }: StopPlaceActionBarProps) => {
   const { formatMessage } = useIntl();
+  const hiddenStopTypes = useHiddenStopTypes();
+  /* Domain rule (F-15): a stop needs a name and a valid type to be saved. */
+  const canSave =
+    isModified &&
+    Boolean(stopPlace.name?.trim()) &&
+    isStopPlaceTypeValid(stopPlace.stopPlaceType, hiddenStopTypes);
 
   return (
     <Box
@@ -92,7 +102,7 @@ export const StopPlaceActionBar = ({
             size="small"
             startIcon={<SaveIcon />}
             onClick={onOpenSaveDialog}
-            disabled={!isModified || !stopPlace.name}
+            disabled={!canSave}
           >
             {formatMessage({ id: "save" })}
           </Button>

@@ -27,7 +27,7 @@ interface UseStopPlaceFormReturn {
   handleNameChange: (value: string) => void;
   handleDescriptionChange: (value: string) => void;
   handleTypeChange: (type: string) => void;
-  handleSubmodeChange: (stopPlaceType: string, submode: string) => void;
+  handleSubmodeChange: (stopPlaceType: string, submode: string | null) => void;
   handleWeightingChange: (value: string) => void;
   handleAddTag: (
     idReference: string,
@@ -67,7 +67,7 @@ export const useStopPlaceForm = (): UseStopPlaceFormReturn => {
   );
 
   const handleSubmodeChange = useCallback(
-    (stopPlaceType: string, submode: string) => {
+    (stopPlaceType: string, submode: string | null) => {
       const transportMode =
         stopTypes[stopPlaceType as keyof typeof stopTypes]?.transportMode ?? "";
       dispatch(

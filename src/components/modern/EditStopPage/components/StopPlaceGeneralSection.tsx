@@ -29,11 +29,14 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import { useConfig } from "../../../../config/ConfigContext";
 import stopTypes from "../../../../models/stopTypes";
 import weightTypes from "../../../../models/weightTypes";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import { StopPlaceMembership, TagTray } from "../../Shared";
+import {
+  isStopPlaceTypeValid,
+  useHiddenStopTypes,
+} from "../../Shared/StopNameAndType";
 import {
   DirtyBadge,
   DirtyLabel,
@@ -41,6 +44,10 @@ import {
   useStopPlaceDirtyKeys,
 } from "../../Shared/ElementStatus";
 import { StopPlaceGeneralSectionProps } from "../types";
+import {
+  parseModalityPickerValue,
+  toModalityPickerValue,
+} from "../utils/modalityPickerValue";
 import { generalSectionStyles as sx } from "./StopPlaceGeneralSection.styles";
 
 /**
@@ -68,20 +75,24 @@ export const StopPlaceGeneralSection: React.FC<
     isStatusEnabled && keys.some((key) => dirtyKeys.has(key));
   /* Required-but-empty blocks saving, so it reads as an error rather than a hint. */
   const isNameMissing = !stopPlace.name?.trim();
-  const isStopPlaceTypeMissing = !stopPlace.stopPlaceType;
-  const { modalityConfig } = useConfig();
-  const hiddenStopTypes = modalityConfig?.hiddenStopTypes ?? [];
+  const hiddenStopTypes = useHiddenStopTypes();
+  /* "other" and hidden types count as missing too: they can't be saved (F-15). */
+  const isStopPlaceTypeMissing = !isStopPlaceTypeValid(
+    stopPlace.stopPlaceType,
+    hiddenStopTypes,
+  );
 
-  const pickerValue = `${stopPlace.stopPlaceType ?? ""}|${stopPlace.submode ?? ""}`;
+  const pickerValue = toModalityPickerValue(
+    stopPlace.stopPlaceType,
+    stopPlace.submode,
+  );
 
   const handlePickerChange = (value: string) => {
-    const separatorIndex = value.indexOf("|");
-    const type = value.slice(0, separatorIndex);
-    const submode = value.slice(separatorIndex + 1);
+    const { stopPlaceType, submode } = parseModalityPickerValue(value);
     // Single atomic change: the reducer sets stopPlaceType + submode together,
     // so dispatching type and submode separately would let the second overwrite
     // the first with a stale type.
-    onModalityChange(type, submode);
+    onModalityChange(stopPlaceType, submode);
   };
 
   const unifiedOptions = Object.entries(stopTypes)
@@ -89,9 +100,12 @@ export const StopPlaceGeneralSection: React.FC<
     .flatMap(([key, config]) => {
       const typeLabel = formatMessage({ id: `stopTypes_${key}_name` });
       const submodes = (config as any).submodes as string[] | null | undefined;
-      const bare = { value: `${key}|`, label: typeLabel };
+      const bare = {
+        value: toModalityPickerValue(key, null),
+        label: typeLabel,
+      };
       const submodeItems = (submodes ?? []).map((sub) => ({
-        value: `${key}|${sub}`,
+        value: toModalityPickerValue(key, sub),
         label: formatMessage({ id: `stopTypes_${key}_submodes_${sub}` }),
       }));
       return [bare, ...submodeItems];

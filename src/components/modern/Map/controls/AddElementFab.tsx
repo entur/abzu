@@ -98,8 +98,13 @@ export const AddElementFab = () => {
     (state) => (state.user as any).auth?.isAuthenticated as boolean | undefined,
   );
 
-  const currentStopId = useAppSelector(
-    (state) => (state.stopPlace.current as any)?.id as string | undefined,
+  /* An unsaved new stop has no id yet but is still open in the editor, so
+     "open" means current is set, not that it has an id (F-16). */
+  const isEditorOpen = useAppSelector((state) =>
+    Boolean(state.stopPlace.current),
+  );
+  const isParentOpen = useAppSelector((state) =>
+    Boolean((state.stopPlace.current as any)?.isParent),
   );
   const isCreatingNewStop = useAppSelector(
     (state) => (state.user as any).isCreatingNewStop as boolean,
@@ -199,10 +204,15 @@ export const AddElementFab = () => {
         ? parkingCountRef.current
         : quayCountRef.current;
 
-      dispatch(StopPlaceActions.addElementToStop(elementType, [lat, lng]));
-      dispatch(StopPlaceActions.setElementFocus(newIndex, elementType));
-      setPendingElementType(null);
-      map.getCanvas().style.cursor = "";
+      try {
+        dispatch(StopPlaceActions.addElementToStop(elementType, [lat, lng]));
+        dispatch(StopPlaceActions.setElementFocus(newIndex, elementType));
+      } finally {
+        // Placement mode must end even if adding fails, or every later map
+        // click is swallowed (F-35).
+        setPendingElementType(null);
+        map.getCanvas().style.cursor = "";
+      }
     };
 
     /* With a crosshair marker following the pointer, the OS cursor would double
@@ -240,8 +250,10 @@ export const AddElementFab = () => {
   // transition, so returning early before a hook changes the hook count on the
   // same component instance and React throws.
   if (!isAuthenticated) return null;
+  // Quays and parking belong to the child stops, never the multimodal parent (F-35).
+  if (isParentOpen) return null;
 
-  const hasStopSelected = Boolean(currentStopId);
+  const hasStopSelected = isEditorOpen;
 
   const handleStartElementPlacement = (elementType: ElementType) => {
     setOpen(false);

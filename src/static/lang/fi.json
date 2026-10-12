@@ -396,7 +396,7 @@
   "quays": "Laiturit",
   "remove": "Poista",
   "remove_from_group": "Poista ryhmästä",
-  "remove_stop_from_parent_info": "Pysäkki poistetaan viittauksena. Kaikki muut muutokset hylätään.",
+  "remove_stop_from_parent_info": "Pysäkki poistetaan viittauksena, kun tallennat multimodaalisen pysäkin. Siihen asti muutoksen voi hylätä.",
   "remove_stop_from_parent_title": "Poista pysäkki monimuotopysäkistä",
   "remove_stop_place": "Poista pysäkki",
   "report_columnNames_county": "Maakunta",

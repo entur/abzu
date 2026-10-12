@@ -586,6 +586,10 @@ helpers.updateCurrentStopWithPositionAndPermissions = (
 };
 
 helpers.updateCurrentWithNewElement = (current, payload) => {
+  // Quays and parking belong to child stops; a multimodal parent has neither
+  // array, and concat on undefined used to crash the reducer (F-35).
+  if (!current || current.isParent) return current;
+
   const { type, position, focusedElement } = payload;
   const copy = JSON.parse(JSON.stringify(current));
 
@@ -596,7 +600,7 @@ helpers.updateCurrentWithNewElement = (current, payload) => {
 
   switch (type) {
     case "quay":
-      copy.quays = copy.quays.concat({
+      copy.quays = (copy.quays ?? []).concat({
         ...newElement,
         keyValues: [],
         boardingPositions: [],
@@ -611,7 +615,7 @@ helpers.updateCurrentWithNewElement = (current, payload) => {
       });
       break;
     case PARKING_TYPE.PARK_AND_RIDE:
-      copy.parking = copy.parking.concat({
+      copy.parking = (copy.parking ?? []).concat({
         ...newElement,
         totalCapacity: null,
         parkingType: type,
@@ -621,7 +625,7 @@ helpers.updateCurrentWithNewElement = (current, payload) => {
       });
       break;
     case PARKING_TYPE.BIKE_PARKING:
-      copy.parking = copy.parking.concat({
+      copy.parking = (copy.parking ?? []).concat({
         ...newElement,
         totalCapacity: null,
         parkingType: type,
