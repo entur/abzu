@@ -96,7 +96,7 @@
 		</symbol>
 		<symbol id="icon-icon_subway-withoutBox" viewBox="-909 491 100 100">
 			<title>icon_subway-withoutBox</title>
-			<polygon points="-863.2,566.8 -855.1,566.8 -855.1,529 -842.2,529 -842.2,522.2 -876,522.2 -876,529 -863.2,529 	"/>
+			<polyline points="-879.6,561.5 -879.6,520.5 -859.1,543.9 -838.6,520.5 -838.6,561.5" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round"/>
 			<path d="M-859.1,497.3c-24.1,0-43.7,19.6-43.7,43.7c0,24.1,19.6,43.7,43.7,43.7s43.7-19.6,43.7-43.7C-815.4,516.9-835,497.3-859.1,497.3z M-859.1,503c20.9,0,38,17,38,38s-17,38-38,38s-38-17-38-38S-880,503-859.1,503z"/>
 		</symbol>
 		<symbol id="icon-icon_subway-live" viewBox="0 0 1024 1024">
