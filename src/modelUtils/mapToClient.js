@@ -19,6 +19,10 @@ import { Entities } from "../models/Entities";
 import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
 import ParentStopPlace from "../models/ParentStopPlace";
 import Parking from "../models/Parking";
+import {
+  setLegacyCapacityCount,
+  withLegacyCapacityFields,
+} from "../models/parkingCapacity";
 import PathLink from "../models/PathLink";
 import Quay from "../models/Quay";
 import StopPlace from "../models/StopPlace";
@@ -616,29 +620,33 @@ helpers.updateCurrentWithNewElement = (current, payload) => {
       });
       break;
     case PARKING_TYPE.PARK_AND_RIDE:
-      copy.parking = (copy.parking ?? []).concat({
-        ...newElement,
-        totalCapacity: null,
-        parkingType: type,
-        hasFullFieldSet: true,
-        isForPedalCycle: false,
-        parkingVehicleTypes: [PARKING_VEHICLE_TYPE.CAR],
-        capacityEntries: [],
-        hasExpired: false,
-        validBetween: null,
-      });
+      copy.parking = (copy.parking ?? []).concat(
+        withLegacyCapacityFields({
+          ...newElement,
+          totalCapacity: null,
+          parkingType: type,
+          hasFullFieldSet: true,
+          isForPedalCycle: false,
+          parkingVehicleTypes: [PARKING_VEHICLE_TYPE.CAR],
+          capacityEntries: [],
+          hasExpired: false,
+          validBetween: null,
+        }),
+      );
       break;
     case PARKING_TYPE.BIKE_PARKING:
-      copy.parking = (copy.parking ?? []).concat({
-        ...newElement,
-        totalCapacity: null,
-        parkingType: type,
-        hasFullFieldSet: false,
-        isForPedalCycle: true,
-        parkingVehicleTypes: [PARKING_VEHICLE_TYPE.PEDAL_CYCLE],
-        hasExpired: false,
-        validBetween: null,
-      });
+      copy.parking = (copy.parking ?? []).concat(
+        withLegacyCapacityFields({
+          ...newElement,
+          totalCapacity: null,
+          parkingType: type,
+          hasFullFieldSet: false,
+          isForPedalCycle: true,
+          parkingVehicleTypes: [PARKING_VEHICLE_TYPE.PEDAL_CYCLE],
+          hasExpired: false,
+          validBetween: null,
+        }),
+      );
       break;
 
     default:
@@ -912,6 +920,7 @@ helpers.changeParkingCapacityEntry = (original, payload) => {
   const { index, entryIndex, field, value } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].capacityEntries[entryIndex][field] = value;
+  withLegacyCapacityFields(copy.parking[index]);
   return copy;
 };
 
@@ -926,6 +935,7 @@ helpers.addParkingCapacityEntry = (original, payload) => {
     numberOfSpaces: null,
     numberOfSpacesWithRechargePoint: null,
   });
+  withLegacyCapacityFields(parking);
   return copy;
 };
 
@@ -933,6 +943,7 @@ helpers.removeParkingCapacityEntry = (original, payload) => {
   const { index, entryIndex } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].capacityEntries.splice(entryIndex, 1);
+  withLegacyCapacityFields(copy.parking[index]);
   return copy;
 };
 
@@ -948,6 +959,46 @@ helpers.clearParkingRechargePointCounts = (original, payload) => {
       entry.numberOfSpacesWithRechargePoint = 0;
     }
   });
+  withLegacyCapacityFields(copy.parking[index]);
+  return copy;
+};
+
+helpers.changeParkingNumberOfSpaces = (original, payload) => {
+  const { index, numberOfSpaces } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  setLegacyCapacityCount(
+    copy.parking[index],
+    PARKING_USER_TYPE.ALL_USERS,
+    "numberOfSpaces",
+    numberOfSpaces,
+  );
+  return copy;
+};
+
+helpers.changeParkingNumberOfSpacesWithRechargePoint = (original, payload) => {
+  const { index, numberOfSpacesWithRechargePoint } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  setLegacyCapacityCount(
+    copy.parking[index],
+    PARKING_USER_TYPE.ALL_USERS,
+    "numberOfSpacesWithRechargePoint",
+    numberOfSpacesWithRechargePoint,
+  );
+  return copy;
+};
+
+helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
+  original,
+  payload,
+) => {
+  const { index, numberOfSpacesForRegisteredDisabledUserType } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  setLegacyCapacityCount(
+    copy.parking[index],
+    PARKING_USER_TYPE.REGISTERED_DISABLED,
+    "numberOfSpaces",
+    numberOfSpacesForRegisteredDisabledUserType,
+  );
   return copy;
 };
 
