@@ -200,7 +200,7 @@ export interface UseEditParentStopPlaceReturn {
   // Handlers
   handleOpenSaveDialog: () => void;
   handleCloseSaveDialog: () => void;
-  handleSave: (userInput: any) => void;
+  handleSave: (userInput: { comment: string }) => Promise<void>;
 
   handleAllowUserToGoBack: () => void;
   handleGoBack: () => void;

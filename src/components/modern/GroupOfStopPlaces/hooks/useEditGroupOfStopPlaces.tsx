@@ -80,8 +80,11 @@ export const useEditGroupOfStopPlaces = (): UseEditGroupOfStopPlacesReturn => {
     }
   };
 
+  /* Also the confirm of "discard changes": discard first, so the
+     unsaved-changes guard lets the navigation through without asking again. */
   const handleGoBack = () => {
     setConfirmGoBackOpen(false);
+    dispatch(StopPlacesGroupActions.discardChanges());
     dispatch(UserActions.navigateTo("/", ""));
   };
 

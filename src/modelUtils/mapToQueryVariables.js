@@ -231,7 +231,8 @@ helpers.mapStopToVariables = (original, userInput) => {
     facilities: stop.facilities,
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
-    submode: stop.submode,
+    // "" is not a SubmodeType value; Tiamat rejects it with HTTP 400 (F-19).
+    submode: stop.submode || null,
     transportMode: stop.transportMode,
     tariffZones: (stop.tariffZones || []).map((tz) => ({
       ref: tz.id,

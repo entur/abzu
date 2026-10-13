@@ -15,19 +15,12 @@ limitations under the Licence. */
 import { useCallback } from "react";
 import { StopPlaceActions, UserActions } from "../../../../../actions";
 import {
-  addToMultiModalStopPlace,
-  createParentStopPlace,
   deleteStopPlace,
-  getNeighbourStops,
   getStopPlaceVersions,
-  getStopPlaceWithAll,
-  saveParentStopPlace,
-  savePathLink,
   terminateStop,
 } from "../../../../../actions/TiamatActions.modern";
-import mapToMutationVariables from "../../../../../modelUtils/mapToQueryVariables";
-import { shouldMutatePathLinks } from "../../../../../modelUtils/shouldMutate";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { useAppDispatch } from "../../../../../store/hooks";
+import { useParentStopPlaceSave } from "./useParentStopPlaceSave";
 
 /**
  * Hook for managing CRUD operations for parent stop place
@@ -43,86 +36,10 @@ export const useParentStopPlaceCRUD = (
 ) => {
   const dispatch = useAppDispatch();
 
-  const pathLink = useAppSelector((state) => (state.stopPlace as any).pathLink);
-  const originalPathLink = useAppSelector(
-    (state) => (state.stopPlace as any).originalPathLink,
-  );
-
-  const savePathLinkIfNeeded = useCallback(
-    (id: string) => {
-      const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
-        pathLink ?? [],
-      );
-      const needsSave = shouldMutatePathLinks(
-        pathLinkVariables,
-        pathLink,
-        originalPathLink,
-      );
-      if (needsSave) {
-        return dispatch(savePathLink(pathLinkVariables));
-      }
-      return Promise.resolve();
-    },
-    [dispatch, pathLink, originalPathLink],
-  );
-
-  const finishSave = useCallback(
-    (id: string) => {
-      savePathLinkIfNeeded(id).then(() => {
-        dispatch(getStopPlaceVersions(id));
-        dispatch(getNeighbourStops(id, activeMap?.getBounds()));
-        dispatch(getStopPlaceWithAll(id, true));
-      });
-    },
-    [dispatch, activeMap, savePathLinkIfNeeded],
-  );
-
-  // Save handler
-  const handleSave = useCallback(
-    (userInput: any) => {
-      if (!stopPlace) return;
-
-      onCloseSaveDialog();
-
-      if (stopPlace.isNewStop) {
-        const variables = mapToMutationVariables.mapParentStopToVariables(
-          stopPlace as any,
-          userInput,
-        );
-        dispatch(createParentStopPlace(variables as any)).then(({ data }) => {
-          if (data && data.createMultiModalStopPlace) {
-            const id = data.createMultiModalStopPlace.id;
-            dispatch(UserActions.navigateTo(`/stop_place/`, id));
-          }
-        });
-      } else {
-        const childrenToAdd = stopPlace.children
-          .filter((child: any) => child.notSaved)
-          .map((child: any) => child.id);
-
-        const variables = mapToMutationVariables.mapParentStopToVariables(
-          stopPlace as any,
-          userInput,
-        );
-
-        if (childrenToAdd.length) {
-          dispatch(addToMultiModalStopPlace(stopPlace.id!, childrenToAdd)).then(
-            () => {
-              dispatch(saveParentStopPlace(variables)).then(({ data }) => {
-                const id = data?.mutateParentStopPlace?.[0]?.id;
-                if (id) finishSave(id);
-              });
-            },
-          );
-        } else {
-          dispatch(saveParentStopPlace(variables)).then(({ data }) => {
-            const id = data?.mutateParentStopPlace?.[0]?.id;
-            if (id) finishSave(id);
-          });
-        }
-      }
-    },
-    [stopPlace, dispatch, activeMap, onCloseSaveDialog, finishSave],
+  const handleSave = useParentStopPlaceSave(
+    stopPlace,
+    activeMap,
+    onCloseSaveDialog,
   );
 
   // Go back handlers
@@ -134,8 +51,11 @@ export const useParentStopPlaceCRUD = (
     return false;
   }, [isModified, dispatch]);
 
+  /* The user confirmed discarding, so discard first: the unsaved-changes
+     guard then lets the navigation through without asking again. */
   const handleGoBack = useCallback(() => {
     onCloseGoBackDialog();
+    dispatch(StopPlaceActions.discardChangesForEditingStop());
     dispatch(UserActions.navigateTo("/", ""));
   }, [dispatch, onCloseGoBackDialog]);
 

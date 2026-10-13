@@ -89,7 +89,6 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
         open={confirmSaveDialogOpen}
         handleConfirm={handleSave}
         handleClose={handleCloseSaveDialog}
-        errorMessage=""
       />
 
       {/* 2. Go Back Confirmation */}

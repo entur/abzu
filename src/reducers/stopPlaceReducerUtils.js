@@ -223,6 +223,9 @@ const updateStopPlaceStateAfterMutate = (state, action, dataResource) => {
   return Object.assign({}, state, {
     current: formatHelpers.mapStopToClientStop(stopPlace, true),
     originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true),
+    // current and originalCurrent are now the same server copy, so nothing is
+    // unsaved; a stale true here would trip the unsaved-changes guard.
+    stopHasBeenModified: false,
     isCreatingPolylines: false,
     minZoom: stopPlace.geometry ? 14 : 5,
     centerPosition:

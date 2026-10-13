@@ -127,7 +127,6 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     handleOpenAddAdjacentDialog,
     handleRemoveAdjacentSite,
   } = useParentStopPlaceChildren(
-    stopPlace,
     removingChildId,
     handleCloseRemoveChildDialog,
     handleCloseAddChildDialog,

@@ -25,6 +25,7 @@ import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { MarkerPopup } from "./MarkerPopup";
 import type { NeighbourStop } from "./types";
+import { useConfirmLeave } from "../../Shared/UnsavedChangesGuard";
 
 interface NeighbourStopPopupProps {
   anchorEl: HTMLElement | null;
@@ -48,6 +49,7 @@ export const NeighbourStopPopup = ({
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const confirmLeave = useConfirmLeave();
 
   const groupCurrent = useAppSelector(
     (state) => (state as any).stopPlacesGroup?.current,
@@ -93,7 +95,7 @@ export const NeighbourStopPopup = ({
 
   const handleOpen = () => {
     onClose();
-    navigate(`/${AppRoutes.STOP_PLACE}/${stop.id}`);
+    confirmLeave(() => navigate(`/${AppRoutes.STOP_PLACE}/${stop.id}`));
   };
 
   const handleAddToGroup = () => {

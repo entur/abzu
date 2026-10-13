@@ -21,7 +21,12 @@ const localization = async (locale, localeConfigDefault, extPath) => {
     localStorage.getItem(localStorageKey) ||
     localeConfigDefault ||
     DEFAULT_LOCALE;
-  const messages = await import(`../static/lang/${preferredLocale}.json`);
+  // The default export holds every key. The module's named exports only cover
+  // keys that are valid identifiers, which silently drops dotted keys such as
+  // "humanReadableErrorCodes.ERROR_STOP_PLACE" (the save error messages).
+  const { default: messages } = await import(
+    `../static/lang/${preferredLocale}.json`
+  );
   const allMessages = await mixInExtMessages(
     messages,
     extPath,

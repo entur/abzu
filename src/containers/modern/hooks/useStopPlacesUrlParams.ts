@@ -20,12 +20,12 @@ import {
 } from "../../../actions/TiamatActions.modern";
 import formatHelpers from "../../../modelUtils/mapToClient";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { replaceQueryParam } from "../../../utils/historyEntryParams";
 import {
   getGroupOfStopPlacesIdFromURL,
   getStopPlaceIdFromURL,
-  removeIdParamFromURL,
-  updateURLWithId,
 } from "../../../utils/URLhelpers";
+import { setMarkerOnMap } from "../../../actions/StopPlaceActions.modern";
 
 /**
  * Processes URL query params on mount and when auth changes.
@@ -69,19 +69,19 @@ export const useStopPlacesUrlParams = (): void => {
             const groups = formatHelpers.mapSearchResultatGroup(
               data.groupOfStopPlaces,
             );
-            dispatch(StopPlaceActions.setMarkerOnMap(groups[0]));
+            dispatch(setMarkerOnMap(groups[0]));
           } else {
-            removeIdParamFromURL("groupOfStopPlacesId");
+            replaceQueryParam("groupOfStopPlacesId", null);
           }
         })
         .catch(() => {
-          removeIdParamFromURL("groupOfStopPlacesId");
+          replaceQueryParam("groupOfStopPlacesId", null);
         });
     } else if (stopPlaceId || (!stopPlaceId && activeSearchResult?.id)) {
       const idToLoad = stopPlaceId ?? null;
 
       if (!idToLoad && activeSearchResult?.id) {
-        updateURLWithId("stopPlaceId", activeSearchResult.id);
+        replaceQueryParam("stopPlaceId", activeSearchResult.id);
         return;
       }
 
@@ -94,16 +94,16 @@ export const useStopPlacesUrlParams = (): void => {
               data.stopPlace,
             );
             if (stopPlaces.length) {
-              dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+              dispatch(setMarkerOnMap(stopPlaces[0]));
             } else {
-              removeIdParamFromURL("stopPlaceId");
+              replaceQueryParam("stopPlaceId", null);
             }
           } else {
-            removeIdParamFromURL("stopPlaceId");
+            replaceQueryParam("stopPlaceId", null);
           }
         })
         .catch(() => {
-          removeIdParamFromURL("stopPlaceId");
+          replaceQueryParam("stopPlaceId", null);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

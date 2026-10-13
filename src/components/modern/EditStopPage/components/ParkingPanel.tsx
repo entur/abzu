@@ -29,13 +29,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import {
-  getStopPlaceWithAll,
-  saveParking,
-} from "../../../../actions/TiamatActions.modern";
 import PARKING_TYPE from "../../../../models/parkingType";
-import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
-import { useAppDispatch } from "../../../../store/hooks";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
@@ -50,7 +44,8 @@ const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
  * - parkAndRide: layout, payment process, recharging, space counts, step-free accessibility
  * - bikeParking: total capacity only
  *
- * Saves directly via saveParking mutation (no ConfirmSaveDialog).
+ * Save opens the stop's save dialog: parking is saved as part of the whole
+ * stop version, so other unsaved edits are never discarded (F-24a).
  */
 export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   parkingIndex,
@@ -61,9 +56,9 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onNameChange,
   onTypeChange,
   onCapacityChange,
+  onSave,
 }) => {
   const { formatMessage } = useIntl();
-  const dispatch = useAppDispatch();
 
   const parking = stopPlace.parking?.[parkingIndex];
   if (!parking) return null;
@@ -85,17 +80,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
 
   const stepFreeAccess =
     parking.accessibilityAssessment?.limitations?.stepFreeAccess ?? "";
-
-  const handleSave = () => {
-    if (!stopPlace.id) return;
-    const variables = mapToMutationVariables.mapParkingToVariables(
-      [parking],
-      stopPlace.id,
-    );
-    dispatch(saveParking(variables)).then(() => {
-      dispatch(getStopPlaceWithAll(stopPlace.id!, true));
-    });
-  };
 
   const isExpired = !!parking.hasExpired;
   const fieldDisabled = !canEdit || isExpired;
@@ -240,7 +224,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             color="primary"
             size="small"
             startIcon={<SaveIcon />}
-            onClick={handleSave}
+            onClick={onSave}
             sx={{ ml: "auto" }}
           >
             {formatMessage({ id: "save" })}

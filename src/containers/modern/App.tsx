@@ -37,6 +37,7 @@ import SettingsManager from "../../singletons/SettingsManager";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { history } from "../../store/store";
 import { AbzuThemeProvider } from "../../theme/ThemeProvider";
+import { UnsavedChangesGuard } from "../../components/modern/Shared/UnsavedChangesGuard";
 import GroupOfStopPlaces from "./GroupOfStopPlaces";
 import ReportPage from "./ReportPage";
 import { StopPlace } from "./StopPlace";
@@ -142,28 +143,30 @@ const App: React.FC<ModernAppProps> = () => {
   const config = { extPath, mapConfig, localeConfig };
 
   const appShell = (
-    <div>
-      <ModernHeader config={config} />
-      <GlobalLoadingIndicator />
-      <LocalLoadingIndicator />
-      <Router basename={basename} history={history}>
-        {/* Persistent map: mounted once, never torn down on route changes */}
-        <PersistentMap />
-        <Routes>
-          <Route path={path} element={<StopPlaces />} />
-          <Route
-            path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-            element={<StopPlace />}
-          />
-          <Route
-            path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-            element={<GroupOfStopPlaces />}
-          />
-          <Route path={path + AppRoutes.REPORTS} element={<ReportPage />} />
-        </Routes>
-      </Router>
-      <SnackbarWrapper />
-    </div>
+    <UnsavedChangesGuard>
+      <div>
+        <ModernHeader config={config} />
+        <GlobalLoadingIndicator />
+        <LocalLoadingIndicator />
+        <Router basename={basename} history={history}>
+          {/* Persistent map: mounted once, never torn down on route changes */}
+          <PersistentMap />
+          <Routes>
+            <Route path={path} element={<StopPlaces />} />
+            <Route
+              path={path + AppRoutes.STOP_PLACE + "/:stopId"}
+              element={<StopPlace />}
+            />
+            <Route
+              path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
+              element={<GroupOfStopPlaces />}
+            />
+            <Route path={path + AppRoutes.REPORTS} element={<ReportPage />} />
+          </Routes>
+        </Router>
+        <SnackbarWrapper />
+      </div>
+    </UnsavedChangesGuard>
   );
 
   return (

@@ -19,6 +19,7 @@ import { UserActions } from "../../../../actions";
 import { getGroupOfStopPlacesById } from "../../../../actions/TiamatActions.modern";
 import Routes from "../../../../routes";
 import { useNavigateToStopPlace } from "../useNavigateToStopPlace";
+import { useConfirmLeave } from "../UnsavedChangesGuard";
 
 /**
  * One navigation surface for both membership targets, so each layout variant
@@ -27,6 +28,7 @@ import { useNavigateToStopPlace } from "../useNavigateToStopPlace";
  */
 export const useMembershipNavigation = () => {
   const dispatch = useDispatch() as any;
+  const confirmLeave = useConfirmLeave();
   const {
     loading: parentLoading,
     loadingName: parentLoadingName,
@@ -37,25 +39,26 @@ export const useMembershipNavigation = () => {
   const [groupLoadingName, setGroupLoadingName] = useState("");
 
   const goToGroup = useCallback(
-    (id: string, name: string) => {
-      flushSync(() => {
-        setGroupLoading(true);
-        setGroupLoadingName(name);
-      });
-
-      dispatch(getGroupOfStopPlacesById(id))
-        .then(() => {
-          dispatch(
-            UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, id),
-          );
-          // Loading stays true — this component unmounts when the group renders.
-        })
-        .catch(() => {
-          setGroupLoading(false);
-          setGroupLoadingName("");
+    (id: string, name: string) =>
+      confirmLeave(() => {
+        flushSync(() => {
+          setGroupLoading(true);
+          setGroupLoadingName(name);
         });
-    },
-    [dispatch],
+
+        dispatch(getGroupOfStopPlacesById(id))
+          .then(() => {
+            dispatch(
+              UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, id),
+            );
+            // Loading stays true — this component unmounts when the group renders.
+          })
+          .catch(() => {
+            setGroupLoading(false);
+            setGroupLoadingName("");
+          });
+      }),
+    [dispatch, confirmLeave],
   );
 
   return {

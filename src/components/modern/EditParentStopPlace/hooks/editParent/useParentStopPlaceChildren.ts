@@ -14,11 +14,7 @@ limitations under the Licence. */
 
 import { useCallback } from "react";
 import { StopPlaceActions, UserActions } from "../../../../../actions";
-import {
-  getAddStopPlaceInfo,
-  getStopPlaceVersions,
-  removeStopPlaceFromMultiModalStop,
-} from "../../../../../actions/TiamatActions.modern";
+import { getAddStopPlaceInfo } from "../../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../../store/hooks";
 
 /**
@@ -26,24 +22,19 @@ import { useAppDispatch } from "../../../../../store/hooks";
  * Handles adding/removing children and adjacent connections
  */
 export const useParentStopPlaceChildren = (
-  stopPlace: any,
   removingChildId: string,
   onCloseRemoveChildDialog: () => void,
   onCloseAddChildDialog: () => void,
 ) => {
   const dispatch = useAppDispatch();
 
-  // Remove child handler
+  /* Detaching is staged like attaching (F-37): it only changes local state,
+     so Discard undoes it and a pending attach survives. Save sends both. */
   const handleRemoveChild = useCallback(() => {
-    if (!stopPlace?.id || !removingChildId) return;
-
-    dispatch(
-      removeStopPlaceFromMultiModalStop(stopPlace.id, removingChildId),
-    ).then(() => {
-      dispatch(getStopPlaceVersions(stopPlace.id!));
-      onCloseRemoveChildDialog();
-    });
-  }, [stopPlace, removingChildId, dispatch, onCloseRemoveChildDialog]);
+    if (!removingChildId) return;
+    dispatch(StopPlaceActions.removeChildFromParentStopPlace(removingChildId));
+    onCloseRemoveChildDialog();
+  }, [removingChildId, dispatch, onCloseRemoveChildDialog]);
 
   // Add children handler — fetches full stop place data and adds to local state
   // with notSaved: true so the save button can persist them via addToMultiModalStopPlace

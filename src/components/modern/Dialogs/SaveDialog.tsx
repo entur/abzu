@@ -25,13 +25,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
+import { MutationErrorCodes } from "../../../models/ErrorCodes";
+
+/** Matches Tiamat's stop_place.version_comment varchar(255) column (F-39). */
+const VERSION_COMMENT_MAX_LENGTH = 255;
+
+const isKnownErrorCode = (error: unknown): error is string =>
+  typeof error === "string" &&
+  Object.values(MutationErrorCodes).includes(error);
 
 export interface SaveDialogProps {
   open: boolean;
   handleClose: () => void;
-  handleConfirm: (userInput: { comment: string }) => void;
+  /** May return a promise that rejects with a MutationErrorCodes value; the
+      dialog then stays open, shows the error and lets the user retry. */
+  handleConfirm: (userInput: { comment: string }) => void | Promise<void>;
   errorMessage?: string;
 }
 
@@ -44,28 +54,40 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
   const { formatMessage } = useIntl();
   const [comment, setComment] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [saveErrorCode, setSaveErrorCode] = useState("");
 
-  const handleSave = () => {
+  /* The parent closes the dialog through `open`, so every opening starts
+     clean; otherwise a spinner left over from the last save blocks Confirm. */
+  useEffect(() => {
+    if (!open) return;
+    setComment("");
+    setIsSaving(false);
+    setSaveErrorCode("");
+  }, [open]);
+
+  const handleSave = async () => {
     setIsSaving(true);
-    handleConfirm({ comment });
+    setSaveErrorCode("");
+    try {
+      await handleConfirm({ comment });
+    } catch (error) {
+      setSaveErrorCode(
+        isKnownErrorCode(error) ? error : MutationErrorCodes.ERROR_STOP_PLACE,
+      );
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCloseDialog = () => {
-    setComment("");
-    setIsSaving(false);
+    if (isSaving) return;
     handleClose();
   };
 
-  const getErrorMessage = () => {
-    if (errorMessage) {
-      return formatMessage({
-        id: `humanReadableErrorCodes.${errorMessage}`,
-      });
-    }
-    return "";
-  };
-
-  const errorMessageLabel = getErrorMessage();
+  const visibleErrorCode = saveErrorCode || errorMessage;
+  const errorMessageLabel = visibleErrorCode
+    ? formatMessage({ id: `humanReadableErrorCodes.${visibleErrorCode}` })
+    : "";
 
   return (
     <Dialog open={open} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
@@ -73,7 +95,11 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "save_dialog_title" })}
         </Typography>
-        <IconButton onClick={handleCloseDialog} size="small">
+        <IconButton
+          onClick={handleCloseDialog}
+          disabled={isSaving}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
@@ -87,6 +113,11 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
             autoFocus
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            helperText={`${comment.length}/${VERSION_COMMENT_MAX_LENGTH}`}
+            slotProps={{
+              htmlInput: { maxLength: VERSION_COMMENT_MAX_LENGTH },
+              formHelperText: { sx: { textAlign: "right" } },
+            }}
             sx={{ mb: 2 }}
           />
 
@@ -97,18 +128,18 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
           )}
 
           <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
-            <Button variant="outlined" onClick={handleCloseDialog}>
+            <Button
+              variant="outlined"
+              onClick={handleCloseDialog}
+              disabled={isSaving}
+            >
               {formatMessage({ id: "cancel" })}
             </Button>
             <Button
               variant="contained"
               onClick={handleSave}
               disabled={isSaving}
-              startIcon={
-                isSaving && !errorMessage ? (
-                  <CircularProgress size={20} />
-                ) : null
-              }
+              startIcon={isSaving ? <CircularProgress size={20} /> : null}
             >
               {formatMessage({ id: "confirm" })}
             </Button>

@@ -19,9 +19,14 @@ import { createReduxHistoryContext } from "redux-first-history";
 import loggerMiddleware from "redux-logger";
 import { createRootReducer } from "../reducers";
 
+/* Exported so the modern unsaved-changes guard can call history.block(),
+   which also covers back/forward and reload. The redux history wrapper only
+   proxies navigation, so blocking has to happen on this instance. */
+export const browserHistory = createBrowserHistory();
+
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
-    history: createBrowserHistory(),
+    history: browserHistory,
   });
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();

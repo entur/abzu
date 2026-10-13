@@ -25,8 +25,8 @@ import { useAuth } from "../../../auth/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
 import { useTheme as useAbzuTheme } from "../../../theme/ThemeProvider";
-import ConfirmDialog from "../../Dialogs/ConfirmDialog";
 import "../modern.css";
+import { useConfirmLeave } from "../Shared/UnsavedChangesGuard";
 import {
   headerLogoContainer,
   headerSearchContainer,
@@ -65,57 +65,11 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const headerSlotContent = useHeaderSlotContent();
   const getLastMapLocation = useLastMapLocation();
 
-  /* Stop places and parent stop places share one dirty flag and one route
-     prefix; groups have their own of each. Both have to be consulted, or
-     leaving a half-edited group discards it without asking. */
-  const stopHasBeenModified = useSelector(
-    (state: any) => state.stopPlace.stopHasBeenModified,
-  );
-  const groupHasBeenModified = useSelector(
-    (state: any) => state.stopPlacesGroup.isModified,
-  );
   const pathname = useSelector((state: any) => state.router.location.pathname);
+  const confirmLeave = useConfirmLeave();
 
   const isDisplayingReports = pathname === `/${AppRoutes.REPORTS}`;
-  const isEditingStopPlace = pathname.includes(`/${AppRoutes.STOP_PLACE}/`);
-  const isEditingGroup = pathname.includes(
-    `/${AppRoutes.GROUP_OF_STOP_PLACE}/`,
-  );
-
-  const hasUnsavedChanges =
-    (isEditingStopPlace && stopHasBeenModified) ||
-    (isEditingGroup && groupHasBeenModified);
   const preferredName = useSelector((state: any) => state.user.preferredName);
-
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = React.useState(false);
-  const [actionOnDone, setActionOnDone] = React.useState<string>("GoToMain");
-
-  const handleConfirmChangeRoute = (nextAction: () => void, action: string) => {
-    if (!hasUnsavedChanges) {
-      nextAction();
-      return;
-    }
-    setIsConfirmDialogOpen(true);
-    setActionOnDone(action);
-  };
-
-  const handleConfirm = () => {
-    setIsConfirmDialogOpen(false);
-
-    switch (actionOnDone) {
-      case "GoToMain":
-        goToMain();
-        break;
-      case "GoToReports":
-        goToReports();
-        break;
-      case "ReturnToMap":
-        returnToMap();
-        break;
-      default:
-        break;
-    }
-  };
 
   const goToMain = () => {
     dispatch(UserActions.navigateTo("/", ""));
@@ -171,7 +125,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             <AppLogo
               logo={logo}
               logoHeight={logoHeight}
-              onClick={() => handleConfirmChangeRoute(goToMain, "GoToMain")}
+              onClick={() => confirmLeave(goToMain)}
               isMobile={isMobile}
             />
           </Box>
@@ -214,27 +168,10 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
         </Toolbar>
 
         <NavigationLine
-          onReturnToMap={() =>
-            handleConfirmChangeRoute(returnToMap, "ReturnToMap")
-          }
-          onNavigateToReports={() =>
-            handleConfirmChangeRoute(goToReports, "GoToReports")
-          }
+          onReturnToMap={() => confirmLeave(returnToMap)}
+          onNavigateToReports={() => confirmLeave(goToReports)}
         />
       </AppBar>
-
-      <ConfirmDialog
-        open={isConfirmDialogOpen}
-        handleClose={() => setIsConfirmDialogOpen(false)}
-        handleConfirm={handleConfirm}
-        messagesById={{
-          title: "discard_changes_title",
-          body: "discard_changes_body",
-          confirm: "discard_changes_confirm",
-          cancel: "discard_changes_cancel",
-        }}
-        intl={{ formatMessage }}
-      />
     </>
   );
 };

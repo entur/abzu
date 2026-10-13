@@ -19,6 +19,8 @@ import { StopPlaceActions, UserActions } from "../../../actions";
 import { getStopPlaceById } from "../../../actions/TiamatActions.modern";
 import formatHelpers from "../../../modelUtils/mapToClient";
 import Routes from "../../../routes";
+import { useConfirmLeave } from "./UnsavedChangesGuard";
+import { setMarkerOnMap } from "../../../actions/StopPlaceActions.modern";
 
 /**
  * Shared hook for navigating to a stop place with loading feedback.
@@ -28,6 +30,7 @@ import Routes from "../../../routes";
  */
 export const useNavigateToStopPlace = () => {
   const dispatch = useDispatch() as any;
+  const confirmLeave = useConfirmLeave();
   const [loading, setLoading] = useState(false);
   const [loadingName, setLoadingName] = useState("");
   const [pendingNavigationId, setPendingNavigationId] = useState<string | null>(
@@ -47,32 +50,33 @@ export const useNavigateToStopPlace = () => {
   }, [currentStopId, pendingNavigationId]);
 
   const navigateTo = useCallback(
-    (id: string, name: string) => {
-      flushSync(() => {
-        setLoading(true);
-        setLoadingName(name);
-      });
-
-      dispatch(getStopPlaceById(id))
-        .then(({ data }: any) => {
-          if (data?.stopPlace?.length) {
-            const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
-              data.stopPlace,
-            );
-            if (stopPlaces.length) {
-              dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
-            }
-          }
-          dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
-          setPendingNavigationId(id);
-        })
-        .catch(() => {
-          setLoading(false);
-          setLoadingName("");
-          setPendingNavigationId(null);
+    (id: string, name: string) =>
+      confirmLeave(() => {
+        flushSync(() => {
+          setLoading(true);
+          setLoadingName(name);
         });
-    },
-    [dispatch],
+
+        dispatch(getStopPlaceById(id))
+          .then(({ data }: any) => {
+            if (data?.stopPlace?.length) {
+              const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
+                data.stopPlace,
+              );
+              if (stopPlaces.length) {
+                dispatch(setMarkerOnMap(stopPlaces[0]));
+              }
+            }
+            dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
+            setPendingNavigationId(id);
+          })
+          .catch(() => {
+            setLoading(false);
+            setLoadingName("");
+            setPendingNavigationId(null);
+          });
+      }),
+    [dispatch, confirmLeave],
   );
 
   return { loading, loadingName, navigateTo };
