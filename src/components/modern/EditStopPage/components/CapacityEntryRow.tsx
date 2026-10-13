@@ -107,6 +107,18 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
           disabled={disabled}
           onChange={(value) => change("parkingUserType", value)}
         />
+      </Box>
+      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        <TextField
+          size="small"
+          type="number"
+          fullWidth
+          label={formatMessage({ id: "parking_number_of_spaces" })}
+          disabled={disabled}
+          value={countValue(entry.numberOfSpaces)}
+          onChange={(e) => changeCount("numberOfSpaces", e.target.value)}
+          slotProps={{ htmlInput: { min: 0 }, inputLabel: { shrink: true } }}
+        />
         <Tooltip title={formatMessage({ id: "parking_capacity_entry_remove" })}>
           <span>
             <IconButton
@@ -129,16 +141,6 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
           </span>
         </Tooltip>
       </Box>
-      <TextField
-        size="small"
-        type="number"
-        fullWidth
-        label={formatMessage({ id: "parking_number_of_spaces" })}
-        disabled={disabled}
-        value={countValue(entry.numberOfSpaces)}
-        onChange={(e) => changeCount("numberOfSpaces", e.target.value)}
-        slotProps={{ htmlInput: { min: 0 }, inputLabel: { shrink: true } }}
-      />
       {showRechargeCount && (
         <TextField
           size="small"
