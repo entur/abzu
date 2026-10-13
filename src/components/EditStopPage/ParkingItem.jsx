@@ -26,6 +26,7 @@ import {
   AccessibilityLimitation as AccessibilityLimitationEnum,
   AccessibilityLimitationType,
 } from "../../models/AccessibilityLimitation";
+import { capacityEntriesTotal } from "../../models/parkingCapacity";
 import { parkingTitleMessageId } from "../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../models/parkingVehicleType";
 import { getIn } from "../../utils";
@@ -79,38 +80,36 @@ class ParkingItem extends React.Component {
     dispatch(StopPlaceActions.changeParkingRechargingAvailable(index, value));
   }
 
-  handleSetNumberOfSpaces(value) {
-    if (value && value < 0) {
-      value = 0;
-    }
-    const { dispatch, index } = this.props;
-    dispatch(StopPlaceActions.changeParkingNumberOfSpaces(index, value));
-  }
-
-  handleSetNumberOfSpacesWithRechargePoint(value) {
-    if (value < 0) {
+  handleChangeCapacityEntry(entryIndex, field, value) {
+    const isCount =
+      field === "numberOfSpaces" || field === "numberOfSpacesWithRechargePoint";
+    if (isCount && value !== "" && Number(value) < 0) {
       value = 0;
     }
     const { dispatch, index } = this.props;
     dispatch(
-      StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint(
+      StopPlaceActions.changeParkingCapacityEntry(
         index,
+        entryIndex,
+        field,
         value,
       ),
     );
   }
 
-  handleSetNumberOfSpacesForRegisteredDisabledUserType(value) {
-    if (value && value < 0) {
-      value = 0;
-    }
+  handleAddCapacityEntry() {
     const { dispatch, index } = this.props;
-    dispatch(
-      StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
-        index,
-        value,
-      ),
-    );
+    dispatch(StopPlaceActions.addParkingCapacityEntry(index));
+  }
+
+  handleRemoveCapacityEntry(entryIndex) {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.removeParkingCapacityEntry(index, entryIndex));
+  }
+
+  handleClearRechargePointCounts() {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.clearParkingRechargePointCounts(index));
   }
 
   handleDeleteParking() {
@@ -175,7 +174,9 @@ class ParkingItem extends React.Component {
       parkingVehicleTypeLabel(type, formatMessage),
     );
 
-    let totalCapacity = parking.totalCapacity || 0;
+    const totalCapacity = parking.hasFullFieldSet
+      ? capacityEntriesTotal(parking)
+      : (parking.totalCapacity ?? null);
 
     const stepFreeAccess = getIn(
       parking,
@@ -184,25 +185,6 @@ class ParkingItem extends React.Component {
       ),
       AccessibilityLimitationType.UNKNOWN,
     );
-
-    if (parking.hasFullFieldSet) {
-      const numberOfSpaces = Number(parking.numberOfSpaces);
-      const numberOfSpacesForRegisteredDisabledUserType = Number(
-        parking.numberOfSpacesForRegisteredDisabledUserType,
-      );
-
-      if (
-        !isNaN(numberOfSpaces) &&
-        !isNaN(numberOfSpacesForRegisteredDisabledUserType)
-      ) {
-        totalCapacity =
-          numberOfSpaces + numberOfSpacesForRegisteredDisabledUserType;
-      } else if (!isNaN(numberOfSpaces)) {
-        totalCapacity = numberOfSpaces;
-      } else if (!isNaN(numberOfSpacesForRegisteredDisabledUserType)) {
-        totalCapacity = numberOfSpacesForRegisteredDisabledUserType;
-      }
-    }
 
     return (
       <Item handleChangeCoordinates={this.handleChangeCoordinates}>
@@ -236,8 +218,8 @@ class ParkingItem extends React.Component {
           >
             <Code
               type="privateCode"
-              value={`${totalCapacity}`}
-              defaultValue={translations.notAsssigned}
+              value={totalCapacity === null ? null : `${totalCapacity}`}
+              defaultValue={formatMessage({ id: "not_assigned" })}
             />
           </ToolTippable>
           <span
@@ -283,17 +265,7 @@ class ParkingItem extends React.Component {
                 parkingPaymentProcess={parking.parkingPaymentProcess}
                 rechargingAvailable={parking.rechargingAvailable}
                 totalCapacity={totalCapacity}
-                numberOfSpaces={parking.numberOfSpaces}
-                numberOfSpacesWithRechargePoint={
-                  parking.numberOfSpacesWithRechargePoint
-                }
-                numberOfSpacesForRegisteredDisabledUserType={
-                  parking.numberOfSpacesForRegisteredDisabledUserType
-                }
-                numberOfSpacesIsAmbiguous={parking.numberOfSpacesIsAmbiguous}
-                numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous={
-                  parking.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous
-                }
+                capacityEntries={parking.capacityEntries || []}
                 handleSetParkingLayout={this.handleSetParkingLayout.bind(this)}
                 handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(
                   this,
@@ -301,13 +273,14 @@ class ParkingItem extends React.Component {
                 handleSetRechargingAvailable={this.handleSetRechargingAvailable.bind(
                   this,
                 )}
-                handleSetNumberOfSpaces={this.handleSetNumberOfSpaces.bind(
+                handleClearRechargePointCounts={this.handleClearRechargePointCounts.bind(
                   this,
                 )}
-                handleSetNumberOfSpacesWithRechargePoint={this.handleSetNumberOfSpacesWithRechargePoint.bind(
+                handleChangeCapacityEntry={this.handleChangeCapacityEntry.bind(
                   this,
                 )}
-                handleSetNumberOfSpacesForRegisteredDisabledUserType={this.handleSetNumberOfSpacesForRegisteredDisabledUserType.bind(
+                handleAddCapacityEntry={this.handleAddCapacityEntry.bind(this)}
+                handleRemoveCapacityEntry={this.handleRemoveCapacityEntry.bind(
                   this,
                 )}
                 stepFreeAccess={stepFreeAccess}
@@ -317,11 +290,7 @@ class ParkingItem extends React.Component {
               <TextField
                 variant="standard"
                 hintText={translations.capacity}
-                disabled={
-                  disabled ||
-                  parking.hasExpired ||
-                  parking.numberOfSpacesIsAmbiguous
-                }
+                disabled={disabled || parking.hasExpired}
                 label={translations.capacity}
                 onChange={(event) => {
                   this.handleSetTotalCapacity(event.target.value);

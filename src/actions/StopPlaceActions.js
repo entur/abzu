@@ -492,38 +492,32 @@ StopPlaceActions.changeParkingRechargingAvailable =
     );
   };
 
-StopPlaceActions.changeParkingNumberOfSpaces =
-  (index, numberOfSpaces) => (dispatch) => {
+StopPlaceActions.changeParkingCapacityEntry =
+  (index, entryIndex, field, value) => (dispatch) => {
     dispatch(
-      createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES, {
+      createThunk(types.CHANGED_PARKING_CAPACITY_ENTRY, {
         index,
-        numberOfSpaces,
+        entryIndex,
+        field,
+        value,
       }),
     );
   };
 
-StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint =
-  (index, numberOfSpacesWithRechargePoint) => (dispatch) => {
+StopPlaceActions.addParkingCapacityEntry = (index) => (dispatch) => {
+  dispatch(createThunk(types.ADDED_PARKING_CAPACITY_ENTRY, { index }));
+};
+
+StopPlaceActions.removeParkingCapacityEntry =
+  (index, entryIndex) => (dispatch) => {
     dispatch(
-      createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES_WITH_RECHARGE_POINT, {
-        index,
-        numberOfSpacesWithRechargePoint,
-      }),
+      createThunk(types.REMOVED_PARKING_CAPACITY_ENTRY, { index, entryIndex }),
     );
   };
 
-StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType =
-  (index, numberOfSpacesForRegisteredDisabledUserType) => (dispatch) => {
-    dispatch(
-      createThunk(
-        types.CHANGED_PARKING_NUMBER_OF_SPACES_FOR_REGISTERED_DISABLED_USER_TYPE,
-        {
-          index,
-          numberOfSpacesForRegisteredDisabledUserType,
-        },
-      ),
-    );
-  };
+StopPlaceActions.clearParkingRechargePointCounts = (index) => (dispatch) => {
+  dispatch(createThunk(types.CLEARED_PARKING_RECHARGE_POINT_COUNTS, { index }));
+};
 
 StopPlaceActions.clearLastMutatedStopPlaceId = () => (dispatch) => {
   dispatch(createThunk(types.CLEAR_LAST_MUTATED_STOP_PLACE_IDS, null));

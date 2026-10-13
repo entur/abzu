@@ -112,70 +112,95 @@ const bicycleParking = {
   ],
 };
 
+const entry = (fields) => ({
+  parkingVehicleType: null,
+  parkingUserType: null,
+  parkingStayType: null,
+  numberOfSpaces: null,
+  numberOfSpacesWithRechargePoint: null,
+  ...fields,
+});
+
 describe("Parking - models", () => {
-  test("gives no count when the parking holds no entry for the user type", () => {
-    const parking = new Parking(parkAndRideWithOnlyAllUsersSpaces);
+  test("gives one capacity entry for each entry Tiamat holds", () => {
+    const clientParking = new Parking(parkAndRideWithAllUserTypes).toClient();
 
-    expect(parking.numberOfSpacesForRegisteredDisabledUserType).toBeUndefined();
+    expect(clientParking.capacityEntries).toEqual([
+      entry({
+        parkingUserType: "allUsers",
+        numberOfSpaces: 100,
+        numberOfSpacesWithRechargePoint: 4,
+      }),
+      entry({ parkingUserType: "registeredDisabled", numberOfSpaces: 6 }),
+    ]);
   });
 
-  test("keeps a null field value when the user type does match", () => {
-    const parking = new Parking(parkAndRideWithOnlyAllUsersSpaces);
-
-    expect(parking.numberOfSpacesWithRechargePoint).toBeNull();
-  });
-
-  test("maps a park and ride that has no disabled spaces", () => {
+  test("keeps a null count as null", () => {
     const clientParking = new Parking(
       parkAndRideWithOnlyAllUsersSpaces,
     ).toClient();
 
-    expect(clientParking.numberOfSpaces).toEqual(2049);
-    expect(clientParking.numberOfSpacesWithRechargePoint).toBeNull();
-    expect(
-      clientParking.numberOfSpacesForRegisteredDisabledUserType,
-    ).toBeUndefined();
+    expect(clientParking.capacityEntries).toEqual([
+      entry({ parkingUserType: "allUsers", numberOfSpaces: 2049 }),
+    ]);
   });
 
-  test("keeps the counts of a park and ride that has every user type", () => {
-    const clientParking = new Parking(parkAndRideWithAllUserTypes).toClient();
+  test("keeps every entry that shares a user type, with its vehicle and stay type", () => {
+    const clientParking = new Parking({
+      ...parkAndRideWithAllUserTypes,
+      parkingProperties: [
+        {
+          spaces: [
+            {
+              parkingUserType: "allUsers",
+              parkingVehicleType: "car",
+              parkingStayType: "longTerm",
+              numberOfSpaces: 247,
+            },
+            {
+              parkingUserType: "allUsers",
+              parkingVehicleType: "motorcycle",
+              numberOfSpaces: 10,
+            },
+          ],
+        },
+      ],
+    }).toClient();
 
-    expect(clientParking.numberOfSpaces).toEqual(100);
-    expect(clientParking.numberOfSpacesWithRechargePoint).toEqual(4);
-    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
-      6,
-    );
+    expect(clientParking.capacityEntries).toEqual([
+      entry({
+        parkingUserType: "allUsers",
+        parkingVehicleType: "car",
+        parkingStayType: "longTerm",
+        numberOfSpaces: 247,
+      }),
+      entry({
+        parkingUserType: "allUsers",
+        parkingVehicleType: "motorcycle",
+        numberOfSpaces: 10,
+      }),
+    ]);
   });
 
-  test("falls back to the total capacity when there are no parking properties", () => {
+  test("gives no capacity entry when there are no parking properties", () => {
     const clientParking = new Parking(
       carParkingWithoutParkingProperties,
     ).toClient();
 
-    expect(clientParking.numberOfSpaces).toEqual(40);
-    expect(clientParking.numberOfSpacesWithRechargePoint).toBeUndefined();
-    expect(
-      clientParking.numberOfSpacesForRegisteredDisabledUserType,
-    ).toBeUndefined();
+    expect(clientParking.capacityEntries).toEqual([]);
+    expect(clientParking.totalCapacity).toEqual(40);
   });
 
-  test("maps a park and ride whose parking properties carry no capacity list", () => {
+  test("gives no capacity entry when the parking properties carry no capacity list", () => {
     const clientParking = new Parking(carParkingWithoutSpaces).toClient();
 
-    expect(clientParking.numberOfSpaces).toBeUndefined();
-    expect(
-      clientParking.numberOfSpacesForRegisteredDisabledUserType,
-    ).toBeUndefined();
+    expect(clientParking.capacityEntries).toEqual([]);
   });
 
-  test("leaves the space counts empty for a parking that is not a park and ride", () => {
+  test("gives no capacity entry for a parking that is not a park and ride", () => {
     const clientParking = new Parking(bicycleParking).toClient();
 
     expect(clientParking.parkingType).toEqual("bikeParking");
-    expect(clientParking.numberOfSpaces).toBeNull();
-    expect(clientParking.numberOfSpacesWithRechargePoint).toBeNull();
-    expect(
-      clientParking.numberOfSpacesForRegisteredDisabledUserType,
-    ).toBeNull();
+    expect(clientParking.capacityEntries).toEqual([]);
   });
 });

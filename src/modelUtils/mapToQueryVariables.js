@@ -357,6 +357,35 @@ helpers.mergeParkingSpaces = (existingProperties, updates) => {
   return properties;
 };
 
+// Tiamat replaces every stored entry with the entries a save sends. So send
+// each row the editor shows, in order, and keep every field of the row.
+helpers.capacityEntriesToProperties = (capacityEntries, existingProperties) => {
+  const [first, ...rest] = existingProperties?.length
+    ? existingProperties
+    : [{}];
+  const spaces = capacityEntries.map((entry) => ({
+    parkingVehicleType: entry.parkingVehicleType ?? null,
+    parkingUserType: entry.parkingUserType ?? null,
+    parkingStayType: entry.parkingStayType ?? null,
+    numberOfSpaces: helpers.toCount(entry.numberOfSpaces),
+    numberOfSpacesWithRechargePoint: helpers.toCount(
+      entry.numberOfSpacesWithRechargePoint,
+    ),
+  }));
+
+  return [{ ...first, spaces }, ...rest];
+};
+
+helpers.toCount = (value) => {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  const count = Number(value);
+
+  return isNaN(count) ? null : count;
+};
+
 helpers.mapParkingToVariables = (parkingArr, parentRef) => {
   return parkingArr.map((source) => {
     let parking = {
@@ -390,25 +419,16 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.lighting = source.lighting;
     }
 
+    const capacityEntries = source.capacityEntries || [];
+    const storedSpaces = source.parkingProperties?.[0]?.spaces || [];
+
     if (
-      source.numberOfSpaces ||
-      source.numberOfSpacesWithRechargePoint ||
-      source.numberOfSpacesForRegisteredDisabledUserType
+      source.hasFullFieldSet &&
+      (capacityEntries.length > 0 || storedSpaces.length > 0)
     ) {
-      parking.parkingProperties = helpers.mergeParkingSpaces(
+      parking.parkingProperties = helpers.capacityEntriesToProperties(
+        capacityEntries,
         source.parkingProperties,
-        [
-          {
-            parkingUserType: PARKING_USER_TYPE.ALL_USERS,
-            numberOfSpaces: source.numberOfSpaces,
-            numberOfSpacesWithRechargePoint:
-              source.numberOfSpacesWithRechargePoint,
-          },
-          {
-            parkingUserType: PARKING_USER_TYPE.REGISTERED_DISABLED,
-            numberOfSpaces: source.numberOfSpacesForRegisteredDisabledUserType,
-          },
-        ],
       );
     } else if (source.hasFullFieldSet === false) {
       // The bicycle editor edits one "capacity" number, and it shows the value
