@@ -789,5 +789,7 @@
   "parking_user_type_allUsers": "All users",
   "parking_user_type_registeredDisabled": "Registered disabled",
   "parking_capacity_entry_add": "Add capacity row",
-  "parking_capacity_entry_remove": "Remove capacity row"
+  "parking_capacity_entry_remove": "Remove capacity row",
+  "parking_capacity_entry_spaces": "Spaces",
+  "parking_capacity_entry_spaces_with_recharge_point": "With recharge point"
 }

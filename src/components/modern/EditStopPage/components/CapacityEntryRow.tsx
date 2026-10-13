@@ -76,13 +76,37 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
   const showRechargeCount =
     rechargingAvailable || hasCount(entry.numberOfSpacesWithRechargePoint);
 
+  const removeButton = (
+    <Tooltip title={formatMessage({ id: "parking_capacity_entry_remove" })}>
+      <span>
+        <IconButton
+          aria-label={formatMessage({ id: "parking_capacity_entry_remove" })}
+          disabled={disabled}
+          onClick={() =>
+            dispatch(
+              StopPlaceActions.removeParkingCapacityEntry(
+                parkingIndex,
+                entryIndex,
+              ),
+            )
+          }
+          size="small"
+        >
+          <RemoveCircleIcon fontSize="small" />
+        </IconButton>
+      </span>
+    </Tooltip>
+  );
+
   return (
     <Box
       data-testid="parking-capacity-entry"
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 1.5,
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr) auto",
+        alignItems: "center",
+        columnGap: 1,
+        rowGap: 1.5,
         p: 1,
         pt: 1.5,
         border: 1,
@@ -90,64 +114,38 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
         borderRadius: 1,
       }}
     >
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-        <CapacityEntryTypeSelect
-          label={formatMessage({ id: "parking_vehicle_type" })}
-          value={entry.parkingVehicleType}
-          options={parkingVehicleTypes}
-          optionLabel={parkingVehicleTypeLabel}
-          disabled={disabled}
-          onChange={(value) => change("parkingVehicleType", value)}
-        />
-        <CapacityEntryTypeSelect
-          label={formatMessage({ id: "parking_user_type" })}
-          value={entry.parkingUserType}
-          options={parkingUserTypes}
-          optionLabel={parkingUserTypeLabel}
-          disabled={disabled}
-          onChange={(value) => change("parkingUserType", value)}
-        />
-      </Box>
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+      <CapacityEntryTypeSelect
+        label={formatMessage({ id: "parking_vehicle_type" })}
+        value={entry.parkingVehicleType}
+        options={parkingVehicleTypes}
+        optionLabel={parkingVehicleTypeLabel}
+        disabled={disabled}
+        onChange={(value) => change("parkingVehicleType", value)}
+      />
+      <CapacityEntryTypeSelect
+        label={formatMessage({ id: "parking_user_type" })}
+        value={entry.parkingUserType}
+        options={parkingUserTypes}
+        optionLabel={parkingUserTypeLabel}
+        disabled={disabled}
+        onChange={(value) => change("parkingUserType", value)}
+      />
+      <Box />
+      <TextField
+        size="small"
+        type="number"
+        label={formatMessage({ id: "parking_capacity_entry_spaces" })}
+        disabled={disabled}
+        value={countValue(entry.numberOfSpaces)}
+        onChange={(e) => changeCount("numberOfSpaces", e.target.value)}
+        slotProps={{ htmlInput: { min: 0 }, inputLabel: { shrink: true } }}
+      />
+      {showRechargeCount ? (
         <TextField
           size="small"
           type="number"
-          fullWidth
-          label={formatMessage({ id: "parking_number_of_spaces" })}
-          disabled={disabled}
-          value={countValue(entry.numberOfSpaces)}
-          onChange={(e) => changeCount("numberOfSpaces", e.target.value)}
-          slotProps={{ htmlInput: { min: 0 }, inputLabel: { shrink: true } }}
-        />
-        <Tooltip title={formatMessage({ id: "parking_capacity_entry_remove" })}>
-          <span>
-            <IconButton
-              aria-label={formatMessage({
-                id: "parking_capacity_entry_remove",
-              })}
-              disabled={disabled}
-              onClick={() =>
-                dispatch(
-                  StopPlaceActions.removeParkingCapacityEntry(
-                    parkingIndex,
-                    entryIndex,
-                  ),
-                )
-              }
-              size="small"
-            >
-              <RemoveCircleIcon fontSize="small" />
-            </IconButton>
-          </span>
-        </Tooltip>
-      </Box>
-      {showRechargeCount && (
-        <TextField
-          size="small"
-          type="number"
-          fullWidth
           label={formatMessage({
-            id: "parking_number_of_spaces_with_recharge_point",
+            id: "parking_capacity_entry_spaces_with_recharge_point",
           })}
           disabled={disabled || !rechargingAvailable}
           value={countValue(entry.numberOfSpacesWithRechargePoint)}
@@ -156,7 +154,10 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
           }
           slotProps={{ htmlInput: { min: 0 }, inputLabel: { shrink: true } }}
         />
+      ) : (
+        <Box />
       )}
+      {removeButton}
     </Box>
   );
 };

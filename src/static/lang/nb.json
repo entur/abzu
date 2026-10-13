@@ -789,5 +789,7 @@
   "parking_user_type_allUsers": "Alle brukere",
   "parking_user_type_registeredDisabled": "Registrerte funksjonshemmede",
   "parking_capacity_entry_add": "Legg til kapasitetsrad",
-  "parking_capacity_entry_remove": "Fjern kapasitetsrad"
+  "parking_capacity_entry_remove": "Fjern kapasitetsrad",
+  "parking_capacity_entry_spaces": "Plasser",
+  "parking_capacity_entry_spaces_with_recharge_point": "Med ladestasjon"
 }

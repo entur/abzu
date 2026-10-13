@@ -58,11 +58,11 @@ const renderRow = (
 
 const rechargeField = () =>
   screen.queryByLabelText(
-    enMessages["parking_number_of_spaces_with_recharge_point"],
+    enMessages["parking_capacity_entry_spaces_with_recharge_point"],
   );
 
 const spacesField = () =>
-  screen.getByLabelText(enMessages["parking_number_of_spaces"]);
+  screen.getByLabelText(enMessages["parking_capacity_entry_spaces"]);
 
 describe("CapacityEntryRow - the modern capacity row", () => {
   test("shows the stored values of the entry", () => {

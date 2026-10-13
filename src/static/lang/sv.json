@@ -785,5 +785,7 @@
   "parking_user_type_allUsers": "Alla användare",
   "parking_user_type_registeredDisabled": "Registrerade funktionshindrade",
   "parking_capacity_entry_add": "Lägg till kapacitetsrad",
-  "parking_capacity_entry_remove": "Ta bort kapacitetsrad"
+  "parking_capacity_entry_remove": "Ta bort kapacitetsrad",
+  "parking_capacity_entry_spaces": "Platser",
+  "parking_capacity_entry_spaces_with_recharge_point": "Med laddstation"
 }
