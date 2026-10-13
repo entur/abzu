@@ -56,6 +56,11 @@ const renderRow = (
   return () => store.getState();
 };
 
+const rechargeField = () =>
+  screen.queryByLabelText(
+    enMessages["parking_number_of_spaces_with_recharge_point"],
+  );
+
 const spacesField = () =>
   screen.getByLabelText(enMessages["parking_number_of_spaces"]);
 
@@ -124,15 +129,27 @@ describe("CapacityEntryRow - the modern capacity row", () => {
     ]);
   });
 
-  test("the recharge count is disabled when recharging is not available", () => {
+  test("the recharge count is hidden when recharging is not available and the entry holds none", () => {
     renderRow(entry({ numberOfSpaces: 30 }), { rechargingAvailable: false });
 
-    expect(
-      screen.getByLabelText(
-        enMessages["parking_number_of_spaces_with_recharge_point"],
-      ),
-    ).toBeDisabled();
+    expect(rechargeField()).toBeNull();
     expect(spacesField()).toBeEnabled();
+  });
+
+  test("a held recharge count stays visible and disabled when recharging is not available", () => {
+    renderRow(
+      entry({ numberOfSpaces: 30, numberOfSpacesWithRechargePoint: 4 }),
+      { rechargingAvailable: false },
+    );
+
+    expect(rechargeField()).toBeDisabled();
+    expect(rechargeField()).toHaveValue(4);
+  });
+
+  test("the recharge count is editable when recharging is available", () => {
+    renderRow(entry({ numberOfSpaces: 30 }));
+
+    expect(rechargeField()).toBeEnabled();
   });
 
   test("a disabled row allows no edit", () => {
