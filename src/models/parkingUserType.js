@@ -17,4 +17,13 @@ const parkingUserType = Object.freeze({
   REGISTERED_DISABLED: "registeredDisabled",
 });
 
+export const parkingUserTypes = Object.values(parkingUserType);
+
+// Tiamat can hold a user type this file does not name. Show the raw value
+// rather than dropping it, so the editor still sees what Tiamat stores.
+export const parkingUserTypeLabel = (type, formatMessage) =>
+  parkingUserTypes.includes(type)
+    ? formatMessage({ id: `parking_user_type_${type}` })
+    : type;
+
 export default parkingUserType;

@@ -23,6 +23,7 @@ import PathLink from "../models/PathLink";
 import Quay from "../models/Quay";
 import StopPlace from "../models/StopPlace";
 import PARKING_TYPE from "../models/parkingType";
+import PARKING_USER_TYPE from "../models/parkingUserType";
 import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
 import { getImportedId } from "../models/stopPlaceUtils";
 import { getIn, getInTransform, setDecimalPrecision } from "../utils/";
@@ -622,6 +623,7 @@ helpers.updateCurrentWithNewElement = (current, payload) => {
         hasFullFieldSet: true,
         isForPedalCycle: false,
         parkingVehicleTypes: [PARKING_VEHICLE_TYPE.CAR],
+        capacityEntries: [],
         hasExpired: false,
         validBetween: null,
       });
@@ -906,29 +908,46 @@ helpers.changeParkingRechargingAvailable = (original, payload) => {
   return copy;
 };
 
-helpers.changeParkingNumberOfSpaces = (original, payload) => {
-  const { index, numberOfSpaces } = payload;
+helpers.changeParkingCapacityEntry = (original, payload) => {
+  const { index, entryIndex, field, value } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpaces = numberOfSpaces;
+  copy.parking[index].capacityEntries[entryIndex][field] = value;
   return copy;
 };
 
-helpers.changeParkingNumberOfSpacesWithRechargePoint = (original, payload) => {
-  const { index, numberOfSpacesWithRechargePoint } = payload;
+helpers.addParkingCapacityEntry = (original, payload) => {
+  const { index } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpacesWithRechargePoint =
-    numberOfSpacesWithRechargePoint;
+  const parking = copy.parking[index];
+  parking.capacityEntries = (parking.capacityEntries || []).concat({
+    parkingVehicleType: null,
+    parkingUserType: PARKING_USER_TYPE.ALL_USERS,
+    parkingStayType: null,
+    numberOfSpaces: null,
+    numberOfSpacesWithRechargePoint: null,
+  });
   return copy;
 };
 
-helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
-  original,
-  payload,
-) => {
-  const { index, numberOfSpacesForRegisteredDisabledUserType } = payload;
+helpers.removeParkingCapacityEntry = (original, payload) => {
+  const { index, entryIndex } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpacesForRegisteredDisabledUserType =
-    numberOfSpacesForRegisteredDisabledUserType;
+  copy.parking[index].capacityEntries.splice(entryIndex, 1);
+  return copy;
+};
+
+// Recharging is no longer available, so no entry can hold a recharge point.
+helpers.clearParkingRechargePointCounts = (original, payload) => {
+  const { index } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  (copy.parking[index].capacityEntries || []).forEach((entry) => {
+    if (
+      entry.numberOfSpacesWithRechargePoint !== null &&
+      entry.numberOfSpacesWithRechargePoint !== undefined
+    ) {
+      entry.numberOfSpacesWithRechargePoint = 0;
+    }
+  });
   return copy;
 };
 

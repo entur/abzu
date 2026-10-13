@@ -119,9 +119,9 @@ describe("Parking title message id", () => {
   });
 });
 
-describe("Parking space lookup with a partial spaces array", () => {
-  // A parking with a stored type and only an allUsers entry gets the full
-  // field set, so toClient() reads a registeredDisabled entry that is not there.
+describe("Parking capacity entries with a partial spaces array", () => {
+  // A parking with a stored type gets the full field set, so toClient() gives
+  // one row for each entry Tiamat holds and no row for an absent user type.
   it("maps a bicycle parking that holds only an allUsers entry", () => {
     const parking = makeParking({
       parkingType: "parkAndRide",
@@ -130,12 +130,15 @@ describe("Parking space lookup with a partial spaces array", () => {
     });
 
     expect(parking.hasFullFieldSet).toBe(true);
-
-    const client = parking.toClient();
-
-    expect(client.numberOfSpaces).toBe(10);
-    expect(client.numberOfSpacesForRegisteredDisabledUserType).toBeUndefined();
-    expect(client.numberOfSpacesWithRechargePoint).toBeUndefined();
+    expect(parking.toClient().capacityEntries).toEqual([
+      {
+        parkingVehicleType: null,
+        parkingUserType: "allUsers",
+        parkingStayType: null,
+        numberOfSpaces: 10,
+        numberOfSpacesWithRechargePoint: null,
+      },
+    ]);
   });
 
   it("reads both entries when the parking holds both", () => {
@@ -152,10 +155,13 @@ describe("Parking space lookup with a partial spaces array", () => {
       ],
     });
 
-    const client = parking.toClient();
+    const entries = parking.toClient().capacityEntries;
 
-    expect(client.numberOfSpaces).toBe(20);
-    expect(client.numberOfSpacesForRegisteredDisabledUserType).toBe(3);
+    expect(entries.map((entry) => entry.parkingUserType)).toEqual([
+      "allUsers",
+      "registeredDisabled",
+    ]);
+    expect(entries.map((entry) => entry.numberOfSpaces)).toEqual([20, 3]);
   });
 
   it("gives a stored bikeParking type the full field set", () => {
@@ -167,7 +173,7 @@ describe("Parking space lookup with a partial spaces array", () => {
 
     expect(parking.hasFullFieldSet).toBe(true);
     expect(parking.isForPedalCycle).toBe(true);
-    expect(parking.toClient().numberOfSpaces).toBe(10);
+    expect(parking.toClient().capacityEntries[0].numberOfSpaces).toBe(10);
   });
 });
 
