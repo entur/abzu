@@ -13,136 +13,73 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import { describe, expect, test, vi } from "vitest";
 import ParkingItemPayAndRideExpandedFields from "../components/EditStopPage/ParkingItemPayAndRideExpandedFields";
 import enMessages from "../static/lang/en.json";
 
-const entry = (fields) => ({
-  parkingVehicleType: null,
-  parkingUserType: null,
-  parkingStayType: null,
-  numberOfSpaces: null,
-  numberOfSpacesWithRechargePoint: null,
-  ...fields,
-});
-
-const baseProps = () => ({
+const baseProps = {
   disabled: false,
   hasExpired: false,
   parkingLayout: null,
   parkingPaymentProcess: [],
-  rechargingAvailable: true,
-  totalCapacity: 35,
-  capacityEntries: [
-    entry({
-      parkingVehicleType: "car",
-      parkingUserType: "allUsers",
-      numberOfSpaces: 30,
-    }),
-    entry({ parkingUserType: "allUsers", numberOfSpaces: 2 }),
-    entry({ parkingUserType: "registeredDisabled", numberOfSpaces: 3 }),
-  ],
+  rechargingAvailable: false,
+  totalCapacity: 50,
+  numberOfSpaces: 40,
+  numberOfSpacesWithRechargePoint: 0,
+  numberOfSpacesForRegisteredDisabledUserType: 4,
+  numberOfSpacesIsAmbiguous: false,
+  numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous: false,
   handleSetParkingLayout: vi.fn(),
   handleSetParkingPaymentProcess: vi.fn(),
   handleSetRechargingAvailable: vi.fn(),
-  handleClearRechargePointCounts: vi.fn(),
-  handleChangeCapacityEntry: vi.fn(),
-  handleAddCapacityEntry: vi.fn(),
-  handleRemoveCapacityEntry: vi.fn(),
+  handleSetNumberOfSpaces: vi.fn(),
+  handleSetNumberOfSpacesWithRechargePoint: vi.fn(),
+  handleSetNumberOfSpacesForRegisteredDisabledUserType: vi.fn(),
   stepFreeAccess: "unknown",
   handleStepFreeChange: vi.fn(),
-});
-
-const renderWithIntl = (props) => {
-  const allProps = { ...baseProps(), ...props };
-  render(
-    <IntlProvider locale="en" messages={enMessages}>
-      <ParkingItemPayAndRideExpandedFields {...allProps} />
-    </IntlProvider>,
-  );
-  return allProps;
 };
 
-const rows = () => screen.getAllByTestId("parking-capacity-entry");
+const renderWithIntl = (props) =>
+  render(
+    <IntlProvider locale="en" messages={enMessages}>
+      <ParkingItemPayAndRideExpandedFields {...baseProps} {...props} />
+    </IntlProvider>,
+  );
 
-describe("ParkingItemPayAndRideExpandedFields - one row per capacity entry", () => {
-  test("shows each stored entry as its own row", () => {
-    renderWithIntl();
-
-    expect(rows()).toHaveLength(3);
-    expect(
-      within(rows()[0]).getByLabelText(enMessages["parking_number_of_spaces"]),
-    ).toHaveValue(30);
-    expect(
-      within(rows()[2]).getByText(
-        enMessages["parking_user_type_registeredDisabled"],
-      ),
-    ).toBeInTheDocument();
-  });
-
-  test("shows not assigned for an entry with no vehicle type", () => {
-    renderWithIntl();
+describe("ParkingItemPayAndRideExpandedFields - ambiguous entries stay read-only", () => {
+  test("the number of spaces field is editable when Tiamat holds one allUsers entry", () => {
+    renderWithIntl({ numberOfSpacesIsAmbiguous: false });
 
     expect(
-      within(rows()[1]).getByText(enMessages["not_assigned"]),
-    ).toBeInTheDocument();
-  });
-
-  test("renders no row when the parking holds no capacity entries", () => {
-    renderWithIntl({ capacityEntries: undefined });
-
-    expect(screen.queryAllByTestId("parking-capacity-entry")).toHaveLength(0);
-    expect(
-      screen.getByText(enMessages["parking_capacity_entry_add"]),
-    ).toBeInTheDocument();
-  });
-
-  test("an edited count reaches the handler with its row index", () => {
-    const props = renderWithIntl();
-
-    fireEvent.change(
-      within(rows()[1]).getByLabelText(enMessages["parking_number_of_spaces"]),
-      { target: { value: "4" } },
-    );
-
-    expect(props.handleChangeCapacityEntry).toHaveBeenCalledWith(
-      1,
-      "numberOfSpaces",
-      "4",
-    );
-  });
-
-  test("the add and remove controls reach their handlers", () => {
-    const props = renderWithIntl();
-
-    fireEvent.click(screen.getByText(enMessages["parking_capacity_entry_add"]));
-    fireEvent.click(
-      within(rows()[2]).getByLabelText(
-        enMessages["parking_capacity_entry_remove"],
-      ),
-    );
-
-    expect(props.handleAddCapacityEntry).toHaveBeenCalledTimes(1);
-    expect(props.handleRemoveCapacityEntry).toHaveBeenCalledWith(2);
-  });
-
-  test("the recharge count is disabled when recharging is not available", () => {
-    renderWithIntl({ rechargingAvailable: false });
-
-    const label = enMessages["parking_number_of_spaces_with_recharge_point"];
-    expect(within(rows()[0]).getByLabelText(label)).toBeDisabled();
-    expect(
-      within(rows()[0]).getByLabelText(enMessages["parking_number_of_spaces"]),
+      screen.getByLabelText(enMessages["parking_number_of_spaces"]),
     ).toBeEnabled();
   });
 
-  test("an expired parking shows every row read-only", () => {
-    renderWithIntl({ hasExpired: true });
+  test("the number of spaces field is disabled when Tiamat holds more than one allUsers entry", () => {
+    renderWithIntl({ numberOfSpacesIsAmbiguous: true });
 
     expect(
-      within(rows()[0]).getByLabelText(enMessages["parking_number_of_spaces"]),
+      screen.getByLabelText(enMessages["parking_number_of_spaces"]),
+    ).toBeDisabled();
+  });
+
+  test("the registered disabled field is disabled only when that user type is ambiguous", () => {
+    renderWithIntl({
+      numberOfSpacesIsAmbiguous: false,
+      numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous: true,
+    });
+
+    expect(
+      screen.getByLabelText(enMessages["parking_number_of_spaces"]),
+    ).toBeEnabled();
+    expect(
+      screen.getByLabelText(
+        enMessages[
+          "parking_number_of_spaces_for_registered_disabled_user_type"
+        ],
+      ),
     ).toBeDisabled();
   });
 });

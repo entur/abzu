@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import { hasExpired } from "../modelUtils/validBetween";
 import { getIn } from "../utils/";
+import { withLegacyCapacityFields } from "./parkingCapacity";
 import PARKING_TYPE from "./parkingType";
 import PARKING_VEHICLE_TYPE from "./parkingVehicleType";
 
@@ -110,7 +111,7 @@ class Parking {
       clientParking.location = [coordinates[1], coordinates[0]];
     }
 
-    return clientParking;
+    return withLegacyCapacityFields(clientParking);
   }
 }
 

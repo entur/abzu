@@ -12,8 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import Accessible from "@mui/icons-material/Accessible";
+import LocalParking from "@mui/icons-material/LocalParking";
 import Payment from "@mui/icons-material/Payment";
-import { Grid, ListSubheader } from "@mui/material";
+import { Grid, ListSubheader, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Input from "@mui/material/Input";
@@ -29,7 +31,6 @@ import StairsIcon from "../../static/icons/accessibility/Stairs";
 import { injectIntl } from "../../utils/injectIntl";
 import AccessibilityLimitationPopover from "./AccessibilityAssessment/AccessibilityLimitationPopover";
 import PlaceFeatures from "./PlaceFeatures/PlaceFeatures";
-import ParkingCapacityEntries from "./ParkingCapacityEntries";
 import RechargingAvailablePopover from "./RechargingAvailablePopover";
 const PREFIX = "ParkingItemPayAndRideExpandedFields";
 
@@ -114,14 +115,17 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     parkingPaymentProcess,
     rechargingAvailable,
     totalCapacity,
-    capacityEntries = [],
+    numberOfSpaces,
+    numberOfSpacesWithRechargePoint,
+    numberOfSpacesForRegisteredDisabledUserType,
+    numberOfSpacesIsAmbiguous,
+    numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous,
     handleSetParkingLayout,
     handleSetParkingPaymentProcess,
     handleSetRechargingAvailable,
-    handleClearRechargePointCounts,
-    handleChangeCapacityEntry,
-    handleAddCapacityEntry,
-    handleRemoveCapacityEntry,
+    handleSetNumberOfSpaces,
+    handleSetNumberOfSpacesWithRechargePoint,
+    handleSetNumberOfSpacesForRegisteredDisabledUserType,
     stepFreeAccess,
     handleStepFreeChange,
   } = props;
@@ -257,16 +261,55 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       <Grid>
         <ListSubheader>
           {formatMessage({ id: "parking_parkAndRide_capacity_sub_header" })} (
-          {totalCapacity ?? formatMessage({ id: "not_assigned" })})
+          {`${totalCapacity}`})
         </ListSubheader>
-        <ParkingCapacityEntries
-          capacityEntries={capacityEntries}
-          disabled={disabled || hasExpired}
-          rechargingAvailable={rechargingAvailable}
-          handleChangeEntry={handleChangeCapacityEntry}
-          handleAddEntry={handleAddCapacityEntry}
-          handleRemoveEntry={handleRemoveCapacityEntry}
-        />
+        <Box
+          className={classes.boxFullWidth}
+          sx={{ display: "flex", flexDirection: "row" }}
+        >
+          <LocalParking style={parkingIconStyles()} />
+          <TextField
+            variant="standard"
+            disabled={disabled || hasExpired || numberOfSpacesIsAmbiguous}
+            label={formatMessage({
+              id: "parking_number_of_spaces",
+            })}
+            onChange={(event) => {
+              handleSetNumberOfSpaces(event.target.value);
+            }}
+            value={numberOfSpaces || ""}
+            type="number"
+            fullWidth
+            className={classes.textField}
+            style={{ marginTop: 0 }}
+          />
+        </Box>
+        <Box
+          className={classes.boxFullWidth}
+          sx={{ display: "flex", flexDirection: "row" }}
+        >
+          <Accessible style={parkingIconStyles()} />
+          <TextField
+            variant="standard"
+            label={formatMessage({
+              id: "parking_number_of_spaces_for_registered_disabled_user_type",
+            })}
+            disabled={
+              disabled ||
+              hasExpired ||
+              numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous
+            }
+            onChange={(event) => {
+              handleSetNumberOfSpacesForRegisteredDisabledUserType(
+                event.target.value,
+              );
+            }}
+            value={numberOfSpacesForRegisteredDisabledUserType || ""}
+            type="number"
+            fullWidth
+            className={classes.textField}
+          />
+        </Box>
       </Grid>
       <Grid>
         <ListSubheader>
@@ -283,10 +326,30 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             disabled={disabled}
             hasExpired={hasExpired}
             handleSetRechargingAvailable={handleSetRechargingAvailable}
-            handleClearRechargePointCounts={handleClearRechargePointCounts}
+            handleSetNumberOfSpacesWithRechargePoint={
+              handleSetNumberOfSpacesWithRechargePoint
+            }
             rechargingAvailableValue={getRechargingAvailableValue(
               rechargingAvailable,
             )}
+          />
+          <TextField
+            variant="standard"
+            hintText={formatMessage({
+              id: "parking_number_of_spaces_with_recharge_point",
+            })}
+            disabled={!rechargingAvailable || disabled || hasExpired}
+            label={formatMessage({
+              id: "parking_number_of_spaces_with_recharge_point",
+            })}
+            onChange={(event) => {
+              handleSetNumberOfSpacesWithRechargePoint(event.target.value);
+            }}
+            value={numberOfSpacesWithRechargePoint || ""}
+            type="number"
+            fullWidth
+            className={classes.textField}
+            style={{ marginTop: 0 }}
           />
         </Box>
       </Grid>

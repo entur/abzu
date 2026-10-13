@@ -40,9 +40,7 @@ class RechargingAvailablePopover extends React.Component {
 
   handleSelect(value) {
     this.props.handleSetRechargingAvailable(value);
-    if (value === false) {
-      this.props.handleClearRechargePointCounts();
-    }
+    this.props.handleSetNumberOfSpacesWithRechargePoint(0);
     this.setState({
       open: false,
     });
