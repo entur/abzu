@@ -528,3 +528,63 @@ describe("mapParkingToVariables - the editor and the save use one rule", () => {
     expect(findSpace(saved, "allUsers").numberOfSpaces).toBe(15);
   });
 });
+
+describe("mapParkingToVariables - a car parking with no stored type", () => {
+  const stored = {
+    id: "NSR:Parking:10",
+    parkingVehicleTypes: ["car"],
+    parkingLayout: "openSpace",
+    totalCapacity: 21,
+    parkingProperties: [
+      {
+        spaces: [
+          {
+            parkingUserType: "allUsers",
+            numberOfSpaces: 20,
+            numberOfSpacesWithRechargePoint: 0,
+          },
+          { parkingUserType: "registeredDisabled", numberOfSpaces: 1 },
+        ],
+      },
+    ],
+  };
+
+  test("keeps entries with no vehicle type and its total over three saves", () => {
+    // Each round stores what the save sent, as Tiamat does, and reloads it.
+    let current = stored;
+    let saved;
+    for (let round = 0; round < 3; round++) {
+      saved = helpers.mapParkingToVariables(
+        [new Parking(current).toClient()],
+        "NSR:StopPlace:1",
+      )[0];
+      current = {
+        ...current,
+        parkingProperties: saved.parkingProperties,
+        totalCapacity: spacesOf(saved).reduce(
+          (sum, space) => sum + (space.numberOfSpaces || 0),
+          0,
+        ),
+      };
+    }
+
+    expect(current.totalCapacity).toBe(21);
+    expect(spacesOf(saved)).toEqual([
+      entry({
+        parkingUserType: "allUsers",
+        numberOfSpaces: 20,
+        numberOfSpacesWithRechargePoint: 0,
+      }),
+      entry({ parkingUserType: "registeredDisabled", numberOfSpaces: 1 }),
+    ]);
+  });
+
+  test("does not send a parking type", () => {
+    const saved = helpers.mapParkingToVariables(
+      [new Parking(stored).toClient()],
+      "NSR:StopPlace:1",
+    )[0];
+
+    expect(saved).not.toHaveProperty("parkingType");
+  });
+});
