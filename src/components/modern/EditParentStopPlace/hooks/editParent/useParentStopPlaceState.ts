@@ -14,6 +14,7 @@
 
 import { useSelector } from "react-redux";
 import { getStopPermissions } from "../../../../../utils/permissionsUtils";
+import { useIsViewingOlderVersion } from "../../../Shared/StopStatus";
 import { RootState } from "../../types";
 
 /**
@@ -39,9 +40,13 @@ export const useParentStopPlaceState = () => {
   const activeMap = useSelector((state: RootState) => state.mapUtils.activeMap);
 
   // Permissions
+  // An older version from the history is read-only (F-42).
+  const isViewingOlderVersion = useIsViewingOlderVersion();
   const permissions = getStopPermissions(stopPlace) as any;
-  const canEdit = permissions.canEdit;
-  const canDelete = permissions.canDelete || permissions.canDeleteStop || false;
+  const canEdit = Boolean(permissions.canEdit) && !isViewingOlderVersion;
+  const canDelete =
+    (permissions.canDelete || permissions.canDeleteStop || false) &&
+    !isViewingOlderVersion;
 
   return {
     stopPlace,

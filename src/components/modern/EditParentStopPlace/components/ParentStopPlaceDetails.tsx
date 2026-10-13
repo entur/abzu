@@ -29,6 +29,7 @@ import {
 import { useIntl } from "react-intl";
 import { ImportedId, StopPlaceMembership, TagTray } from "../../Shared";
 import { ParentStopPlaceDetailsProps } from "../types";
+import { useIsViewingOlderVersion } from "../../Shared/StopStatus";
 
 /**
  * Details section for parent stop place
@@ -56,11 +57,13 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
   onOpenVersions,
 }) => {
   const { formatMessage } = useIntl();
+  // An older version from the history is not "expired" (F-42).
+  const isViewingOlderVersion = useIsViewingOlderVersion();
 
   return (
     <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
       {/* Expired Warning */}
-      {hasExpired && (
+      {hasExpired && !isViewingOlderVersion && (
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <WarningIcon sx={{ color: "warning.main", fontSize: "1rem" }} />
           <Typography variant="caption" color="error.main">

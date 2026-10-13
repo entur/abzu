@@ -39,7 +39,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 /**
  * Dialog for moving a quay from a neighbouring stop into the currently-edited stop.
- * Triggered from QuayPopup "Move to Current Stop" → UserActions.moveQuay.
+ * Triggered from a neighbour quay's popup ("Flytt til gjeldende", NeighbourQuayMarkers) → UserActions.moveQuay.
  */
 export const MoveQuayDialog = () => {
   const { formatMessage } = useIntl();

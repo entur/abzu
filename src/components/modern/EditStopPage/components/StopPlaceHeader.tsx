@@ -13,7 +13,6 @@
  * limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
@@ -28,6 +27,7 @@ import {
 } from "../../Shared/ElementStatus";
 import { StopPlace } from "../types";
 import { PanelToggleIcon } from "../../Shared";
+import { StopStatusBanner } from "../../Shared/StopStatus";
 
 /** The header owns no fields of its own; it mirrors the stop place name. */
 const HEADER_NAME_KEYS = ["name"] as const;
@@ -198,28 +198,7 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
         </Box>
       </Box>
 
-      {stopPlace.hasExpired && (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 0.75,
-            px: 1.5,
-            py: 0.5,
-            bgcolor: "warning.main",
-            color: "warning.contrastText",
-          }}
-        >
-          <WarningAmberIcon sx={{ fontSize: "1rem", color: "inherit" }} />
-          <Typography
-            variant="caption"
-            color="inherit"
-            sx={{ fontWeight: 500 }}
-          >
-            {formatMessage({ id: "stop_has_expired_last_version" })}
-          </Typography>
-        </Box>
-      )}
+      <StopStatusBanner stopPlace={stopPlace} />
     </>
   );
 };

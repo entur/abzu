@@ -33,6 +33,8 @@ import { useMarkerScale } from "../hooks/useMarkerScale";
 import { QuayBearingIndicator } from "./QuayBearingIndicator";
 import { QuayPopup } from "./QuayPopup";
 import type { FocusedElement, MapQuay, MapStopPlace } from "./types";
+import { getQuayMarkerLabel } from "../../Shared/quayLabels";
+import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 
 const QUAY_SIZE = 32;
 /** Distance from quay dot edge to the center of the orbiting icon, in unscaled px. */
@@ -63,6 +65,7 @@ const QuayMarkerItem = ({
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
   const [isEditingBearing, setIsEditingBearing] = useState(false);
+  const [isEditingCoordinates, setIsEditingCoordinates] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
@@ -80,8 +83,11 @@ const QuayMarkerItem = ({
 
   const [lat, lng] = quay.location;
   const hasBearing = quay.compassBearing != null;
-  const label =
-    (showPublicCode ? quay.publicCode : quay.privateCode) || String(index + 1);
+  const label = getQuayMarkerLabel(
+    quay,
+    showPublicCode ? quay.publicCode : quay.privateCode,
+    index,
+  );
 
   const handleStartEditBearing = () => {
     if (quay.compassBearing == null) {
@@ -211,6 +217,28 @@ const QuayMarkerItem = ({
         isEditingBearing={isEditingBearing}
         onStartEditBearing={handleStartEditBearing}
         onEndEditBearing={handleEndEditBearing}
+        onEditCoordinates={
+          disabled
+            ? undefined
+            : () => {
+                setPopupAnchor(null);
+                setIsEditingCoordinates(true);
+              }
+        }
+      />
+      <MarkerCoordinatesDialog
+        open={isEditingCoordinates}
+        lat={lat}
+        lng={lng}
+        onClose={() => setIsEditingCoordinates(false)}
+        onSubmit={(position) =>
+          dispatch(
+            StopPlaceActions.changeElementPosition(
+              { markerIndex: index, type: "quay" },
+              position,
+            ),
+          )
+        }
       />
     </>
   );

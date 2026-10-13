@@ -16,7 +16,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
-import SaveIcon from "@mui/icons-material/Save";
 import {
   Box,
   Button,
@@ -56,7 +55,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onNameChange,
   onTypeChange,
   onCapacityChange,
-  onSave,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -216,18 +214,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             onClick={() => onDelete(parkingIndex)}
           >
             {formatMessage({ id: "delete_parking" })}
-          </Button>
-        )}
-        {canEdit && (
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            startIcon={<SaveIcon />}
-            onClick={onSave}
-            sx={{ ml: "auto" }}
-          >
-            {formatMessage({ id: "save" })}
           </Button>
         )}
       </Box>

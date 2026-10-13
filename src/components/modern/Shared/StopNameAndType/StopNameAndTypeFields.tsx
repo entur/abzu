@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { useIntl } from "react-intl";
 import { useHiddenStopTypes } from "./hooks/useHiddenStopTypes";
+import { isModalityAllowed, ModalityAllowance } from "./modalityPermissions";
 import { getAllowedStopTypes } from "./stopPlaceTypeRules";
 
 interface StopNameAndTypeFieldsProps {
@@ -29,6 +30,8 @@ interface StopNameAndTypeFieldsProps {
   onNameChange: (name: string) => void;
   onStopTypeChange: (stopType: string) => void;
   autoFocus?: boolean;
+  /** The user's type permissions; illegal types are shown disabled (F-18). */
+  allowance?: ModalityAllowance | null;
 }
 
 /**
@@ -42,6 +45,7 @@ export const StopNameAndTypeFields = ({
   onNameChange,
   onStopTypeChange,
   autoFocus = false,
+  allowance = null,
 }: StopNameAndTypeFieldsProps) => {
   const { formatMessage } = useIntl();
   const allowedStopTypes = getAllowedStopTypes(useHiddenStopTypes());
@@ -67,7 +71,11 @@ export const StopNameAndTypeFields = ({
           onChange={(event) => onStopTypeChange(event.target.value)}
         >
           {allowedStopTypes.map((key) => (
-            <MenuItem key={key} value={key}>
+            <MenuItem
+              key={key}
+              value={key}
+              disabled={!isModalityAllowed(allowance, key, null)}
+            >
               {formatMessage({ id: `stopTypes_${key}_name` })}
             </MenuItem>
           ))}

@@ -13,7 +13,15 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { Box, IconButton, Popover, Tooltip, Typography } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import {
+  Box,
+  ButtonBase,
+  IconButton,
+  Popover,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useIntl } from "react-intl";
 
 /** Matches QuayMarkers' marker-scale transition and QuayItem's row transition, so focus-change feels like one motion. */
@@ -27,6 +35,8 @@ interface MarkerPopupProps {
   lat: number;
   lng: number;
   minWidth?: number;
+  /** When set, the coordinates can be clicked to type exact ones (F-76). */
+  onEditCoordinates?: () => void;
   children?: React.ReactNode;
 }
 
@@ -38,6 +48,7 @@ export const MarkerPopup = ({
   lat,
   lng,
   minWidth = 200,
+  onEditCoordinates,
   children,
 }: MarkerPopupProps) => {
   const { formatMessage } = useIntl();
@@ -80,12 +91,37 @@ export const MarkerPopup = ({
           </Box>
         )}
 
-        <Typography
-          variant="caption"
-          sx={{ color: "text.secondary", display: "block" }}
-        >
-          {lat.toFixed(6)}, {lng.toFixed(6)}
-        </Typography>
+        {onEditCoordinates ? (
+          <Tooltip
+            title={formatMessage({ id: "change_coordinates" })}
+            placement="bottom"
+          >
+            <ButtonBase
+              onClick={onEditCoordinates}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                color: "text.secondary",
+                borderRadius: 0.5,
+                textDecoration: "underline dotted",
+                "&:hover": { color: "primary.main" },
+              }}
+            >
+              <Typography variant="caption" color="inherit">
+                {lat.toFixed(6)}, {lng.toFixed(6)}
+              </Typography>
+              <EditIcon sx={{ fontSize: "0.85rem" }} />
+            </ButtonBase>
+          </Tooltip>
+        ) : (
+          <Typography
+            variant="caption"
+            sx={{ color: "text.secondary", display: "block" }}
+          >
+            {lat.toFixed(6)}, {lng.toFixed(6)}
+          </Typography>
+        )}
 
         {children}
       </Box>

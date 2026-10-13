@@ -28,21 +28,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { useIntl } from "react-intl";
-import { StopPlaceActions, UserActions } from "../../../../actions";
-import { useAppDispatch } from "../../../../store/hooks";
+import {
+  KeyValue,
+  KeyValuesOrigin,
+  useKeyValueForm,
+} from "../hooks/useKeyValueForm";
 
-interface KeyValue {
-  key: string;
-  values: string[];
-}
-
-/** Which element the key-value CRUD actions target. */
-export interface KeyValuesOrigin {
-  type: "stopPlace" | "quay";
-  index: number;
-}
+export type { KeyValuesOrigin } from "../hooks/useKeyValueForm";
 
 interface KeyValuesTabProps {
   keyValues: KeyValue[];
@@ -51,11 +45,9 @@ interface KeyValuesTabProps {
   origin: KeyValuesOrigin;
 }
 
-type Mode = "list" | "create" | "edit";
-
 /**
- * Inline tab for managing key-value metadata pairs on a stop place.
- * Dispatches directly to Redux (same actions as the former KeyValuesDialog).
+ * Inline tab for managing key-value metadata pairs on a stop place or quay.
+ * Validation and Redux dispatch live in useKeyValueForm.
  */
 export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
   keyValues,
@@ -63,56 +55,22 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
   origin,
 }) => {
   const { formatMessage } = useIntl();
-  const dispatch = useAppDispatch();
+  const form = useKeyValueForm(keyValues, origin);
+  const {
+    mode,
+    formKey,
+    formValues,
+    isDuplicateKey,
+    hasRepeatedValues,
+    canSave,
+  } = form;
 
-  // The key-value CRUD thunks read the target element from
-  // state.user.keyValuesOrigin, so point it at this tab's element before each
-  // mutation (stop place vs a specific quay).
-  const applyOrigin = () => {
-    dispatch(UserActions.setKeyValuesOrigin(origin.type, origin.index));
-  };
-
-  const [mode, setMode] = useState<Mode>("list");
-  const [editingKey, setEditingKey] = useState("");
-  const [formKey, setFormKey] = useState("");
-  const [formValues, setFormValues] = useState("");
-
-  const resetForm = () => {
-    setMode("list");
-    setEditingKey("");
-    setFormKey("");
-    setFormValues("");
-  };
-
-  const handleStartCreate = () => {
-    setMode("create");
-    setFormKey("");
-    setFormValues("");
-  };
-
-  const handleStartEdit = (kv: KeyValue) => {
-    setMode("edit");
-    setEditingKey(kv.key);
-    setFormKey(kv.key);
-    setFormValues(kv.values.join(", "));
-  };
-
-  const handleSave = () => {
-    const key = formKey.trim();
-    if (!key) return;
-    const values = formValues
-      .split(",")
-      .map((v) => v.trim())
-      .filter(Boolean);
-
-    applyOrigin();
-    if (mode === "create") {
-      dispatch(StopPlaceActions.createKeyValuesPair(key, values));
-    } else if (mode === "edit") {
-      dispatch(StopPlaceActions.updateKeyValuesForKey(editingKey, values));
-    }
-    resetForm();
-  };
+  const keyHelperText = isDuplicateKey
+    ? `${formatMessage({ id: "key_already_exists" })}: ${formKey.trim()}`
+    : undefined;
+  const valuesHelperText = formatMessage({
+    id: hasRepeatedValues ? "duplicate_values_removed" : "key_values_hint",
+  });
 
   return (
     <Box sx={{ px: 2, py: 1.5 }}>
@@ -124,8 +82,8 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
             </Typography>
           ) : (
             <List dense disablePadding>
-              {keyValues.map((kv) => (
-                <React.Fragment key={kv.key}>
+              {keyValues.map((kv, index) => (
+                <React.Fragment key={`${kv.key}-${index}`}>
                   <ListItem
                     secondaryAction={
                       !disabled && (
@@ -133,19 +91,14 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
                           <IconButton
                             edge="end"
                             size="small"
-                            onClick={() => handleStartEdit(kv)}
+                            onClick={() => form.startEdit(kv)}
                           >
                             <EditIcon fontSize="small" />
                           </IconButton>
                           <IconButton
                             edge="end"
                             size="small"
-                            onClick={() => {
-                              applyOrigin();
-                              dispatch(
-                                StopPlaceActions.deleteKeyValuesByKey(kv.key),
-                              );
-                            }}
+                            onClick={() => form.remove(kv.key)}
                           >
                             <DeleteIcon fontSize="small" />
                           </IconButton>
@@ -154,6 +107,9 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
                     }
                   >
                     <ListItemText
+                      // The values are chips in a Box; render the slot as a
+                      // div so they aren't nested in a <p>.
+                      slotProps={{ secondary: { component: "div" } }}
                       primary={
                         <Typography variant="body2" sx={{ fontWeight: 600 }}>
                           {kv.key}
@@ -168,8 +124,12 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
                             mt: 0.5,
                           }}
                         >
-                          {kv.values.map((val) => (
-                            <Chip key={val} label={val} size="small" />
+                          {kv.values.map((val, valueIndex) => (
+                            <Chip
+                              key={`${val}-${valueIndex}`}
+                              label={val}
+                              size="small"
+                            />
                           ))}
                         </Box>
                       }
@@ -184,7 +144,7 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
             <Button
               startIcon={<AddIcon />}
               size="small"
-              onClick={handleStartCreate}
+              onClick={form.startCreate}
               sx={{ mt: 2 }}
             >
               {formatMessage({ id: "add" })}
@@ -198,8 +158,10 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
           <TextField
             label={formatMessage({ id: "key" })}
             value={formKey}
-            onChange={(e) => setFormKey(e.target.value)}
+            onChange={(e) => form.setFormKey(e.target.value)}
             disabled={mode === "edit"}
+            error={isDuplicateKey}
+            helperText={keyHelperText}
             size="small"
             fullWidth
             required
@@ -207,24 +169,29 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
           <TextField
             label={formatMessage({ id: "values" })}
             value={formValues}
-            onChange={(e) => setFormValues(e.target.value)}
+            onChange={(e) => form.setFormValues(e.target.value)}
             size="small"
             fullWidth
-            helperText={formatMessage({ id: "key_values_hint" })}
+            helperText={valuesHelperText}
+            slotProps={{
+              formHelperText: {
+                sx: hasRepeatedValues ? { color: "warning.main" } : undefined,
+              },
+            }}
           />
           <Stack
             direction="row"
             spacing={1}
             sx={{ justifyContent: "flex-end" }}
           >
-            <Button size="small" onClick={resetForm}>
+            <Button size="small" onClick={form.cancel}>
               {formatMessage({ id: "cancel" })}
             </Button>
             <Button
               size="small"
               variant="contained"
-              onClick={handleSave}
-              disabled={!formKey.trim()}
+              onClick={form.save}
+              disabled={!canSave}
             >
               {formatMessage({ id: "save" })}
             </Button>

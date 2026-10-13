@@ -42,6 +42,10 @@ interface CoordinatesDialogProps {
   open: boolean;
   coordinates?: string;
   titleId?: string;
+  /** Text above the field; defaults to the "where do you want to go" wording. */
+  bodyId?: string;
+  /** Confirm button label; defaults to "Go". */
+  confirmId?: string;
   handleConfirm: (position: [number, number]) => void;
   handleClose: () => void;
 }
@@ -50,6 +54,8 @@ export const CoordinatesDialog: React.FC<CoordinatesDialogProps> = ({
   open,
   coordinates: initialCoordinates,
   titleId,
+  bodyId,
+  confirmId,
   handleConfirm,
   handleClose,
 }) => {
@@ -105,8 +111,7 @@ export const CoordinatesDialog: React.FC<CoordinatesDialogProps> = ({
         <Box sx={formFieldContainer}>
           <Divider sx={formFieldDivider} />
           <Typography variant="body2" sx={formFieldLabel(theme)}>
-            {formatMessage({ id: "where_do_you_want_to_go" }) ||
-              "Where do you want to go?"}
+            {formatMessage({ id: bodyId || "where_do_you_want_to_go" })}
           </Typography>
 
           <TextField
@@ -138,7 +143,7 @@ export const CoordinatesDialog: React.FC<CoordinatesDialogProps> = ({
             fullWidth
             sx={{ mt: 1.5 }}
           >
-            {formatMessage({ id: "go" }) || "Go"}
+            {formatMessage({ id: confirmId || "go" })}
           </Button>
         </Box>
       </DialogContent>

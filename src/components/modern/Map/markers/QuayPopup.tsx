@@ -37,6 +37,7 @@ import {
 } from "./BrandLinkIcons";
 import { MarkerPopup } from "./MarkerPopup";
 import type { MapQuay, MapStopPlace } from "./types";
+import { getQuayTitle } from "../../Shared/quayLabels";
 
 const buildOsmEditUrl = (lat: number, lng: number) =>
   `https://www.openstreetmap.org/edit#map=18/${lat}/${lng}`;
@@ -58,6 +59,8 @@ interface QuayPopupProps {
   isEditingBearing: boolean;
   onStartEditBearing: () => void;
   onEndEditBearing: () => void;
+  /** Opens the exact-coordinates dialog (F-76); omitted when read-only. */
+  onEditCoordinates?: () => void;
 }
 
 /**
@@ -75,10 +78,11 @@ export const QuayPopup = ({
   isEditingBearing,
   onStartEditBearing,
   onEndEditBearing,
+  onEditCoordinates,
 }: QuayPopupProps) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
-  const { featureFlags } = useConfig();
+  const { featureFlags, disableMoveQuaysToNewStopPlace } = useConfig();
   const showSvvLink = !!featureFlags?.SVVStreetViewLink;
 
   const current = useAppSelector(
@@ -102,10 +106,13 @@ export const QuayPopup = ({
   const showMergeCancel = isMerging && isFromQuay;
   const showMergeComplete = isMerging && !isFromQuay;
   const showMoveToNewStop =
-    !disabled && hasSavedId && !stopIsNew && !isMultimodal;
+    !disabled &&
+    hasSavedId &&
+    !stopIsNew &&
+    !isMultimodal &&
+    !disableMoveQuaysToNewStopPlace;
 
-  const label = quay.publicCode || String(index + 1);
-  const title = `${formatMessage({ id: "quay" })} ${label}`;
+  const title = getQuayTitle(quay, index, formatMessage);
 
   const handleMergeStart = () => {
     onClose();
@@ -142,6 +149,7 @@ export const QuayPopup = ({
       id={quay.id}
       lat={lat}
       lng={lng}
+      onEditCoordinates={onEditCoordinates}
     >
       <Box sx={{ display: "flex", gap: 0.5, mt: 0.5 }}>
         <Tooltip title={formatMessage({ id: "quay_link_osm" })}>
@@ -287,7 +295,7 @@ export const QuayPopup = ({
                 onClick={handleMoveToNewStop}
                 fullWidth
               >
-                {formatMessage({ id: "move_quay" })}
+                {formatMessage({ id: "move_quays_to_new_stop" })}
               </Button>
             )}
           </Box>

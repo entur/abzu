@@ -115,6 +115,8 @@ export interface GroupOfStopPlacesActionsProps {
   canEdit: boolean;
   canDelete: boolean;
   hasName: boolean;
+  /** A group can't be saved without at least one member (F-81). */
+  hasMembers: boolean;
   onRemove: () => void;
   onUndo: () => void;
   onSave: () => void;
