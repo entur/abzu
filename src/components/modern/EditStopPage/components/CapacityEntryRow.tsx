@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { Box, IconButton, MenuItem, TextField, Tooltip } from "@mui/material";
+import { Box, IconButton, TextField, Tooltip } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
@@ -27,6 +27,7 @@ import {
 } from "../../../../models/parkingVehicleType";
 import { useAppDispatch } from "../../../../store/hooks";
 import { CapacityEntry } from "../types";
+import { CapacityEntryTypeSelect } from "./CapacityEntryTypeSelect";
 
 interface CapacityEntryRowProps {
   entry: CapacityEntry;
@@ -38,17 +39,16 @@ interface CapacityEntryRowProps {
 
 type EntryField = keyof CapacityEntry;
 
-// A stored value this editor does not name stays selectable, so the field
-// shows it instead of an empty selection.
-const optionsWith = (options: string[], value: string | null): string[] =>
-  value && !options.includes(value) ? options.concat(value) : options;
-
 const countValue = (value: number | string | null): string =>
   value === null || value === undefined ? "" : String(value);
 
+const hasCount = (value: number | string | null): boolean =>
+  countValue(value) !== "";
+
 /**
  * One capacity entry of a Park-and-Ride parking: vehicle type, user type,
- * number of spaces and number of spaces with a recharge point.
+ * number of spaces and number of spaces with a recharge point. The recharge
+ * count shows only when recharging is available or the entry holds a count.
  */
 export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
   entry,
@@ -59,7 +59,6 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
-  const notAssigned = <em>{formatMessage({ id: "not_assigned" })}</em>;
 
   const change = (field: EntryField, value: string | null) =>
     dispatch(
@@ -74,106 +73,88 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
   const changeCount = (field: EntryField, value: string) =>
     change(field, value !== "" && Number(value) < 0 ? "0" : value);
 
+  const showRechargeCount =
+    rechargingAvailable || hasCount(entry.numberOfSpacesWithRechargePoint);
+
   return (
     <Box
       data-testid="parking-capacity-entry"
-      sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 1.5,
+        p: 1,
+        pt: 1.5,
+        border: 1,
+        borderColor: "divider",
+        borderRadius: 1,
+      }}
     >
-      <TextField
-        select
-        size="small"
-        label={formatMessage({ id: "parking_vehicle_type" })}
-        disabled={disabled}
-        value={entry.parkingVehicleType ?? ""}
-        onChange={(e) => change("parkingVehicleType", e.target.value || null)}
-        slotProps={{
-          select: {
-            displayEmpty: true,
-            renderValue: (selected) =>
-              selected
-                ? parkingVehicleTypeLabel(selected as string, formatMessage)
-                : notAssigned,
-          },
-          inputLabel: { shrink: true },
-        }}
-        sx={{ flex: "1 1 45%" }}
-      >
-        {optionsWith(parkingVehicleTypes, entry.parkingVehicleType).map(
-          (type) => (
-            <MenuItem key={type} value={type}>
-              {parkingVehicleTypeLabel(type, formatMessage)}
-            </MenuItem>
-          ),
-        )}
-      </TextField>
-      <TextField
-        select
-        size="small"
-        label={formatMessage({ id: "parking_user_type" })}
-        disabled={disabled}
-        value={entry.parkingUserType ?? ""}
-        onChange={(e) => change("parkingUserType", e.target.value || null)}
-        slotProps={{
-          select: {
-            displayEmpty: true,
-            renderValue: (selected) =>
-              selected
-                ? parkingUserTypeLabel(selected as string, formatMessage)
-                : notAssigned,
-          },
-          inputLabel: { shrink: true },
-        }}
-        sx={{ flex: "1 1 45%" }}
-      >
-        {optionsWith(parkingUserTypes, entry.parkingUserType).map((type) => (
-          <MenuItem key={type} value={type}>
-            {parkingUserTypeLabel(type, formatMessage)}
-          </MenuItem>
-        ))}
-      </TextField>
+      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        <CapacityEntryTypeSelect
+          label={formatMessage({ id: "parking_vehicle_type" })}
+          value={entry.parkingVehicleType}
+          options={parkingVehicleTypes}
+          optionLabel={parkingVehicleTypeLabel}
+          disabled={disabled}
+          onChange={(value) => change("parkingVehicleType", value)}
+        />
+        <CapacityEntryTypeSelect
+          label={formatMessage({ id: "parking_user_type" })}
+          value={entry.parkingUserType}
+          options={parkingUserTypes}
+          optionLabel={parkingUserTypeLabel}
+          disabled={disabled}
+          onChange={(value) => change("parkingUserType", value)}
+        />
+        <Tooltip title={formatMessage({ id: "parking_capacity_entry_remove" })}>
+          <span>
+            <IconButton
+              aria-label={formatMessage({
+                id: "parking_capacity_entry_remove",
+              })}
+              disabled={disabled}
+              onClick={() =>
+                dispatch(
+                  StopPlaceActions.removeParkingCapacityEntry(
+                    parkingIndex,
+                    entryIndex,
+                  ),
+                )
+              }
+              size="small"
+            >
+              <RemoveCircleIcon fontSize="small" />
+            </IconButton>
+          </span>
+        </Tooltip>
+      </Box>
       <TextField
         size="small"
         type="number"
+        fullWidth
         label={formatMessage({ id: "parking_number_of_spaces" })}
         disabled={disabled}
         value={countValue(entry.numberOfSpaces)}
         onChange={(e) => changeCount("numberOfSpaces", e.target.value)}
-        slotProps={{ htmlInput: { min: 0 } }}
-        sx={{ flex: "1 1 35%" }}
+        slotProps={{ htmlInput: { min: 0 }, inputLabel: { shrink: true } }}
       />
-      <TextField
-        size="small"
-        type="number"
-        label={formatMessage({
-          id: "parking_number_of_spaces_with_recharge_point",
-        })}
-        disabled={disabled || !rechargingAvailable}
-        value={countValue(entry.numberOfSpacesWithRechargePoint)}
-        onChange={(e) =>
-          changeCount("numberOfSpacesWithRechargePoint", e.target.value)
-        }
-        slotProps={{ htmlInput: { min: 0 } }}
-        sx={{ flex: "1 1 35%" }}
-      />
-      <Tooltip title={formatMessage({ id: "parking_capacity_entry_remove" })}>
-        <span>
-          <IconButton
-            aria-label={formatMessage({ id: "parking_capacity_entry_remove" })}
-            disabled={disabled}
-            onClick={() =>
-              dispatch(
-                StopPlaceActions.removeParkingCapacityEntry(
-                  parkingIndex,
-                  entryIndex,
-                ),
-              )
-            }
-            size="small"
-          >
-            <RemoveCircleIcon fontSize="small" />
-          </IconButton>
-        </span>
-      </Tooltip>
+      {showRechargeCount && (
+        <TextField
+          size="small"
+          type="number"
+          fullWidth
+          label={formatMessage({
+            id: "parking_number_of_spaces_with_recharge_point",
+          })}
+          disabled={disabled || !rechargingAvailable}
+          value={countValue(entry.numberOfSpacesWithRechargePoint)}
+          onChange={(e) =>
+            changeCount("numberOfSpacesWithRechargePoint", e.target.value)
+          }
+          slotProps={{ htmlInput: { min: 0 }, inputLabel: { shrink: true } }}
+        />
+      )}
     </Box>
   );
 };
