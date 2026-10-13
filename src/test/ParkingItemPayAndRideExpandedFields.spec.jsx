@@ -90,6 +90,15 @@ describe("ParkingItemPayAndRideExpandedFields - one row per capacity entry", () 
     ).toBeInTheDocument();
   });
 
+  test("renders no row when the parking holds no capacity entries", () => {
+    renderWithIntl({ capacityEntries: undefined });
+
+    expect(screen.queryAllByTestId("parking-capacity-entry")).toHaveLength(0);
+    expect(
+      screen.getByText(enMessages["parking_capacity_entry_add"]),
+    ).toBeInTheDocument();
+  });
+
   test("an edited count reaches the handler with its row index", () => {
     const props = renderWithIntl();
 

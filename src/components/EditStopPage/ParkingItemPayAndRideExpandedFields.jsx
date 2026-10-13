@@ -114,7 +114,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     parkingPaymentProcess,
     rechargingAvailable,
     totalCapacity,
-    capacityEntries,
+    capacityEntries = [],
     handleSetParkingLayout,
     handleSetParkingPaymentProcess,
     handleSetRechargingAvailable,
