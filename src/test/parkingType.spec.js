@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import Parking from "../models/Parking";
-import { parkingTitleMessageId } from "../models/parkingType";
+import PARKING_TYPE, { parkingTitleMessageId } from "../models/parkingType";
+import mapToClient from "../modelUtils/mapToClient";
 import { parkingVehicleTypeLabel } from "../models/parkingVehicleType";
 
 const makeParking = ({
@@ -197,5 +198,27 @@ describe("Parking vehicle type label", () => {
     expect(parkingVehicleTypeLabel("camperCar", formatMessage)).toBe(
       "camperCar",
     );
+  });
+});
+
+describe("New parking element", () => {
+  const addParking = (type) =>
+    mapToClient.updateCurrentWithNewElement(
+      { parking: [] },
+      { type, position: [60.1, 24.9] },
+    ).parking[0];
+
+  it("gives a new park-and-ride parking the full field set", () => {
+    const parking = addParking(PARKING_TYPE.PARK_AND_RIDE);
+
+    expect(parking.hasFullFieldSet).toBe(true);
+    expect(parking.isForPedalCycle).toBe(false);
+  });
+
+  it("gives a new bicycle parking the reduced field set", () => {
+    const parking = addParking(PARKING_TYPE.BIKE_PARKING);
+
+    expect(parking.hasFullFieldSet).toBe(false);
+    expect(parking.isForPedalCycle).toBe(true);
   });
 });
