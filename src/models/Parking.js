@@ -116,6 +116,7 @@ class Parking {
       name: getIn(parking, ["name", "value"], ""),
       parkingType: this.parkingType,
       parkingPaymentProcess: parking.parkingPaymentProcess,
+      paymentMethods: parking.paymentMethods,
       rechargingAvailable: parking.rechargingAvailable,
       numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces : null,
       numberOfSpacesWithRechargePoint: this.isParkAndRide
