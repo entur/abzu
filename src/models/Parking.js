@@ -23,19 +23,21 @@ class Parking {
     this.parking = parking;
   }
 
+  // A parking does not have to hold an entry for every user type. Abzu
+  // itself writes a bicycle parking with an allUsers entry alone. An absent
+  // entry gives undefined, not 0, so that a save does not create an entry
+  // that states a count the data never held.
   findNumberOfSpaces(userType, lookupKey) {
     if (!(this.parking.parkingProperties?.length > 0)) {
-      return 0;
+      return undefined;
     }
 
-    // A parking does not have to hold an entry for every user type. Abzu
-    // itself writes a bicycle parking with an allUsers entry alone.
     const spaces = this.parking.parkingProperties
       .slice()
       .shift()
       .spaces?.find((v) => v.parkingUserType === userType);
 
-    return spaces ? spaces[lookupKey] : 0;
+    return spaces?.[lookupKey];
   }
 
   get numberOfSpaces() {
@@ -129,10 +131,6 @@ class Parking {
     );
   }
 
-  get isParkAndRide() {
-    return this.hasFullFieldSet;
-  }
-
   toClient() {
     const { parking } = this;
 
@@ -145,21 +143,21 @@ class Parking {
       parkingPaymentProcess: parking.parkingPaymentProcess,
       paymentMethods: parking.paymentMethods,
       rechargingAvailable: parking.rechargingAvailable,
-      numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces : null,
-      numberOfSpacesWithRechargePoint: this.isParkAndRide
+      numberOfSpaces: this.hasFullFieldSet ? this.numberOfSpaces : null,
+      numberOfSpacesWithRechargePoint: this.hasFullFieldSet
         ? this.numberOfSpacesWithRechargePoint
         : null,
-      numberOfSpacesForRegisteredDisabledUserType: this.isParkAndRide
+      numberOfSpacesForRegisteredDisabledUserType: this.hasFullFieldSet
         ? this.numberOfSpacesForRegisteredDisabledUserType
         : null,
-      // Not gated by isParkAndRide: a bicycle parking's totalCapacity field
+      // Not gated by hasFullFieldSet: a bicycle parking's totalCapacity field
       // also folds every non-allUsers entry into one number (see
       // capacityForAllUsers in mapToQueryVariables.js), so it needs the same
       // guard whenever Tiamat holds more than one allUsers entry.
       numberOfSpacesIsAmbiguous: this.numberOfSpacesIsAmbiguous,
       numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous:
         this.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous,
-      parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
+      parkingLayout: this.hasFullFieldSet ? this.parking.parkingLayout : null,
       secure: parking.secure,
       lighting: parking.lighting,
       totalCapacity: parking.totalCapacity,
