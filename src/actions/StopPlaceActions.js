@@ -525,6 +525,33 @@ StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType =
     );
   };
 
+StopPlaceActions.changeParkingCapacityEntry =
+  (index, entryIndex, field, value) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_CAPACITY_ENTRY, {
+        index,
+        entryIndex,
+        field,
+        value,
+      }),
+    );
+  };
+
+StopPlaceActions.addParkingCapacityEntry = (index) => (dispatch) => {
+  dispatch(createThunk(types.ADDED_PARKING_CAPACITY_ENTRY, { index }));
+};
+
+StopPlaceActions.removeParkingCapacityEntry =
+  (index, entryIndex) => (dispatch) => {
+    dispatch(
+      createThunk(types.REMOVED_PARKING_CAPACITY_ENTRY, { index, entryIndex }),
+    );
+  };
+
+StopPlaceActions.clearParkingRechargePointCounts = (index) => (dispatch) => {
+  dispatch(createThunk(types.CLEARED_PARKING_RECHARGE_POINT_COUNTS, { index }));
+};
+
 StopPlaceActions.clearLastMutatedStopPlaceId = () => (dispatch) => {
   dispatch(createThunk(types.CLEAR_LAST_MUTATED_STOP_PLACE_IDS, null));
 };

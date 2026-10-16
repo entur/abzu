@@ -778,5 +778,18 @@
   "changelog_save_filter_title": "Gi filteret et navn",
   "changelog_delete_filter": "Slett filter",
   "changelog_results_count": "stoppesteder funnet",
-  "changelog_results_truncated": "(viser de første 300 resultatene — innsnevre søket for å se mer)"
+  "changelog_results_truncated": "(viser de første 300 resultatene — innsnevre søket for å se mer)",
+  "parking_item_title_unknown": "Parkering (ukjent type)",
+  "parking_vehicle_types": "Kjøretøytyper",
+  "parking_vehicle_type_car": "Bil",
+  "parking_vehicle_type_motorcycle": "Motorsykkel",
+  "parking_vehicle_type_pedalCycle": "Sykkel",
+  "parking_vehicle_type": "Kjøretøytype",
+  "parking_user_type": "Brukergruppe",
+  "parking_user_type_allUsers": "Alle brukere",
+  "parking_user_type_registeredDisabled": "Registrerte funksjonshemmede",
+  "parking_capacity_entry_add": "Legg til kapasitetsrad",
+  "parking_capacity_entry_remove": "Fjern kapasitetsrad",
+  "parking_capacity_entry_spaces": "Plasser",
+  "parking_capacity_entry_spaces_with_recharge_point": "Med ladestasjon"
 }
