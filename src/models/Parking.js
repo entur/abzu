@@ -23,19 +23,21 @@ class Parking {
     this.parking = parking;
   }
 
+  // A parking does not have to hold an entry for every user type. Abzu
+  // itself writes a bicycle parking with an allUsers entry alone. An absent
+  // entry gives undefined, not 0, so that a save does not create an entry
+  // that states a count the data never held.
   findNumberOfSpaces(userType, lookupKey) {
     if (!(this.parking.parkingProperties?.length > 0)) {
-      return 0;
+      return undefined;
     }
 
-    // A parking does not have to hold an entry for every user type. Abzu
-    // itself writes a bicycle parking with an allUsers entry alone.
     const spaces = this.parking.parkingProperties
       .slice()
       .shift()
       .spaces?.find((v) => v.parkingUserType === userType);
 
-    return spaces ? spaces[lookupKey] : 0;
+    return spaces?.[lookupKey];
   }
 
   get numberOfSpaces() {
@@ -84,11 +86,11 @@ class Parking {
     return this.hasAmbiguousEntries(PARKING_USER_TYPE.REGISTERED_DISABLED);
   }
 
-  get parkingType() {
-    if (this.parking.parkingType) {
-      return this.parking.parkingType;
-    }
+  get storedParkingType() {
+    return this.parking.parkingType;
+  }
 
+  get guessedParkingType() {
     if (this.parking.parkingVehicleTypes.includes(PARKING_VEHICLE_TYPE.CAR)) {
       return PARKING_TYPE.PARK_AND_RIDE;
     }
@@ -104,8 +106,29 @@ class Parking {
     return PARKING_TYPE.UNKNOWN;
   }
 
-  get isParkAndRide() {
-    return this.parkingType === PARKING_TYPE.PARK_AND_RIDE;
+  get parkingType() {
+    return this.storedParkingType || this.guessedParkingType;
+  }
+
+  // Which fields does Tiamat hold for this parking? A stored type is a NeTEx
+  // type, and every NeTEx parking carries the full field set. Only the guess
+  // can answer "reduced", and only when Tiamat stores no type at all.
+  get hasFullFieldSet() {
+    if (this.storedParkingType) {
+      return true;
+    }
+
+    return this.guessedParkingType === PARKING_TYPE.PARK_AND_RIDE;
+  }
+
+  // What vehicle is this parking for? NeTEx answers this with the vehicle
+  // types, never with the parking type.
+  get isForPedalCycle() {
+    return (
+      this.parking.parkingVehicleTypes?.includes(
+        PARKING_VEHICLE_TYPE.PEDAL_CYCLE,
+      ) ?? false
+    );
   }
 
   toClient() {
@@ -115,23 +138,25 @@ class Parking {
       id: parking.id,
       name: getIn(parking, ["name", "value"], ""),
       parkingType: this.parkingType,
+      hasFullFieldSet: this.hasFullFieldSet,
+      isForPedalCycle: this.isForPedalCycle,
       parkingPaymentProcess: parking.parkingPaymentProcess,
       rechargingAvailable: parking.rechargingAvailable,
-      numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces : null,
-      numberOfSpacesWithRechargePoint: this.isParkAndRide
+      numberOfSpaces: this.hasFullFieldSet ? this.numberOfSpaces : null,
+      numberOfSpacesWithRechargePoint: this.hasFullFieldSet
         ? this.numberOfSpacesWithRechargePoint
         : null,
-      numberOfSpacesForRegisteredDisabledUserType: this.isParkAndRide
+      numberOfSpacesForRegisteredDisabledUserType: this.hasFullFieldSet
         ? this.numberOfSpacesForRegisteredDisabledUserType
         : null,
-      // Not gated by isParkAndRide: a bicycle parking's totalCapacity field
+      // Not gated by hasFullFieldSet: a bicycle parking's totalCapacity field
       // also folds every non-allUsers entry into one number (see
       // capacityForAllUsers in mapToQueryVariables.js), so it needs the same
       // guard whenever Tiamat holds more than one allUsers entry.
       numberOfSpacesIsAmbiguous: this.numberOfSpacesIsAmbiguous,
       numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous:
         this.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous,
-      parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
+      parkingLayout: this.hasFullFieldSet ? this.parking.parkingLayout : null,
       secure: parking.secure,
       lighting: parking.lighting,
       totalCapacity: parking.totalCapacity,

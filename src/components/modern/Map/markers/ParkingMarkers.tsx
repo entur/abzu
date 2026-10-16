@@ -42,7 +42,6 @@ const PARKING_SIZE = 30;
    rounded so it reads as a sign rather than a hard box; scaled with the marker
    so the proportion holds at every zoom. */
 const PARKING_CORNER_RADIUS = 6;
-const BIKE_PARKING_TYPE = "bikeParking";
 
 interface ParkingMarkerItemProps {
   parking: MapParking;
@@ -71,7 +70,9 @@ const ParkingMarkerItem = ({
   if (!parking.location) return null;
 
   const [lat, lng] = parking.location;
-  const isBike = parking.parkingType === BIKE_PARKING_TYPE;
+  // NeTEx answers "which vehicle" with the vehicle types, not the parking
+  // type. A park-and-ride parking can be for bicycles.
+  const isBike = parking.isForPedalCycle ?? false;
   const titleFallbackKey = isBike
     ? "parking_item_title_bikeParking"
     : "parking_item_title_parkAndRide";

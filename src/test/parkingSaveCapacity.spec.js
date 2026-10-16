@@ -31,6 +31,7 @@ describe("mapParkingToVariables - a save keeps the capacity entries it does not 
       [
         {
           parkingType: PARKING_TYPE.PARK_AND_RIDE,
+          hasFullFieldSet: true,
           totalCapacity: 50,
           numberOfSpaces: 50,
           numberOfSpacesForRegisteredDisabledUserType: 4,
@@ -99,6 +100,7 @@ describe("mapParkingToVariables - a save keeps the capacity entries it does not 
       [
         {
           parkingType: PARKING_TYPE.BIKE_PARKING,
+          hasFullFieldSet: false,
           totalCapacity: 30,
           parkingProperties: [
             {
@@ -127,6 +129,7 @@ describe("mapParkingToVariables - a save keeps the capacity entries it does not 
       [
         {
           parkingType: PARKING_TYPE.PARK_AND_RIDE,
+          hasFullFieldSet: true,
           totalCapacity: 50,
           numberOfSpaces: 50,
           parkingProperties: [
@@ -157,6 +160,7 @@ describe("mapParkingToVariables - a save keeps the capacity entries it does not 
       [
         {
           parkingType: PARKING_TYPE.PARK_AND_RIDE,
+          hasFullFieldSet: true,
           totalCapacity: 10,
           numberOfSpaces: 10,
           numberOfSpacesForRegisteredDisabledUserType: 2,
@@ -176,6 +180,7 @@ describe("mapParkingToVariables - a save keeps the capacity entries it does not 
       [
         {
           parkingType: PARKING_TYPE.PARK_AND_RIDE,
+          hasFullFieldSet: true,
           totalCapacity: 10,
           numberOfSpaces: 10,
         },
@@ -305,6 +310,7 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
 
     const saved = save({
       parkingType: PARKING_TYPE.BIKE_PARKING,
+      hasFullFieldSet: false,
       totalCapacity: 23,
       parkingProperties: stored,
     });
@@ -327,6 +333,7 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
     for (let round = 0; round < 3; round += 1) {
       const saved = save({
         parkingType: PARKING_TYPE.BIKE_PARKING,
+        hasFullFieldSet: false,
         totalCapacity,
         parkingProperties: properties,
       });
@@ -340,6 +347,7 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
   test("an edited capacity becomes the new stored total", () => {
     const saved = save({
       parkingType: PARKING_TYPE.BIKE_PARKING,
+      hasFullFieldSet: false,
       totalCapacity: 30,
       parkingProperties: [
         {
@@ -359,6 +367,7 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
   test("keeps the vehicle type and the stay type of an entry it does not edit", () => {
     const saved = save({
       parkingType: PARKING_TYPE.BIKE_PARKING,
+      hasFullFieldSet: false,
       totalCapacity: 27,
       parkingProperties: [
         {
@@ -405,6 +414,7 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
     for (let round = 0; round < 3; round += 1) {
       const saved = save({
         parkingType: PARKING_TYPE.BIKE_PARKING,
+        hasFullFieldSet: false,
         totalCapacity,
         parkingProperties: properties,
       });
@@ -421,6 +431,7 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
   test("a missing total keeps the stored allUsers count", () => {
     const saved = save({
       parkingType: PARKING_TYPE.BIKE_PARKING,
+      hasFullFieldSet: false,
       totalCapacity: null,
       parkingProperties: [
         {
@@ -434,5 +445,63 @@ describe("mapParkingToVariables - a bicycle capacity does not grow on repeated s
 
     expect(findSpace(saved, "allUsers").numberOfSpaces).toBe(20);
     expect(tiamatTotal(saved)).toBe(23);
+  });
+});
+
+describe("mapParkingToVariables - a save adds no count the data does not hold", () => {
+  const roundTrip = (tiamatParking) =>
+    helpers.mapParkingToVariables(
+      [new Parking(tiamatParking).toClient()],
+      "NSR:StopPlace:3",
+    )[0];
+
+  test("an unedited save adds no registeredDisabled entry", () => {
+    const saved = roundTrip({
+      parkingType: PARKING_TYPE.PARK_AND_RIDE,
+      parkingVehicleTypes: ["pedalCycle"],
+      totalCapacity: 40,
+      parkingProperties: [
+        { spaces: [{ parkingUserType: "allUsers", numberOfSpaces: 40 }] },
+      ],
+    });
+
+    expect(spacesOf(saved)).toEqual([
+      { parkingUserType: "allUsers", numberOfSpaces: 40 },
+    ]);
+  });
+
+  test("a parking with no stored entries gains no zero counts", () => {
+    const saved = roundTrip({
+      parkingType: PARKING_TYPE.PARK_AND_RIDE,
+      parkingVehicleTypes: ["car"],
+      totalCapacity: 25,
+      parkingProperties: [],
+    });
+
+    expect(spacesOf(saved)).toEqual([
+      { parkingUserType: "allUsers", numberOfSpaces: 25 },
+    ]);
+  });
+});
+
+describe("mapParkingToVariables - the editor and the save use one rule", () => {
+  test("a parking that shows the reduced field set saves its capacity", () => {
+    // No stored type and no vehicle type: the editor shows the one capacity
+    // field, so the save must write that capacity.
+    const client = new Parking({
+      parkingVehicleTypes: [],
+      totalCapacity: 10,
+      parkingProperties: [
+        { spaces: [{ parkingUserType: "allUsers", numberOfSpaces: 10 }] },
+      ],
+    }).toClient();
+
+    const [saved] = helpers.mapParkingToVariables(
+      [{ ...client, totalCapacity: 15 }],
+      "NSR:StopPlace:4",
+    );
+
+    expect(client.hasFullFieldSet).toBe(false);
+    expect(findSpace(saved, "allUsers").numberOfSpaces).toBe(15);
   });
 });
