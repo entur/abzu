@@ -53,7 +53,7 @@ export const legacyCapacityFields = (parking) => {
     entries.filter((entry) => entry.parkingUserType === userType);
   const count = (userType, field) => {
     const [entry] = ofUserType(userType);
-    return entry ? entry[field] : 0;
+    return entry?.[field];
   };
   const ambiguity = {
     numberOfSpacesIsAmbiguous:

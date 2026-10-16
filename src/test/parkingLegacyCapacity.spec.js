@@ -62,12 +62,12 @@ describe("legacy capacity fields derived from the capacity entries", () => {
     });
   });
 
-  test("a missing user type shows 0", () => {
+  test("a missing user type shows no count", () => {
     const parking = loadParking({
       spaces: [{ parkingUserType: "allUsers", numberOfSpaces: 30 }],
     });
 
-    expect(parking.numberOfSpacesForRegisteredDisabledUserType).toBe(0);
+    expect(parking.numberOfSpacesForRegisteredDisabledUserType).toBeUndefined();
   });
 
   test("a parking without parking properties shows its total capacity", () => {
