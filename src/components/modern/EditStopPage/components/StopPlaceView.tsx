@@ -20,6 +20,7 @@ import { useAppDispatch } from "../../../../store/hooks";
 import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityStopTab";
 import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "../../../EditStopPage/Facility/FacilitiesStopTab";
+import PARKING_TYPE from "../../../../models/parkingType";
 import { StopPlaceViewProps } from "../types";
 import { StopPlaceMembership } from "../../Shared";
 import { KeyValuesTab } from "./KeyValuesTab";
@@ -116,11 +117,12 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
               canEdit={canEdit}
               onDeleteParking={onDeleteParking}
               onNavigateToParking={(index) => {
-                // The focus type is an internal enum with two values. It is
-                // not the NeTEx parking type.
+                // The focus type is an internal enum with two values. It
+                // reuses two parking type constants, but it is not the NeTEx
+                // parking type.
                 const focusType = stopPlace.parking?.[index]?.isForPedalCycle
-                  ? "bikeParking"
-                  : "parkAndRide";
+                  ? PARKING_TYPE.BIKE_PARKING
+                  : PARKING_TYPE.PARK_AND_RIDE;
                 dispatch(StopPlaceActions.setElementFocus(index, focusType));
               }}
             />

@@ -113,10 +113,10 @@ const bicycleParking = {
 };
 
 describe("Parking - models", () => {
-  test("returns 0 when the requested user type has no spaces", () => {
+  test("gives no count when the parking holds no entry for the user type", () => {
     const parking = new Parking(parkAndRideWithOnlyAllUsersSpaces);
 
-    expect(parking.numberOfSpacesForRegisteredDisabledUserType).toEqual(0);
+    expect(parking.numberOfSpacesForRegisteredDisabledUserType).toBeUndefined();
   });
 
   test("keeps a null field value when the user type does match", () => {
@@ -132,9 +132,9 @@ describe("Parking - models", () => {
 
     expect(clientParking.numberOfSpaces).toEqual(2049);
     expect(clientParking.numberOfSpacesWithRechargePoint).toBeNull();
-    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
-      0,
-    );
+    expect(
+      clientParking.numberOfSpacesForRegisteredDisabledUserType,
+    ).toBeUndefined();
   });
 
   test("keeps the counts of a park and ride that has every user type", () => {
@@ -153,19 +153,19 @@ describe("Parking - models", () => {
     ).toClient();
 
     expect(clientParking.numberOfSpaces).toEqual(40);
-    expect(clientParking.numberOfSpacesWithRechargePoint).toEqual(0);
-    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
-      0,
-    );
+    expect(clientParking.numberOfSpacesWithRechargePoint).toBeUndefined();
+    expect(
+      clientParking.numberOfSpacesForRegisteredDisabledUserType,
+    ).toBeUndefined();
   });
 
   test("maps a park and ride whose parking properties carry no capacity list", () => {
     const clientParking = new Parking(carParkingWithoutSpaces).toClient();
 
-    expect(clientParking.numberOfSpaces).toEqual(0);
-    expect(clientParking.numberOfSpacesForRegisteredDisabledUserType).toEqual(
-      0,
-    );
+    expect(clientParking.numberOfSpaces).toBeUndefined();
+    expect(
+      clientParking.numberOfSpacesForRegisteredDisabledUserType,
+    ).toBeUndefined();
   });
 
   test("leaves the space counts empty for a parking that is not a park and ride", () => {

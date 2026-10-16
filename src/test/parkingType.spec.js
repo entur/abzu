@@ -134,7 +134,7 @@ describe("Parking space lookup with a partial spaces array", () => {
     const client = parking.toClient();
 
     expect(client.numberOfSpaces).toBe(10);
-    expect(client.numberOfSpacesForRegisteredDisabledUserType).toBe(0);
+    expect(client.numberOfSpacesForRegisteredDisabledUserType).toBeUndefined();
     expect(client.numberOfSpacesWithRechargePoint).toBeUndefined();
   });
 

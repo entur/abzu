@@ -17,7 +17,6 @@ import {
   AccessibilityLimitationType,
   defaultLimitations,
 } from "../models/AccessibilityLimitation";
-import PARKING_TYPE from "../models/parkingType";
 import PARKING_USER_TYPE from "../models/parkingUserType";
 import {
   netexifyBoardingPositions,
@@ -411,7 +410,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
           },
         ],
       );
-    } else if (source.parkingType === PARKING_TYPE.BIKE_PARKING) {
+    } else if (source.hasFullFieldSet === false) {
       // The bicycle editor edits one "capacity" number, and it shows the value
       // Tiamat stores in totalCapacity. Tiamat derives totalCapacity from the
       // sum of every space entry, and it ignores the totalCapacity the client
