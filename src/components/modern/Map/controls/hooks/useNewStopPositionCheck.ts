@@ -20,7 +20,7 @@ import type { NeighbourStop } from "../../markers/types";
 import type { MapPosition } from "./usePlacement";
 
 /** Closer than this to an existing stop, the prompt says so (F-95). */
-const NEARBY_STOP_METERS = 20;
+const NEARBY_STOP_METERS = 50;
 
 export type NewStopAreaStatus = "checking" | "allowed" | "outside";
 

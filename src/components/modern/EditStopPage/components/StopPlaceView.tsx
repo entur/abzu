@@ -150,8 +150,8 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
       </Box>
 
       {/* Footer */}
-      <Divider />
       <StopPlaceActionBar
+        withDivider
         stopPlace={stopPlace}
         canEdit={canEdit}
         canDelete={canDelete}

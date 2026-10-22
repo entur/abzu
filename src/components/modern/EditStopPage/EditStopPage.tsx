@@ -12,14 +12,7 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import {
-  Box,
-  Divider,
-  Drawer,
-  Slide,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Drawer, Slide, useMediaQuery, useTheme } from "@mui/material";
 import React, {
   useCallback,
   useEffect,
@@ -269,11 +262,12 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <StopStatusBanner stopPlace={stopPlace} />
       <Box sx={{ flex: 1, minHeight: 0 }}>{panel}</Box>
-      <Divider />
       <StopPlaceActionBar
+        withDivider
         stopPlace={stopPlace}
         canEdit={canEdit}
-        canDelete={false}
+        canDelete={canDelete}
+        showTerminate={false}
         isModified={isModified}
         onOpenTerminateDialog={handleOpenTerminateDialog}
         onOpenUndoDialog={handleOpenUndoDialog}

@@ -29,6 +29,7 @@ import {
 import { useIntl } from "react-intl";
 import { ImportedId, StopPlaceMembership, TagTray } from "../../Shared";
 import { ParentStopPlaceDetailsProps } from "../types";
+import { StopPostalAddressFields } from "../../Shared/StopDetails/StopPostalAddressFields";
 import { useIsViewingOlderVersion } from "../../Shared/StopStatus";
 
 /**
@@ -143,6 +144,9 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
           size="small"
         />
       )}
+
+      {/* Postal address, behind its feature flag (legacy parity) */}
+      <StopPostalAddressFields canEdit={canEdit} />
 
       {/* Button row: Alt Names + Tags + Version */}
       <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>

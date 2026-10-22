@@ -15,14 +15,18 @@
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
 import { useIntl } from "react-intl";
 import { SaveGroupDialogProps } from "../GroupOfStopPlaces";
+import { DialogErrorAlert } from "./DialogErrorAlert";
+import { useDialogMutation } from "./hooks/useDialogMutation";
 
 /**
  * Modern save group confirmation dialog
@@ -33,6 +37,12 @@ export const SaveGroupDialog: React.FC<SaveGroupDialogProps> = ({
   onClose,
 }) => {
   const { formatMessage } = useIntl();
+  const { isRunning, errorMessageId, run, resetError } =
+    useDialogMutation("save_group_failed");
+
+  useEffect(() => {
+    if (open) resetError();
+  }, [open, resetError]);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -55,6 +65,7 @@ export const SaveGroupDialog: React.FC<SaveGroupDialogProps> = ({
         <Typography variant="body1" sx={{ mb: 3 }}>
           {formatMessage({ id: "are_you_sure_save_group_of_stop_places" })}
         </Typography>
+        <DialogErrorAlert messageId={errorMessageId} />
         <div
           style={{
             display: "flex",
@@ -65,7 +76,12 @@ export const SaveGroupDialog: React.FC<SaveGroupDialogProps> = ({
           <Button variant="outlined" onClick={onClose} color="secondary">
             {formatMessage({ id: "cancel" })}
           </Button>
-          <Button variant="contained" onClick={onSave}>
+          <Button
+            variant="contained"
+            onClick={() => run(onSave)}
+            disabled={isRunning}
+            startIcon={isRunning ? <CircularProgress size={16} /> : null}
+          >
             {formatMessage({ id: "save" })}
           </Button>
         </div>

@@ -23,8 +23,10 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useIntl } from "react-intl";
+import { DialogErrorAlert } from "./DialogErrorAlert";
+import { useDialogMutation } from "./hooks/useDialogMutation";
 import {
   DateTimeSelection,
   StopPlaceInfo,
@@ -56,7 +58,7 @@ export interface TerminateStopPlaceDialogProps {
     shouldTerminatePermanently: boolean,
     comment: string,
     dateTime: string,
-  ) => void;
+  ) => void | Promise<unknown>;
   stopPlace: StopPlace;
   previousValidBetween?: ValidBetween;
   canDeleteStop?: boolean;
@@ -84,6 +86,16 @@ export const TerminateStopPlaceDialog: React.FC<
   warningInfo,
 }) => {
   const { formatMessage } = useIntl();
+  // A rejected confirm keeps the dialog open with the reason; it used to
+  // fail without a word.
+  const { isRunning, errorMessageId, run, resetError } = useDialogMutation(
+    "terminate_stop_failed",
+  );
+  const isBusy = !!isLoading || isRunning;
+
+  useEffect(() => {
+    if (open) resetError();
+  }, [open, resetError]);
 
   const {
     state,
@@ -102,7 +114,7 @@ export const TerminateStopPlaceDialog: React.FC<
     stopPlace,
     previousValidBetween,
     serverTimeDiff,
-    isLoading,
+    isLoading: isBusy,
     warningInfo,
     handleConfirm,
   });
@@ -158,6 +170,8 @@ export const TerminateStopPlaceDialog: React.FC<
             }
           />
 
+          <DialogErrorAlert messageId={errorMessageId} />
+
           <Box
             sx={{ display: "flex", gap: 1, justifyContent: "flex-end", mt: 2 }}
           >
@@ -167,9 +181,9 @@ export const TerminateStopPlaceDialog: React.FC<
             <Button
               variant="contained"
               color="error"
-              onClick={handleConfirmClick}
+              onClick={() => run(async () => handleConfirmClick())}
               disabled={getConfirmIsDisabled()}
-              startIcon={isLoading ? <CircularProgress size={20} /> : null}
+              startIcon={isBusy ? <CircularProgress size={20} /> : null}
             >
               {formatMessage({ id: "confirm" })}
             </Button>

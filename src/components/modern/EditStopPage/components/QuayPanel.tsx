@@ -318,31 +318,34 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
         )}
       </Box>
 
-      {/* ── Footer ── */}
-      <Divider />
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.paper",
-          flexShrink: 0,
-          flexWrap: "wrap",
-        }}
-      >
-        {canEdit && (
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            startIcon={<DeleteIcon />}
-            onClick={() => onDelete(quayIndex)}
+      {/* Footer, only with something in it: an empty one left a blank band
+          on read-only views (older version, F-96). */}
+      {canEdit && (
+        <>
+          <Divider />
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              px: 2,
+              py: 1.5,
+              bgcolor: "background.paper",
+              flexShrink: 0,
+              flexWrap: "wrap",
+            }}
           >
-            {formatMessage({ id: "delete_quay" })}
-          </Button>
-        )}
-      </Box>
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<DeleteIcon />}
+              onClick={() => onDelete(quayIndex)}
+            >
+              {formatMessage({ id: "delete_quay" })}
+            </Button>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

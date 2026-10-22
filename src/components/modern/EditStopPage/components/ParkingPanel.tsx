@@ -193,30 +193,33 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
         )}
       </Box>
 
-      {/* Footer */}
-      <Divider />
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.paper",
-          flexWrap: "wrap",
-        }}
-      >
-        {canEdit && (
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            startIcon={<DeleteIcon />}
-            onClick={() => onDelete(parkingIndex)}
+      {/* Footer, only with something in it: an empty one left a blank band
+          on read-only views (older version, F-96). */}
+      {canEdit && (
+        <>
+          <Divider />
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              px: 2,
+              py: 1.5,
+              bgcolor: "background.paper",
+              flexWrap: "wrap",
+            }}
           >
-            {formatMessage({ id: "delete_parking" })}
-          </Button>
-        )}
-      </Box>
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<DeleteIcon />}
+              onClick={() => onDelete(parkingIndex)}
+            >
+              {formatMessage({ id: "delete_parking" })}
+            </Button>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

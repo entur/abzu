@@ -58,7 +58,9 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
           flexWrap: "wrap",
         }}
       >
-        {hasId && canDelete && (
+        {/* Edit rights are enough to deactivate; an expired stop can only be
+            deleted, which needs delete rights (see canOfferTerminate). */}
+        {hasId && canEdit && (!hasExpired || canDelete) && (
           <Button
             variant="outlined"
             color="error"

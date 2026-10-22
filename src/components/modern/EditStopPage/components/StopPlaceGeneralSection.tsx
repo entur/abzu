@@ -50,6 +50,9 @@ import {
   parseModalityPickerValue,
   toModalityPickerValue,
 } from "../utils/modalityPickerValue";
+import { StopPostalAddressFields } from "../../Shared/StopDetails/StopPostalAddressFields";
+import { StopUrlField } from "../../Shared/StopDetails/StopUrlField";
+import { StopPlaceCodesFields } from "./StopPlaceCodesFields";
 import { generalSectionStyles as sx } from "./StopPlaceGeneralSection.styles";
 
 /**
@@ -157,6 +160,15 @@ export const StopPlaceGeneralSection: React.FC<
         />
       </Box>
 
+      {/* Stop-level codes, when turned on in the settings */}
+      <Box sx={sx.fieldRow}>
+        <StopPlaceCodesFields
+          publicCode={stopPlace.publicCode}
+          privateCode={stopPlace.privateCode}
+          canEdit={canEdit}
+        />
+      </Box>
+
       {/* Description */}
       <Box sx={sx.fieldRow}>
         <TextField
@@ -174,6 +186,14 @@ export const StopPlaceGeneralSection: React.FC<
           multiline
           rows={2}
         />
+      </Box>
+
+      {/* URL and postal address, behind their feature flags (legacy parity) */}
+      <Box sx={sx.fieldRow}>
+        <StopUrlField url={stopPlace.url} canEdit={canEdit} />
+      </Box>
+      <Box sx={sx.fieldRow}>
+        <StopPostalAddressFields canEdit={canEdit} />
       </Box>
 
       {/* Unified stop type + submode picker */}

@@ -32,13 +32,13 @@ interface GroupOfStopPlacesDialogsProps {
   removeMemberDialogOpen: boolean;
 
   // Dialog handlers
-  handleSave: () => void;
+  handleSave: () => Promise<unknown>;
   handleCloseSaveDialog: () => void;
   handleGoBack: () => void;
   handleCancelGoBack: () => void;
   handleUndo: () => void;
   handleCloseUndoDialog: () => void;
-  handleDelete: () => void;
+  handleDelete: () => Promise<unknown>;
   handleCloseDeleteDialog: () => void;
   handleConfirmRemoveMember: () => void;
   handleCloseRemoveMemberDialog: () => void;
@@ -133,6 +133,7 @@ export const GroupOfStopPlacesDialogs: React.FC<
         cancelText={formatMessage({ id: "delete_group_cancel" })}
         onConfirm={handleDelete}
         onClose={handleCloseDeleteDialog}
+        failureMessageId="delete_group_failed"
       />
 
       {/* Removing a member from the group */}

@@ -67,6 +67,7 @@ export {
 import { createApolloThunk, createThunk } from ".";
 import { getTiamatClient } from "../graphql/clients";
 import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
+import { getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
 import { stopPlaceWithAll } from "../graphql/Tiamat/stopPlaceWithAll";
 import type { AppDispatch, RootState } from "../store/store";
 import { getContext } from "./TiamatActions";
@@ -166,4 +167,27 @@ export const getNeighbourStops =
     } finally {
       dispatch({ type: "MAP_QUERY_END" });
     }
+  };
+
+export interface PurposeOfGroupingOption {
+  id: string;
+  name?: { value?: string };
+}
+
+/**
+ * The purposes a group of stop places can have (Tiamat's code list), for the
+ * group editor's required "Formål med gruppering" select. Read-only, so it
+ * doesn't go through Redux.
+ */
+export const getPurposeOfGroupingOptions =
+  () =>
+  async (
+    _dispatch: AppDispatch,
+    getState: () => RootState,
+  ): Promise<PurposeOfGroupingOption[]> => {
+    const result = await (getTiamatClient() as any).query({
+      query: getPurposeOfGroupingQuery,
+      context: await getContext((getState() as any).user.auth),
+    });
+    return (result?.data?.purposeOfGrouping ?? []) as PurposeOfGroupingOption[];
   };

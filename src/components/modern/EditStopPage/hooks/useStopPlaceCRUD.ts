@@ -14,12 +14,8 @@ limitations under the Licence. */
 
 import { useCallback } from "react";
 import { StopPlaceActions, UserActions } from "../../../../actions";
-import {
-  deleteStopPlace,
-  getStopPlaceVersions,
-  terminateStop,
-} from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../store/hooks";
+import { useTerminateStopPlace } from "../../Shared/useTerminateStopPlace";
 import { useStopPlaceSave } from "./useStopPlaceSave";
 
 /**
@@ -75,38 +71,7 @@ export const useStopPlaceCRUD = (
     dispatch(UserActions.hideDeleteStopDialog());
   }, [dispatch]);
 
-  const handleTerminate = useCallback(
-    (
-      shouldHardDelete: boolean,
-      shouldTerminatePermanently: boolean,
-      comment: string,
-      dateTime: string,
-    ) => {
-      if (!stopPlace?.id) return;
-
-      if (shouldHardDelete) {
-        dispatch(deleteStopPlace(stopPlace.id)).then((response: any) => {
-          dispatch(UserActions.hideDeleteStopDialog());
-          if (response?.data?.deleteStopPlace) {
-            dispatch(UserActions.navigateToMainAfterDelete());
-          }
-        });
-      } else {
-        dispatch(
-          terminateStop(
-            stopPlace.id,
-            shouldTerminatePermanently,
-            comment,
-            dateTime,
-          ),
-        ).then(() => {
-          dispatch(getStopPlaceVersions(stopPlace.id));
-          dispatch(UserActions.hideDeleteStopDialog());
-        });
-      }
-    },
-    [stopPlace, dispatch],
-  );
+  const handleTerminate = useTerminateStopPlace(stopPlace?.id);
 
   return {
     handleSave,

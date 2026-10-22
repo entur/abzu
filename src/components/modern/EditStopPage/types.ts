@@ -82,6 +82,11 @@ export interface Parking {
 }
 
 export interface StopPlace {
+  /** Behind the StopPlaceUrl feature flag. */
+  url?: string | null;
+  /** Stop-level codes, shown when enabled in the settings. */
+  publicCode?: string;
+  privateCode?: string;
   id?: string;
   name: string;
   description?: string;

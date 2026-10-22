@@ -57,18 +57,18 @@ export const useEditGroupOfStopPlaces = (): UseEditGroupOfStopPlacesReturn => {
   const handleOpenSaveDialog = () => setConfirmSaveDialogOpen(true);
   const handleCloseSaveDialog = () => setConfirmSaveDialogOpen(false);
 
-  const handleSave = () => {
+  /* Rejects when Tiamat refuses, so the save dialog stays open and says so
+     (it used to close as if the group had been saved). */
+  const handleSave = async (): Promise<void> => {
     const variables =
       mapHelper.mapGroupOfStopPlaceToVariables(groupOfStopPlaces);
-    dispatch(mutateGroupOfStopPlace(variables)).then((groupId: any) => {
-      setConfirmSaveDialogOpen(false);
-      if (groupId) {
-        dispatch(
-          UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, groupId),
-        );
-        dispatch(UserActions.openSnackbar(types.SUCCESS));
-      }
-    });
+    const groupId = await dispatch(mutateGroupOfStopPlace(variables));
+    if (!groupId) throw new Error("Group not saved");
+    setConfirmSaveDialogOpen(false);
+    dispatch(
+      UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, groupId),
+    );
+    dispatch(UserActions.openSnackbar(types.SUCCESS));
   };
 
   // Go back handlers
@@ -103,12 +103,12 @@ export const useEditGroupOfStopPlaces = (): UseEditGroupOfStopPlacesReturn => {
   const handleOpenDeleteDialog = () => setConfirmDeleteDialogOpen(true);
   const handleCloseDeleteDialog = () => setConfirmDeleteDialogOpen(false);
 
-  const handleDelete = () => {
-    if (groupOfStopPlaces.id) {
-      dispatch(deleteGroupOfStopPlaces(groupOfStopPlaces.id)).then(() => {
-        dispatch(UserActions.navigateTo("/", ""));
-      });
-    }
+  /* Rejects when the delete fails, so the confirm dialog shows it. */
+  const handleDelete = async (): Promise<void> => {
+    if (!groupOfStopPlaces.id) return;
+    await dispatch(deleteGroupOfStopPlaces(groupOfStopPlaces.id));
+    setConfirmDeleteDialogOpen(false);
+    dispatch(UserActions.navigateTo("/", ""));
   };
 
   // Form field handlers
