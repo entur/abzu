@@ -29,6 +29,7 @@ import { StopPlaceActions } from "../../../../actions";
 import AppRoutes from "../../../../routes";
 import { useAppDispatch } from "../../../../store/hooks";
 import type { MapPosition } from "./hooks/usePlacement";
+import { useNewStopPositionCheck } from "./hooks/useNewStopPositionCheck";
 
 const PIN_SIZE = 36;
 
@@ -54,6 +55,9 @@ export const NewStopConfirm = ({
   const navigate = useNavigate();
   const [pinElement, setPinElement] = useState<HTMLElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const { areaStatus, nearbyStopName } = useNewStopPositionCheck(position);
+  const isOutsideArea = areaStatus === "outside";
+  const canCreate = areaStatus === "allowed" && !isCreating;
 
   const handleCreate = async () => {
     setIsCreating(true);
@@ -105,6 +109,19 @@ export const NewStopConfirm = ({
           <Typography variant="body2" sx={{ fontWeight: 600 }}>
             {formatMessage({ id: "new_stop_question" })}
           </Typography>
+          {isOutsideArea && (
+            <Typography variant="body2" sx={{ color: "error.main" }}>
+              {formatMessage({ id: "create_not_allowed" })}
+            </Typography>
+          )}
+          {nearbyStopName && !isOutsideArea && (
+            <Typography variant="body2" sx={{ color: "warning.dark" }}>
+              {formatMessage(
+                { id: "existing_stop_nearby" },
+                { name: nearbyStopName },
+              )}
+            </Typography>
+          )}
           <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
             <Button size="small" onClick={onCancel} disabled={isCreating}>
               {formatMessage({ id: "cancel" })}
@@ -113,8 +130,12 @@ export const NewStopConfirm = ({
               size="small"
               variant="contained"
               onClick={handleCreate}
-              disabled={isCreating}
-              startIcon={isCreating ? <CircularProgress size={14} /> : null}
+              disabled={!canCreate}
+              startIcon={
+                isCreating || areaStatus === "checking" ? (
+                  <CircularProgress size={14} />
+                ) : null
+              }
             >
               {formatMessage({ id: "create_now" })}
             </Button>

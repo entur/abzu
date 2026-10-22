@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { AddElementFab } from "./controls/AddElementFab";
 import { MapControls } from "./controls/MapControls";
 import { useMapComponentLayers } from "./hooks/useMapComponentLayers";
+import { useMapCurrentStop } from "./hooks/useMapCurrentStop";
 import { maplibreLib } from "./maplibreLib";
 import { FareZonesLayer } from "./layers/FareZonesLayer";
 import { GroupEdgesLayer } from "./layers/GroupEdgesLayer";
@@ -72,14 +73,11 @@ export const ModernEditStopMap = () => {
     (state) => (state.user as any).activeBaselayer as string,
   );
 
-  const currentStopId = useAppSelector(
-    (state) => (state.stopPlace.current as any)?.id as string | undefined,
-  );
-  const currentLocation = useAppSelector(
-    (state) =>
-      (state.stopPlace.current as any)?.location as
-        [number, number] | undefined,
-  );
+  // Group-aware (F-88): in the group view the previous stop is a neighbour
+  // again, so it is no longer left out of the neighbour query.
+  const currentStop = useMapCurrentStop();
+  const currentStopId = currentStop?.id;
+  const currentLocation = currentStop?.location;
   const currentGroupId = useAppSelector(
     (state) =>
       (state as any).stopPlacesGroup?.current?.id as string | undefined,

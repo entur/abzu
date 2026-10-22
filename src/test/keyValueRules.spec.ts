@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { describe, expect, test } from "vitest";
 import {
   hasDuplicateValues,
+  hasWhitespaceInKey,
   isExistingKey,
   parseKeyValues,
   uniqueValues,
@@ -40,5 +41,12 @@ describe("key-value rules (F-70, F-71)", () => {
 
     expect(hasDuplicateValues(values)).toBe(true);
     expect(uniqueValues(values)).toEqual(["x", "y", "z"]);
+  });
+
+  test("keys may not contain spaces, but surrounding ones are trimmed (F-97)", () => {
+    expect(hasWhitespaceInKey("c l a u d e")).toBe(true);
+    expect(hasWhitespaceInKey("imported\tid")).toBe(true);
+    expect(hasWhitespaceInKey("  imported-id ")).toBe(false);
+    expect(hasWhitespaceInKey("space_values@££$")).toBe(false);
   });
 });

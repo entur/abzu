@@ -31,7 +31,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { UserActions } from "../../../actions";
 import {
@@ -40,6 +40,8 @@ import {
 } from "../../../actions/TiamatActions.modern";
 import * as types from "../../../actions/Types";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { DialogErrorAlert } from "./DialogErrorAlert";
+import { useDialogMutation } from "./hooks/useDialogMutation";
 
 /**
  * Dialog for merging two quays within the same stop place.
@@ -78,7 +80,16 @@ export const MergeQuayDialog = () => {
   );
 
   const [changesUnderstood, setChangesUnderstood] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    isRunning: isLoading,
+    errorMessageId,
+    run,
+    resetError,
+  } = useDialogMutation("merge_quay_failed");
+
+  useEffect(() => {
+    if (open) resetError();
+  }, [open, resetError]);
 
   const fromQuay = mergingQuay?.fromQuay;
   const toQuay = mergingQuay?.toQuay;
@@ -95,21 +106,21 @@ export const MergeQuayDialog = () => {
     setChangesUnderstood(false);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!fromQuay || !toQuay || !currentStopId) return;
 
     const versionComment = `Flettet quay ${fromQuay.id} til ${toQuay.id}`;
 
-    setIsLoading(true);
-    dispatch(mergeQuays(currentStopId, fromQuay.id, toQuay.id, versionComment))
-      .then(() => {
-        dispatch(UserActions.openSnackbar(types.SUCCESS));
-        handleClose();
-        dispatch(getStopPlaceWithAll(currentStopId));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const isMerged = await run(() =>
+      dispatch(
+        mergeQuays(currentStopId, fromQuay.id, toQuay.id, versionComment),
+      ),
+    );
+    if (!isMerged) return;
+
+    dispatch(UserActions.openSnackbar(types.SUCCESS));
+    handleClose();
+    dispatch(getStopPlaceWithAll(currentStopId));
   };
 
   const quayLabel = (quay: { id: string; publicCode?: string }) =>
@@ -195,6 +206,7 @@ export const MergeQuayDialog = () => {
             sx={{ mt: 1 }}
           />
         )}
+        <DialogErrorAlert messageId={errorMessageId} />
       </DialogContent>
       <DialogActions>
         <Button

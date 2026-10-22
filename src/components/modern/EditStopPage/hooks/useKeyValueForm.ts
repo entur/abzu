@@ -17,6 +17,7 @@ import { StopPlaceActions, UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import {
   hasDuplicateValues,
+  hasWhitespaceInKey,
   isExistingKey,
   parseKeyValues,
   uniqueValues,
@@ -43,6 +44,8 @@ export interface KeyValueForm {
   setFormValues: (values: string) => void;
   /** The typed key already exists on this element (create mode only). */
   isDuplicateKey: boolean;
+  /** The key has spaces inside it (F-97). */
+  isInvalidKey: boolean;
   /** The typed values repeat; repeats are dropped on save. */
   hasRepeatedValues: boolean;
   canSave: boolean;
@@ -68,8 +71,10 @@ export const useKeyValueForm = (
   const [formValues, setFormValues] = useState("");
 
   const isDuplicateKey = mode === "create" && isExistingKey(keyValues, formKey);
+  // Only new keys: keys can't be renamed, so an existing one must stay editable.
+  const isInvalidKey = mode === "create" && hasWhitespaceInKey(formKey);
   const hasRepeatedValues = hasDuplicateValues(parseKeyValues(formValues));
-  const canSave = Boolean(formKey.trim()) && !isDuplicateKey;
+  const canSave = Boolean(formKey.trim()) && !isDuplicateKey && !isInvalidKey;
 
   // The CRUD thunks read the target element from state.user.keyValuesOrigin,
   // so point it at this tab's element (stop place or a quay) before each one.
@@ -108,6 +113,7 @@ export const useKeyValueForm = (
     setFormKey,
     setFormValues,
     isDuplicateKey,
+    isInvalidKey,
     hasRepeatedValues,
     canSave,
     startCreate: () => fillForm("create"),

@@ -16,12 +16,10 @@ import { Box, Tooltip, Typography, useTheme } from "@mui/material";
 import { useRef, useState } from "react";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
-import { useNavigate } from "react-router-dom";
 import { StopPlaceActions } from "../../../../actions";
-import AppRoutes from "../../../../routes";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { moveStopIfAllowed } from "../../../../actions/StopPlaceActions.modern";
+import { useAppDispatch } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
-import { getStopPermissions } from "../../../../utils/permissionsUtils";
 import {
   ElementStatusMapBadge,
   useElementStatusEnabled,
@@ -29,100 +27,22 @@ import {
 } from "../../Shared/ElementStatus";
 import type { CrosshairSetting } from "../crosshair";
 import { DragCrosshair, getCrosshairPreference } from "../crosshair";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useCheckedMove } from "../hooks/useCheckedMove";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 import { useMarkerScale } from "../hooks/useMarkerScale";
+import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
+import { ParentChildMarker } from "./ParentChildMarker";
 import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
-import { useConfirmLeave } from "../../Shared/UnsavedChangesGuard";
-import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 
 const MARKER_SIZE = 40;
-const CHILD_MARKER_SIZE = 34;
+const ICON_SIZE = 24;
 
 /* The multimodal parent marker is drawn smaller than a regular stop place and stacked
  * above its children, so the "MM" label stays readable where the circles overlap. */
 const PARENT_MARKER_SIZE = 32;
 const PARENT_MARKER_Z_INDEX = 2;
-const CHILD_MARKER_Z_INDEX = 1;
-
-interface ParentChildMarkerProps {
-  child: MapStopPlace;
-}
-
-const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
-  const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
-  const scale = useMarkerScale();
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const confirmLeave = useConfirmLeave();
-
-  if (!child.location) return null;
-
-  const [lat, lng] = child.location as [number, number];
-  const icon = getSvgIconByTypeOrSubmode(child.submode, child.stopPlaceType);
-
-  const handleOpen = () => {
-    setPopupAnchor(null);
-    // Ask before the loading state is set, so staying leaves nothing behind.
-    confirmLeave(() => {
-      dispatch(StopPlaceActions.setStopPlaceLoading(true));
-      navigate(`/${AppRoutes.STOP_PLACE}/${child.id}`);
-    });
-  };
-
-  return (
-    <>
-      {/* Centre-anchored: the marker is a circle, not a pin, so its middle is
-          what sits on the coordinate. Every other marker type does the same,
-          and the multimodal edges are drawn to the raw coordinate — anchoring
-          anywhere else makes the line meet the marker off-centre. */}
-      <Marker
-        latitude={lat}
-        longitude={lng}
-        anchor="center"
-        style={{ zIndex: CHILD_MARKER_Z_INDEX }}
-      >
-        <Tooltip title={child.name || ""} placement="top" arrow>
-          <Box
-            onClick={(e) => setPopupAnchor(e.currentTarget)}
-            sx={{
-              width: Math.round(CHILD_MARKER_SIZE * scale),
-              height: Math.round(CHILD_MARKER_SIZE * scale),
-              borderRadius: "50%",
-              bgcolor: "primary.main",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
-              border: "3px solid",
-              borderColor: "background.paper",
-              "&:hover": { transform: "scale(1.1)" },
-              transition: "transform 0.15s",
-            }}
-          >
-            <img
-              src={icon}
-              alt=""
-              style={{
-                width: Math.round(20 * scale),
-                height: Math.round(20 * scale),
-                filter: "brightness(0) invert(1)",
-              }}
-            />
-          </Box>
-        </Tooltip>
-      </Marker>
-      <StopPlacePopup
-        anchorEl={popupAnchor}
-        onClose={() => setPopupAnchor(null)}
-        stopPlace={child}
-        lat={lat}
-        lng={lng}
-        onOpen={handleOpen}
-      />
-    </>
-  );
-};
 
 export const StopPlaceMarker = () => {
   const dispatch = useAppDispatch();
@@ -140,15 +60,15 @@ export const StopPlaceMarker = () => {
   const isStatusEnabled = useElementStatusEnabled();
   const dirtyKeys = useStopPlaceDirtyKeys();
 
-  const current = useAppSelector(
-    (state) =>
-      ((state.stopPlace.current as MapStopPlace | null) ??
-        (state.stopPlace as any).newStop) as MapStopPlace | null,
+  const current = useMapCurrentStop(true);
+  const canEditOnMap = useCanEditOnMap(current);
+  const { pendingPosition, moveTo } = useCheckedMove((position) =>
+    dispatch(moveStopIfAllowed(position)),
   );
 
   if (!current?.location) return null;
 
-  const [lat, lng] = current.location;
+  const [lat, lng] = pendingPosition ?? current.location;
   const isParent = !!current.isParent;
   const hasUnsavedFields = isStatusEnabled && dirtyKeys.size > 0;
   const markerSize = isParent ? PARENT_MARKER_SIZE : MARKER_SIZE;
@@ -157,8 +77,7 @@ export const StopPlaceMarker = () => {
   const multimodalContrastText =
     theme.palette.multimodal?.contrastText ??
     theme.palette.primary.contrastText;
-  const disabled =
-    !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;
+  const disabled = !canEditOnMap;
   const icon = getSvgIconByTypeOrSubmode(
     current.submode,
     current.stopPlaceType,
@@ -171,12 +90,7 @@ export const StopPlaceMarker = () => {
 
   const handleDragEnd = (event: MarkerDragEvent) => {
     setIsDragging(false);
-    dispatch(
-      StopPlaceActions.changeCurrentStopPosition([
-        event.lngLat.lat,
-        event.lngLat.lng,
-      ]),
-    );
+    moveTo([event.lngLat.lat, event.lngLat.lng]);
   };
 
   const showCrosshair = isDragging && crosshairRef.current !== "none";
@@ -233,8 +147,8 @@ export const StopPlaceMarker = () => {
                 src={icon}
                 alt=""
                 style={{
-                  width: Math.round(24 * scale),
-                  height: Math.round(24 * scale),
+                  width: Math.round(ICON_SIZE * scale),
+                  height: Math.round(ICON_SIZE * scale),
                   filter: "brightness(0) invert(1)",
                 }}
               />
@@ -269,9 +183,8 @@ export const StopPlaceMarker = () => {
         lat={lat}
         lng={lng}
         onClose={() => setIsEditingCoordinates(false)}
-        onSubmit={(position) =>
-          dispatch(StopPlaceActions.changeCurrentStopPosition(position))
-        }
+        onSubmit={moveTo}
+        reference={{ position: current.location, kind: "previous" }}
       />
 
       {isParent &&

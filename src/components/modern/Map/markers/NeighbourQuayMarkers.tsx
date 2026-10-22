@@ -13,18 +13,24 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { Marker } from "react-map-gl/maplibre";
 import { UserActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getStopPermissions } from "../../../../utils/permissionsUtils";
 import { getQuayTitle } from "../../Shared/quayLabels";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
+import { QuayMarkerLabel } from "./QuayMarkerLabel";
+import type { NeighbourStop } from "./types";
+import { canMoveQuayToCurrent } from "./utils/canMoveQuayToCurrent";
+import { fitQuayLabel } from "./utils/quayLabelFit";
 
 const NEIGHBOUR_QUAY_SIZE = 28;
+const LABEL_FONT_REM = 0.7;
 
 interface NeighbourQuay {
   id: string;
@@ -57,6 +63,7 @@ const NeighbourQuayMarker = ({
 
   if (!quay.location) return null;
   const [lat, lng] = quay.location;
+  const label = quay.publicCode ?? "";
 
   const handleMoveToCurrent = () => {
     setPopupAnchor(null);
@@ -73,34 +80,36 @@ const NeighbourQuayMarker = ({
   return (
     <>
       <Marker longitude={lng} latitude={lat} anchor="center">
-        <Box
-          onClick={(event) => setPopupAnchor(event.currentTarget)}
-          sx={{
-            width: Math.round(NEIGHBOUR_QUAY_SIZE * scale),
-            height: Math.round(NEIGHBOUR_QUAY_SIZE * scale),
-            borderRadius: "50%",
-            bgcolor: "background.paper",
-            border: "3px solid",
-            borderColor: "warning.main",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.35)",
-            "&:hover": { transform: "scale(1.2)" },
-          }}
+        <Tooltip
+          title={fitQuayLabel(label).isTruncated ? label : ""}
+          placement="top"
+          arrow
         >
-          <Typography
+          <Box
+            onClick={(event) => setPopupAnchor(event.currentTarget)}
             sx={{
-              color: "warning.main",
-              fontWeight: 800,
-              fontSize: `${0.7 * scale}rem`,
-              userSelect: "none",
+              width: Math.round(NEIGHBOUR_QUAY_SIZE * scale),
+              height: Math.round(NEIGHBOUR_QUAY_SIZE * scale),
+              borderRadius: "50%",
+              bgcolor: "background.paper",
+              border: "3px solid",
+              borderColor: "warning.main",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.35)",
+              "&:hover": { transform: "scale(1.2)" },
             }}
           >
-            {quay.publicCode ?? ""}
-          </Typography>
-        </Box>
+            <QuayMarkerLabel
+              label={label}
+              baseFontRem={LABEL_FONT_REM}
+              scale={scale}
+              color="warning.main"
+            />
+          </Box>
+        </Tooltip>
       </Marker>
       <MarkerPopup
         anchorEl={popupAnchor}
@@ -130,7 +139,12 @@ const NeighbourQuayMarker = ({
 
 /** All neighbour quays the user chose to show, while a stop is being edited. */
 export const NeighbourQuayMarkers = () => {
-  const current = useAppSelector((state) => (state.stopPlace as any).current);
+  const current = useMapCurrentStop();
+  const canEditCurrent = useCanEditOnMap(current);
+  const neighbourStops = useAppSelector(
+    (state) =>
+      ((state.stopPlace as any).neighbourStops ?? []) as NeighbourStop[],
+  );
   const quaysByStop = useAppSelector(
     (state) =>
       ((state.stopPlace as any).neighbourStopQuays ?? {}) as Record<
@@ -141,11 +155,8 @@ export const NeighbourQuayMarkers = () => {
 
   if (!current?.id) return null;
 
-  // Legacy rule: only into a saved, editable, non-multimodal stop.
-  const canMoveToCurrent =
-    !current.isNewStop &&
-    !current.isParent &&
-    !!getStopPermissions(current).canEdit;
+  const findSourceStop = (stopPlaceId: string) =>
+    neighbourStops.find((stop) => stop.id === stopPlaceId);
 
   return (
     <>
@@ -157,7 +168,11 @@ export const NeighbourQuayMarkers = () => {
               key={quay.id}
               quay={quay}
               stopPlaceId={stopPlaceId}
-              canMoveToCurrent={canMoveToCurrent}
+              canMoveToCurrent={canMoveQuayToCurrent(
+                current,
+                canEditCurrent,
+                findSourceStop(stopPlaceId),
+              )}
             />
           )),
       )}

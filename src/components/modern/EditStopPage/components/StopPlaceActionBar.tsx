@@ -84,29 +84,34 @@ export const StopPlaceActionBar = ({
           })}
         </Button>
       )}
+      {/* Discard stays while there is something to discard, even if editing
+          is no longer allowed: losing it locked users in with their changes
+          (F-106). */}
+      {(canEdit || isModified) && (
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<UndoIcon />}
+          onClick={onOpenUndoDialog}
+          disabled={!isModified}
+          sx={{ ml: "auto" }}
+        >
+          {formatMessage({ id: "undo_changes" })}
+        </Button>
+      )}
       {canEdit && (
-        <>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<UndoIcon />}
-            onClick={onOpenUndoDialog}
-            disabled={!isModified}
-            sx={{ ml: "auto" }}
-          >
-            {formatMessage({ id: "undo_changes" })}
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            startIcon={<SaveIcon />}
-            onClick={onOpenSaveDialog}
-            disabled={!canSave}
-          >
-            {formatMessage({ id: "save" })}
-          </Button>
-        </>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          startIcon={<SaveIcon />}
+          onClick={onOpenSaveDialog}
+          disabled={!canSave}
+        >
+          {/* "Save stop place": the bar also sits under the quay and parking
+              panels, where a bare "Save" read as "save this quay" (F-24). */}
+          {formatMessage({ id: "save_stop_place" })}
+        </Button>
       )}
     </Box>
   );

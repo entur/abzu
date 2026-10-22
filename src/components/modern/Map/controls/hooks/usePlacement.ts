@@ -15,8 +15,11 @@ limitations under the Licence. */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMap } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../../actions";
+import { fetchCanEditAt } from "../../../../../actions/StopPlaceActions.modern";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { getCrosshairPreference, type CrosshairSetting } from "../../crosshair";
+import { useMapNotice } from "../../notices/useMapNotice";
+import { useIgnoreMarkerClicks } from "./useIgnoreMarkerClicks";
 
 export type ElementType =
   "quay" | "parkAndRide" | "bikeParking" | "boardingPosition";
@@ -41,6 +44,7 @@ export interface Placement {
 }
 
 const PARKING_TYPES = new Set<ElementType>(["parkAndRide", "bikeParking"]);
+const OUTSIDE_AREA_MESSAGE_ID = "create_not_allowed";
 
 /**
  * One placement mechanism for everything the + adds (F-13): a single map
@@ -50,6 +54,7 @@ const PARKING_TYPES = new Set<ElementType>(["parkAndRide", "bikeParking"]);
  */
 export const usePlacement = (): Placement => {
   const dispatch = useAppDispatch();
+  const showNotice = useMapNotice();
   const { current: mapRef } = useMap();
   const [placementType, setPlacementType] = useState<PlacementType | null>(
     null,
@@ -71,6 +76,9 @@ export const usePlacement = (): Placement => {
   // Refs so the map listeners, registered once per placement, read fresh values.
   const countsRef = useRef({ quayCount, parkingCount });
   countsRef.current = { quayCount, parkingCount };
+  const isCheckingRef = useRef(false);
+
+  useIgnoreMarkerClicks(mapRef, !!placementType);
 
   const cancelPlacement = useCallback(() => {
     setPlacementType(null);
@@ -110,6 +118,33 @@ export const usePlacement = (): Placement => {
     if (!mapRef || !placementType) return;
     const map = mapRef.getMap();
 
+    // Elements must stay inside the user's edit area, like the stop itself
+    // (F-107). A refused spot keeps placement on, so another click can retry.
+    const placeElement = async (
+      type: ElementType,
+      position: [number, number],
+    ) => {
+      if (isCheckingRef.current) return;
+      isCheckingRef.current = true;
+      const isAllowed = await dispatch(fetchCanEditAt(position)).catch(
+        () => false,
+      );
+      isCheckingRef.current = false;
+      if (!isAllowed) {
+        showNotice(OUTSIDE_AREA_MESSAGE_ID);
+        return;
+      }
+      const { quayCount: quays, parkingCount: parking } = countsRef.current;
+      const newIndex = PARKING_TYPES.has(type) ? parking : quays;
+      try {
+        dispatch(StopPlaceActions.addElementToStop(type, position));
+        dispatch(StopPlaceActions.setElementFocus(newIndex, type));
+      } finally {
+        // Placement must end even if adding fails, or later clicks are swallowed.
+        setPlacementType(null);
+      }
+    };
+
     const handleClick = (event: any) => {
       const { lat, lng } = event.lngLat;
       if (placementType === "stopPlace") {
@@ -117,15 +152,7 @@ export const usePlacement = (): Placement => {
         setPendingStopPosition({ latitude: lat, longitude: lng });
         return;
       }
-      const { quayCount: quays, parkingCount: parking } = countsRef.current;
-      const newIndex = PARKING_TYPES.has(placementType) ? parking : quays;
-      try {
-        dispatch(StopPlaceActions.addElementToStop(placementType, [lat, lng]));
-        dispatch(StopPlaceActions.setElementFocus(newIndex, placementType));
-      } finally {
-        // Placement must end even if adding fails, or later clicks are swallowed.
-        setPlacementType(null);
-      }
+      void placeElement(placementType, [lat, lng]);
     };
 
     // With a crosshair following the pointer, hide the OS cursor; fall back to
@@ -137,7 +164,7 @@ export const usePlacement = (): Placement => {
       map.off("click", handleClick);
       map.getCanvas().style.cursor = "";
     };
-  }, [mapRef, placementType, crosshairSetting, dispatch]);
+  }, [mapRef, placementType, crosshairSetting, dispatch, showNotice]);
 
   useEffect(() => {
     if (!placementType) return;

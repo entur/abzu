@@ -20,8 +20,15 @@ import { useAppSelector } from "../../../../store/hooks";
 import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import type { LatLng } from "../markers/types";
 
+/* Two members can't make a polygon, so they are joined through their centre.
+ * From three members StopGroupLayer draws the polygon, and the centre lines
+ * on top of it only added a star (F-98). */
+const EDGE_MEMBER_COUNT = 2;
+
 const buildGeoJson = (locations: LatLng[]): FeatureCollection<LineString> => {
-  if (locations.length < 2) return { type: "FeatureCollection", features: [] };
+  if (locations.length !== EDGE_MEMBER_COUNT) {
+    return { type: "FeatureCollection", features: [] };
+  }
 
   const centerLat =
     locations.reduce((sum, [lat]) => sum + lat, 0) / locations.length;

@@ -60,7 +60,10 @@ export const QuayBearingIndicator = ({
     if (quay.compassBearing != null) setLiveBearing(quay.compassBearing);
   }, [quay.compassBearing]);
 
-  if (!isEditing || !quay.location || quay.compassBearing == null) return null;
+  /* A quay without a bearing shows the needle at north while editing, but
+   * nothing is stored until the needle is released: confirming without
+   * turning it keeps the bearing empty instead of storing 0° (F-104). */
+  if (!isEditing || !quay.location) return null;
 
   const scaledLineLength = Math.round(LINE_LENGTH_PX * scale);
 

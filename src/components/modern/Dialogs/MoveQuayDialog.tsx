@@ -27,15 +27,10 @@ import {
   FormControlLabel,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import { UserActions } from "../../../actions";
-import {
-  getStopPlaceWithAll,
-  moveQuaysToStop,
-} from "../../../actions/TiamatActions.modern";
-import * as types from "../../../actions/Types";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { DialogErrorAlert } from "./DialogErrorAlert";
+import { useMoveQuayToCurrent } from "./hooks/useMoveQuayToCurrent";
 
 /**
  * Dialog for moving a quay from a neighbouring stop into the currently-edited stop.
@@ -43,67 +38,31 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
  */
 export const MoveQuayDialog = () => {
   const { formatMessage } = useIntl();
-  const dispatch = useAppDispatch();
-
-  const open = useAppSelector(
-    (state) => !!(state as any).mapUtils?.moveQuayDialogOpen,
-  );
-  const movingQuay = useAppSelector(
-    (state) =>
-      (state as any).mapUtils?.movingQuay as {
-        id: string;
-        publicCode?: string;
-        privateCode?: string;
-        stopPlaceId?: string;
-      } | null,
-  );
-  const currentStopId = useAppSelector(
-    (state) => (state as any).stopPlace?.current?.id as string | undefined,
-  );
-  const stopHasBeenModified = useAppSelector(
-    (state) => !!(state as any).stopPlace?.stopHasBeenModified,
-  );
-
+  const {
+    open,
+    movingQuay,
+    currentStopId,
+    stopHasBeenModified,
+    emptiedStopName,
+    isMoving,
+    errorMessageId,
+    confirm,
+    close,
+  } = useMoveQuayToCurrent();
   const [changesUnderstood, setChangesUnderstood] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const enableConfirm =
-    !isLoading && (!stopHasBeenModified || changesUnderstood);
+    !isMoving && (!stopHasBeenModified || changesUnderstood);
 
-  const handleClose = () => {
-    dispatch(UserActions.closeMoveQuayDialog());
-    setChangesUnderstood(false);
-  };
-
-  const handleConfirm = () => {
-    if (!movingQuay || !currentStopId) return;
-
-    const fromVersionComment = `Flyttet ${movingQuay.id} til ${currentStopId}`;
-    const toVersionComment = `Flyttet ${movingQuay.id} til ${currentStopId}`;
-
-    setIsLoading(true);
-    dispatch(
-      moveQuaysToStop(
-        currentStopId,
-        movingQuay.id,
-        fromVersionComment,
-        toVersionComment,
-      ),
-    )
-      .then(() => {
-        dispatch(UserActions.openSnackbar(types.SUCCESS));
-        handleClose();
-        dispatch(getStopPlaceWithAll(currentStopId));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+  // Also after a successful move, which closes the dialog through Redux.
+  useEffect(() => {
+    if (!open) setChangesUnderstood(false);
+  }, [open]);
 
   if (!movingQuay) return null;
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={close} maxWidth="sm" fullWidth>
       <DialogTitle>{formatMessage({ id: "move_quay_title" })}</DialogTitle>
       <DialogContent>
         <Typography variant="body2" sx={{ mb: 1, fontWeight: 600 }}>
@@ -127,6 +86,15 @@ export const MoveQuayDialog = () => {
           {formatMessage({ id: "move_quay_info" })}
         </Typography>
 
+        {emptiedStopName && (
+          <Alert severity="warning" sx={{ mt: 1.5 }}>
+            {formatMessage(
+              { id: "move_quay_last_quay_warning" },
+              { name: emptiedStopName },
+            )}
+          </Alert>
+        )}
+
         {stopHasBeenModified && (
           <>
             <Alert severity="warning" sx={{ mt: 1.5 }}>
@@ -149,13 +117,14 @@ export const MoveQuayDialog = () => {
             />
           </>
         )}
+        <DialogErrorAlert messageId={errorMessageId} />
       </DialogContent>
       <DialogActions>
         <Button
           variant="outlined"
           color="secondary"
           startIcon={<CancelIcon />}
-          onClick={handleClose}
+          onClick={close}
         >
           {formatMessage({ id: "cancel" })}
         </Button>
@@ -163,9 +132,9 @@ export const MoveQuayDialog = () => {
           variant="contained"
           color="primary"
           startIcon={
-            isLoading ? <CircularProgress size={16} /> : <DriveFileMoveIcon />
+            isMoving ? <CircularProgress size={16} /> : <DriveFileMoveIcon />
           }
-          onClick={handleConfirm}
+          onClick={confirm}
           disabled={!enableConfirm}
         >
           {formatMessage({ id: "confirm" })}

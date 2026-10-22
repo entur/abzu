@@ -33,7 +33,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { UserActions } from "../../../actions";
 import {
@@ -43,6 +43,8 @@ import {
 } from "../../../actions/TiamatActions.modern";
 import * as types from "../../../actions/Types";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { DialogErrorAlert } from "./DialogErrorAlert";
+import { useDialogMutation } from "./hooks/useDialogMutation";
 
 // Matches the map's neighbour-visibility gate in ModernEditStopMap — below this
 // zoom neighbour markers aren't shown, so there's nothing to refresh.
@@ -87,9 +89,18 @@ export const MergeStopPlaceDialog = () => {
   );
 
   const [changesUnderstood, setChangesUnderstood] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    isRunning: isLoading,
+    errorMessageId,
+    run,
+    resetError,
+  } = useDialogMutation("merge_stop_failed");
 
   const open = !!mergeSource?.isOpen;
+
+  useEffect(() => {
+    if (open) resetError();
+  }, [open, resetError]);
   const fromId = mergeSource?.id;
   const fromName = mergeSource?.name;
   const quays = mergeSource?.quays ?? [];
@@ -106,31 +117,34 @@ export const MergeStopPlaceDialog = () => {
     setChangesUnderstood(false);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!fromId || !toId) return;
 
     const fromVersionComment = `Flettet ${fromId} til ${toId}`;
     const toVersionComment = `Flettet ${fromId} til ${toId}`;
 
-    setIsLoading(true);
-    dispatch(
-      mergeAllQuaysFromStop(fromId, toId, fromVersionComment, toVersionComment),
-    )
-      .then(() => {
-        dispatch(UserActions.openSnackbar(types.SUCCESS));
-        handleClose();
-        dispatch(getStopPlaceWithAll(toId));
-        // Refresh neighbour markers so the merged-away stop reflects its new
-        // expired state on the map (or drops out when expired stops are hidden).
-        if (activeMap && activeMap.getZoom() > NEIGHBOUR_STOPS_MIN_ZOOM) {
-          dispatch(
-            getNeighbourStops(toId, activeMap.getBounds(), showExpiredStops),
-          );
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const isMerged = await run(() =>
+      dispatch(
+        mergeAllQuaysFromStop(
+          fromId,
+          toId,
+          fromVersionComment,
+          toVersionComment,
+        ),
+      ),
+    );
+    if (!isMerged) return;
+
+    dispatch(UserActions.openSnackbar(types.SUCCESS));
+    handleClose();
+    dispatch(getStopPlaceWithAll(toId));
+    // Refresh neighbour markers so the merged-away stop reflects its new
+    // expired state on the map (or drops out when expired stops are hidden).
+    if (activeMap && activeMap.getZoom() > NEIGHBOUR_STOPS_MIN_ZOOM) {
+      dispatch(
+        getNeighbourStops(toId, activeMap.getBounds(), showExpiredStops),
+      );
+    }
   };
 
   return (
@@ -223,6 +237,7 @@ export const MergeStopPlaceDialog = () => {
             sx={{ mt: 1 }}
           />
         )}
+        <DialogErrorAlert messageId={errorMessageId} />
       </DialogContent>
       <DialogActions>
         <Button

@@ -17,6 +17,7 @@ import type { FeatureCollection, LineString } from "geojson";
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
+import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import type { PathLink } from "../markers/types";
 
 const colorForIndex = (colors: string[], index: number) =>
@@ -74,6 +75,8 @@ export const PathLinkLayer = () => {
   const enabled = useAppSelector(
     (state) => (state.stopPlace as any).enablePolylines as boolean,
   );
+  // The path links belong to the stop, which outlives its editor (F-88).
+  const isEditingGroup = useIsEditingGroup();
 
   /** Distinct colours for each path link — index-matched, wraps around */
   const pathLinkColors = useMemo(
@@ -94,7 +97,7 @@ export const PathLinkLayer = () => {
     [pathLinks, pathLinkColors],
   );
 
-  if (!enabled || !pathLinks?.length) return null;
+  if (!enabled || isEditingGroup || !pathLinks?.length) return null;
 
   return (
     <Source id="path-links" type="geojson" data={geoJson}>

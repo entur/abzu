@@ -19,19 +19,22 @@ import { useIntl } from "react-intl";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
+import { moveElementIfAllowed } from "../../../../actions/StopPlaceActions.modern";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import type { CrosshairSetting } from "../crosshair";
 import { DragCrosshair, getCrosshairPreference } from "../crosshair";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useCheckedMove } from "../hooks/useCheckedMove";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 import { useMarkerScale } from "../hooks/useMarkerScale";
+import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 import { MarkerPopup } from "./MarkerPopup";
 import type {
   BoardingPosition,
   FocusedBoardingPosition,
   FocusedElement,
-  MapStopPlace,
+  LatLng,
 } from "./types";
-import { getStopPermissions } from "../../../../utils/permissionsUtils";
-import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 
 const BP_SIZE = 26;
 
@@ -42,6 +45,8 @@ interface BoardingPositionItemProps {
   focused: boolean;
   /** Read-only users can neither drag nor retype the position. */
   disabled: boolean;
+  /** The quay's position, which typed coordinates are checked against. */
+  quayLocation?: LatLng;
 }
 
 const BoardingPositionItem = ({
@@ -50,6 +55,7 @@ const BoardingPositionItem = ({
   quayIndex,
   focused,
   disabled,
+  quayLocation,
 }: BoardingPositionItemProps) => {
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
@@ -58,10 +64,18 @@ const BoardingPositionItem = ({
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
+  const { pendingPosition, moveTo } = useCheckedMove((position) =>
+    dispatch(
+      moveElementIfAllowed(
+        { markerIndex: bpIndex, type: "boarding-position", quayIndex },
+        position,
+      ),
+    ),
+  );
 
   if (!boardingPosition.location) return null;
 
-  const [lat, lng] = boardingPosition.location;
+  const [lat, lng] = pendingPosition ?? boardingPosition.location;
   const label = boardingPosition.publicCode ?? "";
 
   const handleDragStart = () => {
@@ -71,12 +85,7 @@ const BoardingPositionItem = ({
 
   const handleDragEnd = (event: MarkerDragEvent) => {
     setIsDragging(false);
-    dispatch(
-      StopPlaceActions.changeElementPosition(
-        { markerIndex: bpIndex, type: "boarding-position", quayIndex },
-        [event.lngLat.lat, event.lngLat.lng],
-      ),
-    );
+    moveTo([event.lngLat.lat, event.lngLat.lng]);
   };
 
   const showCrosshair = isDragging && crosshairRef.current !== "none";
@@ -168,13 +177,9 @@ const BoardingPositionItem = ({
         lat={lat}
         lng={lng}
         onClose={() => setIsEditingCoordinates(false)}
-        onSubmit={(position) =>
-          dispatch(
-            StopPlaceActions.changeElementPosition(
-              { markerIndex: bpIndex, type: "boarding-position", quayIndex },
-              position,
-            ),
-          )
+        onSubmit={moveTo}
+        reference={
+          quayLocation ? { position: quayLocation, kind: "quay" } : undefined
         }
       />
     </>
@@ -182,9 +187,8 @@ const BoardingPositionItem = ({
 };
 
 export const BoardingPositionMarkers = () => {
-  const current = useAppSelector(
-    (state) => state.stopPlace.current as MapStopPlace | null,
-  );
+  const current = useMapCurrentStop();
+  const canEditOnMap = useCanEditOnMap(current);
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as FocusedElement | undefined,
@@ -198,8 +202,6 @@ export const BoardingPositionMarkers = () => {
   if (!current?.quays?.length) return null;
   if (focusedElement?.type !== "quay" || focusedElement.index < 0) return null;
 
-  const disabled =
-    !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;
   const focusedQuayIndex = focusedElement.index;
   const quay = current.quays[focusedQuayIndex];
   if (!quay) return null;
@@ -216,7 +218,8 @@ export const BoardingPositionMarkers = () => {
             focusedBP?.quayIndex === focusedQuayIndex &&
             focusedBP?.index === bpIndex
           }
-          disabled={disabled}
+          disabled={!canEditOnMap}
+          quayLocation={quay.location}
         />
       ))}
     </>

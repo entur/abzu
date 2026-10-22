@@ -34,6 +34,9 @@ import { Marker } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
 import { addItemButtonSx } from "../../Shared";
 import { DragCrosshair } from "../crosshair";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 import { ElementType, usePlacement } from "./hooks/usePlacement";
 import { NewStopConfirm } from "./NewStopConfirm";
 import { PlacementHint } from "./PlacementHint";
@@ -101,12 +104,11 @@ export const AddElementFab = () => {
   );
   /* An unsaved new stop has no id yet but is still open in the editor, so
      "open" means current is set, not that it has an id (F-16). */
-  const isEditorOpen = useAppSelector((state) =>
-    Boolean(state.stopPlace.current),
-  );
-  const isParentOpen = useAppSelector((state) =>
-    Boolean((state.stopPlace.current as any)?.isParent),
-  );
+  const current = useMapCurrentStop();
+  const isEditorOpen = !!current;
+  const isParentOpen = !!current?.isParent;
+  const canEditOpenStop = useCanEditOnMap(current);
+  const isEditingGroup = useIsEditingGroup();
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as
@@ -126,6 +128,10 @@ export const AddElementFab = () => {
   if (!isAuthenticated) return null;
   // Quays and parking belong to the child stops, never the multimodal parent (F-35).
   if (isParentOpen) return null;
+  // Nothing to add to a group; the previous stop is no longer open (F-88).
+  if (isEditingGroup) return null;
+  // A read-only stop or an older version gets no new elements (F-96).
+  if (isEditorOpen && !canEditOpenStop) return null;
 
   const isPlacing = !!placementType;
   const fabLeft = isEditorOpen ? DRAWER_WIDTH + FAB_GAP : FAB_GAP;

@@ -43,7 +43,7 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
     (!isModified && !hasExpired) ||
     !canEdit;
 
-  const isUndoDisabled = (!isModified && !hasExpired) || !canEdit;
+  const isUndoDisabled = !isModified && (!hasExpired || !canEdit);
 
   return (
     <>
@@ -71,29 +71,30 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
             })}
           </Button>
         )}
+        {/* Discard stays while there is something to discard (F-106). */}
+        {(canEdit || isModified) && (
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<UndoIcon />}
+            onClick={onUndo}
+            disabled={isUndoDisabled}
+            sx={{ ml: "auto" }}
+          >
+            {formatMessage({ id: "undo_changes" })}
+          </Button>
+        )}
         {canEdit && (
-          <>
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<UndoIcon />}
-              onClick={onUndo}
-              disabled={isUndoDisabled}
-              sx={{ ml: "auto" }}
-            >
-              {formatMessage({ id: "undo_changes" })}
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              startIcon={<SaveIcon />}
-              onClick={onSave}
-              disabled={isSaveDisabled}
-            >
-              {formatMessage({ id: "save" })}
-            </Button>
-          </>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            startIcon={<SaveIcon />}
+            onClick={onSave}
+            disabled={isSaveDisabled}
+          >
+            {formatMessage({ id: "save_stop_place" })}
+          </Button>
         )}
       </Box>
     </>

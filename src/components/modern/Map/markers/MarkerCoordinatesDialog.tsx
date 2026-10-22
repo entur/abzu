@@ -15,6 +15,7 @@ limitations under the Licence. */
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useAppSelector } from "../../../../store/hooks";
 import { CoordinatesDialog } from "../../Dialogs/CoordinatesDialog";
+import type { CoordinatesReference } from "../../Dialogs/hooks/useCoordinatesForm";
 
 const COORDINATE_DECIMALS = 6;
 
@@ -23,14 +24,19 @@ interface MarkerCoordinatesDialogProps {
   lat: number;
   lng: number;
   onClose: () => void;
-  /** Same action the marker's drag-end dispatches, with `[lat, lng]`. */
-  onSubmit: (position: [number, number]) => void;
+  /**
+   * Same move the marker's drag-end makes, with `[lat, lng]`. Resolves to
+   * false when the move was refused (outside the user's area, F-106).
+   */
+  onSubmit: (position: [number, number]) => Promise<boolean>;
+  /** Where the element is expected to be (F-103). */
+  reference?: CoordinatesReference;
 }
 
 /**
  * Typing exact coordinates for a map element (F-76, legacy parity). The new
- * position goes through the same action as dragging, then the map follows
- * so the moved marker stays in view.
+ * position goes through the same checked move as dragging, then the map
+ * follows so the moved marker stays in view.
  */
 export const MarkerCoordinatesDialog = ({
   open,
@@ -38,16 +44,16 @@ export const MarkerCoordinatesDialog = ({
   lng,
   onClose,
   onSubmit,
+  reference,
 }: MarkerCoordinatesDialogProps) => {
   const activeMap = useAppSelector(
     (state) => (state as any).mapUtils?.activeMap as MapLibreMap | undefined,
   );
 
-  const handleConfirm = ([newLat, newLng]: [number, number]) => {
-    const position: [number, number] = [Number(newLat), Number(newLng)];
-    onSubmit(position);
-    activeMap?.easeTo({ center: [position[1], position[0]] });
+  const handleConfirm = async (position: [number, number]) => {
     onClose();
+    const isMoved = await onSubmit(position);
+    if (isMoved) activeMap?.easeTo({ center: [position[1], position[0]] });
   };
 
   return (
@@ -57,6 +63,7 @@ export const MarkerCoordinatesDialog = ({
       titleId="change_coordinates"
       bodyId="change_coordinates_help_text"
       confirmId="change_coordinates_confirm"
+      reference={reference}
       handleConfirm={handleConfirm}
       handleClose={onClose}
     />

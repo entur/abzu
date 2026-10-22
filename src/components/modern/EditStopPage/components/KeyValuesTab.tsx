@@ -61,13 +61,16 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
     formKey,
     formValues,
     isDuplicateKey,
+    isInvalidKey,
     hasRepeatedValues,
     canSave,
   } = form;
 
   const keyHelperText = isDuplicateKey
     ? `${formatMessage({ id: "key_already_exists" })}: ${formKey.trim()}`
-    : undefined;
+    : isInvalidKey
+      ? formatMessage({ id: "key_contains_whitespace" })
+      : undefined;
   const valuesHelperText = formatMessage({
     id: hasRepeatedValues ? "duplicate_values_removed" : "key_values_hint",
   });
@@ -160,7 +163,7 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
             value={formKey}
             onChange={(e) => form.setFormKey(e.target.value)}
             disabled={mode === "edit"}
-            error={isDuplicateKey}
+            error={isDuplicateKey || isInvalidKey}
             helperText={keyHelperText}
             size="small"
             fullWidth

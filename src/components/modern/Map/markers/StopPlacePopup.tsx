@@ -24,8 +24,10 @@ import {
   StopPlacesGroupActions,
   UserActions,
 } from "../../../../actions";
+import { useConfig } from "../../../../config/ConfigContext";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import { MarkerPopup } from "./MarkerPopup";
 import type { MapStopPlace } from "./types";
 
@@ -56,23 +58,29 @@ export const StopPlacePopup = ({
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
 
+  const { modalityConfig } = useConfig();
   const groupCurrent = useAppSelector(
     (state) => (state as any).stopPlacesGroup?.current,
   );
-  const canEdit = getStopPermissions(stopPlace).canEdit;
-
-  const isEditingGroup = !!groupCurrent?.id;
+  // Also false on an older version (F-96) and for a terminated stop.
+  const canEdit = useCanEditOnMap(stopPlace);
+  // From the route: the group outlives its editor in Redux (F-88).
+  const isEditingGroup = useIsEditingGroup();
   const isGroupMember =
     isEditingGroup &&
-    (groupCurrent.members ?? []).some(
+    (groupCurrent?.members ?? []).some(
       (m: { id: string }) => m.id === stopPlace.id,
     );
 
   const hasSavedId = !!stopPlace.id && !stopPlace.id.startsWith("new_");
   const expired = !!stopPlace.hasExpired || !!stopPlace.permanentlyTerminated;
 
+  // Creating a group or a multimodal stop from a stop needs edit rights on
+  // it, and the deployment may switch either off (legacy parity, F-12b).
   const showCreateGroup =
     hasSavedId &&
+    canEdit &&
+    !modalityConfig?.disableGroupOfStopPlacesCreation &&
     !expired &&
     !stopPlace.isParent &&
     !stopPlace.isChildOfParent &&
@@ -80,9 +88,14 @@ export const StopPlacePopup = ({
     !isEditingGroup;
 
   const showCreateMultimodal =
-    hasSavedId && !expired && !stopPlace.isParent && !stopPlace.isChildOfParent;
+    hasSavedId &&
+    canEdit &&
+    !modalityConfig?.disableMultiModalStopPlaceCreation &&
+    !expired &&
+    !stopPlace.isParent &&
+    !stopPlace.isChildOfParent;
 
-  const showAdjustCentroid = !!stopPlace.isParent;
+  const showAdjustCentroid = !!stopPlace.isParent && canEdit;
 
   const showConnectAdjacent =
     hasSavedId && !expired && !!stopPlace.isChildOfParent && canEdit;

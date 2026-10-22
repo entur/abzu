@@ -41,7 +41,6 @@ export {
   getLocationPermissionsForCoordinates,
   getMergeInfoForStops,
   getNeighbourStopPlaceQuays,
-  getNeighbourStops,
   getParkingForMultipleStopPlaces,
   getStopPlaceAndPathLinkByVersion,
   getStopPlaceById,
@@ -67,6 +66,7 @@ export {
 
 import { createApolloThunk, createThunk } from ".";
 import { getTiamatClient } from "../graphql/clients";
+import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
 import { stopPlaceWithAll } from "../graphql/Tiamat/stopPlaceWithAll";
 import type { AppDispatch, RootState } from "../store/store";
 import { getContext } from "./TiamatActions";
@@ -114,4 +114,56 @@ export const getStopPlaceWithAll =
         dispatch(createThunk(types.SET_STOP_PLACE_LOADING, false));
         throw error;
       });
+  };
+
+interface MapBounds {
+  getSouthWest: () => { lat: number; lng: number };
+  getNorthEast: () => { lat: number; lng: number };
+}
+
+/**
+ * The stops in the map's bounds, except the open one. Same as the legacy
+ * getNeighbourStops, but with the modern query, which names multimodal
+ * children (F-48).
+ */
+export const getNeighbourStops =
+  (
+    ignoreStopPlaceId: string | undefined,
+    bounds: MapBounds,
+    includeExpired?: boolean,
+  ) =>
+  async (dispatch: AppDispatch, getState: () => RootState): Promise<any> => {
+    dispatch({ type: "MAP_QUERY_START" });
+
+    const southWest = bounds.getSouthWest();
+    const northEast = bounds.getNorthEast();
+    const payload = {
+      fetchPolicy: "network-only" as const,
+      query: neighbourStopsQuery,
+      variables: {
+        includeExpired,
+        // Legacy sends the id as a string, "undefined" included; keep it.
+        ignoreStopPlaceId: `${ignoreStopPlaceId}`,
+        latMin: southWest.lat,
+        latMax: northEast.lat,
+        lonMin: southWest.lng,
+        lonMax: northEast.lng,
+      },
+      context: await getContext((getState() as any).user.auth),
+    };
+
+    try {
+      const result = await (getTiamatClient() as any).query(payload);
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_QUERY_RESULT,
+          result,
+          payload.query,
+          payload.variables,
+        ),
+      );
+      return result;
+    } finally {
+      dispatch({ type: "MAP_QUERY_END" });
+    }
   };

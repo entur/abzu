@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 const VALUE_SEPARATOR = ",";
+const WHITESPACE = /\s/;
 
 interface KeyValue {
   key: string;
@@ -42,3 +43,10 @@ export const isExistingKey = (keyValues: KeyValue[], key: string): boolean => {
   const normalisedKey = key.trim().toLowerCase();
   return keyValues.some((kv) => kv.key.toLowerCase() === normalisedKey);
 };
+
+/**
+ * Keys are identifiers (e.g. `imported-id`), so they may not contain spaces
+ * (F-97). Leading and trailing spaces don't count: the key is trimmed on save.
+ */
+export const hasWhitespaceInKey = (key: string): boolean =>
+  WHITESPACE.test(key.trim());

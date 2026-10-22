@@ -23,13 +23,8 @@ import type {
   MapStopPlace,
   NeighbourStop,
 } from "../markers/types";
-
-const resolveChildLocation = (child: ChildStop): LatLng | null => {
-  if (child.location) return child.location;
-  const coords = child.geometry?.coordinates;
-  if (coords) return [coords[1], coords[0]];
-  return null;
-};
+import { resolveChildLocation } from "../markers/utils/resolveChildLocation";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 
 const buildEdgesForParent = (
   parentLocation: LatLng,
@@ -87,9 +82,7 @@ const EDGE_CASING_OPACITY = 0.75;
 
 export const MultimodalEdgesLayer = () => {
   const theme = useTheme();
-  const current = useAppSelector(
-    (state) => state.stopPlace.current as MapStopPlace | null,
-  );
+  const current = useMapCurrentStop();
   const neighbours = useAppSelector(
     (state) => (state.stopPlace as any).neighbourStops as NeighbourStop[],
   );

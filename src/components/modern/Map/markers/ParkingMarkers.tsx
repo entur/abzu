@@ -21,8 +21,8 @@ import { useIntl } from "react-intl";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
+import { moveElementIfAllowed } from "../../../../actions/StopPlaceActions.modern";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getStopPermissions } from "../../../../utils/permissionsUtils";
 import {
   buildElementStatusByIndex,
   ElementStatusMapBadge,
@@ -31,9 +31,12 @@ import {
 } from "../../Shared/ElementStatus";
 import type { CrosshairSetting } from "../crosshair";
 import { DragCrosshair, getCrosshairPreference } from "../crosshair";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useCheckedMove } from "../hooks/useCheckedMove";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
-import type { FocusedElement, MapParking, MapStopPlace } from "./types";
+import type { FocusedElement, LatLng, MapParking } from "./types";
 import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 
 const PARKING_SIZE = 30;
@@ -52,6 +55,8 @@ interface ParkingMarkerItemProps {
   focused: boolean;
   /** True when the parking is locally added or edited and not yet saved. */
   isPending: boolean;
+  /** The stop's position, which typed coordinates are checked against. */
+  stopLocation?: LatLng;
 }
 
 const ParkingMarkerItem = ({
@@ -60,6 +65,7 @@ const ParkingMarkerItem = ({
   disabled,
   focused,
   isPending,
+  stopLocation,
 }: ParkingMarkerItemProps) => {
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
@@ -69,10 +75,15 @@ const ParkingMarkerItem = ({
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
   const isStatusEnabled = useElementStatusEnabled();
+  const { pendingPosition, moveTo } = useCheckedMove((position) =>
+    dispatch(
+      moveElementIfAllowed({ markerIndex: index, type: "parking" }, position),
+    ),
+  );
 
   if (!parking.location) return null;
 
-  const [lat, lng] = parking.location;
+  const [lat, lng] = pendingPosition ?? parking.location;
   const isBike = parking.parkingType === BIKE_PARKING_TYPE;
   const titleFallbackKey = isBike
     ? "parking_item_title_bikeParking"
@@ -86,12 +97,7 @@ const ParkingMarkerItem = ({
 
   const handleDragEnd = (event: MarkerDragEvent) => {
     setIsDragging(false);
-    dispatch(
-      StopPlaceActions.changeElementPosition(
-        { markerIndex: index, type: "parking" },
-        [event.lngLat.lat, event.lngLat.lng],
-      ),
-    );
+    moveTo([event.lngLat.lat, event.lngLat.lng]);
   };
 
   const showCrosshair = isDragging && crosshairRef.current !== "none";
@@ -219,13 +225,9 @@ const ParkingMarkerItem = ({
         lat={lat}
         lng={lng}
         onClose={() => setIsEditingCoordinates(false)}
-        onSubmit={(position) =>
-          dispatch(
-            StopPlaceActions.changeElementPosition(
-              { markerIndex: index, type: "parking" },
-              position,
-            ),
-          )
+        onSubmit={moveTo}
+        reference={
+          stopLocation ? { position: stopLocation, kind: "stop" } : undefined
         }
       />
     </>
@@ -233,9 +235,8 @@ const ParkingMarkerItem = ({
 };
 
 export const ParkingMarkers = () => {
-  const current = useAppSelector(
-    (state) => state.stopPlace.current as MapStopPlace | null,
-  );
+  const current = useMapCurrentStop();
+  const canEditOnMap = useCanEditOnMap(current);
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as FocusedElement | undefined,
@@ -251,9 +252,6 @@ export const ParkingMarkers = () => {
   if (!current?.parking?.length) return null;
   if (isMergingStop) return null;
 
-  const disabled =
-    !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;
-
   const parkingStatuses = buildElementStatusByIndex(
     current.parking,
     originalParking,
@@ -266,7 +264,8 @@ export const ParkingMarkers = () => {
           key={parking.id || index}
           parking={parking}
           index={index}
-          disabled={disabled}
+          disabled={!canEditOnMap}
+          stopLocation={current.location}
           focused={
             (focusedElement?.type === "parkAndRide" ||
               focusedElement?.type === "bikeParking") &&

@@ -26,9 +26,11 @@ import { StopPlacesGroupActions, UserActions } from "../../../../actions";
 import { getNeighbourStopPlaceQuays } from "../../../../actions/TiamatActions.modern";
 import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 import { MarkerPopup } from "./MarkerPopup";
-import type { NeighbourStop } from "./types";
+import type { MapStopPlace, NeighbourStop } from "./types";
 import { useConfirmLeave } from "../../Shared/UnsavedChangesGuard";
 
 interface NeighbourStopPopupProps {
@@ -58,36 +60,36 @@ export const NeighbourStopPopup = ({
   const groupCurrent = useAppSelector(
     (state) => (state as any).stopPlacesGroup?.current,
   );
-  const currentStopPlace = useAppSelector(
-    (state) => (state as any).stopPlace?.current,
-  );
+  // Both group-aware (F-88): the group and the previous stop both outlive
+  // their editors in Redux, so offering actions by them alone acted on a
+  // stop or group that was no longer open.
+  const isEditingGroup = useIsEditingGroup();
+  const currentStopPlace = useMapCurrentStop() as
+    (MapStopPlace & { parentStop?: { children?: { id: string }[] } }) | null;
+  const canEditCurrentStop = useCanEditOnMap(currentStopPlace);
   const areQuaysShown = useAppSelector(
     (state) => !!(state as any).stopPlace?.neighbourStopQuays?.[stop.id],
   );
 
-  const isEditingGroup = !!groupCurrent?.id;
   const isEditingStop = !!currentStopPlace?.id;
   const canEdit = !!stop.permissions?.canEdit;
   const expired = !!stop.hasExpired;
   const hasSavedId = !!stop.id;
 
   const siblingIds: string[] = currentStopPlace?.isChildOfParent
-    ? (currentStopPlace?.parentStop?.children ?? []).map(
-        (c: any) => c.id as string,
-      )
+    ? (currentStopPlace?.parentStop?.children ?? []).map((child) => child.id)
     : [];
   const showConnectAdjacent =
     siblingIds.includes(stop.id) && canEdit && !expired;
 
   const isGroupMember =
     isEditingGroup &&
-    (groupCurrent.members ?? []).some((m: { id: string }) => m.id === stop.id);
+    (groupCurrent?.members ?? []).some((m: { id: string }) => m.id === stop.id);
 
   const showAddToGroup = isEditingGroup && canEdit && !isGroupMember;
   const showRemoveFromGroup = isEditingGroup && canEdit && isGroupMember;
 
   const isCurrentStopParent = !!currentStopPlace?.isParent;
-  const canEditCurrentStop = !!getStopPermissions(currentStopPlace).canEdit;
 
   // Tiamat refuses to merge from a child of a multimodal stop ("Cannot merge
   // from childs of multi modal stop places", checked on dev for F-47), so the
@@ -103,10 +105,11 @@ export const NeighbourStopPopup = ({
     !isCurrentStopParent &&
     canEditCurrentStop;
 
-  // Shows the neighbour's quays on the map so one can be moved to the open
-  // stop (F-46). Parents have no quays of their own.
-  const showQuaysToggle =
-    hasSavedId && isEditingStop && !isCurrentStopParent && !stop.isParent;
+  // Shows the neighbour's quays on the map, to look at or to move one to the
+  // open stop (F-46). Also offered in a multimodal editor, for looking: the
+  // move itself is hidden there (canMoveQuayToCurrent, F-101). Parents have
+  // no quays of their own.
+  const showQuaysToggle = hasSavedId && isEditingStop && !stop.isParent;
 
   const hasActions =
     showAddToGroup ||

@@ -50,6 +50,7 @@ import { DEFAULT_STOP_PLACE_TAB } from "./stopPlaceTabs";
 import { EditStopPageProps } from "./types";
 import { appChromeTop, belowAppChromeHeight } from "../Header/headerMetrics";
 import { getModalityAllowance } from "../Shared/StopNameAndType";
+import { StopStatusBanner } from "../Shared/StopStatus";
 
 const DRAWER_WIDTH_DESKTOP = 450;
 const DRAWER_WIDTH_TABLET = 380;
@@ -261,9 +262,12 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
 
   /* The whole stop is saved as one version, so quay and parking views use the
      stop's own Discard/Save, not a panel button that looked element-scoped
-     (F-24). Deactivating the stop isn't offered next to "Delete quay". */
+     (F-24). Deactivating the stop isn't offered next to "Delete quay".
+     The stop's status banner comes along, so a quay of an older version says
+     so too (F-96). */
   const withStopActions = (panel: React.ReactNode) => (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <StopStatusBanner stopPlace={stopPlace} />
       <Box sx={{ flex: 1, minHeight: 0 }}>{panel}</Box>
       <Divider />
       <StopPlaceActionBar
