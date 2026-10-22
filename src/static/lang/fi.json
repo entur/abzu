@@ -609,6 +609,8 @@
   "generalSign_no": "Ei pysäkkikilpiä",
   "generalSign_quay_hint": "Onko tällä laiturilla pysäkkikilpi?",
   "type": "Tyyppi",
+  "ui_mode_switch_to_legacy": "Vaihda klassiseen käyttöliittymään",
+  "ui_mode_switch_to_modern": "Kokeile uutta käyttöliittymää",
   "uknown_parking_type": "Tuntematon pysäköintityyppi",
   "undefined": "Ei määritelty",
   "undo_changes": "Hylkää muutokset",

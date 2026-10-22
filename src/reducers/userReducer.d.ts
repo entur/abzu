@@ -5,7 +5,8 @@ interface UserState {
     stopPlaceId: string;
   };
   auth: any;
-  uiMode?: "legacy" | "modern";
+  /** null until the user picks a UI with the switch. */
+  uiMode?: "legacy" | "modern" | null;
   membershipDisplay?: string;
   elementStatusDisplay?: string;
 }

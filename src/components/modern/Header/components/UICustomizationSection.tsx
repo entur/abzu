@@ -25,10 +25,10 @@ import {
 } from "@mui/material";
 import React, { useContext } from "react";
 import { useIntl } from "react-intl";
-import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { ConfigContext } from "../../../../config/ConfigContext";
 import { useAppDispatch } from "../../../../store/hooks";
+import { useActiveUiMode } from "../../../UiModeSwitch";
 import { ThemeSwitcher } from "../../../../theme";
 import { MembershipDisplaySwitcher } from "../../Shared/Membership/MembershipDisplaySwitcher";
 import { useElementStatusEnabled } from "../../Shared/ElementStatus";
@@ -54,7 +54,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
   const config = useContext(ConfigContext);
 
   // Redux selectors
-  const uiMode = useSelector((state: any) => state.user.uiMode);
+  const uiMode = useActiveUiMode();
   const isElementStatusEnabled = useElementStatusEnabled();
 
   // Show theme switcher only if 2+ themes available
@@ -136,9 +136,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
           <MenuList sx={{ pl: 2 }}>
             {showUiModeToggle && (
               <MenuItem
-                onClick={() =>
-                  handleToggleUIMode(!uiMode || uiMode !== "modern")
-                }
+                onClick={() => handleToggleUIMode(uiMode !== "modern")}
                 sx={settingItemStyle}
               >
                 <ListItemIcon sx={{ minWidth: 32 }}>
@@ -280,7 +278,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
         <MenuList sx={{ pl: 2 }}>
           {showUiModeToggle && (
             <MenuItem
-              onClick={() => handleToggleUIMode(!uiMode || uiMode !== "modern")}
+              onClick={() => handleToggleUIMode(uiMode !== "modern")}
               sx={settingItemStyle}
             >
               <ListItemIcon sx={{ minWidth: 32 }}>

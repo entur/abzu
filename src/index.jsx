@@ -20,12 +20,12 @@ import { useContext } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { AuthProvider } from "./auth/auth";
+import { useActiveUiMode } from "./components/UiModeSwitch";
 import { ConfigContext } from "./config/ConfigContext";
 import { fetchConfig } from "./config/fetchConfig";
 import LegacyApp from "./containers/LegacyApp";
 import ModernApp from "./containers/modern/App";
 import { getTiamatClient } from "./graphql/clients";
-import { useAppSelector } from "./store/hooks";
 import { store } from "./store/store";
 
 /**
@@ -33,17 +33,13 @@ import { store } from "./store/store";
  * The config's uiMode field is the authority:
  *   "legacy" (default) — always renders LegacyApp
  *   "modern"           — always renders ModernApp
- *   "dual"             — user can switch; Redux uiMode remembers their choice
+ *   "dual"             — user can switch; Redux uiMode remembers their choice,
+ *                        dualUiConfig.defaultUiMode applies until they make one
  */
 const AppRouter = () => {
-  const config = useContext(ConfigContext);
-  const configUiMode = config.uiMode ?? "legacy";
+  const activeUiMode = useActiveUiMode();
 
-  const reduxUiMode = useAppSelector((state) => state.user.uiMode);
-
-  if (configUiMode === "modern") return <ModernApp />;
-  if (configUiMode === "legacy") return <LegacyApp />;
-  return reduxUiMode === "modern" ? <ModernApp /> : <LegacyApp />;
+  return activeUiMode === "modern" ? <ModernApp /> : <LegacyApp />;
 };
 
 const AuthenticatedApp = () => {

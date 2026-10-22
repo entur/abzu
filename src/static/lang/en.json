@@ -615,6 +615,8 @@
   "generalSign_no": "No transport sign",
   "generalSign_quay_hint": "Does this quay have a transport sign?",
   "type": "Type",
+  "ui_mode_switch_to_legacy": "Switch to classic UI",
+  "ui_mode_switch_to_modern": "Try the new UI",
   "uknown_parking_type": "Unknown parking type",
   "undefined": "Not defined",
   "undo_changes": "Discard",

@@ -610,6 +610,8 @@
   "generalSign_no": "Aucune information voyageur à l'arrêt",
   "generalSign_quay_hint": "Ce quai possède-t-il un panneau d'information voyageur, comme un panneau d'arrêt de bus par exemple ?",
   "type": "Type",
+  "ui_mode_switch_to_legacy": "Passer à l'interface classique",
+  "ui_mode_switch_to_modern": "Essayer la nouvelle interface",
   "uknown_parking_type": "Type de parking inconnu",
   "undefined": "Non défini",
   "undo_changes": "Annuler",

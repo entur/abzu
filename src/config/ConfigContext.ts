@@ -46,10 +46,37 @@ export interface Config {
   /**
    * Controls which UI is available.
    * "legacy" (default) — only the legacy UI, no toggle shown.
-   * "dual" — both UIs available; user can switch via the header menu.
+   * "dual" — both UIs available; a switch in each UI's header swaps between them.
    * "modern" — only the modern UI, no toggle shown.
    */
   uiMode?: "legacy" | "dual" | "modern";
+  /**
+   * Only read when uiMode is "dual": which UI a first-time visitor lands on,
+   * and what the header's UI switch says.
+   */
+  dualUiConfig?: DualUiConfig;
+}
+
+export type SwitchableUiMode = "legacy" | "modern";
+
+export interface DualUiConfig {
+  /**
+   * UI shown until the user picks one with the switch. Defaults to "legacy".
+   */
+  defaultUiMode?: SwitchableUiMode;
+  /**
+   * Shows the UI switch button in each UI's header. Defaults to true.
+   * The switch in the header menus stays available either way.
+   */
+  showSwitchButton?: boolean;
+  /**
+   * Overrides the switch button text per locale, e.g. { "nb": "…", "en": "…" }.
+   * A locale missing here falls back to the built-in translation.
+   */
+  switchLabels?: {
+    toModern?: Record<string, string>;
+    toLegacy?: Record<string, string>;
+  };
 }
 
 export interface MapConfig {

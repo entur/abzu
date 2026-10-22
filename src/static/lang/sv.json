@@ -608,6 +608,8 @@
   "generalSign_no": "Saknar transportskylt",
   "generalSign_quay_hint": "Har quayen en transportskylt?",
   "type": "Typ",
+  "ui_mode_switch_to_legacy": "Byt till klassiskt gränssnitt",
+  "ui_mode_switch_to_modern": "Prova det nya gränssnittet",
   "uknown_parking_type": "Okänd parkeringstyp",
   "undefined": "Odefinerad",
   "undo_changes": "Förkasta",

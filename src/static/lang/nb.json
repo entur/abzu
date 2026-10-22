@@ -615,6 +615,8 @@
   "generalSign_no": "Mangler transportskilt",
   "generalSign_quay_hint": "Har denne quayen et transportskilt, som f.eks. 512-skilt?",
   "type": "Type",
+  "ui_mode_switch_to_legacy": "Bytt til klassisk grensesnitt",
+  "ui_mode_switch_to_modern": "Prøv det nye grensesnittet",
   "uknown_parking_type": "Ukjent parkeringstype",
   "undefined": "Udefinert",
   "undo_changes": "Forkast",
