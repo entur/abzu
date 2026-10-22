@@ -15,22 +15,17 @@ limitations under the Licence. */
 import debounce from "lodash.debounce";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
-import Map, {
-  MapLayerMouseEvent,
-  MapRef,
-  ViewStateChangeEvent,
-} from "react-map-gl/maplibre";
+import Map, { MapRef, ViewStateChangeEvent } from "react-map-gl/maplibre";
 import { Box } from "@mui/material";
 import { appChromeTop } from "../Header/headerMetrics";
-import { useNavigate } from "react-router-dom";
 import { StopPlaceActions, UserActions } from "../../../actions";
 import { getNeighbourStops } from "../../../actions/TiamatActions.modern";
 import { ConfigContext, MapConfig } from "../../../config/ConfigContext";
-import AppRoutes from "../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { AddElementFab } from "./controls/AddElementFab";
 import { MapControls } from "./controls/MapControls";
 import { useMapComponentLayers } from "./hooks/useMapComponentLayers";
+import { useMapCurrentStop } from "./hooks/useMapCurrentStop";
 import { maplibreLib } from "./maplibreLib";
 import { FareZonesLayer } from "./layers/FareZonesLayer";
 import { GroupEdgesLayer } from "./layers/GroupEdgesLayer";
@@ -40,6 +35,7 @@ import { StopGroupLayer } from "./layers/StopGroupLayer";
 import { TariffZonesLayer } from "./layers/TariffZonesLayer";
 import { BoardingPositionMarkers } from "./markers/BoardingPositionMarkers";
 import { NeighbourMarkers } from "./markers/NeighbourMarkers";
+import { NeighbourQuayMarkers } from "./markers/NeighbourQuayMarkers";
 import { ParkingMarkers } from "./markers/ParkingMarkers";
 import { QuayMarkers } from "./markers/QuayMarkers";
 import { StopPlaceMarker } from "./markers/StopPlaceMarker";
@@ -65,7 +61,6 @@ const DEFAULT_MAP_CONFIG: MapConfig = {
 
 export const ModernEditStopMap = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const mapRef = useRef<MapRef>(null);
   const { mapConfig } = useContext(ConfigContext);
   const config = mapConfig ?? DEFAULT_MAP_CONFIG;
@@ -78,17 +73,18 @@ export const ModernEditStopMap = () => {
     (state) => (state.user as any).activeBaselayer as string,
   );
 
-  const currentStopId = useAppSelector(
-    (state) => (state.stopPlace.current as any)?.id as string | undefined,
-  );
-  const currentLocation = useAppSelector(
-    (state) =>
-      (state.stopPlace.current as any)?.location as
-        [number, number] | undefined,
-  );
+  // Group-aware (F-88): in the group view the previous stop is a neighbour
+  // again, so it is no longer left out of the neighbour query.
+  const currentStop = useMapCurrentStop();
+  const currentStopId = currentStop?.id;
+  const currentLocation = currentStop?.location;
   const currentGroupId = useAppSelector(
     (state) =>
       (state as any).stopPlacesGroup?.current?.id as string | undefined,
+  );
+  const groupMemberCount = useAppSelector(
+    (state) =>
+      ((state as any).stopPlacesGroup?.current?.members?.length ?? 0) as number,
   );
   const groupCenterPosition = useAppSelector(
     (state) =>
@@ -97,9 +93,6 @@ export const ModernEditStopMap = () => {
   );
   const showExpiredStops = useAppSelector(
     (state) => (state.stopPlace as any).showExpiredStops as boolean,
-  );
-  const isCreatingNewStop = useAppSelector(
-    (state) => (state.user as any).isCreatingNewStop as boolean,
   );
 
   const { resolvedComponentUrl, transformRequest } = useMapComponentLayers(
@@ -211,6 +204,9 @@ export const ModernEditStopMap = () => {
 
   useEffect(() => {
     if (!currentGroupId || !groupCenterPosition || !mapRef.current) return;
+    // A group without members has no centre of its own; the reducer falls
+    // back to the config default, so flying there left a blank map (F-83).
+    if (groupMemberCount === 0) return;
     const [lat, lng] = groupCenterPosition;
     mapRef.current.flyTo({
       center: [lng, lat],
@@ -219,28 +215,8 @@ export const ModernEditStopMap = () => {
     });
     // groupCenterPosition is included so re-navigating to the same group (same currentGroupId)
     // still triggers flyTo — the reducer always produces a new array reference on fetch.
-  }, [currentGroupId, groupCenterPosition]);
-
-  // Ref so the stable callback always reads the latest isCreatingNewStop value
-  const isCreatingNewStopRef = useRef(isCreatingNewStop);
-  useEffect(() => {
-    isCreatingNewStopRef.current = isCreatingNewStop;
-  }, [isCreatingNewStop]);
-
-  const handleDblClick = useCallback(
-    async (event: MapLayerMouseEvent) => {
-      if (!isCreatingNewStopRef.current) return;
-      const { lat, lng } = event.lngLat;
-      // Await so that CREATED_NEW_STOP is dispatched (and newStop is in Redux)
-      // before navigating — StopPlace.tsx guards against null stopPlace on mount.
-      await dispatch(StopPlaceActions.createNewStop({ lat, lng }));
-      dispatch(UserActions.clearNewStopCreationMode());
-      navigate(`/${AppRoutes.STOP_PLACE}/new`);
-    },
-    // navigate and dispatch are stable; isCreatingNewStopRef is a stable ref
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dispatch, navigate],
-  );
+  }, [currentGroupId, groupCenterPosition]);
 
   const mapStyle = useMemo(
     () => buildMaplibreStyle(config, activeBaseLayer, resolvedComponentUrl),
@@ -274,8 +250,6 @@ export const ModernEditStopMap = () => {
         transformRequest={transformRequest}
         onLoad={handleMapLoad}
         onMoveEnd={handleMoveEnd}
-        onDblClick={handleDblClick}
-        doubleClickZoom={!isCreatingNewStop}
         maxZoom={activeLayerMaxZoom}
         pitchWithRotate={false}
         dragRotate={false}
@@ -289,6 +263,7 @@ export const ModernEditStopMap = () => {
         <GroupEdgesLayer />
         <PathLinkLayer />
         <NeighbourMarkers />
+        <NeighbourQuayMarkers />
         <StopPlaceMarker />
         <QuayMarkers />
         <ParkingMarkers />

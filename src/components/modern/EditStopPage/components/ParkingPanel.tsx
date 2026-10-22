@@ -16,7 +16,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
-import SaveIcon from "@mui/icons-material/Save";
 import {
   Box,
   Button,
@@ -56,7 +55,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onNameChange,
   onTypeChange,
   onCapacityChange,
-  onSave,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -195,42 +193,33 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
         )}
       </Box>
 
-      {/* Footer */}
-      <Divider />
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.paper",
-          flexWrap: "wrap",
-        }}
-      >
-        {canEdit && (
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            startIcon={<DeleteIcon />}
-            onClick={() => onDelete(parkingIndex)}
+      {/* Footer, only with something in it: an empty one left a blank band
+          on read-only views (older version, F-96). */}
+      {canEdit && (
+        <>
+          <Divider />
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              px: 2,
+              py: 1.5,
+              bgcolor: "background.paper",
+              flexWrap: "wrap",
+            }}
           >
-            {formatMessage({ id: "delete_parking" })}
-          </Button>
-        )}
-        {canEdit && (
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            startIcon={<SaveIcon />}
-            onClick={onSave}
-            sx={{ ml: "auto" }}
-          >
-            {formatMessage({ id: "save" })}
-          </Button>
-        )}
-      </Box>
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<DeleteIcon />}
+              onClick={() => onDelete(parkingIndex)}
+            >
+              {formatMessage({ id: "delete_parking" })}
+            </Button>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

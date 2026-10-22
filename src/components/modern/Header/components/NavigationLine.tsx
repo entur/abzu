@@ -19,18 +19,14 @@ import { useIntl } from "react-intl";
 import AppRoutes from "../../../../routes";
 import { useAppSelector } from "../../../../store/hooks";
 import { NAVIGATION_LINE_HEIGHT } from "../headerMetrics";
+import { navigationPillSx } from "./navigationPillSx";
+import { NavigationUiModeSwitch } from "./NavigationUiModeSwitch";
 
 const MAIN_TAB = "main";
 const REPORTS_TAB = "reports";
 
-const INACTIVE_TAB_OPACITY = 0.7;
 const SEPARATOR_OPACITY = 0.15;
 const SELECTED_TAB_OPACITY = 0.16;
-const HOVERED_TAB_OPACITY = 0.08;
-
-/* Insets the pill from the top and bottom of the line, so the highlight can
-   never touch the edge the editor panel is docked against. */
-const TAB_INSET = 4;
 
 interface NavigationLineProps {
   onReturnToMap: () => void;
@@ -75,6 +71,8 @@ export const NavigationLine: React.FC<NavigationLineProps> = ({
   return (
     <Box
       sx={{
+        display: "flex",
+        alignItems: "center",
         px: { xs: 1, sm: 2 },
         borderTop: 1,
         borderColor: (theme) =>
@@ -88,6 +86,7 @@ export const NavigationLine: React.FC<NavigationLineProps> = ({
         scrollButtons={false}
         aria-label={formatMessage({ id: "navigation" })}
         sx={{
+          flex: 1,
           minHeight: NAVIGATION_LINE_HEIGHT,
           /* No underline. MUI pins the indicator to the bottom of the strip,
              which is the bottom of the AppBar — exactly where the editor drawer
@@ -98,18 +97,7 @@ export const NavigationLine: React.FC<NavigationLineProps> = ({
             display: "none",
           },
           "& .MuiTab-root": {
-            minHeight: NAVIGATION_LINE_HEIGHT - TAB_INSET * 2,
-            my: `${TAB_INSET}px`,
-            minWidth: 0,
-            px: 2,
-            borderRadius: 1,
-            textTransform: "none",
-            color: (theme) =>
-              alpha(theme.palette.primary.contrastText, INACTIVE_TAB_OPACITY),
-            "&:hover": {
-              backgroundColor: (theme) =>
-                alpha(theme.palette.primary.contrastText, HOVERED_TAB_OPACITY),
-            },
+            ...navigationPillSx,
             "&.Mui-selected": {
               color: "primary.contrastText",
               backgroundColor: (theme) =>
@@ -131,6 +119,7 @@ export const NavigationLine: React.FC<NavigationLineProps> = ({
           label={formatMessage({ id: "report_site" })}
         />
       </Tabs>
+      <NavigationUiModeSwitch />
     </Box>
   );
 };

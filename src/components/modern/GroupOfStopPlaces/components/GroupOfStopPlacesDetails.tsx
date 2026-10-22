@@ -15,10 +15,11 @@
 import { Box, TextField } from "@mui/material";
 import { useIntl } from "react-intl";
 import { GroupOfStopPlacesDetailsProps } from "../types";
+import { PurposeOfGroupingField } from "./PurposeOfGroupingField";
 
 /**
  * Details form component for group of stop places
- * Shows name and description fields
+ * Shows name, description and purpose of grouping
  */
 export const GroupOfStopPlacesDetails: React.FC<
   GroupOfStopPlacesDetailsProps
@@ -50,6 +51,7 @@ export const GroupOfStopPlacesDetails: React.FC<
         variant="outlined"
         size="small"
       />
+      <PurposeOfGroupingField canEdit={canEdit} />
     </Box>
   );
 };

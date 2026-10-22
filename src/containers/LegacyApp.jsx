@@ -32,6 +32,7 @@ import GlobalLoadingIndicator from "../components/GlobalLoadingIndicator";
 import Header from "../components/Header/Header";
 import LocalLoadingIndicator from "../components/LocalLoadingIndicator";
 import SnackbarWrapper from "../components/SnackbarWrapper";
+import { LegacyHeaderUiModeSwitch } from "../components/UiModeSwitch";
 import { ConfigContext } from "../config/ConfigContext";
 import { OPEN_STREET_MAP } from "../config/mapDefaults";
 import { getTheme } from "../config/themeConfig";
@@ -177,6 +178,7 @@ const LegacyApp = () => {
                 </Router>
                 <SnackbarWrapper />
                 <SessionExpiredDialog />
+                <LegacyHeaderUiModeSwitch />
               </div>
             </MuiThemeProvider>
           )}
@@ -208,6 +210,7 @@ const LegacyApp = () => {
             </Router>
             <SnackbarWrapper />
             <SessionExpiredDialog />
+            <LegacyHeaderUiModeSwitch />
           </div>
         </ComponentToggle>
       </StyledEngineProvider>

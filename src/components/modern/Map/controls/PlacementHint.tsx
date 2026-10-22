@@ -20,9 +20,18 @@ interface Props {
   messageKey: string;
   labelKey?: string;
   onCancel: () => void;
+  /** Left edge in px: the hint is docked next to the + it belongs to (F-13). */
+  left: number;
 }
 
-export const PlacementHint = ({ messageKey, labelKey, onCancel }: Props) => {
+const HINT_TOP = 20;
+
+export const PlacementHint = ({
+  messageKey,
+  labelKey,
+  onCancel,
+  left,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -30,9 +39,9 @@ export const PlacementHint = ({ messageKey, labelKey, onCancel }: Props) => {
       elevation={4}
       sx={{
         position: "absolute",
-        bottom: 32,
-        left: "50%",
-        transform: "translateX(-50%)",
+        top: HINT_TOP,
+        left,
+        transition: "left 0.3s ease-in-out",
         px: 2,
         py: 1,
         zIndex: 10,

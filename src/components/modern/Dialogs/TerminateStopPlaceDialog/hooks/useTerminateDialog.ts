@@ -51,7 +51,7 @@ interface UseTerminateDialogProps {
     shouldTerminatePermanently: boolean,
     comment: string,
     dateTime: string,
-  ) => void;
+  ) => void | Promise<unknown>;
 }
 
 export const useTerminateDialog = ({
@@ -115,7 +115,7 @@ export const useTerminateDialog = ({
 
   const handleConfirmClick = useCallback(() => {
     const dateTime = helpers.getFullUTCString(time, date);
-    handleConfirm(
+    return handleConfirm(
       shouldHardDelete,
       shouldTerminatePermanently,
       comment,

@@ -45,6 +45,7 @@ import {
 } from "./components";
 import { useHeaderSlotContent } from "./HeaderSlotContext";
 import { useLastMapLocation } from "./hooks/useLastMapLocation";
+import { useLastReportsLocation } from "./hooks/useLastReportsLocation";
 
 interface ModernHeaderProps {
   config: {
@@ -64,6 +65,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const { themeConfig } = useAbzuTheme();
   const headerSlotContent = useHeaderSlotContent();
   const getLastMapLocation = useLastMapLocation();
+  const getLastReportsLocation = useLastReportsLocation();
 
   const pathname = useSelector((state: any) => state.router.location.pathname);
   const confirmLeave = useConfirmLeave();
@@ -79,7 +81,8 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
      pushing the route directly skips the NAVIGATE_TO reset, so the map
      position and the open stop place or group survive the round trip. */
   const goToReports = () => {
-    dispatch(push(import.meta.env.BASE_URL + AppRoutes.REPORTS));
+    // Back to the last report search, not a blank Reports page (F-65).
+    dispatch(push(getLastReportsLocation()));
   };
 
   const returnToMap = () => {

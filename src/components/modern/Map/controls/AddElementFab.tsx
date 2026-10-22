@@ -13,33 +13,33 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import {
+  Add as AddIcon,
   DirectionsBike as BikeParkingIcon,
   Navigation as BoardingPositionIcon,
+  Close as CloseIcon,
   LocalParking as ParkAndRideIcon,
   LocationOn as QuayIcon,
-  DirectionsBus as StopPlaceIcon,
 } from "@mui/icons-material";
 import {
+  Fab,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
-  Typography,
+  Tooltip,
   useTheme,
 } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import { Marker, useMap } from "react-map-gl/maplibre";
-import { StopPlaceActions, UserActions } from "../../../../actions";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { Marker } from "react-map-gl/maplibre";
+import { useAppSelector } from "../../../../store/hooks";
 import { addItemButtonSx } from "../../Shared";
-import {
-  DragCrosshair,
-  getCrosshairPreference,
-  type CrosshairSetting,
-} from "../crosshair";
+import { DragCrosshair } from "../crosshair";
+import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
+import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
+import { ElementType, usePlacement } from "./hooks/usePlacement";
+import { NewStopConfirm } from "./NewStopConfirm";
 import { PlacementHint } from "./PlacementHint";
-
-type ElementType = "quay" | "parkAndRide" | "bikeParking" | "boardingPosition";
 
 interface StopAction {
   icon: React.ReactNode;
@@ -48,13 +48,12 @@ interface StopAction {
 }
 
 const DRAWER_WIDTH = 450;
+const FAB_SIZE = 56;
+const FAB_GAP = 8;
+const FAB_TOP = 16;
 
 const STOP_ELEMENT_ACTIONS: StopAction[] = [
-  {
-    icon: <QuayIcon />,
-    labelKey: "map_add_quay",
-    elementType: "quay",
-  },
+  { icon: <QuayIcon />, labelKey: "map_add_quay", elementType: "quay" },
   {
     icon: <ParkAndRideIcon />,
     labelKey: "map_add_park_and_ride",
@@ -72,13 +71,77 @@ const STOP_ELEMENT_ACTIONS: StopAction[] = [
   },
 ];
 
-const PARKING_TYPES = new Set<ElementType>(["parkAndRide", "bikeParking"]);
+const placementLabelKey = (type: string): string =>
+  type === "stopPlace"
+    ? "map_add_stop_place"
+    : (STOP_ELEMENT_ACTIONS.find((action) => action.elementType === type)
+        ?.labelKey ?? "map_add_element");
 
+/**
+ * The map's + (F-10, F-12, F-13).
+ * - No stop open: a plain button that starts placing a new stop.
+ * - A stop open: a menu of its elements, opened and closed by click only,
+ *   with labels always visible.
+ * - While placing: the + turns into a yellow × that cancels, with a hint
+ *   docked next to it.
+ */
 export const AddElementFab = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
+  const [open, setOpen] = useState(false);
+  const {
+    placementType,
+    startPlacement,
+    cancelPlacement,
+    pendingStopPosition,
+    clearPendingStopPosition,
+    crosshairSetting,
+    pointerPosition,
+  } = usePlacement();
 
-  /** Passed via slotProps.fab to directly style the internal Fab on each action */
+  const isAuthenticated = useAppSelector(
+    (state) => (state.user as any).auth?.isAuthenticated as boolean | undefined,
+  );
+  /* An unsaved new stop has no id yet but is still open in the editor, so
+     "open" means current is set, not that it has an id (F-16). */
+  const current = useMapCurrentStop();
+  const isEditorOpen = !!current;
+  const isParentOpen = !!current?.isParent;
+  const canEditOpenStop = useCanEditOnMap(current);
+  const isEditingGroup = useIsEditingGroup();
+  const focusedElement = useAppSelector(
+    (state) =>
+      (state as any).mapUtils?.focusedElement as
+        { type: string; index: number } | undefined,
+  );
+  const isQuayFocused =
+    focusedElement?.type === "quay" && (focusedElement?.index ?? -1) >= 0;
+
+  // Opening or closing an editor changes what + places; don't carry it over.
+  useEffect(() => {
+    cancelPlacement();
+    setOpen(false);
+  }, [isEditorOpen, cancelPlacement]);
+
+  // All hooks must run above these guards: the map stays mounted across the
+  // login transition, so an early return before a hook changes the hook count.
+  if (!isAuthenticated) return null;
+  // Quays and parking belong to the child stops, never the multimodal parent (F-35).
+  if (isParentOpen) return null;
+  // Nothing to add to a group; the previous stop is no longer open (F-88).
+  if (isEditingGroup) return null;
+  // A read-only stop or an older version gets no new elements (F-96).
+  if (isEditorOpen && !canEditOpenStop) return null;
+
+  const isPlacing = !!placementType;
+  const fabLeft = isEditorOpen ? DRAWER_WIDTH + FAB_GAP : FAB_GAP;
+  const fabSx = {
+    // Paper background with a semantic icon colour, warning while placing.
+    ...addItemButtonSx(isPlacing ? "warning.main" : "primary.main"),
+    // Floats over the map, so it needs more lift than an in-panel button.
+    boxShadow: 3,
+  };
+  /** Passed via slotProps.fab to style each action's internal Fab. */
   const actionFabSx = {
     bgcolor: theme.palette.grey.A100,
     color: theme.palette.text.primary,
@@ -88,197 +151,16 @@ export const AddElementFab = () => {
       color: theme.palette.common.white,
     },
   };
-  const dispatch = useAppDispatch();
-  const { current: mapRef } = useMap();
-  const [open, setOpen] = useState(false);
-  const [pendingElementType, setPendingElementType] =
-    useState<ElementType | null>(null);
 
-  const isAuthenticated = useAppSelector(
-    (state) => (state.user as any).auth?.isAuthenticated as boolean | undefined,
-  );
-
-  /* An unsaved new stop has no id yet but is still open in the editor, so
-     "open" means current is set, not that it has an id (F-16). */
-  const isEditorOpen = useAppSelector((state) =>
-    Boolean(state.stopPlace.current),
-  );
-  const isParentOpen = useAppSelector((state) =>
-    Boolean((state.stopPlace.current as any)?.isParent),
-  );
-  const isCreatingNewStop = useAppSelector(
-    (state) => (state.user as any).isCreatingNewStop as boolean,
-  );
-  const quayCount = useAppSelector(
-    (state) =>
-      ((state.stopPlace.current as any)?.quays as unknown[] | undefined)
-        ?.length ?? 0,
-  );
-  const parkingCount = useAppSelector(
-    (state) =>
-      ((state.stopPlace.current as any)?.parking as unknown[] | undefined)
-        ?.length ?? 0,
-  );
-  const focusedElement = useAppSelector(
-    (state) =>
-      (state as any).mapUtils?.focusedElement as
-        { type: string; index: number } | undefined,
-  );
-  const isQuayFocused =
-    focusedElement?.type === "quay" && (focusedElement?.index ?? -1) >= 0;
-
-  const pendingElementTypeRef = useRef(pendingElementType);
-  useEffect(() => {
-    pendingElementTypeRef.current = pendingElementType;
-  }, [pendingElementType]);
-
-  const quayCountRef = useRef(quayCount);
-  useEffect(() => {
-    quayCountRef.current = quayCount;
-  }, [quayCount]);
-
-  const parkingCountRef = useRef(parkingCount);
-  useEffect(() => {
-    parkingCountRef.current = parkingCount;
-  }, [parkingCount]);
-
-  useEffect(() => {
-    if (!mapRef || !isCreatingNewStop) return;
-    const map = mapRef.getMap();
-    map.getCanvas().style.cursor = "crosshair";
-    return () => {
-      map.getCanvas().style.cursor = "";
-    };
-  }, [mapRef, isCreatingNewStop]);
-
-  /* Placing an element and moving one should look the same, so placement follows
-   * the pointer with the user's chosen drag crosshair instead of just switching
-   * the CSS cursor. Read when placement starts, matching how a drag reads it. */
-  const [crosshairSetting, setCrosshairSetting] =
-    useState<CrosshairSetting>("none");
-  const [pointerPosition, setPointerPosition] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-
-  useEffect(() => {
-    if (!pendingElementType) return;
-    setCrosshairSetting(getCrosshairPreference());
-  }, [pendingElementType]);
-
-  useEffect(() => {
-    if (!mapRef || !pendingElementType) {
-      setPointerPosition(null);
-      return;
-    }
-    const map = mapRef.getMap();
-
-    const handlePointerMove = (event: any) => {
-      setPointerPosition({
-        latitude: event.lngLat.lat,
-        longitude: event.lngLat.lng,
-      });
-    };
-    const handlePointerLeave = () => setPointerPosition(null);
-
-    map.on("mousemove", handlePointerMove);
-    map.on("mouseout", handlePointerLeave);
-
-    return () => {
-      map.off("mousemove", handlePointerMove);
-      map.off("mouseout", handlePointerLeave);
-      setPointerPosition(null);
-    };
-  }, [mapRef, pendingElementType]);
-
-  useEffect(() => {
-    if (!mapRef || !pendingElementType) return;
-    const map = mapRef.getMap();
-
-    const handlePlacementClick = (e: any) => {
-      const elementType = pendingElementTypeRef.current;
-      if (!elementType) return;
-
-      const { lat, lng } = e.lngLat;
-      const newIndex = PARKING_TYPES.has(elementType)
-        ? parkingCountRef.current
-        : quayCountRef.current;
-
-      try {
-        dispatch(StopPlaceActions.addElementToStop(elementType, [lat, lng]));
-        dispatch(StopPlaceActions.setElementFocus(newIndex, elementType));
-      } finally {
-        // Placement mode must end even if adding fails, or every later map
-        // click is swallowed (F-35).
-        setPendingElementType(null);
-        map.getCanvas().style.cursor = "";
-      }
-    };
-
-    /* With a crosshair marker following the pointer, the OS cursor would double
-       up — hide it. Falls back to the CSS crosshair when the user picked "none". */
-    map.getCanvas().style.cursor =
-      crosshairSetting === "none" ? "crosshair" : "none";
-    map.on("click", handlePlacementClick);
-
-    return () => {
-      map.off("click", handlePlacementClick);
-      map.getCanvas().style.cursor = "";
-    };
-  }, [mapRef, pendingElementType, dispatch, crosshairSetting]);
-
-  const handleCancelPlacement = useCallback(() => {
-    setPendingElementType(null);
-    if (isCreatingNewStop) {
-      dispatch(UserActions.toggleIsCreatingNewStop(false));
-    }
+  const handleStartElement = (elementType: ElementType) => {
     setOpen(false);
-  }, [isCreatingNewStop, dispatch]);
-
-  useEffect(() => {
-    if (!pendingElementType && !isCreatingNewStop) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        handleCancelPlacement();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [pendingElementType, isCreatingNewStop, handleCancelPlacement]);
-
-  // All hooks must run above this guard: the map stays mounted across the login
-  // transition, so returning early before a hook changes the hook count on the
-  // same component instance and React throws.
-  if (!isAuthenticated) return null;
-  // Quays and parking belong to the child stops, never the multimodal parent (F-35).
-  if (isParentOpen) return null;
-
-  const hasStopSelected = isEditorOpen;
-
-  const handleStartElementPlacement = (elementType: ElementType) => {
-    setOpen(false);
-    setPendingElementType(elementType);
+    startPlacement(elementType);
   };
-
-  const handleAddNewStop = () => {
-    setOpen(false);
-    dispatch(UserActions.toggleIsCreatingNewStop(false));
-  };
-
-  const handleAddNewMultimodalStop = () => {
-    setOpen(false);
-    dispatch(UserActions.toggleIsCreatingNewStop(true));
-  };
-
-  const placementLabelKey = pendingElementType
-    ? (STOP_ELEMENT_ACTIONS.find((a) => a.elementType === pendingElementType)
-        ?.labelKey ?? "map_add_element")
-    : null;
 
   return (
     <>
       {/* Same crosshair a drag uses, following the pointer until you click. */}
-      {pendingElementType && pointerPosition && crosshairSetting !== "none" && (
+      {isPlacing && pointerPosition && crosshairSetting !== "none" && (
         <Marker
           latitude={pointerPosition.latitude}
           longitude={pointerPosition.longitude}
@@ -289,92 +171,99 @@ export const AddElementFab = () => {
         </Marker>
       )}
 
-      {(pendingElementType || isCreatingNewStop) && (
+      {placementType && (
         <PlacementHint
+          left={fabLeft + FAB_SIZE + FAB_GAP}
           messageKey={
-            pendingElementType
-              ? "map_place_element_hint"
-              : "map_creating_stop_hint"
+            placementType === "stopPlace"
+              ? "map_creating_stop_hint"
+              : "map_place_element_hint"
           }
-          labelKey={placementLabelKey ?? undefined}
-          onCancel={handleCancelPlacement}
+          labelKey={placementLabelKey(placementType)}
+          onCancel={cancelPlacement}
         />
       )}
-      <SpeedDial
-        ariaLabel={formatMessage({ id: "map_add_element" })}
-        icon={<SpeedDialIcon />}
-        open={open}
-        onOpen={() => !pendingElementType && setOpen(true)}
-        onClose={() => setOpen(false)}
-        direction="down"
-        sx={{
-          position: "absolute",
-          top: 16,
-          left: hasStopSelected ? DRAWER_WIDTH + 8 : 8,
-          transition: "left 0.3s ease-in-out",
-          "& .MuiSpeedDial-fab": {
-            // Inverted to match the section add buttons: paper background with a
-            // semantic icon colour, switching to warning while placing.
-            ...addItemButtonSx(
-              pendingElementType ? "warning.main" : "primary.main",
-            ),
-            // Floats over the map, so it needs more lift than an in-panel button.
-            boxShadow: 3,
-          },
-        }}
-      >
-        {hasStopSelected
-          ? STOP_ELEMENT_ACTIONS.filter(
-              (action) =>
-                action.elementType !== "boardingPosition" || isQuayFocused,
-            ).map((action) => (
-              <SpeedDialAction
-                key={action.elementType}
-                icon={action.icon}
-                slotProps={{
-                  tooltip: { title: formatMessage({ id: action.labelKey }) },
-                  fab: { sx: actionFabSx },
-                }}
-                onClick={() => handleStartElementPlacement(action.elementType)}
-              />
-            ))
-          : [
-              <SpeedDialAction
-                key="new-stop"
-                icon={<StopPlaceIcon />}
-                slotProps={{
-                  tooltip: {
-                    title: formatMessage({ id: "map_add_stop_place" }),
-                  },
-                  fab: { sx: actionFabSx },
-                }}
-                onClick={handleAddNewStop}
-              />,
-              <SpeedDialAction
-                key="new-multimodal"
-                icon={
-                  <Typography
-                    sx={{
-                      fontWeight: 800,
-                      fontSize: "0.75rem",
-                      letterSpacing: "0.05em",
-                      lineHeight: 1,
-                      userSelect: "none",
-                    }}
-                  >
-                    MM
-                  </Typography>
-                }
-                slotProps={{
-                  tooltip: {
-                    title: formatMessage({ id: "map_add_multimodal_stop" }),
-                  },
-                  fab: { sx: actionFabSx },
-                }}
-                onClick={handleAddNewMultimodalStop}
-              />,
-            ]}
-      </SpeedDial>
+
+      {pendingStopPosition && (
+        <NewStopConfirm
+          position={pendingStopPosition}
+          onCancel={clearPendingStopPosition}
+          onCreated={cancelPlacement}
+        />
+      )}
+
+      {isEditorOpen ? (
+        <SpeedDial
+          ariaLabel={formatMessage({ id: "map_add_element" })}
+          icon={isPlacing ? <CloseIcon /> : <SpeedDialIcon />}
+          open={open}
+          // Click only: hover and focus used to open it, so the click that
+          // followed closed it again (F-10).
+          onOpen={(_, reason) => {
+            if (reason === "toggle" && !isPlacing) setOpen(true);
+          }}
+          onClose={(_, reason) => {
+            if (reason !== "mouseLeave") setOpen(false);
+          }}
+          direction="down"
+          // While placing, the × cancels; MUI's own toggle then sees isPlacing
+          // and stays closed.
+          FabProps={{ onClick: isPlacing ? cancelPlacement : undefined }}
+          sx={{
+            position: "absolute",
+            top: FAB_TOP,
+            left: fabLeft,
+            transition: "left 0.3s ease-in-out",
+            "& .MuiSpeedDial-fab": fabSx,
+          }}
+        >
+          {STOP_ELEMENT_ACTIONS.filter(
+            (action) =>
+              action.elementType !== "boardingPosition" || isQuayFocused,
+          ).map((action) => (
+            <SpeedDialAction
+              key={action.elementType}
+              icon={action.icon}
+              slotProps={{
+                // Labels always visible, also on touch devices (F-10a).
+                tooltip: {
+                  title: formatMessage({ id: action.labelKey }),
+                  open: true,
+                  placement: "right",
+                },
+                fab: { sx: actionFabSx },
+                staticTooltipLabel: { sx: { whiteSpace: "nowrap" } },
+              }}
+              onClick={() => handleStartElement(action.elementType)}
+            />
+          ))}
+        </SpeedDial>
+      ) : (
+        <Tooltip
+          title={formatMessage({
+            id: isPlacing ? "cancel" : "map_add_stop_place",
+          })}
+          // Below, so it never covers the placement hint docked to the right.
+          placement="bottom"
+        >
+          <Fab
+            aria-label={formatMessage({
+              id: isPlacing ? "cancel" : "map_add_stop_place",
+            })}
+            onClick={
+              isPlacing ? cancelPlacement : () => startPlacement("stopPlace")
+            }
+            sx={{
+              position: "absolute",
+              top: FAB_TOP,
+              left: fabLeft,
+              ...fabSx,
+            }}
+          >
+            {isPlacing ? <CloseIcon /> : <AddIcon />}
+          </Fab>
+        </Tooltip>
+      )}
     </>
   );
 };

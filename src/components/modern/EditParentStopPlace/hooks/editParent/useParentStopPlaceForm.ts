@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import { useCallback } from "react";
 import { StopPlaceActions } from "../../../../../actions";
+import { moveStopIfAllowed } from "../../../../../actions/StopPlaceActions.modern";
 import {
   addTag,
   findTagByName,
@@ -21,6 +22,9 @@ import {
   removeTag,
 } from "../../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../../store/hooks";
+import { useMapNotice } from "../../../Map/notices/useMapNotice";
+
+const OUTSIDE_AREA_MESSAGE_ID = "create_not_allowed";
 
 /**
  * Hook for managing form field changes, coordinates, and tags
@@ -30,6 +34,7 @@ export const useParentStopPlaceForm = (
   onCloseCoordinatesDialog: () => void,
 ) => {
   const dispatch = useAppDispatch();
+  const showNotice = useMapNotice();
 
   // Field change handlers
   const handleNameChange = useCallback(
@@ -53,14 +58,20 @@ export const useParentStopPlaceForm = (
     [dispatch],
   );
 
-  // Coordinates handler
+  // Coordinates handler: only inside the user's edit area (F-106).
   const handleSetCoordinates = useCallback(
-    (position: [number, number]) => {
-      dispatch(StopPlaceActions.changeCurrentStopPosition(position));
-      dispatch(StopPlaceActions.changeMapCenter(position, 14));
+    async (position: [number, number]) => {
       onCloseCoordinatesDialog();
+      const isMoved = await dispatch(moveStopIfAllowed(position)).catch(
+        () => false,
+      );
+      if (!isMoved) {
+        showNotice(OUTSIDE_AREA_MESSAGE_ID);
+        return;
+      }
+      dispatch(StopPlaceActions.changeMapCenter(position, 14));
     },
-    [dispatch, onCloseCoordinatesDialog],
+    [dispatch, onCloseCoordinatesDialog, showNotice],
   );
 
   // Tag operation handlers

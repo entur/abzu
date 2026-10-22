@@ -130,8 +130,15 @@ class SettingsManager {
     localStorage.setItem(showTariffZonesInMapKey, value);
   }
 
+  /**
+   * The UI the user last switched to, or null if they never chose one — the
+   * deployment's dualUiConfig.defaultUiMode then decides (see useActiveUiMode).
+   */
   getUIMode() {
-    return localStorage.getItem(uiModeKey) || "legacy";
+    const storedUiMode = localStorage.getItem(uiModeKey);
+    return storedUiMode === "legacy" || storedUiMode === "modern"
+      ? storedUiMode
+      : null;
   }
 
   setUIMode(value) {

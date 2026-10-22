@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Marker } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
+import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { NeighbourStopPopup } from "./NeighbourStopPopup";
 import type { NeighbourStop } from "./types";
@@ -129,15 +130,12 @@ export const NeighbourMarkers = () => {
   const neighbourStops = useAppSelector(
     (state) => (state.stopPlace as any).neighbourStops as NeighbourStop[],
   );
-  const currentId = useAppSelector(
-    (state) => (state.stopPlace as any).current?.id as string | undefined,
-  );
-  const currentChildren = useAppSelector((state) => {
-    const current = (state.stopPlace as any).current;
-    return current?.isParent
-      ? ((current.children ?? []).map((c: any) => c.id as string) as string[])
-      : [];
-  });
+  // Group-aware (F-88): in the group view the previous stop is a neighbour.
+  const current = useMapCurrentStop();
+  const currentId = current?.id;
+  const currentChildren = current?.isParent
+    ? (current.children ?? []).map((child) => child.id)
+    : [];
   const showExpiredStops = useAppSelector(
     (state) => (state.stopPlace as any).showExpiredStops as boolean,
   );

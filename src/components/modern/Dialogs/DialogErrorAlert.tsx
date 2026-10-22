@@ -12,32 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Paper, Typography } from "@mui/material";
+import { Alert } from "@mui/material";
 import { useIntl } from "react-intl";
 
-export const NewStopHint = () => {
-  const { formatMessage } = useIntl();
+interface DialogErrorAlertProps {
+  messageId: string | null;
+}
 
+/** Why the dialog's action failed; nothing when it didn't. */
+export const DialogErrorAlert = ({ messageId }: DialogErrorAlertProps) => {
+  const { formatMessage } = useIntl();
+  if (!messageId) return null;
   return (
-    <Paper
-      elevation={4}
-      sx={{
-        position: "absolute",
-        bottom: 32,
-        left: "50%",
-        transform: "translateX(-50%)",
-        px: 3,
-        py: 1.5,
-        zIndex: 10,
-        pointerEvents: "none",
-        bgcolor: "warning.main",
-        color: "warning.contrastText",
-        borderRadius: 2,
-      }}
-    >
-      <Typography variant="body2" sx={{ fontWeight: 600 }}>
-        {formatMessage({ id: "map_creating_stop_hint" })}
-      </Typography>
-    </Paper>
+    <Alert severity="error" sx={{ mt: 1.5 }}>
+      {formatMessage({ id: messageId })}
+    </Alert>
   );
 };

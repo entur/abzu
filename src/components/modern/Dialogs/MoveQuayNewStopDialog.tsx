@@ -35,10 +35,14 @@ import { useIntl } from "react-intl";
 import { UserActions } from "../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
+  getModalityAllowance,
+  isModalityAllowed,
   isStopPlaceTypeValid,
   StopNameAndTypeFields,
   useHiddenStopTypes,
 } from "../Shared/StopNameAndType";
+import { DialogErrorAlert } from "./DialogErrorAlert";
+import { useDialogMutation } from "./hooks/useDialogMutation";
 import { useMoveQuaysToNewStop } from "./hooks/useMoveQuaysToNewStop";
 
 interface SelectableQuay {
@@ -73,7 +77,9 @@ export const MoveQuayNewStopDialog = () => {
     (state) =>
       (state as any).stopPlace?.current as {
         id?: string;
+        name?: string;
         quays?: SelectableQuay[];
+        permissions?: Parameters<typeof getModalityAllowance>[0];
       } | null,
   );
   const stopHasBeenModified = useAppSelector(
@@ -82,10 +88,14 @@ export const MoveQuayNewStopDialog = () => {
 
   const [selectedQuayIds, setSelectedQuayIds] = useState<string[]>([]);
   const [changesUnderstood, setChangesUnderstood] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [newStopName, setNewStopName] = useState("");
   const [newStopType, setNewStopType] = useState("");
-  const [hasMoveFailed, setHasMoveFailed] = useState(false);
+  const {
+    isRunning: isLoading,
+    errorMessageId,
+    run,
+    resetError,
+  } = useDialogMutation("move_quay_failed");
   const hiddenStopTypes = useHiddenStopTypes();
   const moveQuaysToNewStop = useMoveQuaysToNewStop();
 
@@ -96,18 +106,31 @@ export const MoveQuayNewStopDialog = () => {
       setChangesUnderstood(false);
       setNewStopName("");
       setNewStopType("");
-      setHasMoveFailed(false);
+      resetError();
     }
   }, [open, movingQuay?.id]);
 
   const allQuays: SelectableQuay[] = currentStop?.quays ?? [];
+  // The new stop gets the moved quays' location; the current stop's
+  // permissions are the closest known proxy for what may be chosen (F-18).
+  const allowance = getModalityAllowance(currentStop?.permissions);
   const currentStopId = currentStop?.id;
+  // Moving every saved quay leaves the stop without quays (F-99). Unsaved
+  // quays have no id; they can't be moved and are dropped with the stop's
+  // unsaved changes anyway.
+  const savedQuayIds = allQuays
+    .map((quay) => quay.id)
+    .filter((id): id is string => !!id);
+  const isEmptyingStop =
+    savedQuayIds.length > 0 &&
+    savedQuayIds.every((id) => selectedQuayIds.includes(id));
 
   const enableConfirm =
     !isLoading &&
     selectedQuayIds.length > 0 &&
     newStopName.trim().length > 0 &&
     isStopPlaceTypeValid(newStopType, hiddenStopTypes) &&
+    isModalityAllowed(allowance, newStopType, null) &&
     (!stopHasBeenModified || changesUnderstood);
 
   const handleToggleQuay = (quayId: string) => {
@@ -123,22 +146,18 @@ export const MoveQuayNewStopDialog = () => {
     setChangesUnderstood(false);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (selectedQuayIds.length === 0 || !currentStopId || !movingQuay) return;
 
-    setIsLoading(true);
-    setHasMoveFailed(false);
-    moveQuaysToNewStop({
-      quayIds: selectedQuayIds,
-      sourceStopId: movingQuay.stopPlaceId ?? currentStopId,
-      name: newStopName.trim(),
-      stopType: newStopType,
-    })
-      .then(handleClose)
-      .catch(() => setHasMoveFailed(true))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const isMoved = await run(() =>
+      moveQuaysToNewStop({
+        quayIds: selectedQuayIds,
+        sourceStopId: movingQuay.stopPlaceId ?? currentStopId,
+        name: newStopName.trim(),
+        stopType: newStopType,
+      }),
+    );
+    if (isMoved) handleClose();
   };
 
   if (!movingQuay) return null;
@@ -196,6 +215,7 @@ export const MoveQuayNewStopDialog = () => {
             stopType={newStopType}
             onNameChange={setNewStopName}
             onStopTypeChange={setNewStopType}
+            allowance={allowance}
           />
         </Box>
 
@@ -204,11 +224,12 @@ export const MoveQuayNewStopDialog = () => {
             {formatMessage({ id: "move_quay_new_stop_info" })}
           </Typography>
 
-          {hasMoveFailed && (
-            <Alert severity="error">
-              {formatMessage({
-                id: "humanReadableErrorCodes.ERROR_STOP_PLACE",
-              })}
+          {isEmptyingStop && (
+            <Alert severity="warning">
+              {formatMessage(
+                { id: "move_quay_last_quay_warning" },
+                { name: currentStop?.name ?? currentStopId },
+              )}
             </Alert>
           )}
 
@@ -234,6 +255,7 @@ export const MoveQuayNewStopDialog = () => {
             </>
           )}
         </Box>
+        <DialogErrorAlert messageId={errorMessageId} />
       </DialogContent>
       <DialogActions>
         <Button

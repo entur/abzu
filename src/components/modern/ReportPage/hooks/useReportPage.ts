@@ -32,8 +32,15 @@ export const useReportPage = (initialState: Partial<FilterState>) => {
     setTopoiChips,
   } = useReportFilters(initialState);
 
-  const { isLoading, activePageIndex, handleSearch, handleSelectPage } =
-    useReportSearch(filters);
+  const {
+    isLoading,
+    activePageIndex,
+    handleSearch,
+    handleSelectPage,
+    isConfirmingFullSearch,
+    confirmFullSearch,
+    cancelFullSearch,
+  } = useReportSearch(filters);
 
   const {
     stopColumnOptions,
@@ -126,5 +133,8 @@ export const useReportPage = (initialState: Partial<FilterState>) => {
     handleTagCheck,
     loadAvailableTags,
     loadTopographicPlaces,
+    isConfirmingFullSearch,
+    confirmFullSearch,
+    cancelFullSearch,
   };
 };

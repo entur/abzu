@@ -34,6 +34,8 @@ import weightTypes from "../../../../models/weightTypes";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import { StopPlaceMembership, TagTray } from "../../Shared";
 import {
+  getModalityAllowance,
+  isModalityAllowed,
   isStopPlaceTypeValid,
   useHiddenStopTypes,
 } from "../../Shared/StopNameAndType";
@@ -48,6 +50,9 @@ import {
   parseModalityPickerValue,
   toModalityPickerValue,
 } from "../utils/modalityPickerValue";
+import { StopPostalAddressFields } from "../../Shared/StopDetails/StopPostalAddressFields";
+import { StopUrlField } from "../../Shared/StopDetails/StopUrlField";
+import { StopPlaceCodesFields } from "./StopPlaceCodesFields";
 import { generalSectionStyles as sx } from "./StopPlaceGeneralSection.styles";
 
 /**
@@ -95,6 +100,12 @@ export const StopPlaceGeneralSection: React.FC<
     onModalityChange(stopPlaceType, submode);
   };
 
+  // Types and submodes outside the user's permissions are shown but
+  // disabled, as in legacy (F-18); the current value always stays selectable.
+  const allowance = getModalityAllowance((stopPlace as any).permissions);
+  const isOptionAllowed = (stopPlaceType: string, submode: string | null) =>
+    isModalityAllowed(allowance, stopPlaceType, submode);
+
   const unifiedOptions = Object.entries(stopTypes)
     .filter(([key]) => !hiddenStopTypes.includes(key))
     .flatMap(([key, config]) => {
@@ -103,10 +114,12 @@ export const StopPlaceGeneralSection: React.FC<
       const bare = {
         value: toModalityPickerValue(key, null),
         label: typeLabel,
+        allowed: isOptionAllowed(key, null),
       };
       const submodeItems = (submodes ?? []).map((sub) => ({
         value: toModalityPickerValue(key, sub),
         label: formatMessage({ id: `stopTypes_${key}_submodes_${sub}` }),
+        allowed: isOptionAllowed(key, sub),
       }));
       return [bare, ...submodeItems];
     });
@@ -147,6 +160,15 @@ export const StopPlaceGeneralSection: React.FC<
         />
       </Box>
 
+      {/* Stop-level codes, when turned on in the settings */}
+      <Box sx={sx.fieldRow}>
+        <StopPlaceCodesFields
+          publicCode={stopPlace.publicCode}
+          privateCode={stopPlace.privateCode}
+          canEdit={canEdit}
+        />
+      </Box>
+
       {/* Description */}
       <Box sx={sx.fieldRow}>
         <TextField
@@ -164,6 +186,14 @@ export const StopPlaceGeneralSection: React.FC<
           multiline
           rows={2}
         />
+      </Box>
+
+      {/* URL and postal address, behind their feature flags (legacy parity) */}
+      <Box sx={sx.fieldRow}>
+        <StopUrlField url={stopPlace.url} canEdit={canEdit} />
+      </Box>
+      <Box sx={sx.fieldRow}>
+        <StopPostalAddressFields canEdit={canEdit} />
       </Box>
 
       {/* Unified stop type + submode picker */}
@@ -206,7 +236,11 @@ export const StopPlaceGeneralSection: React.FC<
             onChange={(e) => handlePickerChange(e.target.value)}
           >
             {unifiedOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem
+                key={option.value}
+                value={option.value}
+                disabled={!option.allowed && option.value !== pickerValue}
+              >
                 {option.label}
               </MenuItem>
             ))}

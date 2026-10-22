@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import { useSelector } from "react-redux";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import { useIsViewingOlderVersion } from "../../Shared/StopStatus";
 
 /**
  * Hook for managing stop place state from Redux
@@ -37,9 +38,14 @@ export const useStopPlaceState = () => {
     (state: any) => state.mapUtils.deleteStopDialogOpen,
   );
 
+  // An older version from the history is read-only: no Save, Discard or
+  // Deactivate, so it can't be saved back over the live stop (F-42).
+  const isViewingOlderVersion = useIsViewingOlderVersion();
   const permissions = getStopPermissions(stopPlace) as any;
-  const canEdit = permissions.canEdit ?? false;
-  const canDelete = permissions.canDelete || permissions.canDeleteStop || false;
+  const canEdit = (permissions.canEdit ?? false) && !isViewingOlderVersion;
+  const canDelete =
+    (permissions.canDelete || permissions.canDeleteStop || false) &&
+    !isViewingOlderVersion;
 
   return {
     stopPlace,

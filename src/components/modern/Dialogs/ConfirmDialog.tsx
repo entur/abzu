@@ -15,13 +15,19 @@
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
 import { ConfirmDialogProps } from "../GroupOfStopPlaces";
+import { DialogErrorAlert } from "./DialogErrorAlert";
+import { useDialogMutation } from "./hooks/useDialogMutation";
+
+const DEFAULT_FAILURE_MESSAGE_ID = "action_failed";
 
 /**
  * Modern confirmation dialog component with X close button
@@ -36,7 +42,18 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   onClose,
   additionalContent,
+  failureMessageId = DEFAULT_FAILURE_MESSAGE_ID,
 }) => {
+  const { isRunning, errorMessageId, run, resetError } =
+    useDialogMutation(failureMessageId);
+
+  useEffect(() => {
+    if (open) resetError();
+  }, [open, resetError]);
+
+  // A synchronous onConfirm resolves at once, so plain confirms work as before.
+  const handleConfirm = () => run(async () => onConfirm());
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -59,6 +76,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           {body}
         </Typography>
         {additionalContent}
+        <DialogErrorAlert messageId={errorMessageId} />
         <div
           style={{
             display: "flex",
@@ -69,7 +87,12 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <Button variant="outlined" onClick={onClose} color="secondary">
             {cancelText}
           </Button>
-          <Button variant="contained" onClick={onConfirm}>
+          <Button
+            variant="contained"
+            onClick={handleConfirm}
+            disabled={isRunning}
+            startIcon={isRunning ? <CircularProgress size={16} /> : null}
+          >
             {confirmText}
           </Button>
         </div>

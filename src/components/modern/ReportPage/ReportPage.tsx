@@ -14,6 +14,7 @@
 
 import { Box } from "@mui/material";
 import { useEffect } from "react";
+import { useIntl } from "react-intl";
 import { useHeaderSlot } from "../../../components/modern/Header/HeaderSlotContext";
 import { useResponsive } from "../../../theme/hooks";
 import {
@@ -24,6 +25,7 @@ import {
   ReportSearchBar,
 } from "./components";
 import { belowAppChromeViewportHeight } from "../Header/headerMetrics";
+import { ConfirmDialog } from "../Dialogs/ConfirmDialog";
 import { useReportPage } from "./hooks/useReportPage";
 import { FilterState } from "./types";
 
@@ -52,6 +54,7 @@ interface ReportPageProps {
 export const ReportPage: React.FC<ReportPageProps> = ({
   initialState = {},
 }) => {
+  const { formatMessage } = useIntl();
   const { isSmallScreen } = useResponsive();
 
   const {
@@ -83,6 +86,9 @@ export const ReportPage: React.FC<ReportPageProps> = ({
     handleToggleFilterPanel,
     loadAvailableTags,
     loadTopographicPlaces,
+    isConfirmingFullSearch,
+    confirmFullSearch,
+    cancelFullSearch,
   } = useReportPage(initialState);
 
   // Load topographic places from URL state on mount
@@ -110,20 +116,11 @@ export const ReportPage: React.FC<ReportPageProps> = ({
     <ReportSearchBar
       searchQuery={filters.searchQuery}
       isLoading={isLoading}
-      activeFilterCount={activeFilterCount}
-      filterPanelOpen={filterPanelOpen}
       onQueryChange={(v) => handleFilterChange("searchQuery", v)}
       onSearch={handleSearch}
-      onToggleFilterPanel={handleToggleFilterPanel}
     />,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      filters.searchQuery,
-      isLoading,
-      activeFilterCount,
-      filterPanelOpen,
-      handleSearch,
-    ],
+    [filters.searchQuery, isLoading, handleSearch],
   );
 
   return (
@@ -193,6 +190,15 @@ export const ReportPage: React.FC<ReportPageProps> = ({
         onSelectPage={handleSelectPage}
         onExportStopPlaces={handleExportStopPlacesCSV}
         onExportQuays={handleExportQuaysCSV}
+      />
+      <ConfirmDialog
+        open={isConfirmingFullSearch}
+        title={formatMessage({ id: "report_search_all_title" })}
+        body={formatMessage({ id: "report_search_all_body" })}
+        confirmText={formatMessage({ id: "search" })}
+        cancelText={formatMessage({ id: "cancel" })}
+        onConfirm={confirmFullSearch}
+        onClose={cancelFullSearch}
       />
     </Box>
   );

@@ -115,6 +115,8 @@ export interface GroupOfStopPlacesActionsProps {
   canEdit: boolean;
   canDelete: boolean;
   hasName: boolean;
+  /** A group can't be saved without at least one member (F-81). */
+  hasMembers: boolean;
   onRemove: () => void;
   onUndo: () => void;
   onSave: () => void;
@@ -133,15 +135,19 @@ export interface ConfirmDialogProps {
   body: string;
   confirmText: string;
   cancelText: string;
-  onConfirm: () => void;
+  /** A returned promise that rejects keeps the dialog open with an error. */
+  onConfirm: () => void | Promise<unknown>;
   onClose: () => void;
   /** Rendered between the body and the buttons, e.g. a usage warning */
   additionalContent?: React.ReactNode;
+  /** Shown when `onConfirm` rejects; defaults to a generic message. */
+  failureMessageId?: string;
 }
 
 export interface SaveGroupDialogProps {
   open: boolean;
-  onSave: () => void;
+  /** Rejects when the save failed; the dialog then shows why. */
+  onSave: () => Promise<unknown>;
   onClose: () => void;
 }
 
@@ -169,7 +175,7 @@ export interface UseEditGroupOfStopPlacesReturn {
   // Handlers
   handleOpenSaveDialog: () => void;
   handleCloseSaveDialog: () => void;
-  handleSave: () => void;
+  handleSave: () => Promise<unknown>;
 
   handleAllowUserToGoBack: () => void;
   handleGoBack: () => void;
@@ -181,7 +187,7 @@ export interface UseEditGroupOfStopPlacesReturn {
 
   handleOpenDeleteDialog: () => void;
   handleCloseDeleteDialog: () => void;
-  handleDelete: () => void;
+  handleDelete: () => Promise<unknown>;
 
   handleNameChange: (value: string) => void;
   handleDescriptionChange: (value: string) => void;

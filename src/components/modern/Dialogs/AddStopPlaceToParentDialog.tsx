@@ -28,7 +28,6 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { getChildStopPlaceSuggestions } from "../../../modelUtils/leafletUtils";
-import HasExpiredInfo from "../../MainPage/HasExpiredInfo";
 import ModalityIconImg from "../../MainPage/ModalityIconImg";
 
 interface StopPlaceSuggestion {
@@ -88,10 +87,13 @@ export const AddStopPlaceToParentDialog: React.FC<
     setCheckedItems([]);
   };
 
+  // Expired stops can't become children, so they aren't suggested at all.
+  // A merge leaves the merged-away stop behind as an expired version that
+  // the map query still returns; it used to fill a slot, greyed out.
   const suggestions = getChildStopPlaceSuggestions(
     stopPlaceChildren,
     stopPlaceCentroid,
-    neighbourStops,
+    neighbourStops.filter((stop: StopPlaceSuggestion) => !stop.hasExpired),
     10,
   ) as StopPlaceSuggestion[];
 
@@ -112,21 +114,12 @@ export const AddStopPlaceToParentDialog: React.FC<
           <Box sx={{ mb: 2, maxHeight: 400, overflowY: "auto" }}>
             {suggestions.map((suggestion) => {
               const isChecked = checkedItems.includes(suggestion.id);
-              const isDisabled = suggestion.hasExpired;
 
               return (
-                <Box
-                  key={suggestion.id}
-                  sx={{
-                    py: 0.5,
-                    opacity: isDisabled ? 0.6 : 1,
-                    transition: "opacity 0.3s",
-                  }}
-                >
+                <Box key={suggestion.id} sx={{ py: 0.5 }}>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        disabled={isDisabled}
                         checked={isChecked}
                         onChange={(e) =>
                           handleItemCheck(suggestion.id, e.target.checked)
@@ -168,10 +161,6 @@ export const AddStopPlaceToParentDialog: React.FC<
                         >
                           {suggestion.id}
                         </Typography>
-                        <HasExpiredInfo
-                          show={suggestion.hasExpired}
-                          formatMessage={formatMessage}
-                        />
                       </Box>
                     }
                   />
