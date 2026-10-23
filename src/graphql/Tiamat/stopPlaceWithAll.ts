@@ -400,6 +400,7 @@ const verboseParkingFragment = gql`
     }
     parkingLayout
     parkingPaymentProcess
+    paymentMethods
     rechargingAvailable
     secure
     lighting

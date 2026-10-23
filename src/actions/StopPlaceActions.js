@@ -482,6 +482,16 @@ StopPlaceActions.changeParkingPaymentProcess =
     );
   };
 
+StopPlaceActions.changeParkingPaymentMethods =
+  (index, paymentMethods) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_PAYMENT_METHODS, {
+        index,
+        paymentMethods,
+      }),
+    );
+  };
+
 StopPlaceActions.changeParkingRechargingAvailable =
   (index, rechargingAvailable) => (dispatch) => {
     dispatch(
