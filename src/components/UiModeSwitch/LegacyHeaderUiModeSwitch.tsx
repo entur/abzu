@@ -20,11 +20,18 @@ import { useUiModeSwitch } from "./hooks/useUiModeSwitch";
 const LEGACY_TOOLBAR_HEIGHT = 64;
 /** Large enough to round any button height into a pill. */
 const PILL_BORDER_RADIUS = 999;
+/**
+ * Clears the header's right-hand controls: toolbar gutter + ⋮ button +
+ * the logged-out "Log in" button with its margin, plus a small gap.
+ */
+const LEGACY_HEADER_ACTIONS_OFFSET = 200;
 
 /**
- * The UI switch as a pill centred in the legacy header, whose title is
- * left-aligned and leaves the middle empty. It overlays the header from
- * outside rather than living in it, so legacy Header.jsx stays untouched.
+ * The UI switch as a pill near the right of the legacy header, just left
+ * of its actions. Not centred: the stop place editor's drag-in icons
+ * (NewElementsBox) sit in the middle of the header from 41% onwards.
+ * It overlays the header from outside rather than living in it, so legacy
+ * Header.jsx stays untouched.
  *
  * Absolute, not fixed: it scrolls away with the header on long pages.
  * Shown from md up only — narrower, it would run into the title; the
@@ -48,8 +55,8 @@ export const LegacyHeaderUiModeSwitch = () => {
         display: { xs: "none", md: "inline-flex" },
         position: "absolute",
         top: LEGACY_TOOLBAR_HEIGHT / 2,
-        left: "50%",
-        transform: "translate(-50%, -50%)",
+        right: LEGACY_HEADER_ACTIONS_OFFSET,
+        transform: "translateY(-50%)",
         zIndex: (theme) => theme.zIndex.appBar + 1,
         borderRadius: PILL_BORDER_RADIUS,
         textTransform: "none",
