@@ -818,5 +818,13 @@
   "parking_vehicle_types": "Ajoneuvotyypit",
   "parking_vehicle_type_car": "Auto",
   "parking_vehicle_type_motorcycle": "Moottoripyörä",
-  "parking_vehicle_type_pedalCycle": "Polkupyörä"
+  "parking_vehicle_type_pedalCycle": "Polkupyörä",
+  "parking_vehicle_type": "Ajoneuvotyyppi",
+  "parking_user_type": "Käyttäjäryhmä",
+  "parking_user_type_allUsers": "Kaikki käyttäjät",
+  "parking_user_type_registeredDisabled": "Rekisteröidyt liikuntarajoitteiset",
+  "parking_capacity_entry_add": "Lisää kapasiteettirivi",
+  "parking_capacity_entry_remove": "Poista kapasiteettirivi",
+  "parking_capacity_entry_spaces": "Paikat",
+  "parking_capacity_entry_spaces_with_recharge_point": "Latauspisteelliset"
 }

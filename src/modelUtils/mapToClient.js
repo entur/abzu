@@ -19,10 +19,15 @@ import { Entities } from "../models/Entities";
 import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
 import ParentStopPlace from "../models/ParentStopPlace";
 import Parking from "../models/Parking";
+import {
+  setLegacyCapacityCount,
+  withLegacyCapacityFields,
+} from "../models/parkingCapacity";
 import PathLink from "../models/PathLink";
 import Quay from "../models/Quay";
 import StopPlace from "../models/StopPlace";
 import PARKING_TYPE from "../models/parkingType";
+import PARKING_USER_TYPE from "../models/parkingUserType";
 import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
 import { getImportedId } from "../models/stopPlaceUtils";
 import { getIn, getInTransform, setDecimalPrecision } from "../utils/";
@@ -615,28 +620,33 @@ helpers.updateCurrentWithNewElement = (current, payload) => {
       });
       break;
     case PARKING_TYPE.PARK_AND_RIDE:
-      copy.parking = (copy.parking ?? []).concat({
-        ...newElement,
-        totalCapacity: null,
-        parkingType: type,
-        hasFullFieldSet: true,
-        isForPedalCycle: false,
-        parkingVehicleTypes: [PARKING_VEHICLE_TYPE.CAR],
-        hasExpired: false,
-        validBetween: null,
-      });
+      copy.parking = (copy.parking ?? []).concat(
+        withLegacyCapacityFields({
+          ...newElement,
+          totalCapacity: null,
+          parkingType: type,
+          hasFullFieldSet: true,
+          isForPedalCycle: false,
+          parkingVehicleTypes: [PARKING_VEHICLE_TYPE.CAR],
+          capacityEntries: [],
+          hasExpired: false,
+          validBetween: null,
+        }),
+      );
       break;
     case PARKING_TYPE.BIKE_PARKING:
-      copy.parking = (copy.parking ?? []).concat({
-        ...newElement,
-        totalCapacity: null,
-        parkingType: type,
-        hasFullFieldSet: false,
-        isForPedalCycle: true,
-        parkingVehicleTypes: [PARKING_VEHICLE_TYPE.PEDAL_CYCLE],
-        hasExpired: false,
-        validBetween: null,
-      });
+      copy.parking = (copy.parking ?? []).concat(
+        withLegacyCapacityFields({
+          ...newElement,
+          totalCapacity: null,
+          parkingType: type,
+          hasFullFieldSet: false,
+          isForPedalCycle: true,
+          parkingVehicleTypes: [PARKING_VEHICLE_TYPE.PEDAL_CYCLE],
+          hasExpired: false,
+          validBetween: null,
+        }),
+      );
       break;
 
     default:
@@ -906,18 +916,74 @@ helpers.changeParkingRechargingAvailable = (original, payload) => {
   return copy;
 };
 
+helpers.changeParkingCapacityEntry = (original, payload) => {
+  const { index, entryIndex, field, value } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].capacityEntries[entryIndex][field] = value;
+  withLegacyCapacityFields(copy.parking[index]);
+  return copy;
+};
+
+helpers.addParkingCapacityEntry = (original, payload) => {
+  const { index } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  const parking = copy.parking[index];
+  parking.capacityEntries = (parking.capacityEntries || []).concat({
+    parkingVehicleType: null,
+    parkingUserType: PARKING_USER_TYPE.ALL_USERS,
+    parkingStayType: null,
+    numberOfSpaces: null,
+    numberOfSpacesWithRechargePoint: null,
+  });
+  withLegacyCapacityFields(parking);
+  return copy;
+};
+
+helpers.removeParkingCapacityEntry = (original, payload) => {
+  const { index, entryIndex } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].capacityEntries.splice(entryIndex, 1);
+  withLegacyCapacityFields(copy.parking[index]);
+  return copy;
+};
+
+// Recharging is no longer available, so no entry can hold a recharge point.
+helpers.clearParkingRechargePointCounts = (original, payload) => {
+  const { index } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  (copy.parking[index].capacityEntries || []).forEach((entry) => {
+    if (
+      entry.numberOfSpacesWithRechargePoint !== null &&
+      entry.numberOfSpacesWithRechargePoint !== undefined
+    ) {
+      entry.numberOfSpacesWithRechargePoint = 0;
+    }
+  });
+  withLegacyCapacityFields(copy.parking[index]);
+  return copy;
+};
+
 helpers.changeParkingNumberOfSpaces = (original, payload) => {
   const { index, numberOfSpaces } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpaces = numberOfSpaces;
+  setLegacyCapacityCount(
+    copy.parking[index],
+    PARKING_USER_TYPE.ALL_USERS,
+    "numberOfSpaces",
+    numberOfSpaces,
+  );
   return copy;
 };
 
 helpers.changeParkingNumberOfSpacesWithRechargePoint = (original, payload) => {
   const { index, numberOfSpacesWithRechargePoint } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpacesWithRechargePoint =
-    numberOfSpacesWithRechargePoint;
+  setLegacyCapacityCount(
+    copy.parking[index],
+    PARKING_USER_TYPE.ALL_USERS,
+    "numberOfSpacesWithRechargePoint",
+    numberOfSpacesWithRechargePoint,
+  );
   return copy;
 };
 
@@ -927,8 +993,12 @@ helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
 ) => {
   const { index, numberOfSpacesForRegisteredDisabledUserType } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpacesForRegisteredDisabledUserType =
-    numberOfSpacesForRegisteredDisabledUserType;
+  setLegacyCapacityCount(
+    copy.parking[index],
+    PARKING_USER_TYPE.REGISTERED_DISABLED,
+    "numberOfSpaces",
+    numberOfSpacesForRegisteredDisabledUserType,
+  );
   return copy;
 };
 

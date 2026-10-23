@@ -818,5 +818,13 @@
   "parking_vehicle_types": "Types de véhicules",
   "parking_vehicle_type_car": "Voiture",
   "parking_vehicle_type_motorcycle": "Moto",
-  "parking_vehicle_type_pedalCycle": "Vélo"
+  "parking_vehicle_type_pedalCycle": "Vélo",
+  "parking_vehicle_type": "Type de véhicule",
+  "parking_user_type": "Type d'utilisateur",
+  "parking_user_type_allUsers": "Tous les utilisateurs",
+  "parking_user_type_registeredDisabled": "Handicapés enregistrés",
+  "parking_capacity_entry_add": "Ajouter une ligne de capacité",
+  "parking_capacity_entry_remove": "Supprimer la ligne de capacité",
+  "parking_capacity_entry_spaces": "Places",
+  "parking_capacity_entry_spaces_with_recharge_point": "Avec borne de recharge"
 }

@@ -819,5 +819,13 @@
   "parking_vehicle_types": "Fordonstyper",
   "parking_vehicle_type_car": "Bil",
   "parking_vehicle_type_motorcycle": "Motorcykel",
-  "parking_vehicle_type_pedalCycle": "Cykel"
+  "parking_vehicle_type_pedalCycle": "Cykel",
+  "parking_vehicle_type": "Fordonstyp",
+  "parking_user_type": "Användargrupp",
+  "parking_user_type_allUsers": "Alla användare",
+  "parking_user_type_registeredDisabled": "Registrerade funktionshindrade",
+  "parking_capacity_entry_add": "Lägg till kapacitetsrad",
+  "parking_capacity_entry_remove": "Ta bort kapacitetsrad",
+  "parking_capacity_entry_spaces": "Platser",
+  "parking_capacity_entry_spaces_with_recharge_point": "Med laddstation"
 }

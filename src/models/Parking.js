@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import { hasExpired } from "../modelUtils/validBetween";
 import { getIn } from "../utils/";
+import { withLegacyCapacityFields } from "./parkingCapacity";
 import PARKING_TYPE from "./parkingType";
-import PARKING_USER_TYPE from "./parkingUserType";
 import PARKING_VEHICLE_TYPE from "./parkingVehicleType";
 
 class Parking {
@@ -23,67 +23,19 @@ class Parking {
     this.parking = parking;
   }
 
-  // A parking does not have to hold an entry for every user type. Abzu
-  // itself writes a bicycle parking with an allUsers entry alone. An absent
-  // entry gives undefined, not 0, so that a save does not create an entry
-  // that states a count the data never held.
-  findNumberOfSpaces(userType, lookupKey) {
-    if (!(this.parking.parkingProperties?.length > 0)) {
-      return undefined;
-    }
+  // Every capacity entry Tiamat holds, in stored order. The editor shows one
+  // row for each entry, so no entry is hidden or merged into another.
+  get capacityEntries() {
+    const spaces = this.parking.parkingProperties?.[0]?.spaces || [];
 
-    const spaces = this.parking.parkingProperties
-      .slice()
-      .shift()
-      .spaces?.find((v) => v.parkingUserType === userType);
-
-    return spaces?.[lookupKey];
-  }
-
-  get numberOfSpaces() {
-    if (this.parking.parkingProperties?.length) {
-      return this.findNumberOfSpaces(
-        PARKING_USER_TYPE.ALL_USERS,
-        "numberOfSpaces",
-      );
-    } else {
-      return this.parking.totalCapacity;
-    }
-  }
-
-  get numberOfSpacesWithRechargePoint() {
-    return this.findNumberOfSpaces(
-      PARKING_USER_TYPE.ALL_USERS,
-      "numberOfSpacesWithRechargePoint",
-    );
-  }
-
-  get numberOfSpacesForRegisteredDisabledUserType() {
-    return this.findNumberOfSpaces(
-      PARKING_USER_TYPE.REGISTERED_DISABLED,
-      "numberOfSpaces",
-    );
-  }
-
-  // True when Tiamat holds more than one entry for userType. The editor shows
-  // and edits only the first one, so editing it would silently fold the
-  // other entries' counts into the number it saves.
-  hasAmbiguousEntries(userType) {
-    if (!(this.parking.parkingProperties?.length > 0)) {
-      return false;
-    }
-
-    const spaces = this.parking.parkingProperties.slice().shift().spaces || [];
-
-    return spaces.filter((v) => v.parkingUserType === userType).length > 1;
-  }
-
-  get numberOfSpacesIsAmbiguous() {
-    return this.hasAmbiguousEntries(PARKING_USER_TYPE.ALL_USERS);
-  }
-
-  get numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous() {
-    return this.hasAmbiguousEntries(PARKING_USER_TYPE.REGISTERED_DISABLED);
+    return spaces.map((space) => ({
+      parkingVehicleType: space.parkingVehicleType ?? null,
+      parkingUserType: space.parkingUserType ?? null,
+      parkingStayType: space.parkingStayType ?? null,
+      numberOfSpaces: space.numberOfSpaces ?? null,
+      numberOfSpacesWithRechargePoint:
+        space.numberOfSpacesWithRechargePoint ?? null,
+    }));
   }
 
   get storedParkingType() {
@@ -143,20 +95,7 @@ class Parking {
       parkingPaymentProcess: parking.parkingPaymentProcess,
       paymentMethods: parking.paymentMethods,
       rechargingAvailable: parking.rechargingAvailable,
-      numberOfSpaces: this.hasFullFieldSet ? this.numberOfSpaces : null,
-      numberOfSpacesWithRechargePoint: this.hasFullFieldSet
-        ? this.numberOfSpacesWithRechargePoint
-        : null,
-      numberOfSpacesForRegisteredDisabledUserType: this.hasFullFieldSet
-        ? this.numberOfSpacesForRegisteredDisabledUserType
-        : null,
-      // Not gated by hasFullFieldSet: a bicycle parking's totalCapacity field
-      // also folds every non-allUsers entry into one number (see
-      // capacityForAllUsers in mapToQueryVariables.js), so it needs the same
-      // guard whenever Tiamat holds more than one allUsers entry.
-      numberOfSpacesIsAmbiguous: this.numberOfSpacesIsAmbiguous,
-      numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous:
-        this.numberOfSpacesForRegisteredDisabledUserTypeIsAmbiguous,
+      capacityEntries: this.hasFullFieldSet ? this.capacityEntries : [],
       parkingLayout: this.hasFullFieldSet ? this.parking.parkingLayout : null,
       secure: parking.secure,
       lighting: parking.lighting,
@@ -173,7 +112,7 @@ class Parking {
       clientParking.location = [coordinates[1], coordinates[0]];
     }
 
-    return clientParking;
+    return withLegacyCapacityFields(clientParking);
   }
 }
 
