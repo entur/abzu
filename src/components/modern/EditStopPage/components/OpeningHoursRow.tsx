@@ -15,37 +15,22 @@ limitations under the Licence. */
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import {
   Box,
-  Checkbox,
-  FormControl,
   FormControlLabel,
   FormHelperText,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
   Switch,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { TimePicker } from "@mui/x-date-pickers";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import moment, { Moment } from "moment";
 import React from "react";
 import { useIntl } from "react-intl";
 import { DayTypeOption } from "../../../../config/ConfigContext";
 import {
   AvailabilityConditionRow,
-  endsBefore,
   availabilityConditionError,
-  MIDNIGHT,
 } from "../../../../models/availabilityCondition";
-
-const TIME_FORMAT = "HH:mm";
-
-const toMoment = (time: string): Moment | null =>
-  time ? moment(time, TIME_FORMAT) : null;
+import { OpeningHoursDayType } from "./OpeningHoursDayType";
+import { OpeningHoursTimes } from "./OpeningHoursTimes";
 
 interface OpeningHoursRowProps {
   condition: AvailabilityConditionRow;
@@ -69,27 +54,8 @@ export const OpeningHoursRow: React.FC<OpeningHoursRowProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const error = availabilityConditionError(condition);
-  const listedDayType = dayTypes.find(
-    (type) => type.ref === condition.dayTypeRef,
-  );
   const hasKeptOffset = condition.keptDayOffset !== undefined;
   const timesDisabled = disabled || hasKeptOffset;
-  const showNextDay =
-    condition.nextDay || endsBefore(condition.startTime, condition.endTime);
-  const dayTypeLabel = formatMessage({ id: "opening_hours_day_type" });
-
-  const dayTypeLabelOf = (type: DayTypeOption) =>
-    type.label[locale] ?? type.ref;
-
-  const changeTime =
-    (field: "startTime" | "endTime") => (value: Moment | null) => {
-      if (value === null) {
-        onChange({ [field]: "", nextDay: false });
-        return;
-      }
-      if (!value.isValid()) return;
-      onChange({ [field]: value.format(TIME_FORMAT), nextDay: false });
-    };
 
   return (
     <Box
@@ -105,45 +71,14 @@ export const OpeningHoursRow: React.FC<OpeningHoursRowProps> = ({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        {dayTypes.length > 0 ? (
-          <FormControl
-            fullWidth
-            size="small"
-            disabled={disabled}
-            error={error === "dayType"}
-          >
-            <InputLabel>{dayTypeLabel}</InputLabel>
-            <Select
-              value={condition.dayTypeRef}
-              label={dayTypeLabel}
-              onChange={(e) => onChange({ dayTypeRef: e.target.value })}
-            >
-              {!listedDayType && condition.dayTypeRef && (
-                <MenuItem value={condition.dayTypeRef}>
-                  {condition.dayTypeRef}
-                </MenuItem>
-              )}
-              {dayTypes.map((type) => (
-                <MenuItem key={type.ref} value={type.ref}>
-                  {dayTypeLabelOf(type)}
-                </MenuItem>
-              ))}
-            </Select>
-            {error === "dayType" && (
-              <FormHelperText>
-                {formatMessage({ id: "opening_hours_error_day_type" })}
-              </FormHelperText>
-            )}
-          </FormControl>
-        ) : (
-          <TextField
-            label={dayTypeLabel}
-            value={condition.dayTypeRef}
-            slotProps={{ input: { readOnly: true } }}
-            size="small"
-            fullWidth
-          />
-        )}
+        <OpeningHoursDayType
+          condition={condition}
+          dayTypes={dayTypes}
+          locale={locale}
+          disabled={disabled}
+          error={error}
+          onChange={onChange}
+        />
         <Tooltip title={formatMessage({ id: "opening_hours_delete" })}>
           <span>
             <IconButton
@@ -170,51 +105,12 @@ export const OpeningHoursRow: React.FC<OpeningHoursRowProps> = ({
       />
 
       {condition.isAvailable && (
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <TimePicker
-              label={formatMessage({ id: "opening_hours_from" })}
-              ampm={false}
-              disabled={timesDisabled}
-              value={toMoment(condition.startTime)}
-              onChange={changeTime("startTime")}
-              slotProps={{
-                textField: { size: "small", error: error === "times" },
-              }}
-            />
-            <TimePicker
-              label={formatMessage({ id: "opening_hours_until" })}
-              ampm={false}
-              disabled={timesDisabled || condition.endOfDay}
-              value={condition.endOfDay ? null : toMoment(condition.endTime)}
-              onChange={changeTime("endTime")}
-              slotProps={{
-                textField: { size: "small", error: error === "times" },
-              }}
-            />
-          </Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={condition.endOfDay}
-                disabled={timesDisabled}
-                onChange={(e) =>
-                  onChange({
-                    endOfDay: e.target.checked,
-                    nextDay: false,
-                    endTime: e.target.checked ? MIDNIGHT : "",
-                  })
-                }
-              />
-            }
-            label={formatMessage({ id: "opening_hours_end_of_day" })}
-          />
-          {showNextDay && !condition.endOfDay && (
-            <Typography variant="caption" color="text.secondary">
-              {formatMessage({ id: "opening_hours_next_day" })}
-            </Typography>
-          )}
-        </LocalizationProvider>
+        <OpeningHoursTimes
+          condition={condition}
+          timesDisabled={timesDisabled}
+          error={error}
+          onChange={onChange}
+        />
       )}
 
       {condition.isAvailable && hasKeptOffset && (

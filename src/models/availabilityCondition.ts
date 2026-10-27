@@ -15,6 +15,7 @@ limitations under the Licence. */
 export const MIDNIGHT = "00:00";
 export const END_OF_DAY_INPUT = "24:00";
 const TIME_LENGTH = "HH:mm".length;
+const SAME_DAY_OFFSET = 0;
 const NEXT_DAY_OFFSET = 1;
 
 /** A condition as Tiamat returns it. */
@@ -55,7 +56,7 @@ export const availabilityConditionToRow = (
 ): AvailabilityConditionRow => {
   const startTime = toTime(stored.startTime);
   const endTime = toTime(stored.endTime);
-  const dayOffset = stored.dayOffset ?? 0;
+  const dayOffset = stored.dayOffset ?? SAME_DAY_OFFSET;
   const endOfDay = endTime === MIDNIGHT && dayOffset === NEXT_DAY_OFFSET;
   const nextDay =
     !endOfDay &&
@@ -70,7 +71,7 @@ export const availabilityConditionToRow = (
     nextDay,
   };
 
-  if (dayOffset !== 0 && !endOfDay && !nextDay) {
+  if (dayOffset !== SAME_DAY_OFFSET && !endOfDay && !nextDay) {
     row.keptDayOffset = dayOffset;
   }
 
