@@ -160,6 +160,7 @@ class Parking {
       parkingLayout: this.hasFullFieldSet ? this.parking.parkingLayout : null,
       secure: parking.secure,
       lighting: parking.lighting,
+      organisationRef: parking.organisationRef,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),

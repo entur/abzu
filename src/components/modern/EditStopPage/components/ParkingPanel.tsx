@@ -28,8 +28,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { StopPlaceActions } from "../../../../actions";
 import { parkingTitleMessageId } from "../../../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
+import { useAppDispatch } from "../../../../store/hooks";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
@@ -61,6 +63,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onCapacityChange,
 }) => {
   const { formatMessage } = useIntl();
+  const dispatch = useAppDispatch();
 
   const parking = stopPlace.parking?.[parkingIndex];
   if (!parking) return null;
@@ -169,6 +172,27 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           disabled={fieldDisabled}
           size="small"
           fullWidth
+        />
+
+        {/* Operator reference — common to every variant. Tiamat keeps the
+            stored value when none is sent, so a cleared field does not delete it. */}
+        <TextField
+          label={formatMessage({ id: "parking_organisation_ref" })}
+          value={parking.organisationRef || ""}
+          onChange={(e) =>
+            dispatch(
+              StopPlaceActions.changeParkingOrganisationRef(
+                parkingIndex,
+                e.target.value,
+              ),
+            )
+          }
+          disabled={fieldDisabled}
+          size="small"
+          fullWidth
+          slotProps={{
+            htmlInput: { "data-testid": "parking-organisation-ref" },
+          }}
         />
 
         {/* Vehicle types — read-only. Tiamat owns this field. */}

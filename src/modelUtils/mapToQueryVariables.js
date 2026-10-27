@@ -390,6 +390,16 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.secure = source.secure;
     }
 
+    // Tiamat keeps the stored reference when the field is absent, and it stores
+    // an empty string as a reference. So send only a non-blank value.
+    const organisationRef =
+      typeof source.organisationRef === "string"
+        ? source.organisationRef.trim()
+        : "";
+    if (organisationRef) {
+      parking.organisationRef = organisationRef;
+    }
+
     if (source.lighting) {
       parking.lighting = source.lighting;
     }
