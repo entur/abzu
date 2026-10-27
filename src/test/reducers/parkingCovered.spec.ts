@@ -1,15 +1,31 @@
+import { describe, expect, test } from "vitest";
 import * as types from "../../actions/Types";
 import stopPlaceReducer from "../../reducers/stopPlaceReducer";
 import { CoveredEnum } from "../../models/Covered";
 
-const stateWithTwoParkings = () => ({
+interface ParkingState {
+  current: { parking: Array<{ id: string; covered?: string }> };
+  stopHasBeenModified?: boolean;
+}
+
+// The reducer is untyped JS, so its state parameter is inferred from the
+// default state. This cast keeps the test state minimal.
+type ReducerState = Parameters<typeof stopPlaceReducer>[0];
+
+const stateWithTwoParkings = (): ParkingState => ({
   current: { parking: [{ id: "NSR:Parking:1" }, { id: "NSR:Parking:2" }] },
 });
+
+const reduce = (state: ParkingState, action: object): ParkingState =>
+  stopPlaceReducer(
+    state as unknown as ReducerState,
+    action,
+  ) as unknown as ParkingState;
 
 describe("stop place reducer - parking covered", () => {
   test("sets covered on the parking at the given index only", () => {
     const state = stateWithTwoParkings();
-    const next = stopPlaceReducer(state, {
+    const next = reduce(state, {
       type: types.CHANGED_PARKING_COVERED,
       payload: { index: 1, covered: "indoors" },
     });
@@ -21,7 +37,7 @@ describe("stop place reducer - parking covered", () => {
 
   test("does not mutate the previous state", () => {
     const state = stateWithTwoParkings();
-    stopPlaceReducer(state, {
+    reduce(state, {
       type: types.CHANGED_PARKING_COVERED,
       payload: { index: 0, covered: "mixed" },
     });
