@@ -39,6 +39,7 @@ import {
   AvailabilityConditionRow,
   endsBefore,
   availabilityConditionError,
+  MIDNIGHT,
 } from "../../../../models/availabilityCondition";
 
 const TIME_FORMAT = "HH:mm";
@@ -201,7 +202,7 @@ export const OpeningHoursRow: React.FC<OpeningHoursRowProps> = ({
                   onChange({
                     endOfDay: e.target.checked,
                     nextDay: false,
-                    endTime: e.target.checked ? "00:00" : "",
+                    endTime: e.target.checked ? MIDNIGHT : "",
                   })
                 }
               />
