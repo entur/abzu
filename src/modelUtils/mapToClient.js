@@ -947,6 +947,39 @@ helpers.removeParkingCapacityEntry = (original, payload) => {
   return copy;
 };
 
+// The editor owns the cycle storage list. Every other equipment kind stays as
+// loaded, so a save can send it back unchanged.
+const cycleStorageListOf = (parking) => {
+  parking.placeEquipments = parking.placeEquipments || {};
+  parking.placeEquipments.cycleStorageEquipment =
+    parking.placeEquipments.cycleStorageEquipment || [];
+  parking.placeEquipmentsChanged = true;
+  return parking.placeEquipments.cycleStorageEquipment;
+};
+
+helpers.addParkingCycleStorage = (original, payload) => {
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[payload.index]).push({
+    cycleStorageType: "racks",
+    numberOfSpaces: null,
+  });
+  return copy;
+};
+
+helpers.changeParkingCycleStorage = (original, payload) => {
+  const { index, entryIndex, field, value } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[index])[entryIndex][field] = value;
+  return copy;
+};
+
+helpers.removeParkingCycleStorage = (original, payload) => {
+  const { index, entryIndex } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[index]).splice(entryIndex, 1);
+  return copy;
+};
+
 // Recharging is no longer available, so no entry can hold a recharge point.
 helpers.clearParkingRechargePointCounts = (original, payload) => {
   const { index } = payload;

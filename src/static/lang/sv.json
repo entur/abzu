@@ -827,5 +827,15 @@
   "parking_capacity_entry_add": "Lägg till kapacitetsrad",
   "parking_capacity_entry_remove": "Ta bort kapacitetsrad",
   "parking_capacity_entry_spaces": "Platser",
-  "parking_capacity_entry_spaces_with_recharge_point": "Med laddstation"
+  "parking_capacity_entry_spaces_with_recharge_point": "Med laddstation",
+  "parking_cycle_storage": "Cykelparkering",
+  "parking_cycle_storage_add": "Lägg till cykelparkering",
+  "parking_cycle_storage_remove": "Ta bort cykelparkering",
+  "parking_cycle_storage_spaces": "Platser",
+  "parking_cycle_storage_type": "Typ",
+  "parking_cycle_storage_type_racks": "Ställ",
+  "parking_cycle_storage_type_bars": "Stänger",
+  "parking_cycle_storage_type_railings": "Räcken",
+  "parking_cycle_storage_type_cycleScheme": "Cykelsystem",
+  "parking_cycle_storage_type_other": "Annat"
 }

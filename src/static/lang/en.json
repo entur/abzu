@@ -831,5 +831,15 @@
   "parking_capacity_entry_add": "Add capacity row",
   "parking_capacity_entry_remove": "Remove capacity row",
   "parking_capacity_entry_spaces": "Spaces",
-  "parking_capacity_entry_spaces_with_recharge_point": "With recharge point"
+  "parking_capacity_entry_spaces_with_recharge_point": "With recharge point",
+  "parking_cycle_storage": "Cycle storage",
+  "parking_cycle_storage_add": "Add cycle storage",
+  "parking_cycle_storage_remove": "Remove cycle storage",
+  "parking_cycle_storage_spaces": "Spaces",
+  "parking_cycle_storage_type": "Type",
+  "parking_cycle_storage_type_racks": "Racks",
+  "parking_cycle_storage_type_bars": "Bars",
+  "parking_cycle_storage_type_railings": "Railings",
+  "parking_cycle_storage_type_cycleScheme": "Cycle scheme",
+  "parking_cycle_storage_type_other": "Other"
 }

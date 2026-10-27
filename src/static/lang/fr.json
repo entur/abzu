@@ -826,5 +826,15 @@
   "parking_capacity_entry_add": "Ajouter une ligne de capacité",
   "parking_capacity_entry_remove": "Supprimer la ligne de capacité",
   "parking_capacity_entry_spaces": "Places",
-  "parking_capacity_entry_spaces_with_recharge_point": "Avec borne de recharge"
+  "parking_capacity_entry_spaces_with_recharge_point": "Avec borne de recharge",
+  "parking_cycle_storage": "Stationnement vélo",
+  "parking_cycle_storage_add": "Ajouter un stationnement vélo",
+  "parking_cycle_storage_remove": "Supprimer le stationnement vélo",
+  "parking_cycle_storage_spaces": "Places",
+  "parking_cycle_storage_type": "Type",
+  "parking_cycle_storage_type_racks": "Râteliers",
+  "parking_cycle_storage_type_bars": "Barres",
+  "parking_cycle_storage_type_railings": "Rambardes",
+  "parking_cycle_storage_type_cycleScheme": "Système de vélos",
+  "parking_cycle_storage_type_other": "Autre"
 }

@@ -826,5 +826,15 @@
   "parking_capacity_entry_add": "Lisää kapasiteettirivi",
   "parking_capacity_entry_remove": "Poista kapasiteettirivi",
   "parking_capacity_entry_spaces": "Paikat",
-  "parking_capacity_entry_spaces_with_recharge_point": "Latauspisteelliset"
+  "parking_capacity_entry_spaces_with_recharge_point": "Latauspisteelliset",
+  "parking_cycle_storage": "Pyöräsäilytys",
+  "parking_cycle_storage_add": "Lisää pyöräsäilytys",
+  "parking_cycle_storage_remove": "Poista pyöräsäilytys",
+  "parking_cycle_storage_spaces": "Paikkoja",
+  "parking_cycle_storage_type": "Tyyppi",
+  "parking_cycle_storage_type_racks": "Telineet",
+  "parking_cycle_storage_type_bars": "Tangot",
+  "parking_cycle_storage_type_railings": "Kaiteet",
+  "parking_cycle_storage_type_cycleScheme": "Pyöräjärjestelmä",
+  "parking_cycle_storage_type_other": "Muu"
 }

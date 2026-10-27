@@ -65,6 +65,12 @@ export interface CapacityEntry {
   numberOfSpacesWithRechargePoint: number | string | null;
 }
 
+export interface CycleStorageEntry {
+  id?: string;
+  cycleStorageType?: string | null;
+  numberOfSpaces?: number | string | null;
+}
+
 export interface Parking {
   id?: string;
   name?: string;
@@ -81,6 +87,12 @@ export interface Parking {
   parkingVehicleTypes?: string[];
   capacityEntries?: CapacityEntry[];
   parkingProperties?: { spaces?: Partial<CapacityEntry>[] | null }[] | null;
+  /** Every equipment kind as loaded. The editor changes cycle storage only. */
+  placeEquipments?: {
+    id?: string;
+    cycleStorageEquipment?: CycleStorageEntry[] | null;
+  } | null;
+  placeEquipmentsChanged?: boolean;
   hasExpired?: boolean;
   validBetween?: ValidBetween;
   accessibilityAssessment?: {

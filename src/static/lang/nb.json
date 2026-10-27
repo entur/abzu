@@ -831,5 +831,15 @@
   "parking_capacity_entry_add": "Legg til kapasitetsrad",
   "parking_capacity_entry_remove": "Fjern kapasitetsrad",
   "parking_capacity_entry_spaces": "Plasser",
-  "parking_capacity_entry_spaces_with_recharge_point": "Med ladestasjon"
+  "parking_capacity_entry_spaces_with_recharge_point": "Med ladestasjon",
+  "parking_cycle_storage": "Sykkelparkering",
+  "parking_cycle_storage_add": "Legg til sykkelparkering",
+  "parking_cycle_storage_remove": "Fjern sykkelparkering",
+  "parking_cycle_storage_spaces": "Plasser",
+  "parking_cycle_storage_type": "Type",
+  "parking_cycle_storage_type_racks": "Stativer",
+  "parking_cycle_storage_type_bars": "Stenger",
+  "parking_cycle_storage_type_railings": "Rekkverk",
+  "parking_cycle_storage_type_cycleScheme": "Sykkelordning",
+  "parking_cycle_storage_type_other": "Annet"
 }
