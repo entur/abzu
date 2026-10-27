@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { AvailabilityConditionRow } from "../../../models/availabilityCondition";
 import { ElementChangeStatus } from "../Shared/ElementStatus";
 
 // --- Core domain types ---
@@ -82,6 +83,8 @@ export interface Parking {
     };
   };
   notSaved?: boolean;
+  availabilityConditions?: AvailabilityConditionRow[];
+  availabilityConditionsChanged?: boolean;
 }
 
 export interface StopPlace {
