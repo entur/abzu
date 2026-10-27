@@ -49,6 +49,8 @@ export const CapacityEntryTypeSelect: React.FC<
   onChange,
 }) => {
   const { formatMessage } = useIntl();
+  const hideStoredValue =
+    !offerStoredValue && isStoredOutsideMenu(options, value);
   const notAssigned = <em>{formatMessage({ id: "not_assigned" })}</em>;
 
   return (
@@ -62,6 +64,9 @@ export const CapacityEntryTypeSelect: React.FC<
       slotProps={{
         select: {
           displayEmpty: true,
+          // A hidden selected item cannot take focus, so the menu would
+          // ignore the keyboard. Focus the first item instead.
+          MenuProps: hideStoredValue ? { variant: "menu" } : undefined,
           renderValue: (selected) =>
             selected
               ? optionLabel(selected as string, formatMessage)

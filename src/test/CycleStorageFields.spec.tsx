@@ -14,7 +14,13 @@ limitations under the Licence. */
 
 import { configureStore, UnknownAction } from "@reduxjs/toolkit";
 import "@testing-library/jest-dom/vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { describe, expect, test, vi } from "vitest";
@@ -119,6 +125,15 @@ describe("CycleStorageFields - the modern cycle storage editor", () => {
     const options = screen.getAllByRole("option").map((o) => o.textContent);
 
     expect(options).toEqual(["Racks", "Bars", "Railings"]);
+  });
+
+  test("the keyboard closes the menu of a stored value outside the profile", async () => {
+    renderPanel(parkAndRide([{ cycleStorageType: "other" }]));
+
+    fireEvent.mouseDown(within(rows()[0]).getByRole("combobox"));
+    fireEvent.keyDown(document.activeElement as Element, { key: "Escape" });
+
+    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
   });
 
   test("a menu for a profile value holds exactly three types", () => {
