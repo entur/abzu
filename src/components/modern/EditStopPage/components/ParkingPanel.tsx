@@ -190,9 +190,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           disabled={fieldDisabled}
           size="small"
           fullWidth
-          slotProps={{
-            htmlInput: { "data-testid": "parking-organisation-ref" },
-          }}
         />
 
         {/* Vehicle types — read-only. Tiamat owns this field. */}
