@@ -95,6 +95,7 @@ export const CycleStorageFields: React.FC<CycleStorageFieldsProps> = ({
               options={cycleStorageTypes}
               optionLabel={cycleStorageTypeLabel}
               disabled={disabled}
+              offerStoredValue={false}
               onChange={(value) =>
                 change(entryIndex, "cycleStorageType", value)
               }

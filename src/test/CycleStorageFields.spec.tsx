@@ -118,7 +118,7 @@ describe("CycleStorageFields - the modern cycle storage editor", () => {
     fireEvent.mouseDown(within(rows()[0]).getByRole("combobox"));
     const options = screen.getAllByRole("option").map((o) => o.textContent);
 
-    expect(options).toEqual(["Racks", "Bars", "Railings", "Other"]);
+    expect(options).toEqual(["Racks", "Bars", "Railings"]);
   });
 
   test("a menu for a profile value holds exactly three types", () => {
