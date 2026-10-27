@@ -14,7 +14,11 @@ limitations under the Licence. */
 
 import { beforeAll, describe, expect, test } from "vitest";
 import * as types from "../actions/Types";
-import { hasInvalidAvailabilityConditions } from "../models/availabilityCondition";
+import {
+  availabilityConditionToInput,
+  availabilityConditionToRow,
+  hasInvalidAvailabilityConditions,
+} from "../models/availabilityCondition";
 import queryHelpers from "../modelUtils/mapToQueryVariables";
 import Parking from "../models/Parking";
 import stopPlaceReducer from "../reducers/stopPlaceReducer";
@@ -290,6 +294,36 @@ describe("opening hours validity gates the save", () => {
         parkingWith({ ...valid, startTime: "22:00", endTime: "06:00" }),
       ]),
     ).toBe(false);
+  });
+});
+
+describe("availability condition - day offsets", () => {
+  test("00:00 with dayOffset 2 is not end of day and keeps the offset", () => {
+    const row = availabilityConditionToRow({
+      dayTypeRef: SATURDAY,
+      startTime: "08:00",
+      endTime: "00:00",
+      dayOffset: 2,
+    });
+
+    expect(row.endOfDay).toBe(false);
+    expect(row.keptDayOffset).toBe(2);
+    expect(availabilityConditionToInput(row)).toMatchObject({
+      endTime: "00:00",
+      dayOffset: 2,
+    });
+  });
+
+  test("00:00 with dayOffset 1 is end of day", () => {
+    const row = availabilityConditionToRow({
+      dayTypeRef: SATURDAY,
+      startTime: "08:00",
+      endTime: "00:00",
+      dayOffset: 1,
+    });
+
+    expect(row.endOfDay).toBe(true);
+    expect(row.keptDayOffset).toBeUndefined();
   });
 });
 

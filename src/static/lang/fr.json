@@ -360,6 +360,7 @@
   "opening_hours_error_day_type": "Choisissez un type de jour",
   "opening_hours_error_times": "Indiquez une heure de début et une heure de fin. Les deux heures doivent différer.",
   "opening_hours_from": "De",
+  "opening_hours_kept_offset": "Se termine {days} jours plus tard. Modifiez-le avec un import NeTEx.",
   "opening_hours_next_day": "(jour suivant)",
   "opening_hours_none": "Aucun horaire d'ouverture enregistré",
   "opening_hours_open": "Ouvert",

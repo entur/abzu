@@ -13,7 +13,13 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import "@testing-library/jest-dom/vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from "@testing-library/react";
 import React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
@@ -65,6 +71,8 @@ const keptOffsetRow = (): AvailabilityConditionRow =>
     endTime: "16:00",
     dayOffset: 2,
   });
+
+const KEPT_OFFSET_CAPTION = "Ends 2 days later. Change it with a NeTEx import.";
 
 const createStore = () => {
   const dispatch: any = vi.fn((action: unknown) =>
@@ -207,6 +215,36 @@ describe("OpeningHoursRow - kept day offset", () => {
     }
   });
 
+  test("a 00:00 end with dayOffset 2 is a kept offset, not end of day", () => {
+    renderRow(
+      availabilityConditionToRow({
+        dayTypeRef: "FSR:DayType:BusinessDay",
+        startTime: "08:00",
+        endTime: "00:00",
+        dayOffset: 2,
+      }),
+    );
+
+    expect(
+      screen.getByRole("checkbox", { name: "End of day" }),
+    ).not.toBeChecked();
+    expect(screen.getByText(KEPT_OFFSET_CAPTION)).toBeInTheDocument();
+  });
+
+  test("the caption names the offset for a kept offset row", () => {
+    renderRow(keptOffsetRow());
+
+    expect(screen.getByText(KEPT_OFFSET_CAPTION)).toBeInTheDocument();
+  });
+
+  test("the caption is absent for end of day, next day and normal rows", () => {
+    for (const row of [endOfDayRow(), overnightRow(), normalRow()]) {
+      renderRow(row);
+      expect(screen.queryByText(/days later/)).not.toBeInTheDocument();
+      cleanup();
+    }
+  });
+
   test("a normal row has enabled time inputs", () => {
     renderRow(normalRow());
 
@@ -251,6 +289,35 @@ describe("OpeningHoursFields", () => {
       "readonly",
     );
     expect(screen.queryByRole("combobox")).toBeNull();
+  });
+
+  test("Add is disabled without parkingConfig day types", () => {
+    renderWithProviders(
+      <OpeningHoursFields
+        parking={parkingWith([])}
+        parkingIndex={0}
+        fieldDisabled={false}
+      />,
+      {},
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Add opening hours" }),
+    ).toBeDisabled();
+  });
+
+  test("Add is enabled with parkingConfig day types", () => {
+    renderWithProviders(
+      <OpeningHoursFields
+        parking={parkingWith([])}
+        parkingIndex={0}
+        fieldDisabled={false}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Add opening hours" }),
+    ).toBeEnabled();
   });
 
   test("shows the select with a parkingConfig day type list", () => {

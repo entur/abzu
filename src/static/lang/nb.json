@@ -362,6 +362,7 @@
   "opening_hours_error_day_type": "Velg en dagtype",
   "opening_hours_error_times": "Angi fra-tid og til-tid. De to tidene må være ulike.",
   "opening_hours_from": "Fra",
+  "opening_hours_kept_offset": "Slutter {days} dager senere. Endre det med en NeTEx-import.",
   "opening_hours_next_day": "(neste dag)",
   "opening_hours_none": "Ingen åpningstider registrert",
   "opening_hours_open": "Åpen",

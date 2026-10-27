@@ -216,6 +216,15 @@ export const OpeningHoursRow: React.FC<OpeningHoursRowProps> = ({
         </LocalizationProvider>
       )}
 
+      {condition.isAvailable && hasKeptOffset && (
+        <Typography variant="caption" color="text.secondary">
+          {formatMessage(
+            { id: "opening_hours_kept_offset" },
+            { days: condition.keptDayOffset },
+          )}
+        </Typography>
+      )}
+
       {error === "times" && (
         <FormHelperText error>
           {formatMessage({ id: "opening_hours_error_times" })}

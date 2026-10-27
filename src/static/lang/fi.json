@@ -360,6 +360,7 @@
   "opening_hours_error_day_type": "Valitse päivätyyppi",
   "opening_hours_error_times": "Aseta alkamis- ja päättymisaika. Aikojen on oltava eri.",
   "opening_hours_from": "Alkaen",
+  "opening_hours_kept_offset": "Päättyy {days} päivää myöhemmin. Muuta se NeTEx-tuonnilla.",
   "opening_hours_next_day": "(seuraava päivä)",
   "opening_hours_none": "Aukioloaikoja ei ole tallennettu",
   "opening_hours_open": "Auki",

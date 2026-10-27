@@ -104,7 +104,7 @@ export const OpeningHoursFields: React.FC<OpeningHoursFieldsProps> = ({
         size="small"
         variant="outlined"
         startIcon={<AddIcon />}
-        disabled={fieldDisabled}
+        disabled={fieldDisabled || dayTypes.length === 0}
         onClick={() =>
           dispatch(
             StopPlaceActions.addParkingAvailabilityCondition(parkingIndex),

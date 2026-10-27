@@ -56,7 +56,7 @@ export const availabilityConditionToRow = (
   const startTime = toTime(stored.startTime);
   const endTime = toTime(stored.endTime);
   const dayOffset = stored.dayOffset ?? 0;
-  const endOfDay = endTime === MIDNIGHT && dayOffset >= NEXT_DAY_OFFSET;
+  const endOfDay = endTime === MIDNIGHT && dayOffset === NEXT_DAY_OFFSET;
   const nextDay =
     !endOfDay &&
     dayOffset === NEXT_DAY_OFFSET &&

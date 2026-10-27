@@ -362,6 +362,7 @@
   "opening_hours_error_day_type": "Choose a day type",
   "opening_hours_error_times": "Set a from time and an until time. The two times must differ.",
   "opening_hours_from": "From",
+  "opening_hours_kept_offset": "Ends {days} days later. Change it with a NeTEx import.",
   "opening_hours_next_day": "(next day)",
   "opening_hours_none": "No opening hours recorded",
   "opening_hours_open": "Open",

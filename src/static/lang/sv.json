@@ -360,6 +360,7 @@
   "opening_hours_error_day_type": "Välj en dagtyp",
   "opening_hours_error_times": "Ange från-tid och till-tid. De två tiderna måste skilja sig åt.",
   "opening_hours_from": "Från",
+  "opening_hours_kept_offset": "Slutar {days} dagar senare. Ändra det med en NeTEx-import.",
   "opening_hours_next_day": "(nästa dag)",
   "opening_hours_none": "Inga öppettider registrerade",
   "opening_hours_open": "Öppet",
