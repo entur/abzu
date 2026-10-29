@@ -62,12 +62,14 @@ describe("stopPlaceReducer - capacity entries", () => {
     expect(original).toEqual(snapshot);
   });
 
-  test("an added entry is for all users and holds no count", () => {
+  test("an added entry is for all users, holds no count and is marked new", () => {
     const state = reduce(stateWith([]), types.ADDED_PARKING_CAPACITY_ENTRY, {
       index: 0,
     });
 
-    expect(entriesOf(state)).toEqual([entry({ parkingUserType: "allUsers" })]);
+    expect(entriesOf(state)).toEqual([
+      entry({ parkingUserType: "allUsers", isNew: true }),
+    ]);
     expect(state.stopHasBeenModified).toBe(true);
   });
 

@@ -357,13 +357,25 @@ helpers.mergeParkingSpaces = (existingProperties, updates) => {
   return properties;
 };
 
+// A stored row stays even when it holds no count. A row the editor added and
+// left without a count is dropped, as it carries no value.
+helpers.keptCapacityEntries = (capacityEntries) =>
+  capacityEntries.filter(
+    (entry) =>
+      !(
+        entry.isNew === true &&
+        helpers.toCount(entry.numberOfSpaces) === null &&
+        helpers.toCount(entry.numberOfSpacesWithRechargePoint) === null
+      ),
+  );
+
 // Tiamat replaces every stored entry with the entries a save sends. So send
-// each row the editor shows, in order, and keep every field of the row.
+// each row the editor keeps, in order, and keep every field of the row.
 helpers.capacityEntriesToProperties = (capacityEntries, existingProperties) => {
   const [first, ...rest] = existingProperties?.length
     ? existingProperties
     : [{}];
-  const spaces = capacityEntries.map((entry) => ({
+  const spaces = helpers.keptCapacityEntries(capacityEntries).map((entry) => ({
     parkingVehicleType: entry.parkingVehicleType ?? null,
     parkingUserType: entry.parkingUserType ?? null,
     parkingStayType: entry.parkingStayType ?? null,
@@ -472,9 +484,12 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
     const capacityEntries = source.capacityEntries || [];
     const storedSpaces = source.parkingProperties?.[0]?.spaces || [];
 
+    // Without a kept row and without a stored entry, the save has nothing to
+    // replace, so Tiamat keeps the stored total.
     if (
       source.hasFullFieldSet &&
-      (capacityEntries.length > 0 || storedSpaces.length > 0)
+      (helpers.keptCapacityEntries(capacityEntries).length > 0 ||
+        storedSpaces.length > 0)
     ) {
       parking.parkingProperties = helpers.capacityEntriesToProperties(
         capacityEntries,

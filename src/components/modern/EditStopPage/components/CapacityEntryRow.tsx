@@ -13,10 +13,11 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { Box, IconButton, TextField, Tooltip } from "@mui/material";
+import { Box, IconButton, TextField, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
+import { parkingStayTypeLabel } from "../../../../models/parkingStayType";
 import {
   parkingUserTypeLabel,
   parkingUserTypes,
@@ -131,6 +132,19 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
         onChange={(value) => change("parkingUserType", value)}
       />
       <Box />
+      {entry.parkingStayType ? (
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          data-testid="parking-capacity-entry-stay-type"
+          sx={{ gridColumn: "1 / -1" }}
+        >
+          {formatMessage({ id: "parking_stay_type" })}:{" "}
+          <span>
+            {parkingStayTypeLabel(entry.parkingStayType, formatMessage)}
+          </span>
+        </Typography>
+      ) : null}
       <TextField
         size="small"
         type="number"

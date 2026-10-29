@@ -934,6 +934,7 @@ helpers.addParkingCapacityEntry = (original, payload) => {
     parkingStayType: null,
     numberOfSpaces: null,
     numberOfSpacesWithRechargePoint: null,
+    isNew: true,
   });
   withLegacyCapacityFields(parking);
   return copy;
