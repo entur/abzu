@@ -366,6 +366,11 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       validBetween: source.validBetween,
     };
 
+    // The ValidBetween input requires a from date. Omitting it keeps the stored validity.
+    if (source.validBetween && !source.validBetween.fromDate) {
+      delete parking.validBetween;
+    }
+
     if (source.id) {
       parking.id = source.id;
     }
@@ -460,9 +465,10 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
     parking.accessibilityAssessment = source.accessibilityAssessment;
 
-    helpers.removeTypeNameRecursively(parking);
+    const variables = JSON.parse(JSON.stringify(parking));
+    helpers.removeTypeNameRecursively(variables);
 
-    return parking;
+    return variables;
   });
 };
 
