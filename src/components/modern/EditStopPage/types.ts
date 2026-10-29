@@ -57,6 +57,15 @@ export interface Quay {
   facilities?: any[];
 }
 
+export interface CapacityEntry {
+  parkingVehicleType: string | null;
+  parkingUserType: string | null;
+  parkingStayType: string | null;
+  numberOfSpaces: number | string | null;
+  numberOfSpacesWithRechargePoint: number | string | null;
+  isNew?: boolean;
+}
+
 export interface Parking {
   id?: string;
   name?: string;
@@ -70,11 +79,10 @@ export interface Parking {
   secure?: boolean | null;
   lighting?: string | null;
   covered?: string | null;
-  totalCapacity?: number | string;
+  totalCapacity?: number | string | null;
   parkingVehicleTypes?: string[];
-  numberOfSpaces?: number | string;
-  numberOfSpacesWithRechargePoint?: number | string;
-  numberOfSpacesForRegisteredDisabledUserType?: number | string;
+  capacityEntries?: CapacityEntry[];
+  parkingProperties?: { spaces?: Partial<CapacityEntry>[] | null }[] | null;
   hasExpired?: boolean;
   validBetween?: ValidBetween;
   accessibilityAssessment?: {
