@@ -28,6 +28,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { capacityEntriesTotal } from "../../../../models/parkingCapacity";
 import { parkingTitleMessageId } from "../../../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
@@ -76,13 +77,9 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
     parking.id?.split(":").pop() ||
     `${formatMessage({ id: "parking" })} ${parkingIndex + 1}`;
 
-  // Derived total capacity for parkAndRide
-  const derivedCapacity = (() => {
-    if (!hasFullFieldSet) return null;
-    const n = Number(parking.numberOfSpaces) || 0;
-    const d = Number(parking.numberOfSpacesForRegisteredDisabledUserType) || 0;
-    return n + d;
-  })();
+  const derivedCapacity = hasFullFieldSet
+    ? capacityEntriesTotal(parking)
+    : null;
 
   const stepFreeAccess =
     parking.accessibilityAssessment?.limitations?.stepFreeAccess ?? "";
@@ -188,7 +185,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             parkingIndex={parkingIndex}
             canEdit={canEdit}
             fieldDisabled={fieldDisabled}
-            derivedCapacity={derivedCapacity ?? 0}
+            derivedCapacity={derivedCapacity}
           />
         ) : (
           /* ── bikeParking: capacity only ── */
