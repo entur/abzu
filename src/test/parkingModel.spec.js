@@ -286,3 +286,47 @@ describe("parkingPaymentProcess model", () => {
     expect(variables.parkingPaymentProcess).toEqual(["payByPlate"]);
   });
 });
+
+describe("mapParkingToVariables - clearing layout and lighting", () => {
+  test("A1: a park-and-ride with empty layout and lighting sends null for both", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: true, parkingLayout: "", lighting: "" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("parkingLayout", null);
+    expect(variables).toHaveProperty("lighting", null);
+  });
+
+  test("A1: a missing layout and lighting also send null", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: true })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("parkingLayout", null);
+    expect(variables).toHaveProperty("lighting", null);
+  });
+
+  test("A2: a parking without the full field set sends neither key", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: false, parkingLayout: null })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).not.toHaveProperty("parkingLayout");
+    expect(variables).not.toHaveProperty("lighting");
+  });
+
+  test("A3: a park-and-ride with values sends the values", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [
+        mockParking({
+          hasFullFieldSet: true,
+          parkingLayout: "multistorey",
+          lighting: "wellLit",
+        }),
+      ],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.parkingLayout).toBe("multistorey");
+    expect(variables.lighting).toBe("wellLit");
+  });
+});
