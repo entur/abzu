@@ -12,10 +12,10 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import AccessibleIcon from "@mui/icons-material/Accessible";
-import LocalParkingIcon from "@mui/icons-material/LocalParking";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {
   Box,
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -36,13 +36,14 @@ import { parkingPaymentProcesses } from "../../../../models/parkingPaymentProces
 import { paymentMethods } from "../../../../models/paymentMethod";
 import { useAppDispatch } from "../../../../store/hooks";
 import { Parking } from "../types";
+import { CapacityEntryRow } from "./CapacityEntryRow";
 
 interface ParkAndRideFieldsProps {
   parking: Parking;
   parkingIndex: number;
   canEdit: boolean;
   fieldDisabled: boolean;
-  derivedCapacity: number;
+  derivedCapacity: number | null;
 }
 
 /**
@@ -277,59 +278,32 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
           {formatMessage({
             id: "parking_parkAndRide_capacity_sub_header",
           })}{" "}
-          ({derivedCapacity})
+          ({derivedCapacity ?? formatMessage({ id: "not_assigned" })})
         </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-          <LocalParkingIcon fontSize="small" color="action" />
-          <TextField
-            label={formatMessage({ id: "parking_number_of_spaces" })}
-            value={
-              parking.numberOfSpaces !== undefined
-                ? String(parking.numberOfSpaces)
-                : ""
-            }
-            onChange={(e) => {
-              const val = Math.max(0, Number(e.target.value));
-              dispatch(
-                StopPlaceActions.changeParkingNumberOfSpaces(parkingIndex, val),
-              );
-            }}
-            disabled={fieldDisabled}
-            size="small"
-            type="number"
-            fullWidth
-            slotProps={{ htmlInput: { min: 0 } }}
-          />
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mt: 1 }}>
+          {(parking.capacityEntries ?? []).map((entry, entryIndex) => (
+            <CapacityEntryRow
+              key={entryIndex}
+              entry={entry}
+              parkingIndex={parkingIndex}
+              entryIndex={entryIndex}
+              disabled={fieldDisabled}
+              rechargingAvailable={!!parking.rechargingAvailable}
+            />
+          ))}
         </Box>
-
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-          <AccessibleIcon fontSize="small" color="action" />
-          <TextField
-            label={formatMessage({
-              id: "parking_number_of_spaces_for_registered_disabled_user_type",
-            })}
-            value={
-              parking.numberOfSpacesForRegisteredDisabledUserType !== undefined
-                ? String(parking.numberOfSpacesForRegisteredDisabledUserType)
-                : ""
-            }
-            onChange={(e) => {
-              const val = Math.max(0, Number(e.target.value));
-              dispatch(
-                StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
-                  parkingIndex,
-                  val,
-                ),
-              );
-            }}
-            disabled={fieldDisabled}
-            size="small"
-            type="number"
-            fullWidth
-            slotProps={{ htmlInput: { min: 0 } }}
-          />
-        </Box>
+        <Button
+          startIcon={<AddCircleIcon />}
+          disabled={fieldDisabled}
+          onClick={() =>
+            dispatch(StopPlaceActions.addParkingCapacityEntry(parkingIndex))
+          }
+          size="small"
+          sx={{ mt: 1 }}
+        >
+          {formatMessage({ id: "parking_capacity_entry_add" })}
+        </Button>
       </Box>
 
       {/* Recharging */}
@@ -349,14 +323,21 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
           control={
             <Switch
               checked={!!parking.rechargingAvailable}
-              onChange={(e) =>
+              onChange={(e) => {
                 dispatch(
                   StopPlaceActions.changeParkingRechargingAvailable(
                     parkingIndex,
                     e.target.checked,
                   ),
-                )
-              }
+                );
+                if (!e.target.checked) {
+                  dispatch(
+                    StopPlaceActions.clearParkingRechargePointCounts(
+                      parkingIndex,
+                    ),
+                  );
+                }
+              }}
               disabled={fieldDisabled}
               size="small"
             />
@@ -366,32 +347,6 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
               ? "parking_recharging_available_true"
               : "parking_recharging_available_false",
           })}
-        />
-
-        <TextField
-          label={formatMessage({
-            id: "parking_number_of_spaces_with_recharge_point",
-          })}
-          value={
-            parking.numberOfSpacesWithRechargePoint !== undefined
-              ? String(parking.numberOfSpacesWithRechargePoint)
-              : ""
-          }
-          onChange={(e) => {
-            const val = Math.max(0, Number(e.target.value));
-            dispatch(
-              StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint(
-                parkingIndex,
-                val,
-              ),
-            );
-          }}
-          disabled={!parking.rechargingAvailable || fieldDisabled}
-          size="small"
-          type="number"
-          fullWidth
-          slotProps={{ htmlInput: { min: 0 } }}
-          sx={{ mt: 1 }}
         />
       </Box>
 
