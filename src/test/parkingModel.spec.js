@@ -291,12 +291,20 @@ describe("mapParkingToVariables - covered", () => {
     expect(variables.covered).toBe("mixed");
   });
 
-  test("omits covered when the client holds no value", () => {
+  test("A5a: sends null when the client holds no value", () => {
     const [variables] = helpers.mapParkingToVariables(
       [mockParking()],
       "NSR:StopPlace:1",
     );
-    expect(variables).not.toHaveProperty("covered");
+    expect(variables).toHaveProperty("covered", null);
+  });
+
+  test("A5a: sends null when the editor chose Undefined", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ covered: "" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("covered", null);
   });
 
   test("keeps a stored value outside the editor list", () => {

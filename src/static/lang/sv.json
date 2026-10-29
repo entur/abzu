@@ -366,6 +366,7 @@
   "parentStopPlace": "Multimodal hållplats",
   "parent_stop_place_requires_children": "En multimodal hållplats måste ha underordnade hållplatser för att existera.",
   "parking_covered": "Övertäckt",
+  "parking_covered_undefined": "Odefinerat",
   "parking_expired": "Parkeringen har utlöpt!",
   "parking_general": "Parkering",
   "parking_item_title_bikeParking": "Cykelparkering",

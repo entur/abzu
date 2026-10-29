@@ -394,9 +394,8 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.lighting = source.lighting;
     }
 
-    if (source.covered) {
-      parking.covered = source.covered;
-    }
+    // An empty value is sent as null so that Tiamat clears the stored value.
+    parking.covered = source.covered || null;
 
     if (
       source.numberOfSpaces ||

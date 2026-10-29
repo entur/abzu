@@ -366,6 +366,7 @@
   "parentStopPlace": "Monimuotopysäkki",
   "parent_stop_place_requires_children": "Monimuotopysäkillä täytyy olla alipysäkkejä olemassaoloon",
   "parking_covered": "Katettu",
+  "parking_covered_undefined": "Määrittelemätön",
   "parking_expired": "Pysäköinti vanhentunut!",
   "parking_general": "Pysäköinti",
   "parking_item_title_bikeParking": "Pyöräpysäköinti",

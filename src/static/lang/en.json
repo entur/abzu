@@ -368,6 +368,7 @@
   "parentStopPlace": "Multimodal StopPlace",
   "parent_stop_place_requires_children": "A multimodal stop place must contain children stop places in order to exist",
   "parking_covered": "Covered",
+  "parking_covered_undefined": "Undefined",
   "parking_expired": "Parking expired!",
   "parking_general": "Parking",
   "parking_item_title_bikeParking": "Bike parking",

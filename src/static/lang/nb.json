@@ -368,6 +368,7 @@
   "parentStopPlace": "Multimodalt stoppested",
   "parent_stop_place_requires_children": "Et multimodalt stoppested må ha underordnede stoppested for å eksistere.",
   "parking_covered": "Overbygd",
+  "parking_covered_undefined": "Udefinert",
   "parking_expired": "Parking utløpt!",
   "parking_general": "Parkering",
   "parking_item_title_bikeParking": "Sykkelparkering",

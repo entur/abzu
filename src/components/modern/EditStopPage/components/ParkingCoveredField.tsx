@@ -40,7 +40,7 @@ export const ParkingCoveredField: React.FC<ParkingCoveredFieldProps> = ({
               defaultMessage: selected,
             })
           ) : (
-            <em>—</em>
+            <em>{formatMessage({ id: "parking_covered_undefined" })}</em>
           )
         }
         onChange={(event) =>
@@ -52,6 +52,9 @@ export const ParkingCoveredField: React.FC<ParkingCoveredFieldProps> = ({
           )
         }
       >
+        <MenuItem value="">
+          <em>{formatMessage({ id: "parking_covered_undefined" })}</em>
+        </MenuItem>
         {Object.values(CoveredEnum).map((value) => (
           <MenuItem key={value} value={value}>
             {formatMessage({
