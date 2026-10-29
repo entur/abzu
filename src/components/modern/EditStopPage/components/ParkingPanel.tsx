@@ -174,8 +174,8 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           fullWidth
         />
 
-        {/* Operator reference — common to every variant. Tiamat keeps the
-            stored value when none is sent, so a cleared field does not delete it. */}
+        {/* Operator reference — common to every variant. A blank field is
+            saved as null, which clears the stored value. */}
         <TextField
           label={formatMessage({ id: "parking_organisation_ref" })}
           value={parking.organisationRef || ""}

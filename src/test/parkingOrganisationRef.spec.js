@@ -67,15 +67,21 @@ describe("mapParkingToVariables - organisationRef", () => {
     );
   });
 
-  test("omits the reference when absent", () => {
+  test("A6: sends null when absent", () => {
     const variables = saveVariables(clientWith(undefined));
 
-    expect("organisationRef" in variables).toBe(false);
+    expect(variables).toHaveProperty("organisationRef", null);
   });
 
-  test("omits the reference when empty or only spaces", () => {
-    expect("organisationRef" in saveVariables(clientWith(""))).toBe(false);
-    expect("organisationRef" in saveVariables(clientWith("   "))).toBe(false);
+  test("A6: sends null when empty or only spaces", () => {
+    expect(saveVariables(clientWith(""))).toHaveProperty(
+      "organisationRef",
+      null,
+    );
+    expect(saveVariables(clientWith("   "))).toHaveProperty(
+      "organisationRef",
+      null,
+    );
   });
 
   test("trims leading and trailing spaces", () => {
