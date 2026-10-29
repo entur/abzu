@@ -836,5 +836,15 @@
   "parking_stay_type_shortStay": "Kort opphold",
   "parking_stay_type_longTerm": "Langtidsopphold",
   "parking_stay_type_dropoff": "Avsetting",
-  "parking_stay_type_unlimited": "Ubegrenset"
+  "parking_stay_type_unlimited": "Ubegrenset",
+  "parking_cycle_storage": "Sykkelparkering",
+  "parking_cycle_storage_add": "Legg til sykkelparkering",
+  "parking_cycle_storage_remove": "Fjern sykkelparkering",
+  "parking_cycle_storage_spaces": "Plasser",
+  "parking_cycle_storage_type": "Type",
+  "parking_cycle_storage_type_racks": "Stativer",
+  "parking_cycle_storage_type_bars": "Stenger",
+  "parking_cycle_storage_type_railings": "Rekkverk",
+  "parking_cycle_storage_type_cycleScheme": "Sykkelordning",
+  "parking_cycle_storage_type_other": "Annet"
 }

@@ -831,5 +831,15 @@
   "parking_stay_type_shortStay": "Courte durée",
   "parking_stay_type_longTerm": "Longue durée",
   "parking_stay_type_dropoff": "Dépose-minute",
-  "parking_stay_type_unlimited": "Illimitée"
+  "parking_stay_type_unlimited": "Illimitée",
+  "parking_cycle_storage": "Stationnement vélo",
+  "parking_cycle_storage_add": "Ajouter un stationnement vélo",
+  "parking_cycle_storage_remove": "Supprimer le stationnement vélo",
+  "parking_cycle_storage_spaces": "Places",
+  "parking_cycle_storage_type": "Type",
+  "parking_cycle_storage_type_racks": "Râteliers",
+  "parking_cycle_storage_type_bars": "Barres",
+  "parking_cycle_storage_type_railings": "Rambardes",
+  "parking_cycle_storage_type_cycleScheme": "Système de vélos",
+  "parking_cycle_storage_type_other": "Autre"
 }

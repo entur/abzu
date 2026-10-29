@@ -832,5 +832,15 @@
   "parking_stay_type_shortStay": "Korttidsparkering",
   "parking_stay_type_longTerm": "Långtidsparkering",
   "parking_stay_type_dropoff": "Avlämning",
-  "parking_stay_type_unlimited": "Obegränsad"
+  "parking_stay_type_unlimited": "Obegränsad",
+  "parking_cycle_storage": "Cykelparkering",
+  "parking_cycle_storage_add": "Lägg till cykelparkering",
+  "parking_cycle_storage_remove": "Ta bort cykelparkering",
+  "parking_cycle_storage_spaces": "Platser",
+  "parking_cycle_storage_type": "Typ",
+  "parking_cycle_storage_type_racks": "Ställ",
+  "parking_cycle_storage_type_bars": "Stänger",
+  "parking_cycle_storage_type_railings": "Räcken",
+  "parking_cycle_storage_type_cycleScheme": "Cykelsystem",
+  "parking_cycle_storage_type_other": "Annat"
 }

@@ -24,22 +24,33 @@ interface CapacityEntryTypeSelectProps {
   options: string[];
   optionLabel: (value: string, formatMessage: FormatMessage) => string;
   disabled: boolean;
+  offerStoredValue?: boolean;
   onChange: (value: string | null) => void;
 }
 
-// A stored value this editor does not name stays selectable, so the field
-// shows it instead of an empty selection.
-const optionsWith = (options: string[], value: string | null): string[] =>
-  value && !options.includes(value) ? options.concat(value) : options;
+const isStoredOutsideMenu = (options: string[], value: string | null) =>
+  Boolean(value) && !options.includes(value as string);
 
 /**
  * A select for one type of a capacity entry. An entry with no value shows
- * "not assigned".
+ * "not assigned". A stored value that is not in the menu stays selectable,
+ * unless offerStoredValue is false. Then the field shows its label and the
+ * menu does not offer it.
  */
 export const CapacityEntryTypeSelect: React.FC<
   CapacityEntryTypeSelectProps
-> = ({ label, value, options, optionLabel, disabled, onChange }) => {
+> = ({
+  label,
+  value,
+  options,
+  optionLabel,
+  disabled,
+  offerStoredValue = true,
+  onChange,
+}) => {
   const { formatMessage } = useIntl();
+  const hideStoredValue =
+    !offerStoredValue && isStoredOutsideMenu(options, value);
   const notAssigned = <em>{formatMessage({ id: "not_assigned" })}</em>;
 
   return (
@@ -53,6 +64,9 @@ export const CapacityEntryTypeSelect: React.FC<
       slotProps={{
         select: {
           displayEmpty: true,
+          // A hidden selected item cannot take focus, so the menu would
+          // ignore the keyboard. Focus the first item instead.
+          MenuProps: hideStoredValue ? { variant: "menu" } : undefined,
           renderValue: (selected) =>
             selected
               ? optionLabel(selected as string, formatMessage)
@@ -62,11 +76,20 @@ export const CapacityEntryTypeSelect: React.FC<
       }}
       sx={{ flex: 1, minWidth: 0 }}
     >
-      {optionsWith(options, value).map((option) => (
+      {options.map((option) => (
         <MenuItem key={option} value={option}>
           {optionLabel(option, formatMessage)}
         </MenuItem>
       ))}
+      {isStoredOutsideMenu(options, value) && (
+        <MenuItem
+          key={value as string}
+          value={value as string}
+          sx={offerStoredValue ? undefined : { display: "none" }}
+        >
+          {optionLabel(value as string, formatMessage)}
+        </MenuItem>
+      )}
     </TextField>
   );
 };

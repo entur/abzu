@@ -836,5 +836,15 @@
   "parking_stay_type_shortStay": "Short stay",
   "parking_stay_type_longTerm": "Long term",
   "parking_stay_type_dropoff": "Drop-off",
-  "parking_stay_type_unlimited": "Unlimited"
+  "parking_stay_type_unlimited": "Unlimited",
+  "parking_cycle_storage": "Cycle storage",
+  "parking_cycle_storage_add": "Add cycle storage",
+  "parking_cycle_storage_remove": "Remove cycle storage",
+  "parking_cycle_storage_spaces": "Spaces",
+  "parking_cycle_storage_type": "Type",
+  "parking_cycle_storage_type_racks": "Racks",
+  "parking_cycle_storage_type_bars": "Bars",
+  "parking_cycle_storage_type_railings": "Railings",
+  "parking_cycle_storage_type_cycleScheme": "Cycle scheme",
+  "parking_cycle_storage_type_other": "Other"
 }

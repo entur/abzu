@@ -558,6 +558,29 @@ StopPlaceActions.removeParkingCapacityEntry =
     );
   };
 
+StopPlaceActions.addParkingCycleStorage = (index) => (dispatch) => {
+  dispatch(createThunk(types.ADDED_PARKING_CYCLE_STORAGE, { index }));
+};
+
+StopPlaceActions.changeParkingCycleStorage =
+  (index, entryIndex, field, value) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_CYCLE_STORAGE, {
+        index,
+        entryIndex,
+        field,
+        value,
+      }),
+    );
+  };
+
+StopPlaceActions.removeParkingCycleStorage =
+  (index, entryIndex) => (dispatch) => {
+    dispatch(
+      createThunk(types.REMOVED_PARKING_CYCLE_STORAGE, { index, entryIndex }),
+    );
+  };
+
 StopPlaceActions.clearParkingRechargePointCounts = (index) => (dispatch) => {
   dispatch(createThunk(types.CLEARED_PARKING_RECHARGE_POINT_COUNTS, { index }));
 };

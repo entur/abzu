@@ -831,5 +831,15 @@
   "parking_stay_type_shortStay": "Lyhytaikainen",
   "parking_stay_type_longTerm": "Pitkäaikainen",
   "parking_stay_type_dropoff": "Jättöpaikka",
-  "parking_stay_type_unlimited": "Rajoittamaton"
+  "parking_stay_type_unlimited": "Rajoittamaton",
+  "parking_cycle_storage": "Pyöräsäilytys",
+  "parking_cycle_storage_add": "Lisää pyöräsäilytys",
+  "parking_cycle_storage_remove": "Poista pyöräsäilytys",
+  "parking_cycle_storage_spaces": "Paikkoja",
+  "parking_cycle_storage_type": "Tyyppi",
+  "parking_cycle_storage_type_racks": "Telineet",
+  "parking_cycle_storage_type_bars": "Tangot",
+  "parking_cycle_storage_type_railings": "Kaiteet",
+  "parking_cycle_storage_type_cycleScheme": "Pyöräjärjestelmä",
+  "parking_cycle_storage_type_other": "Muu"
 }

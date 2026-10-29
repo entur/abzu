@@ -33,6 +33,7 @@ import { parkingTitleMessageId } from "../../../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
+import { CycleStorageFields } from "./CycleStorageFields";
 import { ParkAndRideFields } from "./ParkAndRideFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
@@ -207,6 +208,12 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             />
           </Box>
         )}
+
+        <CycleStorageFields
+          parking={parking}
+          parkingIndex={parkingIndex}
+          disabled={fieldDisabled}
+        />
       </Box>
 
       {/* Footer, only with something in it: an empty one left a blank band
