@@ -28,9 +28,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { StopPlaceActions } from "../../../../actions";
 import { capacityEntriesTotal } from "../../../../models/parkingCapacity";
 import { parkingTitleMessageId } from "../../../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
+import { useAppDispatch } from "../../../../store/hooks";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
@@ -62,6 +64,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onCapacityChange,
 }) => {
   const { formatMessage } = useIntl();
+  const dispatch = useAppDispatch();
 
   const parking = stopPlace.parking?.[parkingIndex];
   if (!parking) return null;
@@ -163,6 +166,24 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           label={formatMessage({ id: "name" })}
           value={parking.name || ""}
           onChange={(e) => onNameChange(parkingIndex, e.target.value)}
+          disabled={fieldDisabled}
+          size="small"
+          fullWidth
+        />
+
+        {/* Operator reference — common to every variant. A blank field is
+            saved as null, which clears the stored value. */}
+        <TextField
+          label={formatMessage({ id: "parking_organisation_ref" })}
+          value={parking.organisationRef || ""}
+          onChange={(e) =>
+            dispatch(
+              StopPlaceActions.changeParkingOrganisationRef(
+                parkingIndex,
+                e.target.value,
+              ),
+            )
+          }
           disabled={fieldDisabled}
           size="small"
           fullWidth
