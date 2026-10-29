@@ -831,5 +831,10 @@
   "parking_capacity_entry_add": "Add capacity row",
   "parking_capacity_entry_remove": "Remove capacity row",
   "parking_capacity_entry_spaces": "Spaces",
-  "parking_capacity_entry_spaces_with_recharge_point": "With recharge point"
+  "parking_capacity_entry_spaces_with_recharge_point": "With recharge point",
+  "parking_stay_type": "Stay type",
+  "parking_stay_type_shortStay": "Short stay",
+  "parking_stay_type_longTerm": "Long term",
+  "parking_stay_type_dropoff": "Drop-off",
+  "parking_stay_type_unlimited": "Unlimited"
 }

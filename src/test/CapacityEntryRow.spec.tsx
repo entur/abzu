@@ -80,6 +80,27 @@ describe("CapacityEntryRow - the modern capacity row", () => {
     ).toBeInTheDocument();
   });
 
+  test("shows the stay type of an entry that holds one", () => {
+    renderRow(entry({ numberOfSpaces: 3, parkingStayType: "longTerm" }));
+
+    expect(
+      screen.getByText(enMessages["parking_stay_type_longTerm"]),
+    ).toBeInTheDocument();
+  });
+
+  test("shows an unknown stay type as stored", () => {
+    renderRow(entry({ numberOfSpaces: 3, parkingStayType: "overnight" }));
+
+    expect(screen.getByText("overnight")).toBeInTheDocument();
+  });
+
+  test("shows no stay type for an entry that holds none", () => {
+    renderRow(entry({ numberOfSpaces: 3 }));
+
+    expect(screen.queryByTestId("parking-capacity-entry-stay-type")).toBeNull();
+    expect(screen.queryByText(enMessages["parking_stay_type"])).toBeNull();
+  });
+
   test("shows not assigned for an entry with no vehicle type", () => {
     renderRow(entry({ parkingUserType: "allUsers", numberOfSpaces: 2 }));
 

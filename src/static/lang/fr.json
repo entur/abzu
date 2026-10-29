@@ -826,5 +826,10 @@
   "parking_capacity_entry_add": "Ajouter une ligne de capacité",
   "parking_capacity_entry_remove": "Supprimer la ligne de capacité",
   "parking_capacity_entry_spaces": "Places",
-  "parking_capacity_entry_spaces_with_recharge_point": "Avec borne de recharge"
+  "parking_capacity_entry_spaces_with_recharge_point": "Avec borne de recharge",
+  "parking_stay_type": "Durée de stationnement",
+  "parking_stay_type_shortStay": "Courte durée",
+  "parking_stay_type_longTerm": "Longue durée",
+  "parking_stay_type_dropoff": "Dépose-minute",
+  "parking_stay_type_unlimited": "Illimitée"
 }
