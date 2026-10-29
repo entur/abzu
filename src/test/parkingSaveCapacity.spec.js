@@ -288,6 +288,32 @@ describe("mapParkingToVariables - a park-and-ride save sends every capacity row"
     expect(saved.parkingProperties).toBeUndefined();
   });
 
+  test("a parking with a total, no stored entry and one empty added row sends no parking properties", () => {
+    const saved = saveParkAndRide({
+      totalCapacity: 40,
+      parkingProperties: [],
+      capacityEntries: [entry({ parkingUserType: "allUsers", isNew: true })],
+    });
+
+    expect(saved).not.toHaveProperty("parkingProperties");
+  });
+
+  // Regression guard: passes with and without the change. The test named
+  // "removing every row sends an empty list" covers removal of stored entries.
+  test("a parking with no stored entry and one added row with a count sends that entry", () => {
+    const saved = saveParkAndRide({
+      totalCapacity: 40,
+      parkingProperties: [],
+      capacityEntries: [
+        entry({ parkingUserType: "allUsers", numberOfSpaces: 5, isNew: true }),
+      ],
+    });
+
+    expect(spacesOf(saved)).toEqual([
+      entry({ parkingUserType: "allUsers", numberOfSpaces: 5 }),
+    ]);
+  });
+
   test("keeps the other parking properties and their fields", () => {
     const saved = saveParkAndRide({
       capacityEntries: [
