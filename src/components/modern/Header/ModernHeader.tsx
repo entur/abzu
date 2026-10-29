@@ -23,6 +23,7 @@ import { UserActions } from "../../../actions";
 import AppRoutes from "../../../routes";
 import { useAuth } from "../../../auth/auth";
 import { useAppDispatch } from "../../../store/hooks";
+import { stripBasePath } from "../../../utils/stripBasePath";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
 import { useTheme as useAbzuTheme } from "../../../theme/ThemeProvider";
 import "../modern.css";
@@ -93,7 +94,8 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
     if (auth) {
       sessionStorage.setItem(
         "redirectAfterLogin",
-        window.location.pathname + window.location.search,
+        stripBasePath(window.location.pathname, import.meta.env.BASE_URL) +
+          window.location.search,
       );
       auth.login();
     }
