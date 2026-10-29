@@ -55,4 +55,16 @@ describe("ParkingCoveredField - covered select", () => {
       covered: "",
     });
   });
+
+  test("A5b: a closed covered select with an empty value shows Undefined", () => {
+    render(
+      <Provider store={fakeStore as never}>
+        <IntlProvider locale="en" messages={enMessages}>
+          <ParkingCoveredField covered="" parkingIndex={0} disabled={false} />
+        </IntlProvider>
+      </Provider>,
+    );
+
+    expect(screen.getByRole("combobox").textContent).toContain("Undefined");
+  });
 });

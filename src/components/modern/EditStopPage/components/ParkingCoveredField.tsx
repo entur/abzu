@@ -29,9 +29,11 @@ export const ParkingCoveredField: React.FC<ParkingCoveredFieldProps> = ({
 
   return (
     <FormControl fullWidth size="small" disabled={disabled}>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel shrink>{label}</InputLabel>
       <Select
         value={covered || ""}
+        displayEmpty
+        notched
         label={label}
         renderValue={(selected: string) =>
           selected ? (
