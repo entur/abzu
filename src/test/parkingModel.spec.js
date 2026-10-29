@@ -286,3 +286,57 @@ describe("parkingPaymentProcess model", () => {
     expect(variables.parkingPaymentProcess).toEqual(["payByPlate"]);
   });
 });
+
+describe("Parking model - covered", () => {
+  test("toClient carries covered", () => {
+    const client = new Parking(mockParking({ covered: "indoors" })).toClient();
+    expect(client.covered).toBe("indoors");
+  });
+
+  test("toClient leaves covered undefined when Tiamat holds none", () => {
+    const client = new Parking(mockParking()).toClient();
+    expect(client.covered).toBeUndefined();
+  });
+
+  test("a bicycle parking carries covered too", () => {
+    const client = new Parking(
+      mockParking({ parkingVehicleTypes: ["pedalCycle"], covered: "covered" }),
+    ).toClient();
+    expect(client.parkingType).toBe("bikeParking");
+    expect(client.covered).toBe("covered");
+  });
+});
+
+describe("mapParkingToVariables - covered", () => {
+  test("sends covered when the client holds a value", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ covered: "mixed" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.covered).toBe("mixed");
+  });
+
+  test("A5a: sends null when the client holds no value", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking()],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("covered", null);
+  });
+
+  test("A5a: sends null when the editor chose Undefined", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ covered: "" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("covered", null);
+  });
+
+  test("keeps a stored value outside the editor list", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ covered: "unknown" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.covered).toBe("unknown");
+  });
+});

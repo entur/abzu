@@ -405,6 +405,7 @@ const verboseParkingFragment = gql`
     rechargingAvailable
     secure
     lighting
+    covered
     parkingProperties {
       spaces {
         parkingUserType

@@ -235,6 +235,7 @@ exports[`Model: map format from server to expected client model > should map par
         "wheelchairAccess": "UNKNOWN",
       },
     },
+    "covered": null,
     "geometry": {
       "coordinates": [
         11.088595,

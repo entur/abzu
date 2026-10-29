@@ -895,6 +895,13 @@ helpers.changeParkingLighting = (original, payload) => {
   return copy;
 };
 
+helpers.changeParkingCovered = (original, payload) => {
+  const { index, covered } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].covered = covered;
+  return copy;
+};
+
 helpers.changeParkingPaymentProcess = (original, payload) => {
   const { index, parkingPaymentProcess } = payload;
   const copy = JSON.parse(JSON.stringify(original));
