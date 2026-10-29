@@ -17,6 +17,7 @@ import {
   AccessibilityLimitationType,
   defaultLimitations,
 } from "../models/AccessibilityLimitation";
+import { availabilityConditionToInput } from "../models/availabilityCondition";
 import PARKING_USER_TYPE from "../models/parkingUserType";
 import {
   netexifyBoardingPositions,
@@ -494,6 +495,18 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
     }
 
     parking.accessibilityAssessment = source.accessibilityAssessment;
+
+    // Tiamat replaces its whole list when the input carries one, and keeps the
+    // stored list when the input omits it. Send the list only after an edit,
+    // so a save never rewrites hours the editor did not touch.
+    if (
+      source.availabilityConditionsChanged &&
+      Array.isArray(source.availabilityConditions)
+    ) {
+      parking.availabilityConditions = source.availabilityConditions.map(
+        availabilityConditionToInput,
+      );
+    }
 
     helpers.removeTypeNameRecursively(parking);
 

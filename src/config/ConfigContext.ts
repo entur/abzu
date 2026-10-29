@@ -55,6 +55,25 @@ export interface Config {
    * and what the header's UI switch says.
    */
   dualUiConfig?: DualUiConfig;
+  /**
+   * Settings for the modern parking editor.
+   */
+  parkingConfig?: ParkingConfig;
+}
+
+export interface DayTypeOption {
+  /** The `dayTypeRef` value that Tiamat stores */
+  ref: string;
+  /** The label for each language code. A missing language falls back to `ref`. */
+  label: Record<string, string>;
+}
+
+export interface ParkingConfig {
+  /**
+   * The day types an editor can choose for opening hours.
+   * Without this list the editor shows the stored day type as read-only text.
+   */
+  dayTypes?: DayTypeOption[];
 }
 
 export type SwitchableUiMode = "legacy" | "modern";
