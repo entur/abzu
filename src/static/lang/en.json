@@ -374,6 +374,7 @@
   "parking_layout_undefined": "Undefined",
   "parking_layout_underground": "Underground",
   "parking_lighting": "Lighting",
+  "parking_lighting_undefined": "Undefined",
   "parking_number_of_spaces": "Number of spaces",
   "parking_number_of_spaces_for_registered_disabled_user_type": "Number of spaces for registered disabled",
   "parking_number_of_spaces_with_recharge_point": "Number of spaces with recharge point",

@@ -137,7 +137,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
                 defaultMessage: selected,
               })
             ) : (
-              <em>—</em>
+              <em>{formatMessage({ id: "parking_lighting_undefined" })}</em>
             )
           }
           onChange={(e) =>
@@ -149,6 +149,9 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
             )
           }
         >
+          <MenuItem value="">
+            <em>{formatMessage({ id: "parking_lighting_undefined" })}</em>
+          </MenuItem>
           {Object.values(LightingEnum).map((value) => (
             <MenuItem key={value} value={value}>
               {formatMessage({
