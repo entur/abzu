@@ -63,6 +63,7 @@ export interface CapacityEntry {
   parkingStayType: string | null;
   numberOfSpaces: number | string | null;
   numberOfSpacesWithRechargePoint: number | string | null;
+  isNew?: boolean;
 }
 
 export interface Parking {

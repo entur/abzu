@@ -230,6 +230,57 @@ describe("mapParkingToVariables - a park-and-ride save sends every capacity row"
     expect(saved.parkingProperties).toEqual([{ spaces: [] }]);
   });
 
+  test("an added row that holds no count is not sent", () => {
+    const stored = entry({ parkingUserType: "staff", numberOfSpaces: 7 });
+    const saved = saveParkAndRide({
+      capacityEntries: [
+        stored,
+        entry({ parkingUserType: "allUsers", isNew: true }),
+        entry({
+          parkingUserType: "allUsers",
+          numberOfSpaces: "",
+          numberOfSpacesWithRechargePoint: "",
+          isNew: true,
+        }),
+      ],
+    });
+
+    expect(spacesOf(saved)).toEqual([stored]);
+  });
+
+  // Regression guard: passes with and without the filter.
+  test("an added row that holds a count, including 0, is sent without the flag", () => {
+    const saved = saveParkAndRide({
+      capacityEntries: [
+        entry({ parkingUserType: "allUsers", numberOfSpaces: 0, isNew: true }),
+        entry({
+          parkingUserType: "staff",
+          numberOfSpacesWithRechargePoint: 3,
+          isNew: true,
+        }),
+      ],
+    });
+
+    expect(spacesOf(saved)).toEqual([
+      entry({ parkingUserType: "allUsers", numberOfSpaces: 0 }),
+      entry({ parkingUserType: "staff", numberOfSpacesWithRechargePoint: 3 }),
+    ]);
+    spacesOf(saved).forEach((space) =>
+      expect(space).not.toHaveProperty("isNew"),
+    );
+  });
+
+  // Regression guard: passes with and without the filter.
+  test("a stored row that holds no count is still sent", () => {
+    const stored = entry({
+      parkingVehicleType: "car",
+      parkingUserType: "registeredDisabled",
+    });
+    const saved = saveParkAndRide({ capacityEntries: [stored] });
+
+    expect(spacesOf(saved)).toEqual([stored]);
+  });
+
   test("a parking with no rows and no stored entries sends no parking properties", () => {
     // Without parking properties in the input, Tiamat keeps the stored total.
     const saved = saveParkAndRide({ capacityEntries: [], totalCapacity: 40 });
