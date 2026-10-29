@@ -61,4 +61,12 @@ describe("ParkAndRideFields - lighting select", () => {
       lighting: "",
     });
   });
+
+  test("A4: a closed layout select and a closed lighting select with an empty value show Undefined", () => {
+    renderFields("");
+
+    const [layoutSelect, lightingSelect] = screen.getAllByRole("combobox");
+    expect(layoutSelect.textContent).toContain("Undefined");
+    expect(lightingSelect.textContent).toContain("Undefined");
+  });
 });

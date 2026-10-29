@@ -68,9 +68,13 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
     <>
       {/* Layout */}
       <FormControl fullWidth size="small" disabled={fieldDisabled}>
-        <InputLabel>{formatMessage({ id: "parking_layout" })}</InputLabel>
+        <InputLabel shrink>
+          {formatMessage({ id: "parking_layout" })}
+        </InputLabel>
         <Select
           value={parking.parkingLayout || ""}
+          displayEmpty
+          notched
           label={formatMessage({ id: "parking_layout" })}
           renderValue={(selected: string) =>
             selected ? (
@@ -126,9 +130,13 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
       />
 
       <FormControl fullWidth size="small" disabled={fieldDisabled}>
-        <InputLabel>{formatMessage({ id: "parking_lighting" })}</InputLabel>
+        <InputLabel shrink>
+          {formatMessage({ id: "parking_lighting" })}
+        </InputLabel>
         <Select
           value={parking.lighting || ""}
+          displayEmpty
+          notched
           label={formatMessage({ id: "parking_lighting" })}
           renderValue={(selected: string) =>
             selected ? (
