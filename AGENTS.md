@@ -58,7 +58,6 @@ npm run fetch-schema
 - **GraphQL**: Apollo Client connecting to Tiamat backend
 - **Maps**: Leaflet and react-leaflet
 - **Authentication**: OIDC (oidc-client-ts) - provider agnostic
-- **Error Tracking**: Sentry
 - **Internationalization**: react-intl with 5 languages (en, nb, fi, fr, sv)
 - **Testing**: Vitest with Testing Library
 
@@ -78,7 +77,7 @@ Key configuration includes:
 
 Uses Redux Toolkit with traditional actions/reducers pattern (not fully migrated to RTK slices):
 
-- **Store**: `src/store/store.ts` - Configures store with redux-first-history and Sentry integration
+- **Store**: `src/store/store.ts` - Configures store with redux-first-history
 - **Reducers**: `src/reducers/` - Domain-specific reducers (stopPlace, user, map, zones, etc.)
 - **Actions**: `src/actions/` - Action creators organized by domain (StopPlaceActions, TiamatActions, UserActions)
 - **Router Integration**: Uses redux-first-history to sync routing with Redux state
