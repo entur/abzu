@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import { configureStore } from "@reduxjs/toolkit";
 import "@testing-library/jest-dom/vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { describe, expect, test, vi } from "vitest";
@@ -93,5 +93,25 @@ describe("ParkingPanel - the capacity fields follow the field set", () => {
 
     expect(screen.getAllByTestId("parking-capacity-entry")).toHaveLength(2);
     expect(screen.queryByLabelText("Total capacity")).toBeNull();
+  });
+});
+
+describe("ParkingPanel - step-free access", () => {
+  test("offers only the NeTEx Nordic limitation values, with no empty choice", () => {
+    renderPanel(carAndMotorcycleParkAndRide);
+
+    const stepFreeControl = screen
+      .getByText("Step free access", { selector: "label" })
+      .closest(".MuiFormControl-root") as HTMLElement;
+    fireEvent.mouseDown(within(stepFreeControl).getByRole("combobox"));
+    const options = within(screen.getByRole("listbox"))
+      .getAllByRole("option")
+      .map((option) => option.textContent);
+
+    expect(options).toEqual([
+      "Step free access",
+      "Accessible only by steps",
+      "Step access unknown",
+    ]);
   });
 });
