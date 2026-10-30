@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import clientHelpers from "../modelUtils/mapToClient";
 import helpers from "../modelUtils/mapToQueryVariables";
 import Parking from "../models/Parking";
 import PARKING_TYPE from "../models/parkingType";
@@ -361,6 +362,132 @@ describe("mapParkingToVariables - a park-and-ride save sends every capacity row"
     // 30 is the total the editor shows. The registeredDisabled entry holds 3 of
     // it, so allUsers holds the remaining 27 and Tiamat's sum stays 30.
     expect(findSpace(parking, "allUsers").numberOfSpaces).toBe(27);
+  });
+});
+
+describe("mapParkingToVariables - a save sends the stored ids", () => {
+  const storedProperties = () => [
+    {
+      id: "NSR:ParkingProperties:1",
+      spaces: [
+        {
+          id: "NSR:ParkingCapacity:10",
+          parkingUserType: "allUsers",
+          parkingVehicleType: "car",
+          numberOfSpaces: 20,
+        },
+        {
+          id: "NSR:ParkingCapacity:11",
+          parkingUserType: "registeredDisabled",
+          numberOfSpaces: 3,
+        },
+      ],
+    },
+    {
+      id: "NSR:ParkingProperties:2",
+      spaces: [
+        {
+          id: "NSR:ParkingCapacity:20",
+          parkingUserType: "staff",
+          numberOfSpaces: 4,
+        },
+      ],
+    },
+  ];
+
+  const loadedParking = (overrides = {}) =>
+    new Parking({
+      parkingType: PARKING_TYPE.PARK_AND_RIDE,
+      parkingVehicleTypes: ["car"],
+      totalCapacity: 27,
+      parkingProperties: storedProperties(),
+      ...overrides,
+    }).toClient();
+
+  const save = (client) =>
+    helpers.mapParkingToVariables([client], "NSR:StopPlace:1")[0];
+
+  test("U2: sends both properties ids and every space id, in order", () => {
+    const saved = save(loadedParking());
+
+    expect(saved.parkingProperties.map((group) => group.id)).toEqual([
+      "NSR:ParkingProperties:1",
+      "NSR:ParkingProperties:2",
+    ]);
+    expect(saved.parkingProperties[0].spaces.map((space) => space.id)).toEqual([
+      "NSR:ParkingCapacity:10",
+      "NSR:ParkingCapacity:11",
+    ]);
+    expect(saved.parkingProperties[1].spaces.map((space) => space.id)).toEqual([
+      "NSR:ParkingCapacity:20",
+    ]);
+  });
+
+  test("U3: sends an added row without an id key and keeps the stored ids", () => {
+    const client = loadedParking();
+    client.capacityEntries.push(
+      entry({ parkingUserType: "staff", numberOfSpaces: 2, isNew: true }),
+    );
+
+    const spaces = spacesOf(save(client));
+
+    expect(spaces.map((space) => space.id)).toEqual([
+      "NSR:ParkingCapacity:10",
+      "NSR:ParkingCapacity:11",
+      undefined,
+    ]);
+    expect(spaces[2]).not.toHaveProperty("id");
+  });
+
+  test("U4: a vehicle type change keeps the id of the row", () => {
+    const state = clientHelpers.changeParkingCapacityEntry(
+      { parking: [loadedParking()] },
+      {
+        index: 0,
+        entryIndex: 0,
+        field: "parkingVehicleType",
+        value: "motorcycle",
+      },
+    );
+
+    const spaces = spacesOf(save(state.parking[0]));
+
+    expect(spaces[0].id).toBe("NSR:ParkingCapacity:10");
+    expect(spaces[0].parkingVehicleType).toBe("motorcycle");
+  });
+
+  // Guard: mergeParkingSpaces copies the stored objects, so it passes before
+  // and after the change.
+  test("U5: a bicycle save sends every stored id", () => {
+    const saved = save({
+      parkingType: PARKING_TYPE.BIKE_PARKING,
+      hasFullFieldSet: false,
+      totalCapacity: 27,
+      parkingProperties: storedProperties(),
+    });
+
+    expect(saved.parkingProperties[0].id).toBe("NSR:ParkingProperties:1");
+    expect(saved.parkingProperties[0].spaces.map((space) => space.id)).toEqual([
+      "NSR:ParkingCapacity:10",
+      "NSR:ParkingCapacity:11",
+    ]);
+    expect(saved.parkingProperties[1].spaces[0].id).toBe(
+      "NSR:ParkingCapacity:20",
+    );
+  });
+
+  // Guard: passes before and after the change.
+  test("U6: a space without an id is sent without an id key", () => {
+    const saved = save(
+      loadedParking({
+        parkingProperties: [
+          { spaces: [{ parkingUserType: "allUsers", numberOfSpaces: 27 }] },
+        ],
+      }),
+    );
+
+    expect(saved.parkingProperties[0]).not.toHaveProperty("id");
+    expect(spacesOf(saved)[0]).not.toHaveProperty("id");
   });
 });
 
