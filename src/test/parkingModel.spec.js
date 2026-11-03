@@ -270,6 +270,53 @@ describe("mapParkingToVariables - paymentMethods", () => {
   });
 });
 
+describe("mapParkingToVariables - accessibility limitations", () => {
+  const limitations = (overrides = {}) => ({
+    wheelchairAccess: "TRUE",
+    stepFreeAccess: "FALSE",
+    escalatorFreeAccess: "UNKNOWN",
+    liftFreeAccess: "UNKNOWN",
+    audibleSignalsAvailable: "UNKNOWN",
+    visualSignsAvailable: "UNKNOWN",
+    ...overrides,
+  });
+
+  test("sends UNKNOWN for an empty step-free value and keeps the others", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [
+        mockParking({
+          accessibilityAssessment: {
+            limitations: limitations({ stepFreeAccess: "" }),
+          },
+        }),
+      ],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.accessibilityAssessment.limitations).toEqual(
+      limitations({ stepFreeAccess: "UNKNOWN" }),
+    );
+  });
+
+  test("leaves the parking state unchanged", () => {
+    const accessibilityAssessment = Object.freeze({
+      limitations: Object.freeze(limitations({ stepFreeAccess: "" })),
+    });
+    helpers.mapParkingToVariables(
+      [mockParking({ accessibilityAssessment })],
+      "NSR:StopPlace:1",
+    );
+    expect(accessibilityAssessment.limitations.stepFreeAccess).toBe("");
+  });
+
+  test("sends no assessment when the parking has none", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking()],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.accessibilityAssessment).toBeNull();
+  });
+});
+
 describe("parkingPaymentProcess model", () => {
   test("T6: offers the four NeTEx Nordic values and keeps a stored value outside them", () => {
     expect([...parkingPaymentProcesses].sort()).toEqual([

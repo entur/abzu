@@ -374,9 +374,6 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
               )
             }
           >
-            <MenuItem value="">
-              <em>—</em>
-            </MenuItem>
             {STEP_FREE_VALUES.map((v) => (
               <MenuItem key={v} value={v}>
                 {formatMessage({

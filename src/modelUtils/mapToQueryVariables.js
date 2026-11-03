@@ -493,7 +493,11 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.geometry = null;
     }
 
-    parking.accessibilityAssessment = source.accessibilityAssessment;
+    parking.accessibilityAssessment = source.accessibilityAssessment
+      ? formatAccessibilityAssessments(
+          JSON.parse(JSON.stringify(source.accessibilityAssessment)),
+        )
+      : source.accessibilityAssessment;
 
     helpers.removeTypeNameRecursively(parking);
 
