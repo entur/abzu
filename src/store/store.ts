@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { configureStore } from "@reduxjs/toolkit";
-import * as Sentry from "@sentry/react";
 import { createBrowserHistory } from "history";
 import { createReduxHistoryContext } from "redux-first-history";
 import loggerMiddleware from "redux-logger";
@@ -28,8 +27,6 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
     history: browserHistory,
   });
-
-const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 const getMiddleware = () => {
   const middleware = [routerMiddleware];
@@ -48,8 +45,6 @@ export const store = configureStore({
       immutableCheck: false,
       serializableCheck: false,
     }).concat(getMiddleware()),
-  enhancers: (getDefaultEnhancers) =>
-    getDefaultEnhancers().concat([sentryReduxEnhancer]),
 });
 
 export const history = createReduxHistory(store);
