@@ -639,6 +639,7 @@ Fragments.parking = {
       rechargingAvailable
       secure
       lighting
+      organisationRef
       parkingProperties {
         spaces {
           parkingUserType
