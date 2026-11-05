@@ -435,6 +435,9 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.secure = source.secure;
     }
 
+    // An empty value is sent as null so that Tiamat clears the stored value.
+    parking.covered = source.covered || null;
+
     const capacityEntries = source.capacityEntries || [];
     const storedSpaces = source.parkingProperties?.[0]?.spaces || [];
 
