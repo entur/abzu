@@ -417,6 +417,56 @@ const verboseParkingFragment = gql`
     accessibilityAssessment {
       ...AccessibilityAssessment
     }
+    placeEquipments {
+      id
+      generalSign {
+        id
+        signContentType
+        privateCode {
+          type
+          value
+        }
+        content {
+          value
+          lang
+        }
+      }
+      waitingRoomEquipment {
+        id
+        seats
+        heated
+        stepFree
+      }
+      sanitaryEquipment {
+        id
+        numberOfToilets
+        gender
+        sanitaryFacilityList
+      }
+      ticketingEquipment {
+        id
+        ticketOffice
+        ticketMachines
+        ticketCounter
+        numberOfMachines
+        audioInterfaceAvailable
+        tactileInterfaceAvailable
+        inductionLoops
+        lowCounterAccess
+        wheelchairSuitable
+      }
+      cycleStorageEquipment {
+        id
+        numberOfSpaces
+        cycleStorageType
+      }
+      shelterEquipment {
+        id
+        seats
+        stepFree
+        enclosed
+      }
+    }
   }
   ${accessibilityAssessmentFragment}
 `;
