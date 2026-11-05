@@ -372,6 +372,7 @@
   "parking_layout_undefined": "Määrittelemätön",
   "parking_layout_underground": "Maanalainen",
   "parking_lighting": "Valaistus",
+  "parking_lighting_undefined": "Määrittelemätön",
   "parking_number_of_spaces": "Paikkojen määrä",
   "parking_number_of_spaces_for_registered_disabled_user_type": "Paikkojen määrä rekisteröidyille liikuntarajoitteisille",
   "parking_number_of_spaces_with_recharge_point": "Latauspisteellisten paikkojen määrä",

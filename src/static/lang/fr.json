@@ -372,6 +372,7 @@
   "parking_layout_undefined": "Non défini",
   "parking_layout_underground": "Parking souterrain",
   "parking_lighting": "Éclairage",
+  "parking_lighting_undefined": "Non défini",
   "parking_number_of_spaces": "Nombre de places",
   "parking_number_of_spaces_for_registered_disabled_user_type": "Nombre de places réservées aux personnes handicapées",
   "parking_number_of_spaces_with_recharge_point": "Nombre de places avec borne de recharge",
