@@ -411,8 +411,12 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.id = source.id;
     }
 
-    if (source.parkingLayout) {
-      parking.parkingLayout = source.parkingLayout;
+    // An empty value is sent as null so that Tiamat clears the stored value.
+    // Only the full field set shows layout and lighting, so a reduced parking
+    // sends neither and keeps what Tiamat stores.
+    if (source.hasFullFieldSet) {
+      parking.parkingLayout = source.parkingLayout || null;
+      parking.lighting = source.lighting || null;
     }
 
     if (source.parkingPaymentProcess) {
@@ -429,10 +433,6 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
     if (source.secure !== undefined && source.secure !== null) {
       parking.secure = source.secure;
-    }
-
-    if (source.lighting) {
-      parking.lighting = source.lighting;
     }
 
     const capacityEntries = source.capacityEntries || [];
