@@ -406,7 +406,9 @@ const verboseParkingFragment = gql`
     secure
     lighting
     parkingProperties {
+      id
       spaces {
+        id
         parkingUserType
         parkingVehicleType
         parkingStayType
