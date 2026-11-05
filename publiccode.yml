@@ -27,6 +27,7 @@ intendedAudience:
     - transportation
   countries:
     - "NO"
+    - "FI"
 
 description:
   en:

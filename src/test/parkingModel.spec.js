@@ -270,6 +270,53 @@ describe("mapParkingToVariables - paymentMethods", () => {
   });
 });
 
+describe("mapParkingToVariables - accessibility limitations", () => {
+  const limitations = (overrides = {}) => ({
+    wheelchairAccess: "TRUE",
+    stepFreeAccess: "FALSE",
+    escalatorFreeAccess: "UNKNOWN",
+    liftFreeAccess: "UNKNOWN",
+    audibleSignalsAvailable: "UNKNOWN",
+    visualSignsAvailable: "UNKNOWN",
+    ...overrides,
+  });
+
+  test("sends UNKNOWN for an empty step-free value and keeps the others", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [
+        mockParking({
+          accessibilityAssessment: {
+            limitations: limitations({ stepFreeAccess: "" }),
+          },
+        }),
+      ],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.accessibilityAssessment.limitations).toEqual(
+      limitations({ stepFreeAccess: "UNKNOWN" }),
+    );
+  });
+
+  test("leaves the parking state unchanged", () => {
+    const accessibilityAssessment = Object.freeze({
+      limitations: Object.freeze(limitations({ stepFreeAccess: "" })),
+    });
+    helpers.mapParkingToVariables(
+      [mockParking({ accessibilityAssessment })],
+      "NSR:StopPlace:1",
+    );
+    expect(accessibilityAssessment.limitations.stepFreeAccess).toBe("");
+  });
+
+  test("sends no assessment when the parking has none", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking()],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.accessibilityAssessment).toBeNull();
+  });
+});
+
 describe("parkingPaymentProcess model", () => {
   test("T6: offers the four NeTEx Nordic values and keeps a stored value outside them", () => {
     expect([...parkingPaymentProcesses].sort()).toEqual([
@@ -284,6 +331,50 @@ describe("parkingPaymentProcess model", () => {
       "NSR:StopPlace:1",
     );
     expect(variables.parkingPaymentProcess).toEqual(["payByPlate"]);
+  });
+});
+
+describe("mapParkingToVariables - clearing layout and lighting", () => {
+  test("A1: a park-and-ride with empty layout and lighting sends null for both", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: true, parkingLayout: "", lighting: "" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("parkingLayout", null);
+    expect(variables).toHaveProperty("lighting", null);
+  });
+
+  test("A1: a missing layout and lighting also send null", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: true })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("parkingLayout", null);
+    expect(variables).toHaveProperty("lighting", null);
+  });
+
+  test("A2: a parking without the full field set sends neither key", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: false, parkingLayout: null })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).not.toHaveProperty("parkingLayout");
+    expect(variables).not.toHaveProperty("lighting");
+  });
+
+  test("A3: a park-and-ride with values sends the values", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [
+        mockParking({
+          hasFullFieldSet: true,
+          parkingLayout: "multistorey",
+          lighting: "wellLit",
+        }),
+      ],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.parkingLayout).toBe("multistorey");
+    expect(variables.lighting).toBe("wellLit");
   });
 });
 

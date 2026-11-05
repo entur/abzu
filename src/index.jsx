@@ -14,9 +14,6 @@
 
 import { ApolloProvider } from "@apollo/client/react";
 import { ComponentToggleProvider } from "@entur/react-component-toggle";
-import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
-import { useContext } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { AuthProvider } from "./auth/auth";
@@ -43,31 +40,14 @@ const AppRouter = () => {
 };
 
 const AuthenticatedApp = () => {
-  const config = useContext(ConfigContext);
-
-  if (process.env.NODE_ENV === "production") {
-    Sentry.init({
-      dsn: config.sentryDSN,
-      integrations: [new BrowserTracing()],
-
-      // We recommend adjusting this value in production, or using tracesSampler
-      // for finer control
-      tracesSampleRate: 1.0,
-      environment: config.tiamatEnv,
-      release: `abzu@${process.env.REACT_APP_VERSION}`,
-    });
-  }
-
   const client = getTiamatClient();
 
   return (
-    <Sentry.ErrorBoundary showDialog>
-      <Provider store={store}>
-        <ApolloProvider client={client}>
-          <AppRouter />
-        </ApolloProvider>
-      </Provider>
-    </Sentry.ErrorBoundary>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <AppRouter />
+      </ApolloProvider>
+    </Provider>
   );
 };
 
