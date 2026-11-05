@@ -651,6 +651,13 @@ Fragments.parking = {
       accessibilityAssessment {
         ...AccessibilityAssessment
       }
+      availabilityConditions {
+        dayTypeRef
+        isAvailable
+        startTime
+        endTime
+        dayOffset
+      }
     }
     ${Fragments.accessibilityAssessment.verbose}
   `,
