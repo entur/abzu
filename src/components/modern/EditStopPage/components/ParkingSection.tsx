@@ -16,7 +16,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import { Box, Chip, Collapse, Divider, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -25,12 +25,17 @@ import {
   DirtyBadge,
   useElementStatusEnabled,
 } from "../../Shared/ElementStatus";
+import { useScrollToReturnedRow } from "../hooks/useScrollToReturnedRow";
 import { ParkingSectionProps } from "../types";
 import { ParkingItem } from "./ParkingItem";
 
 export const ParkingSection: React.FC<ParkingSectionProps> = ({
   parking,
   canEdit,
+  expanded,
+  onExpandedChange,
+  scrollToIndex,
+  onScrolled,
   onDeleteParking,
   onNavigateToParking,
 }) => {
@@ -44,7 +49,7 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
   const originalParking = useAppSelector(
     (state) => (state.stopPlace as any).originalCurrent?.parking,
   );
-  const [expanded, setExpanded] = useState(false);
+  const returnedRowRef = useScrollToReturnedRow(scrollToIndex, onScrolled);
   // Ghost rows for staged deletions come from the original snapshot, so the list
   // shows what will happen on save rather than silently dropping the row.
   const entries = buildElementListEntries(parking, originalParking);
@@ -62,7 +67,7 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
       <Box
         onClick={() => {
           if (expanded) dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
-          setExpanded((v) => !v);
+          onExpandedChange(!expanded);
         }}
         sx={{
           display: "flex",
@@ -99,6 +104,11 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
             index={entry.index ?? position}
             canEdit={canEdit}
             status={entry.status}
+            rowRef={
+              entry.index !== null && entry.index === scrollToIndex
+                ? returnedRowRef
+                : undefined
+            }
             focused={
               entry.index !== null &&
               (focusedElement?.type === "parkAndRide" ||
