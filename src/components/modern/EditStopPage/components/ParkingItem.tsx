@@ -36,6 +36,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
   focused,
   onDelete,
   onNavigate,
+  rowRef,
   status = "unchanged",
 }) => {
   const { formatMessage } = useIntl();
@@ -50,6 +51,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
 
   return (
     <Box
+      ref={rowRef}
       sx={{
         display: "flex",
         alignItems: "center",
