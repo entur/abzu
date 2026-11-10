@@ -138,6 +138,42 @@ describe("Parking - models", () => {
     ]);
   });
 
+  test("U1: carries the stored id of each capacity entry", () => {
+    const clientParking = new Parking({
+      ...parkAndRideWithAllUserTypes,
+      parkingProperties: [
+        {
+          id: "NSR:ParkingProperties:1",
+          spaces: [
+            {
+              id: "NSR:ParkingCapacity:10",
+              parkingUserType: "allUsers",
+              numberOfSpaces: 100,
+            },
+            {
+              id: "NSR:ParkingCapacity:11",
+              parkingUserType: "registeredDisabled",
+              numberOfSpaces: 6,
+            },
+          ],
+        },
+      ],
+    }).toClient();
+
+    expect(clientParking.capacityEntries.map((item) => item.id)).toEqual([
+      "NSR:ParkingCapacity:10",
+      "NSR:ParkingCapacity:11",
+    ]);
+  });
+
+  test("U6: a space without an id gives an entry without an id key", () => {
+    const clientParking = new Parking(parkAndRideWithAllUserTypes).toClient();
+
+    clientParking.capacityEntries.forEach((item) =>
+      expect(item).not.toHaveProperty("id"),
+    );
+  });
+
   test("keeps a null count as null", () => {
     const clientParking = new Parking(
       parkAndRideWithOnlyAllUsersSpaces,

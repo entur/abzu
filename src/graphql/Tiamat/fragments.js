@@ -640,7 +640,9 @@ Fragments.parking = {
       secure
       lighting
       parkingProperties {
+        id
         spaces {
+          id
           parkingUserType
           parkingVehicleType
           parkingStayType

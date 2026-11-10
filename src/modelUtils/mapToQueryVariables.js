@@ -376,6 +376,8 @@ helpers.capacityEntriesToProperties = (capacityEntries, existingProperties) => {
     ? existingProperties
     : [{}];
   const spaces = helpers.keptCapacityEntries(capacityEntries).map((entry) => ({
+    // A row without a stored id is new, so it is sent without an id key.
+    ...(entry.id ? { id: entry.id } : {}),
     parkingVehicleType: entry.parkingVehicleType ?? null,
     parkingUserType: entry.parkingUserType ?? null,
     parkingStayType: entry.parkingStayType ?? null,
