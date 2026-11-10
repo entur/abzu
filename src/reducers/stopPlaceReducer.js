@@ -835,6 +835,33 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.ADDED_PARKING_CYCLE_STORAGE:
+      return Object.assign({}, state, {
+        current: formatHelpers.addParkingCycleStorage(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_PARKING_CYCLE_STORAGE:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingCycleStorage(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.REMOVED_PARKING_CYCLE_STORAGE:
+      return Object.assign({}, state, {
+        current: formatHelpers.removeParkingCycleStorage(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.CLEARED_PARKING_RECHARGE_POINT_COUNTS:
       return Object.assign({}, state, {
         current: formatHelpers.clearParkingRechargePointCounts(

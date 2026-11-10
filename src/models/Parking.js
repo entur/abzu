@@ -108,6 +108,8 @@ class Parking {
       validBetween: parking.validBetween,
       accessibilityAssessment: parking.accessibilityAssessment,
       parkingProperties: parking.parkingProperties,
+      placeEquipments: parking.placeEquipments ?? null,
+      placeEquipmentsChanged: false,
     };
     let coordinates = getIn(parking, ["geometry", "coordinates"], null);
 
