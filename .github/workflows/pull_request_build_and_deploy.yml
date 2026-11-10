@@ -26,7 +26,7 @@ jobs:
         name: List the state of node modules
         continue-on-error: true
         run: npm list
-      - run: npm ci --legacy-peer-deps
+      - run: npm ci
       - run: npm run check
       - run: npm run test -- run --coverage --coverage.reporter=lcov --reporter=vitest-sonar-reporter --outputFile.vitest-sonar-reporter=test-report.xml --reporter=default
       - name: SonarQube Scan
