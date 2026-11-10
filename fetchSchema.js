@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-const { request, gql } = require('graphql-request');
 const config = require('./public/bootstrap.json');
 
-const introspectionQuery = gql`
+const introspectionQuery = `
 {
   __schema {
     types {
@@ -17,6 +16,22 @@ const introspectionQuery = gql`
   }
 }
 `;
+
+const request = async (url, query) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query }),
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} ${response.statusText}`);
+  }
+  const { data, errors } = await response.json();
+  if (errors) {
+    throw new Error(errors.map((error) => error.message).join('; '));
+  }
+  return data;
+};
 
 request(config.tiamatBaseUrl, introspectionQuery).then(response => {
   fs.writeFileSync(
