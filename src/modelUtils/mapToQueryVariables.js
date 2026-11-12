@@ -377,6 +377,8 @@ helpers.capacityEntriesToProperties = (capacityEntries, existingProperties) => {
     ? existingProperties
     : [{}];
   const spaces = helpers.keptCapacityEntries(capacityEntries).map((entry) => ({
+    // A row without a stored id is new, so it is sent without an id key.
+    ...(entry.id ? { id: entry.id } : {}),
     parkingVehicleType: entry.parkingVehicleType ?? null,
     parkingUserType: entry.parkingUserType ?? null,
     parkingStayType: entry.parkingStayType ?? null,
@@ -412,8 +414,12 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.id = source.id;
     }
 
-    if (source.parkingLayout) {
-      parking.parkingLayout = source.parkingLayout;
+    // An empty value is sent as null so that Tiamat clears the stored value.
+    // Only the full field set shows layout and lighting, so a reduced parking
+    // sends neither and keeps what Tiamat stores.
+    if (source.hasFullFieldSet) {
+      parking.parkingLayout = source.parkingLayout || null;
+      parking.lighting = source.lighting || null;
     }
 
     if (source.parkingPaymentProcess) {
@@ -432,9 +438,8 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.secure = source.secure;
     }
 
-    if (source.lighting) {
-      parking.lighting = source.lighting;
-    }
+    // An empty value is sent as null so that Tiamat clears the stored value.
+    parking.covered = source.covered || null;
 
     const capacityEntries = source.capacityEntries || [];
     const storedSpaces = source.parkingProperties?.[0]?.spaces || [];
@@ -494,7 +499,11 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.geometry = null;
     }
 
-    parking.accessibilityAssessment = source.accessibilityAssessment;
+    parking.accessibilityAssessment = source.accessibilityAssessment
+      ? formatAccessibilityAssessments(
+          JSON.parse(JSON.stringify(source.accessibilityAssessment)),
+        )
+      : source.accessibilityAssessment;
 
     // Tiamat replaces its whole list when the input carries one, and keeps the
     // stored list when the input omits it. Send the list only after an edit,

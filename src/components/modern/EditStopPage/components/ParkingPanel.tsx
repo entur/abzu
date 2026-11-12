@@ -34,6 +34,7 @@ import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
+import { ParkingCoveredField } from "./ParkingCoveredField";
 import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
@@ -179,6 +180,13 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             fullWidth
           />
         )}
+
+        {/* Covered — common to every parking variant */}
+        <ParkingCoveredField
+          covered={parking.covered}
+          parkingIndex={parkingIndex}
+          disabled={fieldDisabled}
+        />
 
         {hasFullFieldSet ? (
           <ParkAndRideFields

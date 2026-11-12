@@ -30,6 +30,9 @@ class Parking {
     const spaces = this.parking.parkingProperties?.[0]?.spaces || [];
 
     return spaces.map((space) => ({
+      // The id is the identity Tiamat keeps when a save sends it back. A space
+      // without an id gets no key, so a save does not send id: null.
+      ...(space.id ? { id: space.id } : {}),
       parkingVehicleType: space.parkingVehicleType ?? null,
       parkingUserType: space.parkingUserType ?? null,
       parkingStayType: space.parkingStayType ?? null,
@@ -100,6 +103,7 @@ class Parking {
       parkingLayout: this.hasFullFieldSet ? this.parking.parkingLayout : null,
       secure: parking.secure,
       lighting: parking.lighting,
+      covered: parking.covered,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),

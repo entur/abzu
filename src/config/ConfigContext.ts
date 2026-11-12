@@ -5,7 +5,6 @@ import { FeatureFlags } from "./FeatureFlags";
 export interface Config {
   tiamatBaseUrl?: string;
   baatTokenProxyEndpoint?: string;
-  sentryDSN?: string;
   tiamatEnv?: string;
   preferredNameNamespace?: string;
   claimsNamespace?: string;

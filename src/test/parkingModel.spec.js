@@ -138,6 +138,42 @@ describe("Parking - models", () => {
     ]);
   });
 
+  test("U1: carries the stored id of each capacity entry", () => {
+    const clientParking = new Parking({
+      ...parkAndRideWithAllUserTypes,
+      parkingProperties: [
+        {
+          id: "NSR:ParkingProperties:1",
+          spaces: [
+            {
+              id: "NSR:ParkingCapacity:10",
+              parkingUserType: "allUsers",
+              numberOfSpaces: 100,
+            },
+            {
+              id: "NSR:ParkingCapacity:11",
+              parkingUserType: "registeredDisabled",
+              numberOfSpaces: 6,
+            },
+          ],
+        },
+      ],
+    }).toClient();
+
+    expect(clientParking.capacityEntries.map((item) => item.id)).toEqual([
+      "NSR:ParkingCapacity:10",
+      "NSR:ParkingCapacity:11",
+    ]);
+  });
+
+  test("U6: a space without an id gives an entry without an id key", () => {
+    const clientParking = new Parking(parkAndRideWithAllUserTypes).toClient();
+
+    clientParking.capacityEntries.forEach((item) =>
+      expect(item).not.toHaveProperty("id"),
+    );
+  });
+
   test("keeps a null count as null", () => {
     const clientParking = new Parking(
       parkAndRideWithOnlyAllUsersSpaces,
@@ -270,6 +306,53 @@ describe("mapParkingToVariables - paymentMethods", () => {
   });
 });
 
+describe("mapParkingToVariables - accessibility limitations", () => {
+  const limitations = (overrides = {}) => ({
+    wheelchairAccess: "TRUE",
+    stepFreeAccess: "FALSE",
+    escalatorFreeAccess: "UNKNOWN",
+    liftFreeAccess: "UNKNOWN",
+    audibleSignalsAvailable: "UNKNOWN",
+    visualSignsAvailable: "UNKNOWN",
+    ...overrides,
+  });
+
+  test("sends UNKNOWN for an empty step-free value and keeps the others", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [
+        mockParking({
+          accessibilityAssessment: {
+            limitations: limitations({ stepFreeAccess: "" }),
+          },
+        }),
+      ],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.accessibilityAssessment.limitations).toEqual(
+      limitations({ stepFreeAccess: "UNKNOWN" }),
+    );
+  });
+
+  test("leaves the parking state unchanged", () => {
+    const accessibilityAssessment = Object.freeze({
+      limitations: Object.freeze(limitations({ stepFreeAccess: "" })),
+    });
+    helpers.mapParkingToVariables(
+      [mockParking({ accessibilityAssessment })],
+      "NSR:StopPlace:1",
+    );
+    expect(accessibilityAssessment.limitations.stepFreeAccess).toBe("");
+  });
+
+  test("sends no assessment when the parking has none", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking()],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.accessibilityAssessment).toBeNull();
+  });
+});
+
 describe("parkingPaymentProcess model", () => {
   test("T6: offers the four NeTEx Nordic values and keeps a stored value outside them", () => {
     expect([...parkingPaymentProcesses].sort()).toEqual([
@@ -284,5 +367,103 @@ describe("parkingPaymentProcess model", () => {
       "NSR:StopPlace:1",
     );
     expect(variables.parkingPaymentProcess).toEqual(["payByPlate"]);
+  });
+});
+
+describe("mapParkingToVariables - clearing layout and lighting", () => {
+  test("A1: a park-and-ride with empty layout and lighting sends null for both", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: true, parkingLayout: "", lighting: "" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("parkingLayout", null);
+    expect(variables).toHaveProperty("lighting", null);
+  });
+
+  test("A1: a missing layout and lighting also send null", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: true })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("parkingLayout", null);
+    expect(variables).toHaveProperty("lighting", null);
+  });
+
+  test("A2: a parking without the full field set sends neither key", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ hasFullFieldSet: false, parkingLayout: null })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).not.toHaveProperty("parkingLayout");
+    expect(variables).not.toHaveProperty("lighting");
+  });
+
+  test("A3: a park-and-ride with values sends the values", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [
+        mockParking({
+          hasFullFieldSet: true,
+          parkingLayout: "multistorey",
+          lighting: "wellLit",
+        }),
+      ],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.parkingLayout).toBe("multistorey");
+    expect(variables.lighting).toBe("wellLit");
+  });
+});
+
+describe("Parking model - covered", () => {
+  test("toClient carries covered", () => {
+    const client = new Parking(mockParking({ covered: "indoors" })).toClient();
+    expect(client.covered).toBe("indoors");
+  });
+
+  test("toClient leaves covered undefined when Tiamat holds none", () => {
+    const client = new Parking(mockParking()).toClient();
+    expect(client.covered).toBeUndefined();
+  });
+
+  test("a bicycle parking carries covered too", () => {
+    const client = new Parking(
+      mockParking({ parkingVehicleTypes: ["pedalCycle"], covered: "covered" }),
+    ).toClient();
+    expect(client.parkingType).toBe("bikeParking");
+    expect(client.covered).toBe("covered");
+  });
+});
+
+describe("mapParkingToVariables - covered", () => {
+  test("sends covered when the client holds a value", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ covered: "mixed" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.covered).toBe("mixed");
+  });
+
+  test("A5a: sends null when the client holds no value", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking()],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("covered", null);
+  });
+
+  test("A5a: sends null when the editor chose Undefined", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ covered: "" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables).toHaveProperty("covered", null);
+  });
+
+  test("keeps a stored value outside the editor list", () => {
+    const [variables] = helpers.mapParkingToVariables(
+      [mockParking({ covered: "unknown" })],
+      "NSR:StopPlace:1",
+    );
+    expect(variables.covered).toBe("unknown");
   });
 });
