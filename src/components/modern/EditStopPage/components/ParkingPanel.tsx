@@ -35,6 +35,7 @@ import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
 import { ParkingCoveredField } from "./ParkingCoveredField";
+import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
@@ -215,6 +216,12 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             />
           </Box>
         )}
+
+        <OpeningHoursFields
+          parking={parking}
+          parkingIndex={parkingIndex}
+          fieldDisabled={fieldDisabled}
+        />
       </Box>
 
       {/* Footer, only with something in it: an empty one left a blank band

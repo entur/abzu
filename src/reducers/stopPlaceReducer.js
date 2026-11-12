@@ -871,6 +871,33 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.ADDED_PARKING_AVAILABILITY_CONDITION:
+      return Object.assign({}, state, {
+        current: formatHelpers.addParkingAvailabilityCondition(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_PARKING_AVAILABILITY_CONDITION:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingAvailabilityCondition(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.REMOVED_PARKING_AVAILABILITY_CONDITION:
+      return Object.assign({}, state, {
+        current: formatHelpers.removeParkingAvailabilityCondition(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.OPENED_MERGE_STOP_DIALOG:
       return Object.assign({}, state, {
         mergeStopDialog: {

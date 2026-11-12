@@ -16,6 +16,7 @@ import moment from "moment";
 import * as types from "../actions/Types";
 import ChildOfParentStopPlace from "../models/ChildOfParentStopPlace";
 import { Entities } from "../models/Entities";
+import { newAvailabilityConditionRow } from "../models/availabilityCondition";
 import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
 import ParentStopPlace from "../models/ParentStopPlace";
 import Parking from "../models/Parking";
@@ -1014,6 +1015,39 @@ helpers.changeParkingTotalCapacity = (original, payload) => {
   const { index, totalCapacity } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].totalCapacity = Number(totalCapacity);
+  return copy;
+};
+
+helpers.addParkingAvailabilityCondition = (original, payload) => {
+  const { index } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].availabilityConditions = [
+    ...(copy.parking[index].availabilityConditions ?? []),
+    newAvailabilityConditionRow(),
+  ];
+  copy.parking[index].availabilityConditionsChanged = true;
+  return copy;
+};
+
+helpers.changeParkingAvailabilityCondition = (original, payload) => {
+  const { index, conditionIndex, changes } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].availabilityConditions = copy.parking[
+    index
+  ].availabilityConditions.map((condition, position) =>
+    position === conditionIndex ? { ...condition, ...changes } : condition,
+  );
+  copy.parking[index].availabilityConditionsChanged = true;
+  return copy;
+};
+
+helpers.removeParkingAvailabilityCondition = (original, payload) => {
+  const { index, conditionIndex } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].availabilityConditions = copy.parking[
+    index
+  ].availabilityConditions.filter((_, position) => position !== conditionIndex);
+  copy.parking[index].availabilityConditionsChanged = true;
   return copy;
 };
 

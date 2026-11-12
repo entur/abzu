@@ -420,6 +420,13 @@ const verboseParkingFragment = gql`
     accessibilityAssessment {
       ...AccessibilityAssessment
     }
+    availabilityConditions {
+      dayTypeRef
+      isAvailable
+      startTime
+      endTime
+      dayOffset
+    }
   }
   ${accessibilityAssessmentFragment}
 `;
