@@ -15,6 +15,8 @@ limitations under the Licence. */
 import { useCallback, useEffect, useRef } from "react";
 import AppRoutes from "../../../../routes";
 import { useAppSelector } from "../../../../store/hooks";
+import { stripBasePath } from "../../../../utils/stripBasePath";
+import { withBasePath } from "../../../../utils/withBasePath";
 
 const REPORTS_PATHNAME = `/${AppRoutes.REPORTS}`;
 const MAP_OVERVIEW_LOCATION = "/";
@@ -38,10 +40,15 @@ export const useLastMapLocation = (): (() => string) => {
   );
   const lastMapLocationRef = useRef(MAP_OVERVIEW_LOCATION);
 
+  // Stored without the base path, so the comparison is the same under any base.
   useEffect(() => {
-    if (pathname === REPORTS_PATHNAME) return;
-    lastMapLocationRef.current = pathname + search;
+    const relativePath = stripBasePath(pathname, import.meta.env.BASE_URL);
+    if (relativePath === REPORTS_PATHNAME) return;
+    lastMapLocationRef.current = relativePath + search;
   }, [pathname, search]);
 
-  return useCallback(() => lastMapLocationRef.current, []);
+  return useCallback(
+    () => withBasePath(lastMapLocationRef.current, import.meta.env.BASE_URL),
+    [],
+  );
 };
