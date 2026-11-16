@@ -96,6 +96,17 @@ describe("ParkingPanel - the capacity fields follow the field set", () => {
   });
 });
 
+describe("ParkingPanel - operator reference", () => {
+  test("limits the input to the 255 characters Tiamat stores", () => {
+    renderPanel(carAndMotorcycleParkAndRide);
+
+    expect(screen.getByLabelText("Operator reference")).toHaveAttribute(
+      "maxlength",
+      "255",
+    );
+  });
+});
+
 describe("ParkingPanel - step-free access", () => {
   test("offers only the NeTEx Nordic limitation values, with no empty choice", () => {
     renderPanel(carAndMotorcycleParkAndRide);

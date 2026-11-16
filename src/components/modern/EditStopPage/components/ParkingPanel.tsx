@@ -39,6 +39,7 @@ import { ParkAndRideFields } from "./ParkAndRideFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
+const ORGANISATION_REF_MAX_LENGTH = 255;
 
 /**
  * Full parking editor panel.
@@ -185,6 +186,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             )
           }
           disabled={fieldDisabled}
+          slotProps={{ htmlInput: { maxLength: ORGANISATION_REF_MAX_LENGTH } }}
           size="small"
           fullWidth
         />
