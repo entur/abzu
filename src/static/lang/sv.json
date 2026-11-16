@@ -312,6 +312,8 @@
   "name_is_required": "Namn är obligatoriskt",
   "name_type": "Namntyp",
   "navigation": "Navigation",
+  "navigation_map": "Karta",
+  "navigation_opens_in_new_tab": "{label} (öppnas i en ny flik)",
   "new__multi_stop": "Ny multimodal hållplats",
   "new_element_help_text": "Du kan lägga till nya element i kartan genom att dra dem in till kartan.",
   "new_elements": "Nya element",

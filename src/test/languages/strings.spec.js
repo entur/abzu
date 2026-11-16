@@ -13,7 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import en_lang from "../../static/lang/en.json";
+import fi_lang from "../../static/lang/fi.json";
+import fr_lang from "../../static/lang/fr.json";
 import nb_lang from "../../static/lang/nb.json";
+import sv_lang from "../../static/lang/sv.json";
 
 describe("language support", () => {
   test("should support translations for all strings in all languages", () => {
@@ -42,5 +45,19 @@ describe("language support", () => {
     }
 
     expect(JSON.stringify(norwegianKeys)).toEqual(JSON.stringify(englishKeys));
+  });
+
+  const NAVIGATION_KEYS = ["navigation_map", "navigation_opens_in_new_tab"];
+
+  test.each([
+    ["en", en_lang],
+    ["nb", nb_lang],
+    ["fi", fi_lang],
+    ["fr", fr_lang],
+    ["sv", sv_lang],
+  ])("%s defines the navigation keys", (_language, translations) => {
+    const missing = NAVIGATION_KEYS.filter((key) => !(key in translations));
+
+    expect(missing).toEqual([]);
   });
 });

@@ -312,6 +312,8 @@
   "name_is_required": "Le nom est requis",
   "name_type": "Type de nom",
   "navigation": "Navigation",
+  "navigation_map": "Carte",
+  "navigation_opens_in_new_tab": "{label} (s'ouvre dans un nouvel onglet)",
   "new__multi_stop": "Nouveau point d'arrêt multimodal",
   "new_element_help_text": "Vous pouvez ajouter de nouveaux éléments en les faisant glisser sur la carte.",
   "new_elements": "Nouveaux éléments",

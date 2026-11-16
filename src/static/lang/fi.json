@@ -312,6 +312,8 @@
   "name_is_required": "Nimi on pakollinen",
   "name_type": "Nimityyppi",
   "navigation": "Navigointi",
+  "navigation_map": "Kartta",
+  "navigation_opens_in_new_tab": "{label} (avautuu uudessa välilehdessä)",
   "new__multi_stop": "Uusi multimodaalipysäkki",
   "new_element_help_text": "Voit lisätä uusia elementtejä kartalle vetämällä haluamasi elementin kartalle.",
   "new_elements": "Uudet elementit",
