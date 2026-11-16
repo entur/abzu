@@ -24,6 +24,7 @@ import AppRoutes from "../../../routes";
 import { useAuth } from "../../../auth/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { stripBasePath } from "../../../utils/stripBasePath";
+import { resolveThemeAssetUrl } from "../../../theme/assets";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
 import { useTheme as useAbzuTheme } from "../../../theme/ThemeProvider";
 import "../modern.css";
@@ -108,7 +109,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   };
 
   const title = formatMessage({ id: "_title" });
-  const logo = themeConfig?.assets?.logo || "/logo.png";
+  const logo = resolveThemeAssetUrl(themeConfig?.assets?.logo || "/logo.png");
   const logoHeight = themeConfig?.assets?.logoHeight;
 
   return (

@@ -376,6 +376,8 @@ helpers.capacityEntriesToProperties = (capacityEntries, existingProperties) => {
     ? existingProperties
     : [{}];
   const spaces = helpers.keptCapacityEntries(capacityEntries).map((entry) => ({
+    // A row without a stored id is new, so it is sent without an id key.
+    ...(entry.id ? { id: entry.id } : {}),
     parkingVehicleType: entry.parkingVehicleType ?? null,
     parkingUserType: entry.parkingUserType ?? null,
     parkingStayType: entry.parkingStayType ?? null,
@@ -434,6 +436,9 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
     if (source.secure !== undefined && source.secure !== null) {
       parking.secure = source.secure;
     }
+
+    // An empty value is sent as null so that Tiamat clears the stored value.
+    parking.covered = source.covered || null;
 
     // Tiamat stores an empty string as a reference, so a blank value is not
     // sent as it is.

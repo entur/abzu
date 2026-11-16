@@ -472,6 +472,15 @@ StopPlaceActions.changeParkingLighting = (index, lighting) => (dispatch) => {
   );
 };
 
+StopPlaceActions.changeParkingCovered = (index, covered) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_PARKING_COVERED, {
+      index,
+      covered,
+    }),
+  );
+};
+
 StopPlaceActions.changeParkingOrganisationRef =
   (index, organisationRef) => (dispatch) => {
     dispatch(

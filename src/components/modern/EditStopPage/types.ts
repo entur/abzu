@@ -58,6 +58,7 @@ export interface Quay {
 }
 
 export interface CapacityEntry {
+  id?: string;
   parkingVehicleType: string | null;
   parkingUserType: string | null;
   parkingStayType: string | null;
@@ -78,6 +79,7 @@ export interface Parking {
   rechargingAvailable?: boolean | null;
   secure?: boolean | null;
   lighting?: string | null;
+  covered?: string | null;
   organisationRef?: string | null;
   totalCapacity?: number | string | null;
   parkingVehicleTypes?: string[];

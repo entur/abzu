@@ -405,9 +405,12 @@ const verboseParkingFragment = gql`
     rechargingAvailable
     secure
     lighting
+    covered
     organisationRef
     parkingProperties {
+      id
       spaces {
+        id
         parkingUserType
         parkingVehicleType
         parkingStayType
