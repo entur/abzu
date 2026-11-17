@@ -19,9 +19,11 @@ import { Marker } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
 import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
+import { useStagedChildMarkers } from "../hooks/useStagedChildMarkers";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { NeighbourStopPopup } from "./NeighbourStopPopup";
 import type { NeighbourStop } from "./types";
+import { isHiddenAsExpired } from "./utils/isHiddenAsExpired";
 
 const NEIGHBOUR_SIZE = 36;
 
@@ -133,9 +135,13 @@ export const NeighbourMarkers = () => {
   // Group-aware (F-88): in the group view the previous stop is a neighbour.
   const current = useMapCurrentStop();
   const currentId = current?.id;
-  const currentChildren = current?.isParent
-    ? (current.children ?? []).map((child) => child.id)
-    : [];
+  // Pending detaches are drawn by the stop's own marker (F-92); the map
+  // query's copy of them is stale.
+  const { detachedChildren } = useStagedChildMarkers();
+  const currentChildren = [
+    ...(current?.isParent ? (current.children ?? []) : []),
+    ...detachedChildren,
+  ].map((child) => child.id);
   const showExpiredStops = useAppSelector(
     (state) => (state.stopPlace as any).showExpiredStops as boolean,
   );
@@ -151,8 +157,7 @@ export const NeighbourMarkers = () => {
   const visibleStops = neighbourStops.filter((stop) => {
     if (stop.id === currentId || currentChildren.includes(stop.id))
       return false;
-    if (!showExpiredStops && (stop.hasExpired || stop.permanentlyTerminated))
-      return false;
+    if (isHiddenAsExpired(stop, showExpiredStops)) return false;
     if (isMergingStop && stop.id !== mergeSourceId) return false;
     return true;
   });

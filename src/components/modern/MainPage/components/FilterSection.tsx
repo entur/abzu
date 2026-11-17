@@ -17,9 +17,6 @@ import {
   Autocomplete,
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
   IconButton,
   Paper,
   TextField,
@@ -32,19 +29,21 @@ import { ModalityFilter } from "../../Shared";
 import { modernCard } from "../../styles";
 import { FilterSectionProps } from "../types";
 
+// The header search panel sits at zIndex.modal + 5; the topography
+// suggestions must open above it (F-115), like the search results do.
+const SUGGESTIONS_Z_INDEX_OFFSET = 10;
+
 export const FilterSection: React.FC<FilterSectionProps> = ({
   showMoreFilterOptions,
   stopTypeFilter,
   topographicalPlacesDataSource,
   topographicPlaceFilterValue,
   topoiChips,
-  showFutureAndExpired,
   onToggleFilter,
   onApplyModalityFilters,
   onTopographicalPlaceInput,
   onAddChip,
   onDeleteChip,
-  onToggleShowFutureAndExpired,
 }) => {
   const theme = useTheme();
   const { formatMessage, locale } = useIntl();
@@ -107,6 +106,13 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             inputValue={topographicPlaceFilterValue}
             onChange={(event, value) => onAddChip(event, value as any)}
             noOptionsText={formatMessage({ id: "no_results_found" })}
+            slotProps={{
+              popper: {
+                sx: {
+                  zIndex: theme.zIndex.modal + SUGGESTIONS_Z_INDEX_OFFSET,
+                },
+              },
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -126,26 +132,6 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
               </li>
             )}
           />
-
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={showFutureAndExpired}
-                  onChange={(_e, value) => onToggleShowFutureAndExpired(value)}
-                  size="small"
-                />
-              }
-              label={formatMessage({
-                id: "show_future_expired_and_terminated",
-              })}
-              sx={{
-                "& .MuiFormControlLabel-label": {
-                  fontSize: "0.8125rem",
-                },
-              }}
-            />
-          </FormGroup>
 
           <TopographicalFilter
             topoiChips={topoiChips}

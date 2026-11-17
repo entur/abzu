@@ -40,7 +40,6 @@ interface SearchDropdownContentProps {
   topographicalPlacesDataSource: any[];
   topographicPlaceFilterValue: string;
   topoiChips: any[];
-  showFutureAndExpired: boolean;
   onToggleFilter: (flag: boolean) => void;
   onApplyModalityFilters: (filters: string[]) => void;
   onTopographicalPlaceInput: (
@@ -50,7 +49,6 @@ interface SearchDropdownContentProps {
   ) => void;
   onAddChip: (event: unknown, chip: any) => void;
   onDeleteChip: (chipId: string) => void;
-  onToggleShowFutureAndExpired: (value: boolean) => void;
 }
 
 /**
@@ -77,13 +75,11 @@ export const SearchDropdownContent: React.FC<SearchDropdownContentProps> = ({
   topographicalPlacesDataSource,
   topographicPlaceFilterValue,
   topoiChips,
-  showFutureAndExpired,
   onToggleFilter,
   onApplyModalityFilters,
   onTopographicalPlaceInput,
   onAddChip,
   onDeleteChip,
-  onToggleShowFutureAndExpired,
 }) => (
   <Box sx={headerSearchContentContainer}>
     {/* Only show SearchInput in dropdown for mobile (desktop has it above the dropdown) */}
@@ -117,13 +113,11 @@ export const SearchDropdownContent: React.FC<SearchDropdownContentProps> = ({
         topographicalPlacesDataSource={topographicalPlacesDataSource}
         topographicPlaceFilterValue={topographicPlaceFilterValue}
         topoiChips={topoiChips}
-        showFutureAndExpired={showFutureAndExpired}
         onToggleFilter={onToggleFilter}
         onApplyModalityFilters={onApplyModalityFilters}
         onTopographicalPlaceInput={onTopographicalPlaceInput}
         onAddChip={onAddChip}
         onDeleteChip={onDeleteChip}
-        onToggleShowFutureAndExpired={onToggleShowFutureAndExpired}
       />
     )}
   </Box>

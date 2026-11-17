@@ -27,6 +27,7 @@ import CarParkingIcon from "../static/icons/ParkingIcon";
 import StairsIcon from "../static/icons/accessibility/Stairs";
 import BikeParkingIcon from "../static/icons/facilities/BikeParking";
 import { getIn, getInTransform } from "../utils/";
+import { AccessibilityLimitationType } from "./AccessibilityLimitation";
 import { accessibilityAssessmentColors } from "./accessibilityAssessments";
 
 const getParkingElements = (parking = [], formatMessage) => {
@@ -166,7 +167,7 @@ export const ColumnTransformerStopPlaceJsx = {
   position: (stop, formatMessage) =>
     stop.location
       ? stop.location.join(",")
-      : formatMessage({ id: "report_columNames_notAssigned" }),
+      : formatMessage({ id: "report_columnNames_notAssigned" }),
   quays: (stop) => (stop.quays ? stop.quays.length : 0),
   parking: (stop, formatMessage) =>
     getParkingElements(stop.parking, formatMessage),
@@ -174,7 +175,7 @@ export const ColumnTransformerStopPlaceJsx = {
     const wheelchairAccess = getIn(
       stop,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     );
     return (
       <WheelChair color={accessibilityAssessmentColors[wheelchairAccess]} />
@@ -184,7 +185,7 @@ export const ColumnTransformerStopPlaceJsx = {
     const stepFreeAccess = getIn(
       stop,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     );
     return <StairsIcon color={accessibilityAssessmentColors[stepFreeAccess]} />;
   },
@@ -209,6 +210,7 @@ export const ColumnTransformerStopPlaceJsx = {
       <MdNotChecked sx={{ color: "#B71C1C" }} />
     );
   },
+  sanitaryEquipment: (stop) => ColumnTransformerStopPlaceJsx.wc(stop),
   generalSign: (stop) => {
     let signs = getIn(stop, ["placeEquipments", "generalSign"], null);
     if (signs && signs.length) {
@@ -270,6 +272,7 @@ export const ColumnTransformersStopPlace = {
       "UKNOWN",
     ),
   wc: (stop) => equipmentHelpers.isWCPresent(stop),
+  sanitaryEquipment: (stop) => equipmentHelpers.isWCPresent(stop),
   waitingRoomEquipment: (stop) =>
     isEquipted(stop, ["placeEquipments", "waitingRoomEquipment"]),
   shelterEquipment: (stop) =>
@@ -278,7 +281,7 @@ export const ColumnTransformersStopPlace = {
     getIn(
       stop,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     ),
   generalSign: (stop) => {
     let signs = getIn(stop, ["placeEquipments", "generalSign"], null);
@@ -370,12 +373,13 @@ export const ColumnTransformerQuaysJsx = {
   position: (quay, duplicateInfo, formatMessage) =>
     quay.location
       ? quay.location.join(",")
-      : formatMessage({ id: "report.columnNames.notAssigned" }),
+      : formatMessage({ id: "report_columnNames_notAssigned" }),
   publicCode: (quay) => quay.publicCode,
   privateCode: (quay) => quay.privateCode,
   wheelchairAccess: (quay) =>
     ColumnTransformerStopPlaceJsx.wheelchairAccess(quay),
   wc: (quay) => ColumnTransformerStopPlaceJsx.wc(quay),
+  sanitaryEquipment: (quay) => ColumnTransformerStopPlaceJsx.wc(quay),
   shelterEquipment: (quay) =>
     ColumnTransformerStopPlaceJsx.shelterEquipment(quay),
   stepFreeAccess: (quay) => ColumnTransformerStopPlaceJsx.stepFreeAccess(quay),
@@ -392,6 +396,7 @@ export const ColumnTransformersQuays = {
   wheelchairAccess: (quay) =>
     ColumnTransformersStopPlace.wheelchairAccess(quay),
   wc: (quay) => ColumnTransformersStopPlace.wc(quay),
+  sanitaryEquipment: (quay) => ColumnTransformersStopPlace.wc(quay),
   shelterEquipment: (quay) =>
     ColumnTransformersStopPlace.shelterEquipment(quay),
   stepFreeAccess: (quay) => ColumnTransformersStopPlace.stepFreeAccess(quay),

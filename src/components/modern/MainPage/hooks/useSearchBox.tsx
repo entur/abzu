@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { UseSearchBoxProps, UseSearchBoxReturn } from "../types";
 import { useFavoriteHandlers } from "./searchBox/useFavoriteHandlers";
 import { useFilterHandlers } from "./searchBox/useFilterHandlers";
+import { useRerunSearchOnExpiredToggle } from "./searchBox/useRerunSearchOnExpiredToggle";
 import { useSearchHandlers } from "./searchBox/useSearchHandlers";
 import { useSearchMenuItems } from "./searchBox/useSearchMenuItems";
 import { useSearchState } from "./searchBox/useSearchState";
@@ -68,15 +69,11 @@ export const useSearchBox = ({
     );
 
   // 3. Filter handlers
-  const {
-    handleApplyModalityFilters,
-    toggleShowFutureAndExpired,
-    removeFiltersAndSearch,
-  } = useFilterHandlers(
+  const { handleApplyModalityFilters, removeFiltersAndSearch } =
+    useFilterHandlers(searchText, handleSearchUpdate);
+  useRerunSearchOnExpiredToggle(
+    showFutureAndExpired,
     searchText,
-    stopTypeFilter,
-    topoiChips,
-    debouncedSearch,
     handleSearchUpdate,
   );
 
@@ -146,7 +143,6 @@ export const useSearchBox = ({
     handleRetrieveFilter,
     handleTopographicalPlaceInput,
     removeFiltersAndSearch,
-    toggleShowFutureAndExpired,
 
     // Computed values
     menuItems,

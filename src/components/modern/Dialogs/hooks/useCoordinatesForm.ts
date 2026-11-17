@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useState } from "react";
-import { extractCoordinates } from "../../../../utils/";
-import {
-  checkTypedPosition,
-  Position,
-} from "../../Shared/coordinates/coordinateChecks";
+import { useEffect, useState } from "react";
+import { Position } from "../../Shared/coordinates/coordinateChecks";
+import { validateCoordinatesText } from "../../Shared/coordinates/validateCoordinatesText";
+
+/** How long typing must pause before the checks show (F-114). */
+const LIVE_CHECK_DELAY_MS = 300;
 
 /** What a typed position is compared with, and how the warning names it. */
 export interface CoordinatesReference {
@@ -48,6 +48,9 @@ const formatPosition = ([lat, lng]: Position): string => `${lat}, ${lng}`;
  * State for typing coordinates (F-76, F-103). An impossible position is an
  * error; one far from its reference (a quay 300 km from its stop, or lat and
  * lng swapped) needs a second confirm, and a likely swap is offered.
+ *
+ * The checks show once typing pauses, not only on confirm (F-114). A far
+ * position the user has already been shown confirms on the next press.
  */
 export const useCoordinatesForm = (
   initialText: string | undefined,
@@ -55,49 +58,61 @@ export const useCoordinatesForm = (
   reference?: CoordinatesReference,
 ): CoordinatesForm => {
   const [typedText, setTypedText] = useState<string | null>(null);
-  const [errorId, setErrorId] = useState<string | null>(null);
-  const [farWarning, setFarWarning] = useState<FarWarning | null>(null);
+  /** The text whose check result is on screen. */
+  const [revealedText, setRevealedText] = useState<string | null>(null);
   const text = typedText ?? initialText ?? "";
+  const validation = validateCoordinatesText(text, reference?.position);
+  const isRevealed = revealedText === text;
 
-  const setText = (newText: string) => {
-    setTypedText(newText);
-    setErrorId(null);
-    setFarWarning(null);
-  };
+  useEffect(() => {
+    if (!typedText?.trim()) return;
+    const timer = setTimeout(
+      () => setRevealedText(typedText),
+      LIVE_CHECK_DELAY_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [typedText]);
 
   const reset = () => {
     setTypedText(null);
-    setErrorId(null);
-    setFarWarning(null);
+    setRevealedText(null);
   };
 
   const confirm = () => {
-    const parsed = extractCoordinates(text);
-    if (!parsed) {
-      setErrorId("change_coordinates_invalid");
+    if (
+      validation.status === "ok" ||
+      (validation.status === "far" && isRevealed)
+    ) {
+      onConfirm(validation.position);
+      reset();
       return;
     }
-    const position: Position = [Number(parsed[0]), Number(parsed[1])];
-    const check = checkTypedPosition(position, reference?.position);
-    if (check.status === "invalid") {
-      setErrorId("coordinates_out_of_range");
-      return;
-    }
-    // Asked once already for this text: the user chose to continue.
-    if (check.status === "far" && !farWarning) {
-      setFarWarning({
-        distanceMeters: check.distanceMeters,
-        swapped: check.swapped,
-      });
-      return;
-    }
-    onConfirm(position);
-    reset();
+    setRevealedText(text);
   };
 
   const applySwapped = () => {
-    if (farWarning?.swapped) setText(formatPosition(farWarning.swapped));
+    if (validation.status === "far" && validation.swapped) {
+      setTypedText(formatPosition(validation.swapped));
+    }
   };
 
-  return { text, errorId, farWarning, setText, confirm, applySwapped, reset };
+  const errorId =
+    isRevealed && validation.status === "error" ? validation.errorId : null;
+  const farWarning =
+    isRevealed && validation.status === "far"
+      ? {
+          distanceMeters: validation.distanceMeters,
+          swapped: validation.swapped,
+        }
+      : null;
+
+  return {
+    text,
+    errorId,
+    farWarning,
+    setText: setTypedText,
+    confirm,
+    applySwapped,
+    reset,
+  };
 };

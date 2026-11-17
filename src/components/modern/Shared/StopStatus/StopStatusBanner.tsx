@@ -35,7 +35,9 @@ const bannerSx = {
 /**
  * Header banner for a stop that isn't the live, active version: either an
  * older version picked from the history (with a way back), or an expired
- * stop. An older version is never reported as expired (F-42).
+ * stop. An older version is never reported as expired (F-42). Parkings and
+ * group memberships aren't versioned with the stop, so the older-version
+ * banner says they show today's state (F-113).
  */
 export const StopStatusBanner = ({ stopPlace }: StopStatusBannerProps) => {
   const { formatMessage } = useIntl();
@@ -48,13 +50,18 @@ export const StopStatusBanner = ({ stopPlace }: StopStatusBannerProps) => {
         sx={{ ...bannerSx, bgcolor: "info.main", color: "info.contrastText" }}
       >
         <HistoryIcon sx={{ fontSize: "1rem", color: "inherit" }} />
-        <Typography
-          variant="caption"
-          color="inherit"
-          sx={{ fontWeight: 500, flex: 1 }}
-        >
-          {formatMessage({ id: "viewing_older_version" })}
-        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+          <Typography
+            variant="caption"
+            color="inherit"
+            sx={{ fontWeight: 500 }}
+          >
+            {formatMessage({ id: "viewing_older_version" })}
+          </Typography>
+          <Typography variant="caption" color="inherit">
+            {formatMessage({ id: "viewing_older_version_live_data" })}
+          </Typography>
+        </Box>
         {stopPlace.id && (
           <Button
             size="small"

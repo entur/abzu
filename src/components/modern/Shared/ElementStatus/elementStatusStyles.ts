@@ -38,3 +38,12 @@ export const getElementRowStatusSx = (
     "&:hover": { bgcolor: "action.disabledBackground" },
   };
 };
+
+/**
+ * Marker styling for a staged removal: the ghost row's fade, plus a dashed
+ * ring, so the marker still sits where the element is until the save.
+ */
+export const getElementMarkerStatusSx = (
+  status: ElementChangeStatus,
+): SystemStyleObject<Theme> =>
+  status === "deleted" ? { opacity: GHOST_OPACITY, borderStyle: "dashed" } : {};

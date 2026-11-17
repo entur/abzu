@@ -132,7 +132,6 @@ export interface UseSearchBoxReturn {
     reason?: string,
   ) => void;
   removeFiltersAndSearch: () => void;
-  toggleShowFutureAndExpired: (value: boolean) => void;
 
   // Computed values
   menuItems: MenuItem[];
@@ -151,6 +150,7 @@ export interface RootState {
         canEdit: boolean;
       };
     };
+    showExpiredStops: boolean;
     permissions?: {
       canEdit: boolean;
     };
@@ -185,7 +185,6 @@ export interface FilterSectionProps {
   topographicalPlacesDataSource: TopographicalDataSource[];
   topographicPlaceFilterValue: string;
   topoiChips: TopoChip[];
-  showFutureAndExpired: boolean;
   onToggleFilter: (value: boolean) => void;
   onApplyModalityFilters: (filters: string[]) => void;
   onTopographicalPlaceInput: (
@@ -195,7 +194,6 @@ export interface FilterSectionProps {
   ) => void;
   onAddChip: (event: any, value: TopographicalDataSource | null) => void;
   onDeleteChip: (chipValue: string) => void;
-  onToggleShowFutureAndExpired: (value: boolean) => void;
 }
 
 export interface SearchInputProps {

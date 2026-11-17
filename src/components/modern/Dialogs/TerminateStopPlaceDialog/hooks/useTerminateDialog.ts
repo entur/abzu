@@ -27,6 +27,7 @@ interface StopPlace {
   name: string;
   hasExpired?: boolean;
   isChildOfParent?: boolean;
+  isParent?: boolean;
 }
 
 export interface WarningInfo {
@@ -46,6 +47,8 @@ interface UseTerminateDialogProps {
   serverTimeDiff: number;
   isLoading?: boolean;
   warningInfo?: WarningInfo | string;
+  /** A multimodal parent's saved children, detached before deactivating. */
+  childrenToDetachCount?: number;
   handleConfirm: (
     shouldHardDelete: boolean,
     shouldTerminatePermanently: boolean,
@@ -61,6 +64,7 @@ export const useTerminateDialog = ({
   serverTimeDiff,
   isLoading,
   warningInfo,
+  childrenToDetachCount = 0,
   handleConfirm,
 }: UseTerminateDialogProps) => {
   const getInitialState = useCallback(() => {
@@ -74,6 +78,7 @@ export const useTerminateDialog = ({
       date: moment(earliestFrom),
       time: moment(earliestFrom),
       comment: "",
+      isChildrenDetachConfirmed: false,
     };
   }, [previousValidBetween, serverTimeDiff]);
 
@@ -85,8 +90,18 @@ export const useTerminateDialog = ({
     }
   }, [open, getInitialState]);
 
-  const { shouldHardDelete, shouldTerminatePermanently, date, time, comment } =
-    state;
+  const {
+    shouldHardDelete,
+    shouldTerminatePermanently,
+    date,
+    time,
+    comment,
+    isChildrenDetachConfirmed,
+  } = state;
+
+  // Only a deactivation detaches; an expired parent can only be deleted.
+  const needsChildrenDetachConfirm =
+    childrenToDetachCount > 0 && !shouldHardDelete && !stopPlace.hasExpired;
 
   const earliestFrom = getEarliestFromDate(
     previousValidBetween,
@@ -94,10 +109,15 @@ export const useTerminateDialog = ({
   );
 
   const getConfirmIsDisabled = useCallback(() => {
-    const { isChildOfParent, hasExpired } = stopPlace;
+    const { isChildOfParent, hasExpired, isParent } = stopPlace;
 
-    // Check if warning info is still loading
+    if (needsChildrenDetachConfirm && !isChildrenDetachConfirmed) {
+      return true;
+    }
+
+    // Wait for the journey-usage check (not run for multimodal parents)
     if (
+      !isParent &&
       typeof warningInfo === "object" &&
       warningInfo !== null &&
       warningInfo.loading
@@ -111,7 +131,14 @@ export const useTerminateDialog = ({
       : false;
 
     return !!isChildOfParent || isLoading || expiredNotDeleteCondition;
-  }, [stopPlace, warningInfo, isLoading, shouldHardDelete]);
+  }, [
+    stopPlace,
+    warningInfo,
+    isLoading,
+    shouldHardDelete,
+    needsChildrenDetachConfirm,
+    isChildrenDetachConfirmed,
+  ]);
 
   const handleConfirmClick = useCallback(() => {
     const dateTime = helpers.getFullUTCString(time, date);
@@ -140,6 +167,8 @@ export const useTerminateDialog = ({
     date,
     time,
     comment,
+    isChildrenDetachConfirmed,
+    needsChildrenDetachConfirm,
     earliestFrom,
     dateTimeDisabled,
     getConfirmIsDisabled,

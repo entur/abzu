@@ -73,7 +73,8 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     favorited: state.user.favorited,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    // One setting for the map and the search, switched in the map settings.
+    showFutureAndExpired: state.stopPlace.showExpiredStops,
     stopPlaceLoading: state.stopPlace.loading,
   }));
 
@@ -96,7 +97,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     handleSaveAsFavorite,
     handleRetrieveFilter,
     handleTopographicalPlaceInput,
-    toggleShowFutureAndExpired,
 
     // Computed values
     menuItems,
@@ -112,8 +112,7 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
   });
 
   // Calculate active filter count (after variables are declared)
-  const activeFilterCount =
-    stopTypeFilter.length + topoiChips.length + (showFutureAndExpired ? 1 : 0);
+  const activeFilterCount = stopTypeFilter.length + topoiChips.length;
 
   // Wrapper for filter toggle without parameters
   const handleToggleFilters = () => {
@@ -182,13 +181,11 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
                 topographicalPlacesDataSource={topographicalPlacesDataSource}
                 topographicPlaceFilterValue={topographicPlaceFilterValue}
                 topoiChips={topoiChips}
-                showFutureAndExpired={showFutureAndExpired}
                 onToggleFilter={handleToggleFilterSection}
                 onApplyModalityFilters={handleApplyModalityFilters}
                 onTopographicalPlaceInput={handleTopographicalPlaceInput}
                 onAddChip={handleAddChip}
                 onDeleteChip={handleDeleteChip}
-                onToggleShowFutureAndExpired={toggleShowFutureAndExpired}
               />
             </Collapse>
 

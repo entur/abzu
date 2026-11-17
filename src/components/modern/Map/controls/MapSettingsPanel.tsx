@@ -54,7 +54,9 @@ export const MapSettingsPanel: React.FC = () => {
   // Translations
   const showPathLinks = formatMessage({ id: "show_path_links" });
   const showCompassBearing = formatMessage({ id: "show_compass_bearing" });
-  const showExpiredStopsLabel = formatMessage({ id: "show_expired_stops" });
+  const showExpiredStopsLabel = formatMessage({
+    id: "show_future_expired_and_terminated",
+  });
   const showMultimodalEdgesLabel = formatMessage({
     id: "show_multimodal_edges",
   });
@@ -176,6 +178,8 @@ export const MapSettingsPanel: React.FC = () => {
                 primary: {
                   sx: {
                     fontSize: "0.875rem",
+                    // MenuItem doesn't wrap; long labels were cut off.
+                    whiteSpace: "normal",
                   },
                 },
               }}

@@ -14,6 +14,9 @@ limitations under the Licence. */
 
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import { Button } from "@mui/material";
+import { useIntl } from "react-intl";
+import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import { useLegacyLeaveConfirm } from "./hooks/useLegacyLeaveConfirm";
 import { useUiModeSwitch } from "./hooks/useUiModeSwitch";
 
 /** MUI's desktop Toolbar height, which the legacy header uses unchanged. */
@@ -26,6 +29,13 @@ const PILL_BORDER_RADIUS = 999;
  */
 const LEGACY_HEADER_ACTIONS_OFFSET = 200;
 
+const DISCARD_CHANGES_MESSAGES = {
+  title: "discard_changes_title",
+  body: "discard_changes_body",
+  confirm: "discard_changes_confirm",
+  cancel: "discard_changes_cancel",
+};
+
 /**
  * The UI switch as a pill near the right of the legacy header, just left
  * of its actions. Not centred: the stop place editor's drag-in icons
@@ -36,34 +46,48 @@ const LEGACY_HEADER_ACTIONS_OFFSET = 200;
  * Absolute, not fixed: it scrolls away with the header on long pages.
  * Shown from md up only — narrower, it would run into the title; the
  * header's ⋮ menu still offers the switch there.
+ *
+ * Unsaved changes in the classic editor ask before switching (F-123).
  */
 export const LegacyHeaderUiModeSwitch = () => {
-  const uiModeSwitch = useUiModeSwitch();
+  const intl = useIntl();
+  const { confirmLeave, isConfirmOpen, onConfirm, onCancel } =
+    useLegacyLeaveConfirm();
+  const uiModeSwitch = useUiModeSwitch(confirmLeave);
 
   if (!uiModeSwitch) return null;
 
   const { label, switchUiMode } = uiModeSwitch;
 
   return (
-    <Button
-      variant="contained"
-      color="primary"
-      size="small"
-      startIcon={<SwapHorizIcon />}
-      onClick={switchUiMode}
-      sx={{
-        display: { xs: "none", md: "inline-flex" },
-        position: "absolute",
-        top: LEGACY_TOOLBAR_HEIGHT / 2,
-        right: LEGACY_HEADER_ACTIONS_OFFSET,
-        transform: "translateY(-50%)",
-        zIndex: (theme) => theme.zIndex.appBar + 1,
-        borderRadius: PILL_BORDER_RADIUS,
-        textTransform: "none",
-        whiteSpace: "nowrap",
-      }}
-    >
-      {label}
-    </Button>
+    <>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        startIcon={<SwapHorizIcon />}
+        onClick={switchUiMode}
+        sx={{
+          display: { xs: "none", md: "inline-flex" },
+          position: "absolute",
+          top: LEGACY_TOOLBAR_HEIGHT / 2,
+          right: LEGACY_HEADER_ACTIONS_OFFSET,
+          transform: "translateY(-50%)",
+          zIndex: (theme) => theme.zIndex.appBar + 1,
+          borderRadius: PILL_BORDER_RADIUS,
+          textTransform: "none",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {label}
+      </Button>
+      <ConfirmDialog
+        open={isConfirmOpen}
+        handleClose={onCancel}
+        handleConfirm={onConfirm}
+        messagesById={DISCARD_CHANGES_MESSAGES}
+        intl={intl}
+      />
+    </>
   );
 };

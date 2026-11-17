@@ -22,10 +22,16 @@ interface ClientVersion {
 }
 
 /**
- * True when the loaded stop isn't the newest version. `versions` is sorted
- * newest first and is empty after a normal load, so only a version picked in
- * the versions dialog can be "older". Child stops are versioned through their
- * parent, so they never count (same rule as legacy getIsCurrentVersionMax).
+ * True when a newer version of the loaded stop exists. `versions` is empty
+ * after a normal load, so only a version picked in the versions dialog can
+ * be "older". Child stops are versioned through their parent, so they never
+ * count (same rule as legacy getIsCurrentVersionMax).
+ *
+ * Compared as numbers against the newest listed version, not for equality
+ * with the first entry: Tiamat's version list for a multimodal stop leaves
+ * out versions without children, so a just-deactivated multimodal stop
+ * (newer than every listed version) was shown as an older version, with no
+ * expired banner and no actions.
  */
 export const isOlderVersion = (
   stop: VersionedStop | null | undefined,
@@ -33,5 +39,8 @@ export const isOlderVersion = (
 ): boolean => {
   if (!stop || stop.isChildOfParent || stop.version == null) return false;
   if (!versions?.length) return false;
-  return String(stop.version) !== String(versions[0].version);
+  const newestListedVersion = Math.max(
+    ...versions.map(({ version }) => Number(version)),
+  );
+  return Number(stop.version) < newestListedVersion;
 };

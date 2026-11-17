@@ -154,10 +154,19 @@ export const ModernEditStopMap = () => {
     [],
   );
 
+  /* A stop already open when the map mounts (e.g. right after switching from
+     the classic UI) never changes currentStopId, so the fly-to effect below
+     doesn't run: start on the stop. The jump's moveend loads its neighbours
+     (F-122). */
+  const currentLocationRef = useRef(currentLocation);
+  currentLocationRef.current = currentLocation;
   const handleMapLoad = useCallback(() => {
-    if (mapRef.current) {
-      dispatch(StopPlaceActions.setActiveMap(mapRef.current.getMap()));
-    }
+    if (!mapRef.current) return;
+    dispatch(StopPlaceActions.setActiveMap(mapRef.current.getMap()));
+    const openStopLocation = currentLocationRef.current;
+    if (!openStopLocation) return;
+    const [lat, lng] = openStopLocation;
+    mapRef.current.jumpTo({ center: [lng, lat], zoom: STOP_PLACE_FLY_TO_ZOOM });
   }, [dispatch]);
 
   const handleMoveEnd = useMemo(

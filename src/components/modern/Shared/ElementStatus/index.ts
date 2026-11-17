@@ -22,7 +22,10 @@ export { DirtyBadge } from "./DirtyBadge";
 export { DirtyLabel } from "./DirtyLabel";
 export { ElementStatusDot } from "./ElementStatusDot";
 export { ElementStatusMapBadge } from "./ElementStatusMapBadge";
-export { getElementRowStatusSx } from "./elementStatusStyles";
+export {
+  getElementMarkerStatusSx,
+  getElementRowStatusSx,
+} from "./elementStatusStyles";
 export {
   ELEMENT_STATUS_VARIANTS,
   isElementStatusVariant,

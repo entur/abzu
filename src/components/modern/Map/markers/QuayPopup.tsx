@@ -215,8 +215,8 @@ export const QuayPopup = ({
               {!disabled && (
                 <Button
                   size="small"
-                  variant="outlined"
-                  color="error"
+                  variant="text"
+                  color="inherit"
                   startIcon={<ExploreOffIcon />}
                   onClick={() =>
                     dispatch(

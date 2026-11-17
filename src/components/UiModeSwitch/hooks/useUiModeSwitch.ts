@@ -19,7 +19,7 @@ import { useActiveUiMode } from "./useActiveUiMode";
 import { useUiModeSwitchLabel } from "./useUiModeSwitchLabel";
 
 /** Runs `leave` now, or once the user has resolved unsaved changes. */
-type ConfirmLeave = (leave: () => void) => void;
+export type ConfirmLeave = (leave: () => void) => void;
 
 export interface UiModeSwitchAction {
   label: string;

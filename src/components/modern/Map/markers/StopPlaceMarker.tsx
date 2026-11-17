@@ -30,6 +30,7 @@ import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
 import { useCheckedMove } from "../hooks/useCheckedMove";
 import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
+import { useStagedChildMarkers } from "../hooks/useStagedChildMarkers";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 import { ParentChildMarker } from "./ParentChildMarker";
@@ -65,6 +66,7 @@ export const StopPlaceMarker = () => {
   const { pendingPosition, moveTo } = useCheckedMove((position) =>
     dispatch(moveStopIfAllowed(position)),
   );
+  const { addedChildIds, detachedChildren } = useStagedChildMarkers();
 
   if (!current?.location) return null;
 
@@ -189,8 +191,19 @@ export const StopPlaceMarker = () => {
 
       {isParent &&
         ((current as any).children ?? []).map((child: MapStopPlace) => (
-          <ParentChildMarker key={child.id} child={child} />
+          <ParentChildMarker
+            key={child.id}
+            child={child}
+            changeStatus={addedChildIds.has(child.id) ? "new" : "unchanged"}
+          />
         ))}
+      {detachedChildren.map((child) => (
+        <ParentChildMarker
+          key={child.id}
+          child={child}
+          changeStatus="deleted"
+        />
+      ))}
     </>
   );
 };

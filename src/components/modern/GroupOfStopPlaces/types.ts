@@ -117,6 +117,8 @@ export interface GroupOfStopPlacesActionsProps {
   hasName: boolean;
   /** A group can't be saved without at least one member (F-81). */
   hasMembers: boolean;
+  /** Purpose of grouping is required to save (F-121). */
+  hasPurpose: boolean;
   onRemove: () => void;
   onUndo: () => void;
   onSave: () => void;

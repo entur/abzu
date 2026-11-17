@@ -70,6 +70,7 @@ import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
 import { getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
 import { stopPlaceWithAll } from "../graphql/Tiamat/stopPlaceWithAll";
 import type { AppDispatch, RootState } from "../store/store";
+import { cleanBBoxResult } from "../components/modern/Map/markers/utils/cleanBBoxResult";
 import { getContext } from "./TiamatActions";
 import * as types from "./Types";
 
@@ -125,7 +126,8 @@ interface MapBounds {
 /**
  * The stops in the map's bounds, except the open one. Same as the legacy
  * getNeighbourStops, but with the modern query, which names multimodal
- * children (F-48).
+ * children (F-48), and with the stale versions Tiamat also returns cleaned
+ * out before the reducer sees them (F-85, F-92).
  */
 export const getNeighbourStops =
   (
@@ -154,7 +156,18 @@ export const getNeighbourStops =
     };
 
     try {
-      const result = await (getTiamatClient() as any).query(payload);
+      const response = await (getTiamatClient() as any).query(payload);
+      // Apollo may freeze its result, so the cleaned list goes into a copy.
+      const result = {
+        ...response,
+        data: {
+          ...response.data,
+          stopPlaceBBox: cleanBBoxResult(
+            response.data?.stopPlaceBBox ?? [],
+            !!includeExpired,
+          ),
+        },
+      };
       dispatch(
         createApolloThunk(
           types.APOLLO_QUERY_RESULT,
