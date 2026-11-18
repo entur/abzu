@@ -13,34 +13,19 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import {
-  Box,
-  Button,
-  IconButton,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
-import {
-  cycleStorageTypeLabel,
-  cycleStorageTypes,
-} from "../../../../models/cycleStorageType";
 import { useAppDispatch } from "../../../../store/hooks";
 import { Parking } from "../types";
-import { CapacityEntryTypeSelect } from "./CapacityEntryTypeSelect";
+import { CycleStorageRow } from "./CycleStorageRow";
 
 interface CycleStorageFieldsProps {
   parking: Parking;
   parkingIndex: number;
   disabled: boolean;
 }
-
-const countValue = (value: number | string | null | undefined): string =>
-  value === null || value === undefined ? "" : String(value);
 
 /**
  * The cycle storage entries of a parking, one row for each entry. A row holds
@@ -55,18 +40,6 @@ export const CycleStorageFields: React.FC<CycleStorageFieldsProps> = ({
   const dispatch = useAppDispatch();
   const entries = parking.placeEquipments?.cycleStorageEquipment ?? [];
 
-  const change = (entryIndex: number, field: string, value: string | null) =>
-    dispatch(
-      StopPlaceActions.changeParkingCycleStorage(
-        parkingIndex,
-        entryIndex,
-        field,
-        value,
-      ),
-    );
-
-  const removeLabel = formatMessage({ id: "parking_cycle_storage_remove" });
-
   return (
     <Box>
       <Typography variant="caption" color="text.secondary">
@@ -74,72 +47,13 @@ export const CycleStorageFields: React.FC<CycleStorageFieldsProps> = ({
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mt: 1 }}>
         {entries.map((entry, entryIndex) => (
-          <Box
+          <CycleStorageRow
             key={entryIndex}
-            data-testid="parking-cycle-storage-entry"
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr) auto",
-              alignItems: "center",
-              columnGap: 1,
-              p: 1,
-              pt: 1.5,
-              border: 1,
-              borderColor: "divider",
-              borderRadius: 1,
-            }}
-          >
-            <CapacityEntryTypeSelect
-              label={formatMessage({ id: "parking_cycle_storage_type" })}
-              value={entry.cycleStorageType ?? null}
-              options={cycleStorageTypes}
-              optionLabel={cycleStorageTypeLabel}
-              disabled={disabled}
-              offerStoredValue={false}
-              onChange={(value) =>
-                change(entryIndex, "cycleStorageType", value)
-              }
-            />
-            <TextField
-              size="small"
-              type="number"
-              label={formatMessage({ id: "parking_cycle_storage_spaces" })}
-              disabled={disabled}
-              value={countValue(entry.numberOfSpaces)}
-              onChange={(event) =>
-                change(
-                  entryIndex,
-                  "numberOfSpaces",
-                  event.target.value !== "" && Number(event.target.value) < 0
-                    ? "0"
-                    : event.target.value,
-                )
-              }
-              slotProps={{
-                htmlInput: { min: 0 },
-                inputLabel: { shrink: true },
-              }}
-            />
-            <Tooltip title={removeLabel}>
-              <span>
-                <IconButton
-                  aria-label={removeLabel}
-                  disabled={disabled}
-                  onClick={() =>
-                    dispatch(
-                      StopPlaceActions.removeParkingCycleStorage(
-                        parkingIndex,
-                        entryIndex,
-                      ),
-                    )
-                  }
-                  size="small"
-                >
-                  <RemoveCircleIcon fontSize="small" />
-                </IconButton>
-              </span>
-            </Tooltip>
-          </Box>
+            entry={entry}
+            parkingIndex={parkingIndex}
+            entryIndex={entryIndex}
+            disabled={disabled}
+          />
         ))}
       </Box>
       <Button

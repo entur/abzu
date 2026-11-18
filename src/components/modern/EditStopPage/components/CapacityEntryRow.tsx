@@ -12,8 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { Box, IconButton, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
@@ -29,6 +28,12 @@ import {
 import { useAppDispatch } from "../../../../store/hooks";
 import { CapacityEntry } from "../types";
 import { CapacityEntryTypeSelect } from "./CapacityEntryTypeSelect";
+import {
+  clampNegativeCount,
+  countValue,
+  entryRowSx,
+  RemoveEntryButton,
+} from "./parkingRowControls";
 
 interface CapacityEntryRowProps {
   entry: CapacityEntry;
@@ -39,9 +44,6 @@ interface CapacityEntryRowProps {
 }
 
 type EntryField = keyof CapacityEntry;
-
-const countValue = (value: number | string | null): string =>
-  value === null || value === undefined ? "" : String(value);
 
 const hasCount = (value: number | string | null): boolean =>
   countValue(value) !== "";
@@ -72,48 +74,15 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
     );
 
   const changeCount = (field: EntryField, value: string) =>
-    change(field, value !== "" && Number(value) < 0 ? "0" : value);
+    change(field, clampNegativeCount(value));
 
   const showRechargeCount =
     rechargingAvailable || hasCount(entry.numberOfSpacesWithRechargePoint);
 
-  const removeButton = (
-    <Tooltip title={formatMessage({ id: "parking_capacity_entry_remove" })}>
-      <span>
-        <IconButton
-          aria-label={formatMessage({ id: "parking_capacity_entry_remove" })}
-          disabled={disabled}
-          onClick={() =>
-            dispatch(
-              StopPlaceActions.removeParkingCapacityEntry(
-                parkingIndex,
-                entryIndex,
-              ),
-            )
-          }
-          size="small"
-        >
-          <RemoveCircleIcon fontSize="small" />
-        </IconButton>
-      </span>
-    </Tooltip>
-  );
-
   return (
     <Box
       data-testid="parking-capacity-entry"
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr) auto",
-        alignItems: "center",
-        columnGap: 1,
-        rowGap: 1.5,
-        p: 1,
-        pt: 1.5,
-        border: 1,
-        borderColor: "divider",
-        borderRadius: 1,
-      }}
+      sx={{ ...entryRowSx, rowGap: 1.5 }}
     >
       <CapacityEntryTypeSelect
         label={formatMessage({ id: "parking_vehicle_type" })}
@@ -171,7 +140,18 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
       ) : (
         <Box />
       )}
-      {removeButton}
+      <RemoveEntryButton
+        label={formatMessage({ id: "parking_capacity_entry_remove" })}
+        disabled={disabled}
+        onRemove={() =>
+          dispatch(
+            StopPlaceActions.removeParkingCapacityEntry(
+              parkingIndex,
+              entryIndex,
+            ),
+          )
+        }
+      />
     </Box>
   );
 };
