@@ -26,6 +26,7 @@ import {
 import PathLink from "../models/PathLink";
 import Quay from "../models/Quay";
 import StopPlace from "../models/StopPlace";
+import { cycleStorageType } from "../models/cycleStorageType";
 import PARKING_TYPE from "../models/parkingType";
 import PARKING_USER_TYPE from "../models/parkingUserType";
 import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
@@ -961,7 +962,7 @@ const cycleStorageListOf = (parking) => {
 helpers.addParkingCycleStorage = (original, payload) => {
   const copy = JSON.parse(JSON.stringify(original));
   cycleStorageListOf(copy.parking[payload.index]).push({
-    cycleStorageType: "racks",
+    cycleStorageType: cycleStorageType.RACKS,
     numberOfSpaces: null,
   });
   return copy;
