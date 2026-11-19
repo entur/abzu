@@ -26,6 +26,7 @@ import {
 import PathLink from "../models/PathLink";
 import Quay from "../models/Quay";
 import StopPlace from "../models/StopPlace";
+import { cycleStorageType } from "../models/cycleStorageType";
 import PARKING_TYPE from "../models/parkingType";
 import PARKING_USER_TYPE from "../models/parkingUserType";
 import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
@@ -952,6 +953,39 @@ helpers.removeParkingCapacityEntry = (original, payload) => {
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].capacityEntries.splice(entryIndex, 1);
   withLegacyCapacityFields(copy.parking[index]);
+  return copy;
+};
+
+// The editor owns the cycle storage list. Every other equipment kind stays as
+// loaded, so a save can send it back unchanged.
+const cycleStorageListOf = (parking) => {
+  parking.placeEquipments = parking.placeEquipments || {};
+  parking.placeEquipments.cycleStorageEquipment =
+    parking.placeEquipments.cycleStorageEquipment || [];
+  parking.placeEquipmentsChanged = true;
+  return parking.placeEquipments.cycleStorageEquipment;
+};
+
+helpers.addParkingCycleStorage = (original, payload) => {
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[payload.index]).push({
+    cycleStorageType: cycleStorageType.RACKS,
+    numberOfSpaces: null,
+  });
+  return copy;
+};
+
+helpers.changeParkingCycleStorage = (original, payload) => {
+  const { index, entryIndex, field, value } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[index])[entryIndex][field] = value;
+  return copy;
+};
+
+helpers.removeParkingCycleStorage = (original, payload) => {
+  const { index, entryIndex } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[index]).splice(entryIndex, 1);
   return copy;
 };
 
