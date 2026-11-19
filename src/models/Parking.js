@@ -114,6 +114,8 @@ class Parking {
         availabilityConditionToRow,
       ),
       availabilityConditionsChanged: false,
+      placeEquipments: parking.placeEquipments ?? null,
+      placeEquipmentsChanged: false,
     };
     let coordinates = getIn(parking, ["geometry", "coordinates"], null);
 
