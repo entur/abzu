@@ -230,6 +230,82 @@ describe("mapParkingToVariables - opening hours are saved", () => {
     expect("availabilityConditionsChanged" in variables).toBe(false);
   });
 
+  test("an unedited row keeps its stored offset, an edited row recomputes it", () => {
+    const stored = {
+      dayTypeRef: BUSINESS_DAY,
+      isAvailable: true,
+      startTime: "22:00",
+      endTime: "06:00",
+      dayOffset: 0,
+    };
+    const second = {
+      dayTypeRef: SATURDAY,
+      isAvailable: true,
+      startTime: "09:00",
+      endTime: "12:00",
+      dayOffset: 0,
+    };
+    const loaded = loadedClientParking([stored, second]);
+    const after = stopPlaceReducer(
+      { current: { parking: [loaded] } } as never,
+      {
+        type: types.CHANGED_PARKING_AVAILABILITY_CONDITION,
+        payload: { index: 0, conditionIndex: 1, changes: { endTime: "13:00" } },
+      },
+    );
+    const variables = toVariables(after.current.parking[0]);
+
+    expect(variables.availabilityConditions[0]).toEqual({
+      dayTypeRef: BUSINESS_DAY,
+      isAvailable: true,
+      startTime: "22:00",
+      endTime: "06:00",
+    });
+    expect(variables.availabilityConditions[1]).toMatchObject({
+      endTime: "13:00",
+    });
+  });
+
+  test("an edited row with until earlier than from gets offset 1", () => {
+    const loaded = loadedClientParking([
+      {
+        dayTypeRef: BUSINESS_DAY,
+        isAvailable: true,
+        startTime: "22:00",
+        endTime: "23:00",
+        dayOffset: 0,
+      },
+    ]);
+    const after = stopPlaceReducer(
+      { current: { parking: [loaded] } } as never,
+      {
+        type: types.CHANGED_PARKING_AVAILABILITY_CONDITION,
+        payload: { index: 0, conditionIndex: 0, changes: { endTime: "06:00" } },
+      },
+    );
+
+    expect(
+      toVariables(after.current.parking[0]).availabilityConditions[0].dayOffset,
+    ).toBe(1);
+  });
+
+  test("an unedited kept offset row is sent with its stored offset", () => {
+    const loaded = loadedClientParking([
+      {
+        dayTypeRef: BUSINESS_DAY,
+        isAvailable: true,
+        startTime: "08:00",
+        endTime: "10:00",
+        dayOffset: 1,
+      },
+    ]);
+
+    expect(
+      toVariables({ ...loaded, availabilityConditionsChanged: true })
+        .availabilityConditions[0].dayOffset,
+    ).toBe(1);
+  });
+
   test("never sends the change flag", () => {
     const variables = toVariables(changed([]));
 
@@ -248,6 +324,7 @@ describe("opening hours validity gates the save", () => {
   };
   const parkingWith = (...rows: unknown[]) => ({
     availabilityConditions: rows as never[],
+    availabilityConditionsChanged: true,
   });
 
   test("accepts valid rows, a closed row and an absent list", () => {

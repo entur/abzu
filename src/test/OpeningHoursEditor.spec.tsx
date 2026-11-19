@@ -237,6 +237,21 @@ describe("OpeningHoursRow - kept day offset", () => {
     expect(screen.getByText(KEPT_OFFSET_CAPTION)).toBeInTheDocument();
   });
 
+  test("the caption uses the singular for an offset of 1", () => {
+    renderRow(
+      availabilityConditionToRow({
+        dayTypeRef: "FSR:DayType:BusinessDay",
+        startTime: "08:00",
+        endTime: "10:00",
+        dayOffset: 1,
+      }),
+    );
+
+    expect(
+      screen.getByText("Ends 1 day later. Change it with a NeTEx import."),
+    ).toBeInTheDocument();
+  });
+
   test("the caption is absent for end of day, next day and normal rows", () => {
     for (const row of [endOfDayRow(), overnightRow(), normalRow()]) {
       renderRow(row);
@@ -275,7 +290,7 @@ describe("OpeningHoursRow - day type", () => {
 });
 
 describe("OpeningHoursFields", () => {
-  test("shows the read-only day type without a parkingConfig key", () => {
+  test("renders nothing without parkingConfig day types", () => {
     renderWithProviders(
       <OpeningHoursFields
         parking={parkingWith([normalRow()])}
@@ -285,25 +300,23 @@ describe("OpeningHoursFields", () => {
       {},
     );
 
-    expect(screen.getByRole("textbox", { name: "Day type" })).toHaveAttribute(
-      "readonly",
+    expect(screen.queryByTestId("opening-hours")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Add opening hours" })).toBe(
+      null,
     );
-    expect(screen.queryByRole("combobox")).toBeNull();
   });
 
-  test("Add is disabled without parkingConfig day types", () => {
+  test("renders nothing with an empty day type list", () => {
     renderWithProviders(
       <OpeningHoursFields
         parking={parkingWith([])}
         parkingIndex={0}
         fieldDisabled={false}
       />,
-      {},
+      { parkingConfig: { dayTypes: [] } },
     );
 
-    expect(
-      screen.getByRole("button", { name: "Add opening hours" }),
-    ).toBeDisabled();
+    expect(screen.queryByTestId("opening-hours")).toBeNull();
   });
 
   test("Add is enabled with parkingConfig day types", () => {
@@ -370,12 +383,15 @@ describe("OpeningHoursFields", () => {
 });
 
 describe("StopPlaceActionBar - Save with invalid opening hours", () => {
-  const stopPlaceWith = (rows: AvailabilityConditionRow[]): StopPlace =>
+  const stopPlaceWith = (
+    rows: AvailabilityConditionRow[],
+    availabilityConditionsChanged = true,
+  ): StopPlace =>
     ({
       id: "NSR:StopPlace:1",
       name: "Stop",
       stopPlaceType: "onstreetBus",
-      parking: [parkingWith(rows)],
+      parking: [{ ...parkingWith(rows), availabilityConditionsChanged }],
     }) as unknown as StopPlace;
 
   const renderBar = (stopPlace: StopPlace) =>
@@ -401,6 +417,16 @@ describe("StopPlaceActionBar - Save with invalid opening hours", () => {
   test("Save is disabled while a row has no day type", () => {
     renderBar(stopPlaceWith([normalRow(), { ...normalRow(), dayTypeRef: "" }]));
     expect(saveButton()).toBeDisabled();
+  });
+
+  test("Save stays enabled for stored invalid rows the user did not edit", () => {
+    renderBar(
+      stopPlaceWith(
+        [availabilityConditionToRow({ dayTypeRef: "FSR:DayType:Saturday" })],
+        false,
+      ),
+    );
+    expect(saveButton()).toBeEnabled();
   });
 
   test("Save is disabled while until equals from", () => {

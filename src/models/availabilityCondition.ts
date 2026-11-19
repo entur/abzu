@@ -42,6 +42,10 @@ export interface AvailabilityConditionRow {
   endOfDay: boolean;
   nextDay: boolean;
   keptDayOffset?: number;
+  /** The offset Tiamat returned. Absent on a row the user added. */
+  storedDayOffset?: number;
+  /** True once the user changed this row. */
+  edited?: boolean;
 }
 
 const toTime = (value?: string | null): string =>
@@ -69,6 +73,7 @@ export const availabilityConditionToRow = (
     endTime,
     endOfDay,
     nextDay,
+    storedDayOffset: dayOffset,
   };
 
   if (dayOffset !== SAME_DAY_OFFSET && !endOfDay && !nextDay) {
@@ -109,7 +114,13 @@ export const availabilityConditionToInput = (
 
   input.endTime = row.endTime;
 
-  if (row.keptDayOffset !== undefined) {
+  // A row the user did not touch keeps the offset Tiamat returned, even when
+  // the times alone would give another one.
+  if (!row.edited && row.storedDayOffset !== undefined) {
+    if (row.storedDayOffset !== SAME_DAY_OFFSET) {
+      input.dayOffset = row.storedDayOffset;
+    }
+  } else if (row.keptDayOffset !== undefined) {
     input.dayOffset = row.keptDayOffset;
   } else if (endsBefore(row.startTime, row.endTime)) {
     input.dayOffset = NEXT_DAY_OFFSET;
@@ -143,12 +154,21 @@ export const availabilityConditionError = (
   return null;
 };
 
-/** True when any parking holds a row that cannot be saved. */
+/**
+ * True when a parking with edited opening hours holds a row that cannot be
+ * saved. A save sends only the lists the user edited, so the stored rows of
+ * other parkings never block it.
+ */
 export const hasInvalidAvailabilityConditions = (
-  parkings: { availabilityConditions?: AvailabilityConditionRow[] }[] = [],
+  parkings: {
+    availabilityConditions?: AvailabilityConditionRow[];
+    availabilityConditionsChanged?: boolean;
+  }[] = [],
 ): boolean =>
-  parkings.some((parking) =>
-    (parking.availabilityConditions ?? []).some(
-      (row) => availabilityConditionError(row) !== null,
-    ),
+  parkings.some(
+    (parking) =>
+      parking.availabilityConditionsChanged &&
+      (parking.availabilityConditions ?? []).some(
+        (row) => availabilityConditionError(row) !== null,
+      ),
   );

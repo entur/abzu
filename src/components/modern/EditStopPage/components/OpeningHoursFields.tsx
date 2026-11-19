@@ -55,6 +55,9 @@ export const OpeningHoursFields: React.FC<OpeningHoursFieldsProps> = ({
     return { ...counts, [key]: (counts[key] ?? 0) + 1 };
   }, {});
 
+  // A deployment without configured day types does not use opening hours.
+  if (dayTypes.length === 0) return null;
+
   return (
     <Box
       data-testid="opening-hours"
@@ -104,7 +107,7 @@ export const OpeningHoursFields: React.FC<OpeningHoursFieldsProps> = ({
         size="small"
         variant="outlined"
         startIcon={<AddIcon />}
-        disabled={fieldDisabled || dayTypes.length === 0}
+        disabled={fieldDisabled}
         onClick={() =>
           dispatch(
             StopPlaceActions.addParkingAvailabilityCondition(parkingIndex),

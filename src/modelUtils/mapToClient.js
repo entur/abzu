@@ -1035,7 +1035,9 @@ helpers.changeParkingAvailabilityCondition = (original, payload) => {
   copy.parking[index].availabilityConditions = copy.parking[
     index
   ].availabilityConditions.map((condition, position) =>
-    position === conditionIndex ? { ...condition, ...changes } : condition,
+    position === conditionIndex
+      ? { ...condition, ...changes, edited: true }
+      : condition,
   );
   copy.parking[index].availabilityConditionsChanged = true;
   return copy;

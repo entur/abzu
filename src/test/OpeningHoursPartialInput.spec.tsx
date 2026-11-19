@@ -21,6 +21,7 @@ import { describe, expect, test, vi } from "vitest";
 import { OpeningHoursFields } from "../components/modern/EditStopPage/components/OpeningHoursFields";
 import { OpeningHoursRow } from "../components/modern/EditStopPage/components/OpeningHoursRow";
 import { Parking } from "../components/modern/EditStopPage/types";
+import { ConfigContext } from "../config/ConfigContext";
 import { availabilityConditionToRow } from "../models/availabilityCondition";
 import enMessages from "../static/lang/en.json";
 
@@ -64,9 +65,19 @@ const withProviders = (ui: React.ReactElement, dispatch = vi.fn()) =>
         { dispatch, getState: () => ({}), subscribe: () => () => {} } as any
       }
     >
-      <IntlProvider locale="en" messages={enMessages}>
-        {ui}
-      </IntlProvider>
+      <ConfigContext.Provider
+        value={{
+          parkingConfig: {
+            dayTypes: [
+              { ref: "FSR:DayType:BusinessDay", label: { en: "Business day" } },
+            ],
+          },
+        }}
+      >
+        <IntlProvider locale="en" messages={enMessages}>
+          {ui}
+        </IntlProvider>
+      </ConfigContext.Provider>
     </Provider>,
   );
 
