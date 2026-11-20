@@ -108,8 +108,10 @@ describe("ParkingPanel - operator reference", () => {
     );
   });
 
-  const HELPER_TEXT = "Format: XXX:Operator:ID";
-  const ERROR_TEXT = "Not a valid reference. Use the format XXX:Operator:ID.";
+  const HELPER_TEXT =
+    "Codespace (3 capital letters) + :Operator: + the operator's ID. Example: ABC:Operator:123";
+  const ERROR_TEXT =
+    "Not a valid reference. Use the codespace (3 capital letters), then :Operator:, then an ID of letters, digits, - or _. Example: ABC:Operator:123";
   const withReference = (organisationRef: string) => ({
     ...carAndMotorcycleParkAndRide,
     organisationRef,
