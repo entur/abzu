@@ -40,7 +40,7 @@ import {
 } from "./components";
 import { useEditStopPage } from "./hooks/useEditStopPage";
 import { DEFAULT_STOP_PLACE_TAB } from "./stopPlaceTabs";
-import { EditStopPageProps } from "./types";
+import { EditStopPageProps, OpenLists, ReturnTarget } from "./types";
 import { appChromeTop, belowAppChromeHeight } from "../Header/headerMetrics";
 import { getModalityAllowance } from "../Shared/StopNameAndType";
 import { StopStatusBanner } from "../Shared/StopStatus";
@@ -48,6 +48,9 @@ import { StopStatusBanner } from "../Shared/StopStatus";
 const DRAWER_WIDTH_DESKTOP = 450;
 const DRAWER_WIDTH_TABLET = 380;
 const DRAWER_WIDTH_MOBILE = "100%";
+/** The tab that renders the quay and parking lists. */
+const LISTS_TAB = 0;
+const ALL_LISTS_CLOSED: OpenLists = { quays: false, parking: false };
 
 type View =
   | { type: "stopPlace" }
@@ -78,6 +81,10 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   /* Owned here rather than in StopPlaceView so a collapsed shortcut can select a
    * tab and expand the panel in one action. */
   const [activeTab, setActiveTab] = useState(DEFAULT_STOP_PLACE_TAB);
+  /* Owned here too: StopPlaceView unmounts while a quay or parking panel shows,
+   * so state held in the lists would reset to closed on every Back. */
+  const [openLists, setOpenLists] = useState<OpenLists>(ALL_LISTS_CLOSED);
+  const [returnTarget, setReturnTarget] = useState<ReturnTarget | null>(null);
   const [wizardConfirmed, setWizardConfirmed] = useState(false);
 
   const focusedElement = useAppSelector(
@@ -131,6 +138,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
    * instead of in a dialog floating over a collapsed bar.
    */
   const handleOpenTab = useCallback((tabIndex: number) => {
+    setReturnTarget(null);
     setActiveTab(tabIndex);
     /* Keep the same object when already on the stop place view, so re-selecting
        the current tab doesn't trigger a pointless re-render. */
@@ -148,6 +156,37 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
     setView({ type: "stopPlace" });
   }, [dispatch]);
+
+  /**
+   * The back arrow of a quay or parking panel. It opens the list of the element
+   * and, when the lists are on screen, scrolls the element's row into view.
+   * Delete and Discard use handleBackToStopPlace: they remove an element, so an
+   * index taken before the removal could point at a different row.
+   */
+  const handleBackFromElement = useCallback(
+    (target: ReturnTarget) => {
+      handleBackToStopPlace();
+      setOpenLists((current) => ({
+        ...current,
+        [target.type === "quay" ? "quays" : "parking"]: true,
+      }));
+      setReturnTarget(activeTab === LISTS_TAB ? target : null);
+    },
+    [handleBackToStopPlace, activeTab],
+  );
+
+  const handleOpenListsChange = useCallback((lists: Partial<OpenLists>) => {
+    setOpenLists((current) => ({ ...current, ...lists }));
+  }, []);
+
+  const handleReturnTargetScrolled = useCallback(() => {
+    setReturnTarget(null);
+  }, []);
+
+  const handleTabChange = useCallback((tabIndex: number) => {
+    setReturnTarget(null);
+    setActiveTab(tabIndex);
+  }, []);
 
   const {
     stopPlace,
@@ -216,6 +255,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   const currentStopId = stopPlace?.id;
   useEffect(() => {
     setView({ type: "stopPlace" });
+    setOpenLists(ALL_LISTS_CLOSED);
+    setReturnTarget(null);
   }, [currentStopId]);
 
   // Discard can remove the element a panel shows (an unsaved quay or
@@ -283,7 +324,9 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           quayIndex={view.index}
           stopPlace={stopPlace}
           canEdit={canEdit}
-          onBack={handleBackToStopPlace}
+          onBack={() =>
+            handleBackFromElement({ type: "quay", index: view.index })
+          }
           onDelete={handleDeleteQuay}
           onPublicCodeChange={handleQuayPublicCodeChange}
           onPrivateCodeChange={handleQuayPrivateCodeChange}
@@ -299,7 +342,9 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           parkingIndex={view.index}
           stopPlace={stopPlace}
           canEdit={canEdit}
-          onBack={handleBackToStopPlace}
+          onBack={() =>
+            handleBackFromElement({ type: "parking", index: view.index })
+          }
           onDelete={handleDeleteParking}
           onNameChange={handleParkingNameChange}
           onTypeChange={handleParkingTypeChange}
@@ -313,7 +358,11 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         stopPlace={stopPlace}
         stopName={stopName}
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
+        openLists={openLists}
+        onOpenListsChange={handleOpenListsChange}
+        returnTarget={returnTarget}
+        onReturnTargetScrolled={handleReturnTargetScrolled}
         canEdit={canEdit}
         canDelete={canDelete}
         isModified={isModified}
