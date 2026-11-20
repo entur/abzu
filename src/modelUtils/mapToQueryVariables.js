@@ -487,6 +487,15 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
     // An empty value is sent as null so that Tiamat clears the stored value.
     parking.covered = source.covered || null;
 
+    // Tiamat stores an empty string as a reference, so a blank value is not
+    // sent as it is.
+    const organisationRef =
+      typeof source.organisationRef === "string"
+        ? source.organisationRef.trim()
+        : "";
+    // A blank reference is sent as null so that Tiamat clears the stored value.
+    parking.organisationRef = organisationRef || null;
+
     const capacityEntries = source.capacityEntries || [];
     const storedSpaces = source.parkingProperties?.[0]?.spaces || [];
 

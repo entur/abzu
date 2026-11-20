@@ -904,6 +904,14 @@ helpers.changeParkingCovered = (original, payload) => {
   return copy;
 };
 
+helpers.changeParkingOrganisationRef = (original, payload) => {
+  const { index, organisationRef } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].organisationRef = organisationRef;
+  copy.parking[index].organisationRefChanged = true;
+  return copy;
+};
+
 helpers.changeParkingPaymentProcess = (original, payload) => {
   const { index, parkingPaymentProcess } = payload;
   const copy = JSON.parse(JSON.stringify(original));

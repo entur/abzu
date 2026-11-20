@@ -36,6 +36,7 @@ import { ParkingPanelProps } from "../types";
 import { CycleStorageFields } from "./CycleStorageFields";
 import { ParkAndRideFields } from "./ParkAndRideFields";
 import { ParkingCoveredField } from "./ParkingCoveredField";
+import { ParkingOrganisationRefField } from "./ParkingOrganisationRefField";
 import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
@@ -169,6 +170,14 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           disabled={fieldDisabled}
           size="small"
           fullWidth
+        />
+
+        {/* Operator reference — common to every variant */}
+        <ParkingOrganisationRefField
+          organisationRef={parking.organisationRef}
+          organisationRefChanged={parking.organisationRefChanged}
+          parkingIndex={parkingIndex}
+          disabled={fieldDisabled}
         />
 
         {/* Vehicle types — read-only. Tiamat owns this field. */}

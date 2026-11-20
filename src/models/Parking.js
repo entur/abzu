@@ -104,6 +104,8 @@ class Parking {
       secure: parking.secure,
       lighting: parking.lighting,
       covered: parking.covered,
+      organisationRef: parking.organisationRef,
+      organisationRefChanged: false,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),

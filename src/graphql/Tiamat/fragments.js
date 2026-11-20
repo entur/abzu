@@ -640,6 +640,7 @@ Fragments.parking = {
       secure
       lighting
       covered
+      organisationRef
       parkingProperties {
         id
         spaces {

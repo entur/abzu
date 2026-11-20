@@ -406,6 +406,7 @@ const verboseParkingFragment = gql`
     secure
     lighting
     covered
+    organisationRef
     parkingProperties {
       id
       spaces {
