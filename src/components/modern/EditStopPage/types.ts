@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { AvailabilityConditionRow } from "../../../models/availabilityCondition";
 import { ElementChangeStatus } from "../Shared/ElementStatus";
 
 // --- Core domain types ---
@@ -67,6 +68,12 @@ export interface CapacityEntry {
   isNew?: boolean;
 }
 
+export interface CycleStorageEntry {
+  id?: string;
+  cycleStorageType?: string | null;
+  numberOfSpaces?: number | string | null;
+}
+
 export interface Parking {
   id?: string;
   name?: string;
@@ -84,6 +91,12 @@ export interface Parking {
   parkingVehicleTypes?: string[];
   capacityEntries?: CapacityEntry[];
   parkingProperties?: { spaces?: Partial<CapacityEntry>[] | null }[] | null;
+  /** Every equipment kind as loaded. The editor changes cycle storage only. */
+  placeEquipments?: {
+    id?: string;
+    cycleStorageEquipment?: CycleStorageEntry[] | null;
+  } | null;
+  placeEquipmentsChanged?: boolean;
   hasExpired?: boolean;
   validBetween?: ValidBetween;
   accessibilityAssessment?: {
@@ -92,6 +105,8 @@ export interface Parking {
     };
   };
   notSaved?: boolean;
+  availabilityConditions?: AvailabilityConditionRow[];
+  availabilityConditionsChanged?: boolean;
 }
 
 export interface StopPlace {
