@@ -36,6 +36,7 @@ import { ParkingPanelProps } from "../types";
 import { CycleStorageFields } from "./CycleStorageFields";
 import { ParkAndRideFields } from "./ParkAndRideFields";
 import { ParkingCoveredField } from "./ParkingCoveredField";
+import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
@@ -216,6 +217,12 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             />
           </Box>
         )}
+
+        <OpeningHoursFields
+          parking={parking}
+          parkingIndex={parkingIndex}
+          fieldDisabled={fieldDisabled}
+        />
 
         <CycleStorageFields
           parking={parking}
