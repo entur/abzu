@@ -600,6 +600,7 @@
   "stop_place_relations": "Relations",
   "stop_place_usages_found": "Attention : ce point d'arrêt est en cours d'utilisation",
   "stop_places": "Points d'arrêt",
+  "stop_place_cluster_tooltip": "{count, plural, one {# point d'arrêt} other {# points d'arrêt}} – cliquez pour zoomer",
   "sv": "Suédois",
   "tag": "Etiquette",
   "tags": "Etiquettes",

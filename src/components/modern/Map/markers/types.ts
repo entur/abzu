@@ -54,6 +54,19 @@ export interface ChildStop {
   geometry?: PointGeometry;
 }
 
+/** Stop places aggregated by Tiamat for display at low zoom levels */
+export interface StopPlaceCluster {
+  count: number;
+  longitude: number;
+  latitude: number;
+  lonMin: number;
+  latMin: number;
+  lonMax: number;
+  latMax: number;
+  /** Set only when the cluster holds a single stop place; such clusters are shown as stop places */
+  stopPlace?: unknown;
+}
+
 export interface MapStopPlace {
   id: string;
   name?: string;

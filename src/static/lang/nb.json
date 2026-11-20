@@ -605,6 +605,7 @@
   "stop_place_relations": "Tilknytninger",
   "stop_place_usages_found": "Advarsel: Dette stoppestedet er i bruk!",
   "stop_places": "Stoppesteder",
+  "stop_place_cluster_tooltip": "{count, plural, one {# stoppested} other {# stoppesteder}} – klikk for å zoome inn",
   "sv": "Svensk",
   "tag": "Tagg",
   "tags": "Tagger",

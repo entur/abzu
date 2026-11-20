@@ -66,7 +66,10 @@ export {
 
 import { createApolloThunk, createThunk } from ".";
 import { getTiamatClient } from "../graphql/clients";
-import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
+import {
+  neighbourStopsQuery,
+  stopPlaceMapQuery,
+} from "../graphql/Tiamat/neighbourStops";
 import { getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
 import { stopPlaceWithAll } from "../graphql/Tiamat/stopPlaceWithAll";
 import type { AppDispatch, RootState } from "../store/store";
@@ -163,6 +166,65 @@ export const getNeighbourStops =
           payload.variables,
         ),
       );
+      return result;
+    } finally {
+      dispatch({ type: "MAP_QUERY_END" });
+    }
+  };
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+let latestStopPlaceMapRequest = 0;
+
+/**
+ * What the map shows for its bounds: clusters of stop places when zoomed out, individual stop places when
+ * zoomed in, except the open one. Tiamat decides which from the zoom level.
+ *
+ * @param tileZoom zoom level in 256 pixel tile terms (MapLibre zoom + 1, see toTileZoom)
+ */
+export const getStopPlaceMap =
+  (
+    ignoreStopPlaceId: string | undefined,
+    bounds: MapBounds,
+    tileZoom: number,
+    includeExpired?: boolean,
+  ) =>
+  async (dispatch: AppDispatch, getState: () => RootState): Promise<any> => {
+    const requestId = ++latestStopPlaceMapRequest;
+    dispatch({ type: "MAP_QUERY_START" });
+
+    const southWest = bounds.getSouthWest();
+    const northEast = bounds.getNorthEast();
+    const payload = {
+      fetchPolicy: "network-only" as const,
+      query: stopPlaceMapQuery,
+      variables: {
+        includeExpired,
+        // Same as getNeighbourStops: the id is sent as a string, "undefined" included.
+        ignoreStopPlaceId: `${ignoreStopPlaceId}`,
+        latMin: clamp(southWest.lat, -90, 90),
+        latMax: clamp(northEast.lat, -90, 90),
+        lonMin: clamp(southWest.lng, -180, 180),
+        lonMax: clamp(northEast.lng, -180, 180),
+        zoom: Math.round(tileZoom),
+      },
+      context: await getContext((getState() as any).user.auth),
+    };
+
+    try {
+      const result = await (getTiamatClient() as any).query(payload);
+      // A slower response for an earlier view must not overwrite the current one
+      if (requestId === latestStopPlaceMapRequest) {
+        dispatch(
+          createApolloThunk(
+            types.APOLLO_QUERY_RESULT,
+            result,
+            payload.query,
+            payload.variables,
+          ),
+        );
+      }
       return result;
     } finally {
       dispatch({ type: "MAP_QUERY_END" });

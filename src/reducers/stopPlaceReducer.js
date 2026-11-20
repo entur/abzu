@@ -225,6 +225,7 @@ const stopPlaceReducer = (state = initialState, action) => {
     case types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW:
       return Object.assign({}, state, {
         neighbourStops: [],
+        stopPlaceClusters: [],
       });
 
     case types.SORTED_QUAYS:

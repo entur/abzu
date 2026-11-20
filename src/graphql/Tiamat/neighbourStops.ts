@@ -35,24 +35,8 @@ const entityPermissionsFragment = gql`
   }
 `;
 
-export const neighbourStopsQuery = gql`
-  query stopPlaceBBox(
-    $ignoreStopPlaceId: String
-    $lonMin: BigDecimal!
-    $lonMax: BigDecimal!
-    $latMin: BigDecimal!
-    $latMax: BigDecimal!
-    $includeExpired: Boolean
-  ) {
-    stopPlaceBBox(
-      ignoreStopPlaceId: $ignoreStopPlaceId
-      latMin: $latMin
-      latMax: $latMax
-      lonMin: $lonMin
-      lonMax: $lonMax
-      size: 500
-      includeExpired: $includeExpired
-    ) {
+// The stop place fields the map shows, shared by the neighbour query and the map query
+const mapStopPlaceFields = `
       id
       version
       geometry {
@@ -109,6 +93,72 @@ export const neighbourStopsQuery = gql`
             ...EntityPermissions
           }
         }
+      }
+`;
+
+export const neighbourStopsQuery = gql`
+  query stopPlaceBBox(
+    $ignoreStopPlaceId: String
+    $lonMin: BigDecimal!
+    $lonMax: BigDecimal!
+    $latMin: BigDecimal!
+    $latMax: BigDecimal!
+    $includeExpired: Boolean
+  ) {
+    stopPlaceBBox(
+      ignoreStopPlaceId: $ignoreStopPlaceId
+      latMin: $latMin
+      latMax: $latMax
+      lonMin: $lonMin
+      lonMax: $lonMax
+      size: 500
+      includeExpired: $includeExpired
+    ) {
+      ${mapStopPlaceFields}
+    }
+  }
+  ${entityPermissionsFragment}
+`;
+
+/**
+ * The map's view of the stops in its bounds: clusters of stop places when zoomed out, individual stop places
+ * when zoomed in. Tiamat decides which from the zoom level. A cluster of one carries its stop place.
+ */
+export const stopPlaceMapQuery = gql`
+  query stopPlaceMapBBox(
+    $ignoreStopPlaceId: String
+    $lonMin: BigDecimal!
+    $lonMax: BigDecimal!
+    $latMin: BigDecimal!
+    $latMax: BigDecimal!
+    $zoom: Int!
+    $includeExpired: Boolean
+  ) {
+    stopPlaceMapBBox(
+      ignoreStopPlaceId: $ignoreStopPlaceId
+      latMin: $latMin
+      latMax: $latMax
+      lonMin: $lonMin
+      lonMax: $lonMax
+      zoom: $zoom
+      size: 500
+      includeExpired: $includeExpired
+    ) {
+      clustered
+      clusters {
+        count
+        longitude
+        latitude
+        lonMin
+        latMin
+        lonMax
+        latMax
+        stopPlace {
+          ${mapStopPlaceFields}
+        }
+      }
+      stopPlaces {
+        ${mapStopPlaceFields}
       }
     }
   }

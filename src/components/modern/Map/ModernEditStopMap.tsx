@@ -19,7 +19,7 @@ import Map, { MapRef, ViewStateChangeEvent } from "react-map-gl/maplibre";
 import { Box } from "@mui/material";
 import { appChromeTop } from "../Header/headerMetrics";
 import { StopPlaceActions, UserActions } from "../../../actions";
-import { getNeighbourStops } from "../../../actions/TiamatActions.modern";
+import { getStopPlaceMap } from "../../../actions/TiamatActions.modern";
 import { ConfigContext, MapConfig } from "../../../config/ConfigContext";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { AddElementFab } from "./controls/AddElementFab";
@@ -33,7 +33,9 @@ import { MultimodalEdgesLayer } from "./layers/MultimodalEdgesLayer";
 import { PathLinkLayer } from "./layers/PathLinkLayer";
 import { StopGroupLayer } from "./layers/StopGroupLayer";
 import { TariffZonesLayer } from "./layers/TariffZonesLayer";
+import { toTileZoom } from "./mapZoom";
 import { BoardingPositionMarkers } from "./markers/BoardingPositionMarkers";
+import { ClusterMarkers } from "./markers/ClusterMarkers";
 import { NeighbourMarkers } from "./markers/NeighbourMarkers";
 import { NeighbourQuayMarkers } from "./markers/NeighbourQuayMarkers";
 import { ParkingMarkers } from "./markers/ParkingMarkers";
@@ -41,7 +43,8 @@ import { QuayMarkers } from "./markers/QuayMarkers";
 import { StopPlaceMarker } from "./markers/StopPlaceMarker";
 import { buildMaplibreStyle } from "./tile-sources/buildMaplibreStyle";
 
-const NEIGHBOUR_STOPS_MIN_ZOOM = 13;
+// Below this zoom the map shows nothing; above it Tiamat returns clusters or, when zoomed in, stop places
+const STOP_PLACE_MAP_MIN_ZOOM = 3;
 const STOP_PLACE_FLY_TO_ZOOM = 17;
 const GROUP_FLY_TO_ZOOM = 16;
 
@@ -106,42 +109,43 @@ export const ModernEditStopMap = () => {
     neighbourStateRef.current = { currentStopId, showExpiredStops };
   }, [currentStopId, showExpiredStops]);
 
-  // Re-fetch neighbour stops immediately when showExpiredStops changes,
-  // in case the map is already zoomed in and the user is not moving it.
-  useEffect(() => {
+  // Reads only refs and the stable dispatch, so it is safe to call from the stable debounce callback
+  const fetchStopPlacesForView = useCallback(() => {
     const map = mapRef.current?.getMap();
     if (!map) return;
-    if (map.getZoom() <= NEIGHBOUR_STOPS_MIN_ZOOM) return;
+    const zoom = map.getZoom();
+    if (zoom < STOP_PLACE_MAP_MIN_ZOOM) {
+      dispatch(UserActions.removeStopsNearbyForOverview());
+      return;
+    }
+    const { currentStopId: ignoreId, showExpiredStops: includeExpired } =
+      neighbourStateRef.current;
     dispatch(
-      getNeighbourStops(
-        neighbourStateRef.current.currentStopId,
+      getStopPlaceMap(
+        ignoreId,
         map.getBounds(),
-        showExpiredStops,
+        toTileZoom(zoom),
+        includeExpired,
       ),
     );
-    // currentStopId intentionally excluded — this only reacts to the toggle
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showExpiredStops, dispatch]);
+  }, [dispatch]);
 
-  // The open stop is left out of the neighbour query because the editor draws
-  // it. When the editor closes or switches stop, that stop has to come back
-  // as a neighbour now, not on the next pan (F-61).
+  // Re-fetch immediately when showExpiredStops changes, in case the user is
+  // not moving the map. The ref effect above has already picked up the value.
+  useEffect(() => {
+    fetchStopPlacesForView();
+  }, [showExpiredStops, fetchStopPlacesForView]);
+
+  // The open stop is left out of the map query because the editor draws it.
+  // When the editor closes or switches stop, that stop has to come back on the
+  // map now, not on the next pan (F-61).
   const previousStopIdRef = useRef(currentStopId);
   useEffect(() => {
     const previousStopId = previousStopIdRef.current;
     previousStopIdRef.current = currentStopId;
     if (!previousStopId || previousStopId === currentStopId) return;
-
-    const map = mapRef.current?.getMap();
-    if (!map || map.getZoom() <= NEIGHBOUR_STOPS_MIN_ZOOM) return;
-    dispatch(
-      getNeighbourStops(
-        currentStopId,
-        map.getBounds(),
-        neighbourStateRef.current.showExpiredStops,
-      ),
-    );
-  }, [currentStopId, dispatch]);
+    fetchStopPlacesForView();
+  }, [currentStopId, fetchStopPlacesForView]);
 
   const initialViewState = useMemo(
     () => ({
@@ -157,33 +161,18 @@ export const ModernEditStopMap = () => {
   const handleMapLoad = useCallback(() => {
     if (mapRef.current) {
       dispatch(StopPlaceActions.setActiveMap(mapRef.current.getMap()));
+      fetchStopPlacesForView();
     }
-  }, [dispatch]);
+  }, [dispatch, fetchStopPlacesForView]);
 
   const handleMoveEnd = useMemo(
     () =>
       debounce((event: ViewStateChangeEvent) => {
         const { latitude, longitude, zoom: newZoom } = event.viewState;
         dispatch(UserActions.setCenterAndZoom([latitude, longitude], newZoom));
-
-        if (newZoom > NEIGHBOUR_STOPS_MIN_ZOOM) {
-          const map = mapRef.current?.getMap();
-          if (map) {
-            const {
-              currentStopId: ignoreId,
-              showExpiredStops: includeExpired,
-            } = neighbourStateRef.current;
-            dispatch(
-              getNeighbourStops(ignoreId, map.getBounds(), includeExpired),
-            );
-          }
-        } else {
-          dispatch(UserActions.removeStopsNearbyForOverview());
-        }
+        fetchStopPlacesForView();
       }, 500),
-    // mapRef and neighbourStateRef are stable refs — intentionally excluded
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dispatch],
+    [dispatch, fetchStopPlacesForView],
   );
 
   useEffect(() => {
@@ -262,6 +251,7 @@ export const ModernEditStopMap = () => {
         <MultimodalEdgesLayer />
         <GroupEdgesLayer />
         <PathLinkLayer />
+        <ClusterMarkers />
         <NeighbourMarkers />
         <NeighbourQuayMarkers />
         <StopPlaceMarker />

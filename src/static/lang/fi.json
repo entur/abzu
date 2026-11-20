@@ -599,6 +599,7 @@
   "stop_place_relations": "Liitynnät",
   "stop_place_usages_found": "Varoitus: Tämä pysäkki on käytössä",
   "stop_places": "Pysäkit",
+  "stop_place_cluster_tooltip": "{count, plural, one {# pysäkki} other {# pysäkkiä}} – napsauta lähentääksesi",
   "sv": "Ruotsi",
   "tag": "Tunniste",
   "tags": "Tunnisteet",

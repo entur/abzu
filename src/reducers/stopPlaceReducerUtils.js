@@ -77,7 +77,23 @@ export const getStateByOperation = (state, action) => {
           action.result.data.stopPlaceBBox,
           state.current,
         ),
+        stopPlaceClusters: [],
       });
+
+    case "stopPlaceMapBBox": {
+      // A cluster of one comes with its stop place, which is shown as a normal neighbour stop
+      const { stopPlaces, clusters } = action.result.data.stopPlaceMapBBox;
+      const singleStopPlaces = clusters
+        .filter((cluster) => cluster.stopPlace)
+        .map((cluster) => cluster.stopPlace);
+      return Object.assign({}, state, {
+        neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
+          [...stopPlaces, ...singleStopPlaces],
+          state.current,
+        ),
+        stopPlaceClusters: clusters.filter((cluster) => !cluster.stopPlace),
+      });
+    }
 
     case "mutatePathLink":
       return Object.assign({}, state, {

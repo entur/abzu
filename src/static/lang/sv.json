@@ -599,6 +599,7 @@
   "stop_place_relations": "Kopplingar",
   "stop_place_usages_found": "Varning: Hållplatsen används!",
   "stop_places": "Hållplatser",
+  "stop_place_cluster_tooltip": "{count, plural, one {# hållplats} other {# hållplatser}} – klicka för att zooma in",
   "sv": "Svenska",
   "tag": "Tagg",
   "tags": "Taggar",
