@@ -33,7 +33,10 @@ import { parkingTitleMessageId } from "../../../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
+import { CycleStorageFields } from "./CycleStorageFields";
 import { ParkAndRideFields } from "./ParkAndRideFields";
+import { ParkingCoveredField } from "./ParkingCoveredField";
+import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
@@ -179,6 +182,13 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           />
         )}
 
+        {/* Covered — common to every parking variant */}
+        <ParkingCoveredField
+          covered={parking.covered}
+          parkingIndex={parkingIndex}
+          disabled={fieldDisabled}
+        />
+
         {hasFullFieldSet ? (
           <ParkAndRideFields
             parking={parking}
@@ -207,6 +217,18 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             />
           </Box>
         )}
+
+        <OpeningHoursFields
+          parking={parking}
+          parkingIndex={parkingIndex}
+          fieldDisabled={fieldDisabled}
+        />
+
+        <CycleStorageFields
+          parking={parking}
+          parkingIndex={parkingIndex}
+          disabled={fieldDisabled}
+        />
       </Box>
 
       {/* Footer, only with something in it: an empty one left a blank band
