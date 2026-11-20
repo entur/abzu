@@ -18,6 +18,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 import AppRoutes from "../../../../routes";
 import { useAppSelector } from "../../../../store/hooks";
+import { stripBasePath } from "../../../../utils/stripBasePath";
 import { NAVIGATION_LINE_HEIGHT } from "../headerMetrics";
 import { navigationPillSx } from "./navigationPillSx";
 import { NavigationUiModeSwitch } from "./NavigationUiModeSwitch";
@@ -54,8 +55,9 @@ export const NavigationLine: React.FC<NavigationLineProps> = ({
 
   // Editor routes sit on top of the map, so they keep the map tab lit rather
   // than leaving the strip with nothing selected.
+  const relativePath = stripBasePath(pathname, import.meta.env.BASE_URL);
   const activeTab =
-    pathname === `/${AppRoutes.REPORTS}` ? REPORTS_TAB : MAIN_TAB;
+    relativePath === `/${AppRoutes.REPORTS}` ? REPORTS_TAB : MAIN_TAB;
 
   const handleTabChange = (
     _event: React.SyntheticEvent,

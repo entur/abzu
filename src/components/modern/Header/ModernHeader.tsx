@@ -72,7 +72,9 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const pathname = useSelector((state: any) => state.router.location.pathname);
   const confirmLeave = useConfirmLeave();
 
-  const isDisplayingReports = pathname === `/${AppRoutes.REPORTS}`;
+  const isDisplayingReports =
+    stripBasePath(pathname, import.meta.env.BASE_URL) ===
+    `/${AppRoutes.REPORTS}`;
   const preferredName = useSelector((state: any) => state.user.preferredName);
 
   const goToMain = () => {
