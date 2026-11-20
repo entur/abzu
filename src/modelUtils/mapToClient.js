@@ -16,6 +16,7 @@ import moment from "moment";
 import * as types from "../actions/Types";
 import ChildOfParentStopPlace from "../models/ChildOfParentStopPlace";
 import { Entities } from "../models/Entities";
+import { newAvailabilityConditionRow } from "../models/availabilityCondition";
 import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
 import ParentStopPlace from "../models/ParentStopPlace";
 import Parking from "../models/Parking";
@@ -26,6 +27,7 @@ import {
 import PathLink from "../models/PathLink";
 import Quay from "../models/Quay";
 import StopPlace from "../models/StopPlace";
+import { cycleStorageType } from "../models/cycleStorageType";
 import PARKING_TYPE from "../models/parkingType";
 import PARKING_USER_TYPE from "../models/parkingUserType";
 import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
@@ -962,6 +964,39 @@ helpers.removeParkingCapacityEntry = (original, payload) => {
   return copy;
 };
 
+// The editor owns the cycle storage list. Every other equipment kind stays as
+// loaded, so a save can send it back unchanged.
+const cycleStorageListOf = (parking) => {
+  parking.placeEquipments = parking.placeEquipments || {};
+  parking.placeEquipments.cycleStorageEquipment =
+    parking.placeEquipments.cycleStorageEquipment || [];
+  parking.placeEquipmentsChanged = true;
+  return parking.placeEquipments.cycleStorageEquipment;
+};
+
+helpers.addParkingCycleStorage = (original, payload) => {
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[payload.index]).push({
+    cycleStorageType: cycleStorageType.RACKS,
+    numberOfSpaces: null,
+  });
+  return copy;
+};
+
+helpers.changeParkingCycleStorage = (original, payload) => {
+  const { index, entryIndex, field, value } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[index])[entryIndex][field] = value;
+  return copy;
+};
+
+helpers.removeParkingCycleStorage = (original, payload) => {
+  const { index, entryIndex } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  cycleStorageListOf(copy.parking[index]).splice(entryIndex, 1);
+  return copy;
+};
+
 // Recharging is no longer available, so no entry can hold a recharge point.
 helpers.clearParkingRechargePointCounts = (original, payload) => {
   const { index } = payload;
@@ -1021,6 +1056,41 @@ helpers.changeParkingTotalCapacity = (original, payload) => {
   const { index, totalCapacity } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].totalCapacity = Number(totalCapacity);
+  return copy;
+};
+
+helpers.addParkingAvailabilityCondition = (original, payload) => {
+  const { index } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].availabilityConditions = [
+    ...(copy.parking[index].availabilityConditions ?? []),
+    newAvailabilityConditionRow(),
+  ];
+  copy.parking[index].availabilityConditionsChanged = true;
+  return copy;
+};
+
+helpers.changeParkingAvailabilityCondition = (original, payload) => {
+  const { index, conditionIndex, changes } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].availabilityConditions = copy.parking[
+    index
+  ].availabilityConditions.map((condition, position) =>
+    position === conditionIndex
+      ? { ...condition, ...changes, edited: true }
+      : condition,
+  );
+  copy.parking[index].availabilityConditionsChanged = true;
+  return copy;
+};
+
+helpers.removeParkingAvailabilityCondition = (original, payload) => {
+  const { index, conditionIndex } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].availabilityConditions = copy.parking[
+    index
+  ].availabilityConditions.filter((_, position) => position !== conditionIndex);
+  copy.parking[index].availabilityConditionsChanged = true;
   return copy;
 };
 
