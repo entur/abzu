@@ -175,6 +175,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
         {/* Operator reference — common to every variant */}
         <ParkingOrganisationRefField
           organisationRef={parking.organisationRef}
+          organisationRefChanged={parking.organisationRefChanged}
           parkingIndex={parkingIndex}
           disabled={fieldDisabled}
         />

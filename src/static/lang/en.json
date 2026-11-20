@@ -400,6 +400,8 @@
   "parking_number_of_spaces_with_recharge_point": "Number of spaces with recharge point",
   "parking_opening_hours": "Opening hours",
   "parking_organisation_ref": "Operator reference",
+  "parking_organisation_ref_error": "Not a valid reference. Use the format XXX:Operator:ID.",
+  "parking_organisation_ref_helper": "Format: XXX:Operator:ID",
   "parking_parkAndRide_capacity_sub_header": "Total capacity",
   "parking_payment_methods": "Payment methods",
   "parking_payment_methods_banknote": "Banknotes",

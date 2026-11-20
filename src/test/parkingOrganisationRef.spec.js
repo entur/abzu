@@ -16,6 +16,10 @@ import { describe, expect, test } from "vitest";
 import StopPlaceActions from "../actions/StopPlaceActions";
 import helpers from "../modelUtils/mapToQueryVariables";
 import Parking from "../models/Parking";
+import {
+  hasInvalidOrganisationRef,
+  isValidOrganisationRef,
+} from "../models/parkingOrganisationRef";
 import stopPlaceReducer from "../reducers/stopPlaceReducer";
 
 window.config = {
@@ -120,5 +124,111 @@ describe("stopPlaceReducer - changeParkingOrganisationRef", () => {
     expect(next.current.parking[1].organisationRef).toBe(REFERENCE);
     expect(next.current.parking[0].organisationRef).toBe("FSR:Operator:1");
     expect(next.stopHasBeenModified).toBe(true);
+  });
+
+  test("marks only the edited parking as changed", () => {
+    const state = {
+      current: {
+        parking: [
+          { name: "first", organisationRefChanged: false },
+          { name: "second", organisationRefChanged: false },
+        ],
+      },
+    };
+    const dispatched = [];
+    StopPlaceActions.changeParkingOrganisationRef(
+      1,
+      REFERENCE,
+    )((action) => dispatched.push(action));
+
+    const next = stopPlaceReducer(state, dispatched[0]);
+
+    expect(next.current.parking[1].organisationRefChanged).toBe(true);
+    expect(next.current.parking[0].organisationRefChanged).toBe(false);
+  });
+});
+
+describe("Parking model - organisationRefChanged", () => {
+  test("toClient starts with the reference unchanged", () => {
+    const client = new Parking(
+      serverParking({ organisationRef: "not a reference" }),
+    ).toClient();
+
+    expect(client.organisationRefChanged).toBe(false);
+  });
+});
+
+describe("isValidOrganisationRef", () => {
+  test.each([
+    ["a business ID with a hyphen", "FSR:Operator:0201256-6"],
+    ["an ID with letters and digits", "NSR:Operator:abc_12-X"],
+  ])("accepts %s", (_, value) => {
+    expect(isValidOrganisationRef(value)).toBe(true);
+  });
+
+  test.each([
+    ["a bare id", "0201256-6"],
+    ["a lower-case codespace", "fsr:Operator:1"],
+    ["a wrong type", "FSR:Authority:1"],
+    ["an empty id", "FSR:Operator:"],
+    ["a space inside", "FSR:Operator:1 2"],
+    ["a two-letter codespace", "FS:Operator:1"],
+  ])("rejects %s", (_, value) => {
+    expect(isValidOrganisationRef(value)).toBe(false);
+  });
+
+  test("ignores spaces around the value, as the save does", () => {
+    expect(isValidOrganisationRef(`  ${REFERENCE} `)).toBe(true);
+  });
+
+  test("treats a blank value as valid", () => {
+    expect(isValidOrganisationRef("")).toBe(true);
+    expect(isValidOrganisationRef("   ")).toBe(true);
+    expect(isValidOrganisationRef(undefined)).toBe(true);
+    expect(isValidOrganisationRef(null)).toBe(true);
+  });
+});
+
+describe("hasInvalidOrganisationRef", () => {
+  test("blocks a save when the editor changed the value to an invalid one", () => {
+    expect(
+      hasInvalidOrganisationRef([
+        { organisationRef: "nonsense", organisationRefChanged: true },
+      ]),
+    ).toBe(true);
+  });
+
+  test("does not block a save for an invalid stored value the editor did not change", () => {
+    expect(
+      hasInvalidOrganisationRef([
+        { organisationRef: "nonsense", organisationRefChanged: false },
+      ]),
+    ).toBe(false);
+  });
+
+  test("does not block a save when the editor changed the value to a valid one", () => {
+    expect(
+      hasInvalidOrganisationRef([
+        { organisationRef: REFERENCE, organisationRefChanged: true },
+      ]),
+    ).toBe(false);
+  });
+
+  test("does not block a save when the editor cleared the value", () => {
+    expect(
+      hasInvalidOrganisationRef([
+        { organisationRef: "", organisationRefChanged: true },
+      ]),
+    ).toBe(false);
+  });
+
+  test("looks at every parking and at no parking", () => {
+    expect(
+      hasInvalidOrganisationRef([
+        { organisationRef: REFERENCE, organisationRefChanged: true },
+        { organisationRef: "nonsense", organisationRefChanged: true },
+      ]),
+    ).toBe(true);
+    expect(hasInvalidOrganisationRef(undefined)).toBe(false);
   });
 });

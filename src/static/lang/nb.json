@@ -400,6 +400,8 @@
   "parking_number_of_spaces_with_recharge_point": "Antall plasser med ladestasjon",
   "parking_opening_hours": "Åpningstider",
   "parking_organisation_ref": "Operatørreferanse",
+  "parking_organisation_ref_error": "Ugyldig referanse. Bruk formatet XXX:Operator:ID.",
+  "parking_organisation_ref_helper": "Format: XXX:Operator:ID",
   "parking_parkAndRide_capacity_sub_header": "Total kapasitet",
   "parking_payment_methods": "Betalingsmetoder",
   "parking_payment_methods_banknote": "Sedler",

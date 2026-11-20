@@ -18,6 +18,7 @@ import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import { hasInvalidAvailabilityConditions } from "../../../../models/availabilityCondition";
+import { hasInvalidOrganisationRef } from "../../../../models/parkingOrganisationRef";
 import {
   isStopPlaceTypeValid,
   useHiddenStopTypes,
@@ -68,6 +69,7 @@ export const StopPlaceActionBar = ({
     hasSomethingToSave(isModified, stopPlace.hasExpired) &&
     Boolean(stopPlace.name?.trim()) &&
     !hasInvalidAvailabilityConditions(stopPlace.parking) &&
+    !hasInvalidOrganisationRef(stopPlace.parking) &&
     isStopPlaceTypeValid(stopPlace.stopPlaceType, hiddenStopTypes);
   const showDelete =
     showTerminate && canOfferTerminate(stopPlace, canEdit, canDelete);

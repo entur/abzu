@@ -908,6 +908,7 @@ helpers.changeParkingOrganisationRef = (original, payload) => {
   const { index, organisationRef } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].organisationRef = organisationRef;
+  copy.parking[index].organisationRefChanged = true;
   return copy;
 };
 

@@ -398,6 +398,8 @@
   "parking_number_of_spaces_with_recharge_point": "Latauspisteellisten paikkojen määrä",
   "parking_opening_hours": "Aukioloajat",
   "parking_organisation_ref": "Operaattorin viite",
+  "parking_organisation_ref_error": "Viite ei kelpaa. Käytä muotoa XXX:Operator:ID.",
+  "parking_organisation_ref_helper": "Muoto: XXX:Operator:ID",
   "parking_parkAndRide_capacity_sub_header": "Kokonaiskapasiteetti",
   "parking_payment_methods": "Maksutavat",
   "parking_payment_methods_banknote": "Setelit",

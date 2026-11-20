@@ -56,7 +56,7 @@ const carAndMotorcycleParkAndRide = {
   ],
 };
 
-const renderPanel = (tiamatParking: object) => {
+const renderPanel = (tiamatParking: object, clientOverrides: object = {}) => {
   const store = configureStore({ reducer: () => ({}) });
   render(
     <Provider store={store}>
@@ -65,7 +65,9 @@ const renderPanel = (tiamatParking: object) => {
           parkingIndex={0}
           stopPlace={{
             name: "Stop place",
-            parking: [new Parking(tiamatParking).toClient()],
+            parking: [
+              { ...new Parking(tiamatParking).toClient(), ...clientOverrides },
+            ],
           }}
           canEdit
           onBack={vi.fn()}
@@ -103,6 +105,60 @@ describe("ParkingPanel - operator reference", () => {
     expect(screen.getByLabelText("Operator reference")).toHaveAttribute(
       "maxlength",
       "255",
+    );
+  });
+
+  const HELPER_TEXT = "Format: XXX:Operator:ID";
+  const ERROR_TEXT = "Not a valid reference. Use the format XXX:Operator:ID.";
+  const withReference = (organisationRef: string) => ({
+    ...carAndMotorcycleParkAndRide,
+    organisationRef,
+  });
+
+  test("always shows the expected format as helper text", () => {
+    renderPanel(withReference("FSR:Operator:0201256-6"));
+
+    expect(screen.getByText(HELPER_TEXT)).toBeInTheDocument();
+    expect(screen.queryByText(ERROR_TEXT)).toBeNull();
+  });
+
+  test("shows an error when the editor changed the value to an invalid one", () => {
+    renderPanel(withReference("nonsense"), { organisationRefChanged: true });
+
+    expect(screen.getByLabelText("Operator reference")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(screen.getByText(ERROR_TEXT)).toBeInTheDocument();
+  });
+
+  test("shows no error for an invalid stored value the editor did not change", () => {
+    renderPanel(withReference("nonsense"), { organisationRefChanged: false });
+
+    expect(screen.getByLabelText("Operator reference")).toHaveAttribute(
+      "aria-invalid",
+      "false",
+    );
+    expect(screen.queryByText(ERROR_TEXT)).toBeNull();
+  });
+
+  test("shows no error when the editor changed the value to a valid one", () => {
+    renderPanel(withReference("FSR:Operator:0201256-6"), {
+      organisationRefChanged: true,
+    });
+
+    expect(screen.getByLabelText("Operator reference")).toHaveAttribute(
+      "aria-invalid",
+      "false",
+    );
+  });
+
+  test("shows no error when the editor cleared the value", () => {
+    renderPanel(withReference(""), { organisationRefChanged: true });
+
+    expect(screen.getByLabelText("Operator reference")).toHaveAttribute(
+      "aria-invalid",
+      "false",
     );
   });
 });
