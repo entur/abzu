@@ -28,21 +28,19 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import { StopPlaceActions } from "../../../../actions";
 import { capacityEntriesTotal } from "../../../../models/parkingCapacity";
 import { parkingTitleMessageId } from "../../../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
-import { useAppDispatch } from "../../../../store/hooks";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { CycleStorageFields } from "./CycleStorageFields";
 import { ParkAndRideFields } from "./ParkAndRideFields";
 import { ParkingCoveredField } from "./ParkingCoveredField";
+import { ParkingOrganisationRefField } from "./ParkingOrganisationRefField";
 import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
-const ORGANISATION_REF_MAX_LENGTH = 255;
 
 /**
  * Full parking editor panel.
@@ -68,7 +66,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onCapacityChange,
 }) => {
   const { formatMessage } = useIntl();
-  const dispatch = useAppDispatch();
 
   const parking = stopPlace.parking?.[parkingIndex];
   if (!parking) return null;
@@ -175,23 +172,11 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           fullWidth
         />
 
-        {/* Operator reference — common to every variant. A blank field is
-            saved as null, which clears the stored value. */}
-        <TextField
-          label={formatMessage({ id: "parking_organisation_ref" })}
-          value={parking.organisationRef || ""}
-          onChange={(e) =>
-            dispatch(
-              StopPlaceActions.changeParkingOrganisationRef(
-                parkingIndex,
-                e.target.value,
-              ),
-            )
-          }
+        {/* Operator reference — common to every variant */}
+        <ParkingOrganisationRefField
+          organisationRef={parking.organisationRef}
+          parkingIndex={parkingIndex}
           disabled={fieldDisabled}
-          slotProps={{ htmlInput: { maxLength: ORGANISATION_REF_MAX_LENGTH } }}
-          size="small"
-          fullWidth
         />
 
         {/* Vehicle types — read-only. Tiamat owns this field. */}
