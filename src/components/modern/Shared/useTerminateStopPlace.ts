@@ -16,10 +16,12 @@ import { useCallback } from "react";
 import { UserActions } from "../../../actions";
 import {
   deleteStopPlace,
-  getStopPlaceVersions,
+  removeStopPlaceFromMultiModalStop,
   terminateStop,
 } from "../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../store/hooks";
+import { useReloadStopPlace } from "./hooks/useReloadStopPlace";
+import { requireMutationResult } from "./requireMutationResult";
 
 export type TerminateStopPlace = (
   shouldHardDelete: boolean,
@@ -28,16 +30,32 @@ export type TerminateStopPlace = (
   dateTime: string,
 ) => Promise<void>;
 
+const NO_CHILDREN: string[] = [];
+
+const requireResult = requireMutationResult(
+  new Error("Tiamat refused the change"),
+);
+
 /**
  * Deactivates or deletes a stop place (the terminate dialog's Confirm), for
  * both the stop and the multimodal editor. Rejects when Tiamat refuses, so
- * the dialog stays open and says why: before, a failure closed nothing and
- * said nothing.
+ * the dialog stays open and says why.
+ *
+ * A multimodal parent's saved children are detached first, so they stay
+ * active as ordinary stops instead of expiring with the parent. If the
+ * deactivation then fails, the detach is already stored and the parent in
+ * the store has no children left, so a retry only deactivates.
+ *
+ * Afterwards the stop and its map surroundings are reloaded: the mutation
+ * response alone left the editor looking active and the multimodal lines on
+ * the map (F-118).
  */
 export const useTerminateStopPlace = (
   stopPlaceId: string | undefined,
+  childIdsToDetach: string[] = NO_CHILDREN,
 ): TerminateStopPlace => {
   const dispatch = useAppDispatch();
+  const reloadStopPlace = useReloadStopPlace();
 
   return useCallback(
     async (shouldHardDelete, shouldTerminatePermanently, comment, dateTime) => {
@@ -55,17 +73,27 @@ export const useTerminateStopPlace = (
         return;
       }
 
-      await dispatch(
-        terminateStop(
-          stopPlaceId,
-          shouldTerminatePermanently,
-          comment,
-          dateTime,
+      if (childIdsToDetach.length) {
+        requireResult(
+          await dispatch(
+            removeStopPlaceFromMultiModalStop(stopPlaceId, childIdsToDetach),
+          ),
+        );
+      }
+
+      requireResult(
+        await dispatch(
+          terminateStop(
+            stopPlaceId,
+            shouldTerminatePermanently,
+            comment,
+            dateTime,
+          ),
         ),
       );
-      dispatch(getStopPlaceVersions(stopPlaceId));
       dispatch(UserActions.hideDeleteStopDialog());
+      reloadStopPlace(stopPlaceId);
     },
-    [stopPlaceId, dispatch],
+    [stopPlaceId, childIdsToDetach, dispatch, reloadStopPlace],
   );
 };

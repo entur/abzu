@@ -28,6 +28,8 @@ import { useIntl } from "react-intl";
 import { DialogErrorAlert } from "./DialogErrorAlert";
 import { useDialogMutation } from "./hooks/useDialogMutation";
 import {
+  ChildrenDetachConfirm,
+  ChildToDetach,
   DateTimeSelection,
   StopPlaceInfo,
   TerminationOptions,
@@ -48,7 +50,10 @@ interface StopPlace {
   name: string;
   hasExpired?: boolean;
   isChildOfParent?: boolean;
+  isParent?: boolean;
 }
+
+const NO_CHILDREN: ChildToDetach[] = [];
 
 export interface TerminateStopPlaceDialogProps {
   open: boolean;
@@ -65,6 +70,8 @@ export interface TerminateStopPlaceDialogProps {
   isLoading?: boolean;
   serverTimeDiff: number;
   warningInfo?: WarningInfo | string;
+  /** A multimodal parent's saved children; detached before deactivating. */
+  childrenToDetach?: ChildToDetach[];
 }
 
 /**
@@ -84,6 +91,7 @@ export const TerminateStopPlaceDialog: React.FC<
   isLoading,
   serverTimeDiff,
   warningInfo,
+  childrenToDetach = NO_CHILDREN,
 }) => {
   const { formatMessage } = useIntl();
   // A rejected confirm keeps the dialog open with the reason; it used to
@@ -105,6 +113,8 @@ export const TerminateStopPlaceDialog: React.FC<
     date,
     time,
     comment,
+    isChildrenDetachConfirmed,
+    needsChildrenDetachConfirm,
     earliestFrom,
     dateTimeDisabled,
     getConfirmIsDisabled,
@@ -116,6 +126,7 @@ export const TerminateStopPlaceDialog: React.FC<
     serverTimeDiff,
     isLoading: isBusy,
     warningInfo,
+    childrenToDetachCount: childrenToDetach.length,
     handleConfirm,
   });
 
@@ -137,11 +148,25 @@ export const TerminateStopPlaceDialog: React.FC<
             hasExpired={stopPlace.hasExpired}
           />
 
-          <UsageWarning
-            warningInfo={warningInfo}
-            stopPlaceId={stopPlace.id}
-            date={date}
-          />
+          {/* A multimodal stop has no journeys of its own, and its
+              children stay active, so there is no usage to warn about. */}
+          {!stopPlace.isParent && (
+            <UsageWarning
+              warningInfo={warningInfo}
+              stopPlaceId={stopPlace.id}
+              date={date}
+            />
+          )}
+
+          {needsChildrenDetachConfirm && (
+            <ChildrenDetachConfirm
+              childrenToDetach={childrenToDetach}
+              isConfirmed={isChildrenDetachConfirmed}
+              onConfirmedChange={(isConfirmed) =>
+                setState({ ...state, isChildrenDetachConfirmed: isConfirmed })
+              }
+            />
+          )}
 
           <DateTimeSelection
             date={date}

@@ -12,9 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { StopPlaceActions, UserActions } from "../../../../../actions";
-import { useAppDispatch } from "../../../../../store/hooks";
+import { openTerminateDialogWithoutUsageCheck } from "../../../../../actions/StopPlaceActions.modern";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { useTerminateStopPlace } from "../../../Shared/useTerminateStopPlace";
 import { useParentStopPlaceSave } from "./useParentStopPlaceSave";
 
@@ -25,18 +26,13 @@ import { useParentStopPlaceSave } from "./useParentStopPlaceSave";
 export const useParentStopPlaceCRUD = (
   stopPlace: any,
   isModified: boolean,
-  activeMap: any,
   onCloseSaveDialog: () => void,
   onCloseGoBackDialog: () => void,
   onCloseUndoDialog: () => void,
 ) => {
   const dispatch = useAppDispatch();
 
-  const handleSave = useParentStopPlaceSave(
-    stopPlace,
-    activeMap,
-    onCloseSaveDialog,
-  );
+  const handleSave = useParentStopPlaceSave(stopPlace, onCloseSaveDialog);
 
   // Go back handlers
   const handleAllowUserToGoBack = useCallback(() => {
@@ -61,10 +57,11 @@ export const useParentStopPlaceCRUD = (
     dispatch(StopPlaceActions.discardChangesForEditingStop());
   }, [dispatch, onCloseUndoDialog]);
 
-  // Terminate/Delete handlers
+  /* Deactivating a parent detaches its saved children first (they stay
+     active), so no stop with journeys expires: skip the usage lookup. */
   const handleOpenTerminateDialog = useCallback(() => {
     if (stopPlace?.id) {
-      dispatch(UserActions.requestTerminateStopPlace(stopPlace.id));
+      dispatch(openTerminateDialogWithoutUsageCheck());
     }
   }, [stopPlace, dispatch]);
 
@@ -72,7 +69,14 @@ export const useParentStopPlaceCRUD = (
     dispatch(UserActions.hideDeleteStopDialog());
   }, [dispatch]);
 
-  const handleTerminate = useTerminateStopPlace(stopPlace?.id);
+  const savedChildren = useAppSelector(
+    (state) => (state.stopPlace as any).originalCurrent?.children,
+  ) as { id: string }[] | undefined;
+  const savedChildIds = useMemo(
+    () => (savedChildren ?? []).map((child) => child.id),
+    [savedChildren],
+  );
+  const handleTerminate = useTerminateStopPlace(stopPlace?.id, savedChildIds);
 
   return {
     handleSave,

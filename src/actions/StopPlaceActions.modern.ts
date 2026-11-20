@@ -128,3 +128,16 @@ export const setMarkerOnMap =
     const urlParam = URL_PARAM_BY_ENTITY[data.entityType];
     if (urlParam) replaceQueryParam(urlParam, data.id);
   };
+
+/**
+ * Opens the deactivate dialog without the journey-usage lookup that
+ * UserActions.requestTerminateStopPlace starts. Used for multimodal parents:
+ * their children are detached first and stay active, so no stop that has
+ * journeys expires.
+ */
+export const openTerminateDialogWithoutUsageCheck =
+  () =>
+  (dispatch: AppDispatch): void => {
+    dispatch(createThunk(types.TERMINATE_DELETE_STOP_DIALOG, null));
+    dispatch(createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, null));
+  };

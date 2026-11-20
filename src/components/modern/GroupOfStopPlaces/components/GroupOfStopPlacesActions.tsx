@@ -32,13 +32,15 @@ export const GroupOfStopPlacesActions: React.FC<
   canDelete,
   hasName,
   hasMembers,
+  hasPurpose,
   onRemove,
   onUndo,
   onSave,
 }) => {
   const { formatMessage } = useIntl();
 
-  const isSaveDisabled = !isModified || !hasName || !hasMembers || !canEdit;
+  const isSaveDisabled =
+    !isModified || !hasName || !hasMembers || !hasPurpose || !canEdit;
   const isUndoDisabled = !isModified || !canEdit;
 
   return (

@@ -17,9 +17,6 @@ import { UserActions } from "../../../../../actions";
 import {
   addToMultiModalStopPlace,
   createParentStopPlace,
-  getNeighbourStops,
-  getStopPlaceVersions,
-  getStopPlaceWithAll,
   removeStopPlaceFromMultiModalStop,
   saveParentStopPlace,
   savePathLink,
@@ -28,12 +25,37 @@ import { MutationErrorCodes } from "../../../../../models/ErrorCodes";
 import mapToMutationVariables from "../../../../../modelUtils/mapToQueryVariables";
 import { shouldMutatePathLinks } from "../../../../../modelUtils/shouldMutate";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { useReloadStopPlace } from "../../../Shared/hooks/useReloadStopPlace";
+import { requireMutationResult } from "../../../Shared/requireMutationResult";
 import { findStagedChildChanges } from "../../utils/stagedChildChanges";
 
 /** Rejects with a MutationErrorCodes value so SaveDialog can show it. */
 const failWith = (errorCode: string) => () => {
   throw errorCode;
 };
+
+/* A refusal from Tiamat resolves empty; without this the save carried on
+   and closed as if it had worked. */
+const requireSaved = requireMutationResult(MutationErrorCodes.ERROR_STOP_PLACE);
+
+interface ParentStopVariables {
+  children?: { id?: string }[];
+}
+
+/**
+ * The attach mutation has already added newly attached children. Sending
+ * them again in the parent save sent their quays with `geometry: null`,
+ * which only worked because Tiamat ignores the nulls (F-36).
+ */
+const withoutAttachedChildren = <Variables extends ParentStopVariables>(
+  variables: Variables,
+  attachedChildIds: string[],
+): Variables => ({
+  ...variables,
+  children: (variables.children ?? []).filter(
+    (child) => !child.id || !attachedChildIds.includes(child.id),
+  ),
+});
 
 export type ParentStopPlaceSaveHandler = (userInput: {
   comment: string;
@@ -48,7 +70,6 @@ export type ParentStopPlaceSaveHandler = (userInput: {
  */
 export const useParentStopPlaceSave = (
   stopPlace: any,
-  activeMap: any,
   onCloseSaveDialog: () => void,
 ): ParentStopPlaceSaveHandler => {
   const dispatch = useAppDispatch();
@@ -72,14 +93,7 @@ export const useParentStopPlaceSave = (
     );
   }, [dispatch, pathLink, originalPathLink]);
 
-  const reloadAfterSave = useCallback(
-    (id: string) => {
-      dispatch(getStopPlaceVersions(id));
-      dispatch(getNeighbourStops(id, activeMap?.getBounds()));
-      dispatch(getStopPlaceWithAll(id));
-    },
-    [dispatch, activeMap],
-  );
+  const reloadAfterSave = useReloadStopPlace();
 
   const createParent = useCallback(
     async (userInput: { comment: string }) => {
@@ -105,24 +119,26 @@ export const useParentStopPlaceSave = (
         originalStopPlace?.children,
         stopPlace.children,
       );
-      const variables = mapToMutationVariables.mapParentStopToVariables(
-        stopPlace,
-        userInput,
+      const variables = withoutAttachedChildren(
+        mapToMutationVariables.mapParentStopToVariables(stopPlace, userInput),
+        childrenToAdd,
       );
 
       if (childrenToAdd.length) {
-        await dispatch(addToMultiModalStopPlace(parentId, childrenToAdd)).catch(
-          failWith(MutationErrorCodes.ERROR_STOP_PLACE),
-        );
+        await dispatch(addToMultiModalStopPlace(parentId, childrenToAdd))
+          .catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE))
+          .then(requireSaved);
       }
       if (childrenToRemove.length) {
         await dispatch(
           removeStopPlaceFromMultiModalStop(parentId, childrenToRemove),
-        ).catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE));
+        )
+          .catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE))
+          .then(requireSaved);
       }
-      await dispatch(saveParentStopPlace(variables)).catch(
-        failWith(MutationErrorCodes.ERROR_STOP_PLACE),
-      );
+      await dispatch(saveParentStopPlace(variables))
+        .catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE))
+        .then(requireSaved);
       await savePathLinkIfNeeded();
 
       onCloseSaveDialog();

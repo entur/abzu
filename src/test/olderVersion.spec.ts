@@ -30,6 +30,18 @@ describe("isOlderVersion (F-42)", () => {
     expect(isOlderVersion({ version: "6" }, [])).toBe(false);
   });
 
+  test("a stop newer than every listed version is not older", () => {
+    // Tiamat leaves a multimodal stop's childless versions out of its
+    // version list, so a just-deactivated one is newer than the list.
+    expect(isOlderVersion({ version: "16" }, VERSIONS)).toBe(false);
+  });
+
+  test("the list order doesn't matter", () => {
+    const oldestFirst = [...VERSIONS].reverse();
+    expect(isOlderVersion({ version: "14" }, oldestFirst)).toBe(false);
+    expect(isOlderVersion({ version: "13" }, oldestFirst)).toBe(true);
+  });
+
   test("child stops are versioned through their parent", () => {
     expect(
       isOlderVersion({ version: "6", isChildOfParent: true }, VERSIONS),

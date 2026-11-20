@@ -42,6 +42,7 @@ import { QuayPanelProps } from "../types";
 import { BoardingPositionsTab } from "./BoardingPositionsTab";
 import { KeyValuesTab } from "./KeyValuesTab";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
+import { TEXT_FIELD_MAX_LENGTH } from "../../Shared/fieldLimits";
 import { getQuayTitle } from "../../Shared/quayLabels";
 
 /**
@@ -229,6 +230,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
                 value={quay.publicCode || ""}
                 onChange={(e) => onPublicCodeChange(quayIndex, e.target.value)}
                 disabled={!canEdit}
+                slotProps={{ htmlInput: { maxLength: TEXT_FIELD_MAX_LENGTH } }}
                 size="small"
                 sx={{ flex: 1 }}
               />
@@ -237,6 +239,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
                 value={privateCodeValue}
                 onChange={(e) => onPrivateCodeChange(quayIndex, e.target.value)}
                 disabled={!canEdit}
+                slotProps={{ htmlInput: { maxLength: TEXT_FIELD_MAX_LENGTH } }}
                 size="small"
                 sx={{ flex: 1 }}
               />

@@ -19,6 +19,7 @@ import {
   deleteGroupOfStopPlaces,
   mutateGroupOfStopPlace,
 } from "../../../../actions/TiamatActions.modern";
+import { addMembersToGroup } from "../../../../actions/StopPlacesGroupActions.modern";
 import * as types from "../../../../actions/Types";
 import mapHelper from "../../../../modelUtils/mapToQueryVariables";
 import Routes from "../../../../routes/";
@@ -122,7 +123,7 @@ export const useEditGroupOfStopPlaces = (): UseEditGroupOfStopPlacesReturn => {
 
   // Member handlers
   const handleAddMembers = (memberIds: string[]) => {
-    dispatch(StopPlacesGroupActions.addMembersToGroup(memberIds));
+    dispatch(addMembersToGroup(memberIds));
   };
 
   const handleRemoveMember = (stopPlaceId: string) => {

@@ -30,7 +30,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
-import { UserActions } from "../../actions/";
+import { StopPlaceActions, UserActions } from "../../actions/";
 import { getEnvColor, getLogo, getTiamatEnv } from "../../config/themeConfig";
 import {
   toggleShowFareZonesInMap,
@@ -104,6 +104,11 @@ class Header extends React.Component {
       case "GoToChangelog":
         this.goToChangelog();
         break;
+      case "SwitchToModernUi":
+        // The store outlives the switch: don't open the edits in the modern UI.
+        this.props.dispatch(StopPlaceActions.discardChangesForEditingStop());
+        this.switchToModernUi();
+        break;
       default:
         console.info("Invalid action", actionOnDone, " ignored");
         break;
@@ -133,6 +138,10 @@ class Header extends React.Component {
       );
       this.props.auth.login();
     }
+  }
+
+  switchToModernUi() {
+    this.props.dispatch(UserActions.changeUIMode("modern"));
   }
 
   goToReports() {
@@ -500,7 +509,10 @@ class Header extends React.Component {
                     width: 300,
                   }}
                   onClick={() =>
-                    this.props.dispatch(UserActions.changeUIMode("modern"))
+                    this.handleConfirmChangeRoute(
+                      () => this.switchToModernUi(),
+                      "SwitchToModernUi",
+                    )
                   }
                 >
                   <MdSettings color="#41c0c4" />

@@ -107,7 +107,7 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
 
       {/* Name */}
       <TextField
-        label={`${formatMessage({ id: "name" })} *`}
+        label={formatMessage({ id: "name" })}
         value={name}
         onChange={(e) => onNameChange(e.target.value)}
         disabled={!canEdit}

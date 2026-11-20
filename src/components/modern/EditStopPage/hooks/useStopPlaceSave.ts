@@ -63,11 +63,18 @@ export const useStopPlaceSave = (
   const originalStopPlace = useAppSelector(
     (state) => (state.stopPlace as any).originalCurrent,
   );
+  const showExpiredStops = useAppSelector(
+    (state) => (state.stopPlace as any).showExpiredStops as boolean,
+  );
 
   const reloadAfterSave = useCallback(
     (id: string, wasNewStop: boolean) => {
       dispatch(getStopPlaceVersions(id));
-      dispatch(getNeighbourStops(id, activeMap?.getBounds()));
+      if (activeMap) {
+        dispatch(
+          getNeighbourStops(id, activeMap.getBounds(), showExpiredStops),
+        );
+      }
       if (wasNewStop) {
         /* Move off /stop_place/new so reload and shared links work (F-22);
            the route loader then fetches the saved stop. */
@@ -78,7 +85,7 @@ export const useStopPlaceSave = (
       }
       dispatch(getStopPlaceWithAll(id));
     },
-    [dispatch, activeMap],
+    [dispatch, activeMap, showExpiredStops],
   );
 
   return useCallback(
