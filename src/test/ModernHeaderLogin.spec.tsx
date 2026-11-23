@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ModernHeader } from "../components/modern/Header/ModernHeader";
 
@@ -69,7 +70,11 @@ describe("ModernHeader login", () => {
 
   it("stores the return path without the base path and keeps the query", () => {
     window.history.pushState({}, "", "/ui/stop_place/X?tab=1");
-    render(<ModernHeader config={{}} />);
+    render(
+      <MemoryRouter>
+        <ModernHeader config={{}} />
+      </MemoryRouter>,
+    );
 
     fireEvent.click(screen.getByText(LOGIN_BUTTON_LABEL));
 

@@ -13,24 +13,22 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useCallback, useEffect, useRef } from "react";
-import AppRoutes from "../../../../routes";
-import { useAppSelector } from "../../../../store/hooks";
+import { useLocation } from "react-router-dom";
+import { REPORTS_ROUTE } from "./useIsReportsRoute";
 
-const REPORTS_LOCATION = `/${AppRoutes.REPORTS}`;
+const REPORTS_LOCATION = REPORTS_ROUTE;
 
 /**
  * Remembers the last Reports URL, including its search, so the Reports tab
  * brings the user back to the same query and filters after opening a stop
  * from the results (F-65). Mirrors useLastMapLocation.
  *
- * Returns a getter, so the click handler reads the latest value without
- * re-rendering the header.
+ * The stored path is relative to the router base path, so it can be passed
+ * straight to the router's navigate. Returns a getter, so the click handler
+ * reads the latest value without re-rendering the header.
  */
 export const useLastReportsLocation = (): (() => string) => {
-  const { pathname, search } = useAppSelector(
-    (state: any) =>
-      state.router.location as { pathname: string; search: string },
-  );
+  const { pathname, search } = useLocation();
   const lastReportsLocationRef = useRef(REPORTS_LOCATION);
 
   useEffect(() => {
