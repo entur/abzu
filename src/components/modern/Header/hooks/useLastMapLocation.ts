@@ -13,33 +13,36 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useCallback, useEffect, useRef } from "react";
+import { matchPath, useLocation } from "react-router-dom";
 import AppRoutes from "../../../../routes";
-import { useAppSelector } from "../../../../store/hooks";
 
-const REPORTS_PATHNAME = `/${AppRoutes.REPORTS}`;
 const MAP_OVERVIEW_LOCATION = "/";
+const MAP_ROUTE_PATTERNS = [
+  MAP_OVERVIEW_LOCATION,
+  `/${AppRoutes.STOP_PLACE}/:stopId`,
+  `/${AppRoutes.GROUP_OF_STOP_PLACE}/:groupId`,
+];
 
-interface RouterLocation {
-  pathname: string;
-  search: string;
-}
+const isMapRoute = (pathname: string): boolean =>
+  MAP_ROUTE_PATTERNS.some((pattern) => matchPath(pattern, pathname) !== null);
 
 /**
  * Remembers the last route that sits on top of the map — the overview, a stop
  * place or a group — so the Map tab can return to it from Reports instead of
- * always landing on the bare overview with the editor panel gone.
+ * always landing on the bare overview with the editor panel gone. Any other
+ * route leaves the remembered location unchanged.
  *
- * Returns a getter rather than the value, so the click handler reads the
- * location recorded by the latest effect without re-rendering the header.
+ * The stored path is relative to the router base path, so it can be passed
+ * straight to the router's navigate. Returns a getter rather than the value,
+ * so the click handler reads the location recorded by the latest effect
+ * without re-rendering the header.
  */
 export const useLastMapLocation = (): (() => string) => {
-  const { pathname, search } = useAppSelector(
-    (state: any) => state.router.location as RouterLocation,
-  );
+  const { pathname, search } = useLocation();
   const lastMapLocationRef = useRef(MAP_OVERVIEW_LOCATION);
 
   useEffect(() => {
-    if (pathname === REPORTS_PATHNAME) return;
+    if (!isMapRoute(pathname)) return;
     lastMapLocationRef.current = pathname + search;
   }, [pathname, search]);
 

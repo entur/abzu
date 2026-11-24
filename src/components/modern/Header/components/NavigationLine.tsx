@@ -16,9 +16,8 @@ import { Map, Report } from "@mui/icons-material";
 import { alpha, Box, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import AppRoutes from "../../../../routes";
-import { useAppSelector } from "../../../../store/hooks";
 import { NAVIGATION_LINE_HEIGHT } from "../headerMetrics";
+import { useIsReportsRoute } from "../hooks/useIsReportsRoute";
 import { navigationPillSx } from "./navigationPillSx";
 import { NavigationUiModeSwitch } from "./NavigationUiModeSwitch";
 
@@ -48,14 +47,11 @@ export const NavigationLine: React.FC<NavigationLineProps> = ({
   onNavigateToReports,
 }) => {
   const { formatMessage } = useIntl();
-  const pathname = useAppSelector(
-    (state: any) => state.router.location.pathname,
-  );
+  const isReportsRoute = useIsReportsRoute();
 
   // Editor routes sit on top of the map, so they keep the map tab lit rather
   // than leaving the strip with nothing selected.
-  const activeTab =
-    pathname === `/${AppRoutes.REPORTS}` ? REPORTS_TAB : MAIN_TAB;
+  const activeTab = isReportsRoute ? REPORTS_TAB : MAIN_TAB;
 
   const handleTabChange = (
     _event: React.SyntheticEvent,
