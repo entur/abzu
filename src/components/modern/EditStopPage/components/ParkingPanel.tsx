@@ -62,7 +62,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onBack,
   onDelete,
   onNameChange,
-  onTypeChange,
   onCapacityChange,
 }) => {
   const { formatMessage } = useIntl();
@@ -180,8 +179,9 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           disabled={fieldDisabled}
         />
 
-        {/* Vehicle types — read-only. Tiamat owns this field. */}
-        {vehicleTypeLabels.length > 0 && (
+        {/* Vehicle types — read-only. Tiamat owns this field. A single
+            type only repeats the parking type, and read as a menu (F-120). */}
+        {vehicleTypeLabels.length > 1 && (
           <TextField
             label={formatMessage({ id: "parking_vehicle_types" })}
             value={vehicleTypeLabels.join(", ")}

@@ -245,7 +245,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleQuayCompassBearingChange,
     handleDeleteParking,
     handleParkingNameChange,
-    handleParkingTypeChange,
     handleParkingCapacityChange,
   } = useEditStopPage();
 
@@ -347,7 +346,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           }
           onDelete={handleDeleteParking}
           onNameChange={handleParkingNameChange}
-          onTypeChange={handleParkingTypeChange}
           onCapacityChange={handleParkingCapacityChange}
         />,
       );

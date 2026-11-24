@@ -258,7 +258,6 @@ export interface ParkingPanelProps {
   onBack: () => void;
   onDelete: (index: number) => void;
   onNameChange: (index: number, value: string) => void;
-  onTypeChange: (index: number, value: string) => void;
   onCapacityChange: (index: number, value: string) => void;
 }
 
@@ -419,6 +418,5 @@ export interface UseEditStopPageReturn {
   // Parking handlers
   handleDeleteParking: (index: number) => void;
   handleParkingNameChange: (index: number, value: string) => void;
-  handleParkingTypeChange: (index: number, value: string) => void;
   handleParkingCapacityChange: (index: number, value: string) => void;
 }

@@ -145,7 +145,6 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleDeleteParking,
     handleConfirmDeleteParking,
     handleParkingNameChange,
-    handleParkingTypeChange,
     handleParkingCapacityChange,
   } = useStopPlaceParking(
     stopPlace,
@@ -236,7 +235,6 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
 
     handleDeleteParking,
     handleParkingNameChange,
-    handleParkingTypeChange,
     handleParkingCapacityChange,
   };
 };

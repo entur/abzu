@@ -65,7 +65,6 @@ const renderPanel = (tiamatParking: object, canEdit = true) => {
           onBack={vi.fn()}
           onDelete={vi.fn()}
           onNameChange={vi.fn()}
-          onTypeChange={vi.fn()}
           onCapacityChange={vi.fn()}
         />
       </IntlProvider>
