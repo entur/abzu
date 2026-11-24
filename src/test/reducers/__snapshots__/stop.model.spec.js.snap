@@ -247,6 +247,7 @@ exports[`Model: map format from server to expected client model > should map par
       "lang": "nor",
       "value": "park&ride example",
     },
+    "organisationRef": null,
     "parentSiteRef": "NSR:StopPlace:1",
     "parkingVehicleTypes": [
       "car",

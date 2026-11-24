@@ -18,9 +18,8 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
-import { push } from "redux-first-history";
+import { useNavigate } from "react-router-dom";
 import { UserActions } from "../../../actions";
-import AppRoutes from "../../../routes";
 import { useAuth } from "../../../auth/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { stripBasePath } from "../../../utils/stripBasePath";
@@ -46,6 +45,7 @@ import {
   UserSection,
 } from "./components";
 import { useHeaderSlotContent } from "./HeaderSlotContext";
+import { useIsReportsRoute } from "./hooks/useIsReportsRoute";
 import { useLastMapLocation } from "./hooks/useLastMapLocation";
 import { useLastReportsLocation } from "./hooks/useLastReportsLocation";
 
@@ -69,10 +69,10 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const getLastMapLocation = useLastMapLocation();
   const getLastReportsLocation = useLastReportsLocation();
 
-  const pathname = useSelector((state: any) => state.router.location.pathname);
+  const navigate = useNavigate();
   const confirmLeave = useConfirmLeave();
 
-  const isDisplayingReports = pathname === `/${AppRoutes.REPORTS}`;
+  const isDisplayingReports = useIsReportsRoute();
   const preferredName = useSelector((state: any) => state.user.preferredName);
 
   const goToMain = () => {
@@ -81,14 +81,15 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
 
   /* Switching between the map and Reports is a tab change, not "go home":
      pushing the route directly skips the NAVIGATE_TO reset, so the map
-     position and the open stop place or group survive the round trip. */
+     position and the open stop place or group survive the round trip. The
+     router adds the deployment base path to the target. */
   const goToReports = () => {
     // Back to the last report search, not a blank Reports page (F-65).
-    dispatch(push(getLastReportsLocation()));
+    navigate(getLastReportsLocation());
   };
 
   const returnToMap = () => {
-    dispatch(push(getLastMapLocation()));
+    navigate(getLastMapLocation());
   };
 
   const handleLogin = () => {

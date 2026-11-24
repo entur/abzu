@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { hasExpired } from "../modelUtils/validBetween";
 import { getIn } from "../utils/";
 import { withLegacyCapacityFields } from "./parkingCapacity";
+import { availabilityConditionToRow } from "./availabilityCondition";
 import PARKING_TYPE from "./parkingType";
 import PARKING_VEHICLE_TYPE from "./parkingVehicleType";
 
@@ -103,12 +104,20 @@ class Parking {
       secure: parking.secure,
       lighting: parking.lighting,
       covered: parking.covered,
+      organisationRef: parking.organisationRef,
+      organisationRefChanged: false,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
       validBetween: parking.validBetween,
       accessibilityAssessment: parking.accessibilityAssessment,
       parkingProperties: parking.parkingProperties,
+      availabilityConditions: parking.availabilityConditions?.map(
+        availabilityConditionToRow,
+      ),
+      availabilityConditionsChanged: false,
+      placeEquipments: parking.placeEquipments ?? null,
+      placeEquipmentsChanged: false,
     };
     let coordinates = getIn(parking, ["geometry", "coordinates"], null);
 

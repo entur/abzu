@@ -17,6 +17,7 @@ import {
   AccessibilityLimitationType,
   defaultLimitations,
 } from "../models/AccessibilityLimitation";
+import { availabilityConditionToInput } from "../models/availabilityCondition";
 import PARKING_USER_TYPE from "../models/parkingUserType";
 import {
   netexifyBoardingPositions,
@@ -400,6 +401,52 @@ helpers.toCount = (value) => {
   return isNaN(count) ? null : count;
 };
 
+helpers.cycleStorageToInput = (entry) => {
+  const input = {};
+
+  if (entry.id) {
+    input.id = entry.id;
+  }
+
+  if (entry.cycleStorageType) {
+    input.cycleStorageType = entry.cycleStorageType;
+  }
+
+  const numberOfSpaces = helpers.toCount(entry.numberOfSpaces);
+
+  if (numberOfSpaces !== null) {
+    input.numberOfSpaces = numberOfSpaces;
+  }
+
+  return input;
+};
+
+// Every kind that holds an entry goes back as it came, with its ids, so the
+// replace keeps it. Cycle storage always goes, even when empty, because an
+// empty list is how the editor removes the last entry.
+helpers.placeEquipmentsToInput = (placeEquipments) => {
+  const { id, cycleStorageEquipment, ...kinds } = JSON.parse(
+    JSON.stringify(placeEquipments),
+  );
+  const input = {};
+
+  if (id) {
+    input.id = id;
+  }
+
+  Object.entries(kinds).forEach(([kind, entries]) => {
+    if (Array.isArray(entries) && entries.length > 0) {
+      input[kind] = entries;
+    }
+  });
+
+  input.cycleStorageEquipment = (cycleStorageEquipment || []).map(
+    helpers.cycleStorageToInput,
+  );
+
+  return input;
+};
+
 helpers.mapParkingToVariables = (parkingArr, parentRef) => {
   return parkingArr.map((source) => {
     let parking = {
@@ -439,6 +486,15 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
     // An empty value is sent as null so that Tiamat clears the stored value.
     parking.covered = source.covered || null;
+
+    // Tiamat stores an empty string as a reference, so a blank value is not
+    // sent as it is.
+    const organisationRef =
+      typeof source.organisationRef === "string"
+        ? source.organisationRef.trim()
+        : "";
+    // A blank reference is sent as null so that Tiamat clears the stored value.
+    parking.organisationRef = organisationRef || null;
 
     const capacityEntries = source.capacityEntries || [];
     const storedSpaces = source.parkingProperties?.[0]?.spaces || [];
@@ -503,6 +559,28 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
           JSON.parse(JSON.stringify(source.accessibilityAssessment)),
         )
       : source.accessibilityAssessment;
+
+    // Tiamat replaces the whole set of equipment when the input carries one,
+    // and keeps the stored set when the input omits it. Send the set only
+    // after a cycle storage edit, so a save never rewrites equipment the
+    // editor did not touch.
+    if (source.placeEquipmentsChanged && source.placeEquipments) {
+      parking.placeEquipments = helpers.placeEquipmentsToInput(
+        source.placeEquipments,
+      );
+    }
+
+    // Tiamat replaces its whole list when the input carries one, and keeps the
+    // stored list when the input omits it. Send the list only after an edit,
+    // so a save never rewrites hours the editor did not touch.
+    if (
+      source.availabilityConditionsChanged &&
+      Array.isArray(source.availabilityConditions)
+    ) {
+      parking.availabilityConditions = source.availabilityConditions.map(
+        availabilityConditionToInput,
+      );
+    }
 
     helpers.removeTypeNameRecursively(parking);
 

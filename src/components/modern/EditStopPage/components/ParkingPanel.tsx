@@ -33,8 +33,11 @@ import { parkingTitleMessageId } from "../../../../models/parkingType";
 import { parkingVehicleTypeLabel } from "../../../../models/parkingVehicleType";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
+import { CycleStorageFields } from "./CycleStorageFields";
 import { ParkAndRideFields } from "./ParkAndRideFields";
 import { ParkingCoveredField } from "./ParkingCoveredField";
+import { ParkingOrganisationRefField } from "./ParkingOrganisationRefField";
+import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
@@ -169,9 +172,16 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           fullWidth
         />
 
-        {/* Vehicle types — read-only. Tiamat owns this field. A single
-            type only repeats the parking type, and read as a menu (F-120). */}
-        {vehicleTypeLabels.length > 1 && (
+        {/* Operator reference — common to every variant */}
+        <ParkingOrganisationRefField
+          organisationRef={parking.organisationRef}
+          organisationRefChanged={parking.organisationRefChanged}
+          parkingIndex={parkingIndex}
+          disabled={fieldDisabled}
+        />
+
+        {/* Vehicle types — read-only. Tiamat owns this field. */}
+        {vehicleTypeLabels.length > 0 && (
           <TextField
             label={formatMessage({ id: "parking_vehicle_types" })}
             value={vehicleTypeLabels.join(", ")}
@@ -216,6 +226,18 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             />
           </Box>
         )}
+
+        <OpeningHoursFields
+          parking={parking}
+          parkingIndex={parkingIndex}
+          fieldDisabled={fieldDisabled}
+        />
+
+        <CycleStorageFields
+          parking={parking}
+          parkingIndex={parkingIndex}
+          disabled={fieldDisabled}
+        />
       </Box>
 
       {/* Footer, only with something in it: an empty one left a blank band

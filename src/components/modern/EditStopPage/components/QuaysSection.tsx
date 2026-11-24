@@ -16,7 +16,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Box, Chip, Collapse, Divider, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -25,6 +25,7 @@ import {
   DirtyBadge,
   useElementStatusEnabled,
 } from "../../Shared/ElementStatus";
+import { useScrollToReturnedRow } from "../hooks/useScrollToReturnedRow";
 import { QuaysSectionProps } from "../types";
 
 import { QuayItem } from "./QuayItem";
@@ -32,6 +33,10 @@ import { QuayItem } from "./QuayItem";
 export const QuaysSection: React.FC<QuaysSectionProps> = ({
   quays,
   canEdit,
+  expanded,
+  onExpandedChange,
+  scrollToIndex,
+  onScrolled,
   onDeleteQuay,
   onNavigateToQuay,
 }) => {
@@ -47,8 +52,7 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
       (state.stopPlace as any).originalCurrent?.quays as
         typeof quays | undefined,
   );
-  const [expanded, setExpanded] = useState(false);
-
+  const returnedRowRef = useScrollToReturnedRow(scrollToIndex, onScrolled);
   // Ghost rows for staged deletions come from the original snapshot, so the list
   // shows what will happen on save rather than silently dropping the row.
   const entries = buildElementListEntries(quays, originalQuays);
@@ -61,7 +65,7 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
 
   const handleToggle = () => {
     if (expanded) dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
-    setExpanded((v) => !v);
+    onExpandedChange(!expanded);
   };
 
   return (
@@ -105,6 +109,11 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
             index={entry.index ?? position}
             canEdit={canEdit}
             status={entry.status}
+            rowRef={
+              entry.index !== null && entry.index === scrollToIndex
+                ? returnedRowRef
+                : undefined
+            }
             focused={
               entry.index !== null &&
               focusedElement?.type === "quay" &&

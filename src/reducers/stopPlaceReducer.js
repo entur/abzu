@@ -762,6 +762,15 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.CHANGED_PARKING_ORGANISATION_REF:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingOrganisationRef(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.CHANGED_PARKING_PAYMENT_PROCESS:
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingPaymentProcess(
@@ -844,6 +853,33 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.ADDED_PARKING_CYCLE_STORAGE:
+      return Object.assign({}, state, {
+        current: formatHelpers.addParkingCycleStorage(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_PARKING_CYCLE_STORAGE:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingCycleStorage(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.REMOVED_PARKING_CYCLE_STORAGE:
+      return Object.assign({}, state, {
+        current: formatHelpers.removeParkingCycleStorage(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.CLEARED_PARKING_RECHARGE_POINT_COUNTS:
       return Object.assign({}, state, {
         current: formatHelpers.clearParkingRechargePointCounts(
@@ -865,6 +901,33 @@ const stopPlaceReducer = (state = initialState, action) => {
     case types.CHANGED_PARKING_ACCESSIBILITY_ASSESSMENT:
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingAccessibilityAssessment(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.ADDED_PARKING_AVAILABILITY_CONDITION:
+      return Object.assign({}, state, {
+        current: formatHelpers.addParkingAvailabilityCondition(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_PARKING_AVAILABILITY_CONDITION:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingAvailabilityCondition(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.REMOVED_PARKING_AVAILABILITY_CONDITION:
+      return Object.assign({}, state, {
+        current: formatHelpers.removeParkingAvailabilityCondition(
           state.current,
           action.payload,
         ),

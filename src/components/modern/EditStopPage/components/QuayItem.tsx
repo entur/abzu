@@ -39,6 +39,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
   focused,
   onDelete,
   onNavigate,
+  rowRef,
   status = "unchanged",
 }) => {
   const { formatMessage } = useIntl();
@@ -50,6 +51,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
 
   return (
     <Box
+      ref={rowRef}
       sx={{
         display: "flex",
         alignItems: "center",

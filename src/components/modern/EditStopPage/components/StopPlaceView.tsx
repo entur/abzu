@@ -45,6 +45,10 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
   stopName,
   activeTab,
   onTabChange,
+  openLists,
+  onOpenListsChange,
+  returnTarget,
+  onReturnTargetScrolled,
   canEdit,
   canDelete,
   isModified,
@@ -107,6 +111,12 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
             <QuaysSection
               quays={stopPlace.quays || []}
               canEdit={canEdit}
+              expanded={openLists.quays}
+              onExpandedChange={(quays) => onOpenListsChange({ quays })}
+              scrollToIndex={
+                returnTarget?.type === "quay" ? returnTarget.index : null
+              }
+              onScrolled={onReturnTargetScrolled}
               onDeleteQuay={onDeleteQuay}
               onNavigateToQuay={(index) =>
                 dispatch(StopPlaceActions.setElementFocus(index, "quay"))
@@ -115,6 +125,12 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
             <ParkingSection
               parking={stopPlace.parking || []}
               canEdit={canEdit}
+              expanded={openLists.parking}
+              onExpandedChange={(parking) => onOpenListsChange({ parking })}
+              scrollToIndex={
+                returnTarget?.type === "parking" ? returnTarget.index : null
+              }
+              onScrolled={onReturnTargetScrolled}
               onDeleteParking={onDeleteParking}
               onNavigateToParking={(index) => {
                 // The focus type is an internal enum with two values. It

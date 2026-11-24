@@ -18,7 +18,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
-import { Route, Routes, useMatch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { StopPlaceActions, UserActions } from "../../actions";
 import { fetchUserPermissions, updateAuth } from "../../actions/UserActions";
@@ -26,6 +26,7 @@ import { useAuth } from "../../auth/auth";
 import GlobalLoadingIndicator from "../../components/GlobalLoadingIndicator";
 import LocalLoadingIndicator from "../../components/LocalLoadingIndicator";
 import { HeaderSlotProvider } from "../../components/modern/Header/HeaderSlotContext";
+import { useIsReportsRoute } from "../../components/modern/Header/hooks/useIsReportsRoute";
 import { ModernHeader } from "../../components/modern/Header/ModernHeader";
 import { ModernEditStopMap } from "../../components/modern/Map/ModernEditStopMap";
 import SnackbarWrapper from "../../components/SnackbarWrapper";
@@ -49,12 +50,12 @@ import { StopPlaces } from "./StopPlaces";
  * the camera and loaded tiles survive a visit to Reports. It is hidden there
  * with `visibility` rather than `display`: the canvas keeps its size, so
  * MapLibre needs no resize when it shows again, and hidden elements take no
- * pointer events. Lives inside <Router> so useMatch is available.
+ * pointer events. Lives inside <Router> so the route hooks are available.
  */
 const PersistentMap = () => {
-  const matchReports = useMatch(`/${AppRoutes.REPORTS}`);
+  const isReportsRoute = useIsReportsRoute();
   return (
-    <Box sx={{ visibility: matchReports ? "hidden" : "visible" }}>
+    <Box sx={{ visibility: isReportsRoute ? "hidden" : "visible" }}>
       <ModernEditStopMap />
     </Box>
   );
@@ -146,10 +147,12 @@ const App: React.FC<ModernAppProps> = () => {
   const appShell = (
     <UnsavedChangesGuard>
       <div>
-        <ModernHeader config={config} />
-        <GlobalLoadingIndicator />
-        <LocalLoadingIndicator />
+        {/* The header sits inside the router, so its route hooks see paths
+            without the base path. */}
         <Router basename={basename} history={history}>
+          <ModernHeader config={config} />
+          <GlobalLoadingIndicator />
+          <LocalLoadingIndicator />
           {/* Around the map and the editors: both can refuse a position. */}
           <MapNoticeProvider>
             {/* Persistent map: mounted once, never torn down on route changes */}
@@ -167,8 +170,8 @@ const App: React.FC<ModernAppProps> = () => {
               <Route path={path + AppRoutes.REPORTS} element={<ReportPage />} />
             </Routes>
           </MapNoticeProvider>
+          <SnackbarWrapper />
         </Router>
-        <SnackbarWrapper />
       </div>
     </UnsavedChangesGuard>
   );

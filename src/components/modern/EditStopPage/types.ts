@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import type { Ref } from "react";
+import { AvailabilityConditionRow } from "../../../models/availabilityCondition";
 import { ElementChangeStatus } from "../Shared/ElementStatus";
 
 // --- Core domain types ---
@@ -67,6 +69,12 @@ export interface CapacityEntry {
   isNew?: boolean;
 }
 
+export interface CycleStorageEntry {
+  id?: string;
+  cycleStorageType?: string | null;
+  numberOfSpaces?: number | string | null;
+}
+
 export interface Parking {
   id?: string;
   name?: string;
@@ -80,10 +88,18 @@ export interface Parking {
   secure?: boolean | null;
   lighting?: string | null;
   covered?: string | null;
+  organisationRef?: string | null;
+  organisationRefChanged?: boolean;
   totalCapacity?: number | string | null;
   parkingVehicleTypes?: string[];
   capacityEntries?: CapacityEntry[];
   parkingProperties?: { spaces?: Partial<CapacityEntry>[] | null }[] | null;
+  /** Every equipment kind as loaded. The editor changes cycle storage only. */
+  placeEquipments?: {
+    id?: string;
+    cycleStorageEquipment?: CycleStorageEntry[] | null;
+  } | null;
+  placeEquipmentsChanged?: boolean;
   hasExpired?: boolean;
   validBetween?: ValidBetween;
   accessibilityAssessment?: {
@@ -92,6 +108,8 @@ export interface Parking {
     };
   };
   notSaved?: boolean;
+  availabilityConditions?: AvailabilityConditionRow[];
+  availabilityConditionsChanged?: boolean;
 }
 
 export interface StopPlace {
@@ -157,9 +175,27 @@ export interface StopPlaceGeneralSectionProps {
   onOpenAltNames: () => void;
 }
 
+/** Which element lists of the stop panel are open. */
+export interface OpenLists {
+  quays: boolean;
+  parking: boolean;
+}
+
+/** The element row the stop panel scrolls into view after Back. */
+export interface ReturnTarget {
+  type: "quay" | "parking";
+  index: number;
+}
+
 export interface QuaysSectionProps {
   quays: Quay[];
   canEdit: boolean;
+  /** Controlled by EditStopPage so the list survives a visit to a quay panel. */
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
+  /** Index of the quay row to scroll into view once, or null. */
+  scrollToIndex?: number | null;
+  onScrolled?: () => void;
   onDeleteQuay: (index: number) => void;
   onNavigateToQuay: (index: number) => void;
 }
@@ -171,6 +207,8 @@ export interface QuayItemProps {
   focused: boolean;
   onDelete: () => void;
   onNavigate: () => void;
+  /** Receives the row element, so the section can scroll it into view. */
+  rowRef?: Ref<HTMLDivElement>;
   /** Pending-change state; `deleted` renders a non-interactive ghost row */
   status?: ElementChangeStatus;
 }
@@ -178,6 +216,12 @@ export interface QuayItemProps {
 export interface ParkingSectionProps {
   parking: Parking[];
   canEdit: boolean;
+  /** Controlled by EditStopPage so the list survives a visit to a parking panel. */
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
+  /** Index of the parking row to scroll into view once, or null. */
+  scrollToIndex?: number | null;
+  onScrolled?: () => void;
   onDeleteParking: (index: number) => void;
   onNavigateToParking: (index: number) => void;
 }
@@ -189,6 +233,8 @@ export interface ParkingItemProps {
   focused: boolean;
   onDelete: () => void;
   onNavigate: () => void;
+  /** Receives the row element, so the section can scroll it into view. */
+  rowRef?: Ref<HTMLDivElement>;
   /** Pending-change state; `deleted` renders a non-interactive ghost row */
   status?: ElementChangeStatus;
 }
@@ -222,6 +268,12 @@ export interface StopPlaceViewProps {
   /** Index of the selected editor tab; owned by EditStopPage. */
   activeTab: number;
   onTabChange: (tabIndex: number) => void;
+  /** Open state of the quay and parking lists; owned by EditStopPage. */
+  openLists: OpenLists;
+  onOpenListsChange: (lists: Partial<OpenLists>) => void;
+  /** The element row to scroll into view after Back, or null. */
+  returnTarget: ReturnTarget | null;
+  onReturnTargetScrolled: () => void;
   canEdit: boolean;
   canDelete: boolean;
   isModified: boolean;
