@@ -17,6 +17,7 @@ import { alpha } from "@mui/material/styles";
 import { useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { Marker, useMap } from "react-map-gl/maplibre";
+import { useConfig } from "../../../../config/ConfigContext";
 import { useAppSelector } from "../../../../store/hooks";
 import { clusterDiameter, mergeOverlappingClusters } from "./clusterLayout";
 import type { StopPlaceCluster } from "./types";
@@ -125,11 +126,14 @@ export const ClusterMarkers = () => {
         StopPlaceCluster[] | undefined,
   );
   const zoom = useMapZoom();
+  const mergeRadius = useConfig().mapConfig?.clusterMergeRadiusPixels;
 
-  const visibleClusters = useMemo(
-    () => (clusters?.length ? mergeOverlappingClusters(clusters, zoom) : []),
-    [clusters, zoom],
-  );
+  const visibleClusters = useMemo(() => {
+    if (!clusters?.length) return [];
+    return mergeRadius === undefined
+      ? clusters
+      : mergeOverlappingClusters(clusters, zoom, mergeRadius);
+  }, [clusters, zoom, mergeRadius]);
 
   if (!visibleClusters.length) return null;
 

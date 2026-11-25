@@ -19,9 +19,7 @@ const DIAMETER_PER_ORDER_OF_MAGNITUDE = 10;
 /** MapLibre tiles are 512 pixels wide */
 const MAPLIBRE_TILE_SIZE = 512;
 /** Space kept between two bubbles; closer bubbles are merged */
-export const MIN_GAP_PIXELS = 8;
-/** Bubbles whose centres are closer than this are merged even when they do not touch */
-export const MERGE_RADIUS_PIXELS = 100;
+const MIN_GAP_PIXELS = 8;
 
 /** Diameter grows with the order of magnitude of the count, so large clusters stay readable */
 export const clusterDiameter = (count: number) =>
@@ -62,12 +60,9 @@ const toBubble = (cluster: StopPlaceCluster, zoom: number): Bubble => ({
   diameter: clusterDiameter(cluster.count),
 });
 
-const areTooClose = (first: Bubble, second: Bubble) =>
+const areTooClose = (first: Bubble, second: Bubble, radius: number) =>
   Math.hypot(first.point.x - second.point.x, first.point.y - second.point.y) <
-  Math.max(
-    (first.diameter + second.diameter) / 2 + MIN_GAP_PIXELS,
-    MERGE_RADIUS_PIXELS,
-  );
+  Math.max((first.diameter + second.diameter) / 2 + MIN_GAP_PIXELS, radius);
 
 /** Count-weighted mean position and the union of the bounds give the exact values for all members */
 const combine = (members: StopPlaceCluster[]): StopPlaceCluster => {
@@ -94,10 +89,11 @@ const byCountThenPosition = (
   first.longitude - second.longitude ||
   first.latitude - second.latitude;
 
-/** One pass: the largest free cluster takes every free cluster that its bubble would touch */
+/** One pass: the largest free cluster takes every free cluster that is too close to it */
 const mergePass = (
   clusters: StopPlaceCluster[],
   zoom: number,
+  radius: number,
 ): StopPlaceCluster[] => {
   const bubbles = [...clusters]
     .sort(byCountThenPosition)
@@ -109,7 +105,8 @@ const mergePass = (
     taken[index] = true;
     const members = [bubble.cluster];
     for (let other = index + 1; other < bubbles.length; other++) {
-      if (taken[other] || !areTooClose(bubble, bubbles[other])) continue;
+      if (taken[other] || !areTooClose(bubble, bubbles[other], radius))
+        continue;
       taken[other] = true;
       members.push(bubbles[other].cluster);
     }
@@ -119,16 +116,18 @@ const mergePass = (
 };
 
 /**
- * Merges clusters whose bubbles would touch or overlap at the given MapLibre zoom.
- * A merged bubble is larger and can move, so passes repeat until no bubbles touch.
+ * Merges clusters whose bubbles would touch, or whose centres are closer than
+ * the radius in pixels, at the given MapLibre zoom.
+ * A merged bubble is larger and can move, so passes repeat until no bubbles are too close.
  */
 export const mergeOverlappingClusters = (
   clusters: StopPlaceCluster[],
   zoom: number,
+  radius: number,
 ): StopPlaceCluster[] => {
   let current = clusters;
   for (;;) {
-    const merged = mergePass(current, zoom);
+    const merged = mergePass(current, zoom, radius);
     if (merged.length === current.length) return merged;
     current = merged;
   }

@@ -16,14 +16,17 @@ const cluster = (
   latMax: latitude + 0.01,
 });
 
-// At zoom 8 one degree of longitude is about 364 pixels at the equator, about 182 at latitude 60
+// At zoom 8 one degree of longitude is about 364 pixels
 const ZOOM = 8;
+const RADIUS = 150;
+const TOUCH_ONLY = 0;
 
 describe("mergeOverlappingClusters", () => {
   it("merges bubbles that would overlap into one with the summed count", () => {
     const merged = mergeOverlappingClusters(
       [cluster(900, 23.7, 61.5), cluster(1000, 23.8, 61.5)],
       ZOOM,
+      TOUCH_ONLY,
     );
 
     expect(merged).toHaveLength(1);
@@ -34,6 +37,7 @@ describe("mergeOverlappingClusters", () => {
     const [merged] = mergeOverlappingClusters(
       [cluster(3, 25.0, 61.0), cluster(1, 25.1, 61.0)],
       ZOOM,
+      RADIUS,
     );
 
     expect(merged.longitude).toBeCloseTo(25.025);
@@ -41,28 +45,38 @@ describe("mergeOverlappingClusters", () => {
     expect(merged.lonMax).toBeCloseTo(25.11);
   });
 
+  it("merges bubbles that do not touch only when their centres are within the radius", () => {
+    // 73 px apart, and each bubble is 49 px wide
+    const clusters = [cluster(50, 25.0, 61.0), cluster(50, 25.2, 61.0)];
+
+    expect(mergeOverlappingClusters(clusters, ZOOM, TOUCH_ONLY)).toHaveLength(
+      2,
+    );
+    expect(mergeOverlappingClusters(clusters, ZOOM, RADIUS)).toHaveLength(1);
+  });
+
   it("keeps bubbles that are far enough apart", () => {
     const clusters = [cluster(900, 23.7, 61.5), cluster(1000, 25.7, 62.2)];
 
-    expect(mergeOverlappingClusters(clusters, ZOOM)).toHaveLength(2);
+    expect(mergeOverlappingClusters(clusters, ZOOM, RADIUS)).toHaveLength(2);
   });
 
   it("merges the same bubbles less when zoomed in", () => {
     const clusters = [cluster(50, 25.0, 61.0), cluster(50, 25.2, 61.0)];
 
-    expect(mergeOverlappingClusters(clusters, 7)).toHaveLength(1);
-    expect(mergeOverlappingClusters(clusters, 9)).toHaveLength(2);
+    expect(mergeOverlappingClusters(clusters, 7, RADIUS)).toHaveLength(1);
+    expect(mergeOverlappingClusters(clusters, 10, RADIUS)).toHaveLength(2);
   });
 
-  it("merges again when a merged bubble grows into a neighbour", () => {
-    // 90 px apart, and the small one is 95 px north of their midpoint: 105 px from each
+  it("merges again when a merged bubble moves close to a neighbour", () => {
+    // 135 px apart, and the small one is 142.5 px north of their midpoint: 158 px from each
     const clusters = [
       cluster(1000, 25.0, 61.0),
-      cluster(1000, 25.2472, 61.0),
-      cluster(9, 25.1236, 61.1265),
+      cluster(1000, 25.3708, 61.0),
+      cluster(9, 25.1854, 61.1898),
     ];
 
-    const merged = mergeOverlappingClusters(clusters, ZOOM);
+    const merged = mergeOverlappingClusters(clusters, ZOOM, RADIUS);
 
     expect(merged).toHaveLength(1);
     expect(merged[0].count).toBe(2009);
