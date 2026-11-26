@@ -34,10 +34,16 @@ describe("fabLeftFor (F-10d)", () => {
     ).toBe(380 + FAB_GAP);
   });
 
-  test("at the map's edge when the drawer is collapsed", () => {
+  test("beside a collapsed drawer on desktop and tablet: its bar stays", () => {
     expect(
       fabLeftFor({ isEditorOpen: true, isDrawerOpen: false, drawerWidth: 450 }),
-    ).toBe(FAB_GAP);
+    ).toBe(450 + FAB_GAP);
+    expect(
+      fabLeftFor({ isEditorOpen: true, isDrawerOpen: false, drawerWidth: 380 }),
+    ).toBe(380 + FAB_GAP);
+  });
+
+  test("at the map's edge once a phone drawer is collapsed", () => {
     expect(
       fabLeftFor({
         isEditorOpen: true,

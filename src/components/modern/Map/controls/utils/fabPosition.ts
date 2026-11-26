@@ -24,17 +24,19 @@ interface FabPositionInput {
 }
 
 /**
- * Where the map's + sits from the left (F-10d): next to an open editor
- * drawer, at the map's edge when no editor is open or its drawer is
- * collapsed. `null` hides it while a full-width (phone) drawer covers the
- * whole map, where nothing could be placed anyway.
+ * Where the map's + sits from the left (F-10d). Beside the editor drawer on
+ * desktop and tablet, open or collapsed: a collapsed drawer still shows its
+ * header bar, at full drawer width, in the top-left corner. On a phone the
+ * drawer is full width: the + is hidden while it covers the map (nothing
+ * could be placed) and at the map's edge once it is collapsed, because it
+ * then slides away. At the map's edge when no editor is open.
  */
 export const fabLeftFor = ({
   isEditorOpen,
   isDrawerOpen,
   drawerWidth,
 }: FabPositionInput): number | null => {
-  if (!isEditorOpen || !isDrawerOpen) return FAB_GAP;
-  if (typeof drawerWidth !== "number") return null;
-  return drawerWidth + FAB_GAP;
+  if (!isEditorOpen) return FAB_GAP;
+  if (typeof drawerWidth === "number") return drawerWidth + FAB_GAP;
+  return isDrawerOpen ? null : FAB_GAP;
 };
