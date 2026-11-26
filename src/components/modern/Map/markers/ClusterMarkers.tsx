@@ -14,18 +14,16 @@ limitations under the Licence. */
 
 import { Box, Tooltip } from "@mui/material";
 import { alpha } from "@mui/material/styles";
+import { useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { Marker, useMap } from "react-map-gl/maplibre";
+import { useConfig } from "../../../../config/ConfigContext";
 import { useAppSelector } from "../../../../store/hooks";
+import { clusterDiameter, mergeOverlappingClusters } from "./clusterLayout";
 import type { StopPlaceCluster } from "./types";
 
-const MIN_CLUSTER_SIZE = 32;
 const ZOOM_STEP_FOR_SINGLE_POINT = 2;
 const FIT_BOUNDS_PADDING = 80;
-
-/** Diameter grows with the order of magnitude of the count, so large clusters stay readable */
-export const clusterDiameter = (count: number) =>
-  Math.round(MIN_CLUSTER_SIZE + 10 * Math.log10(Math.max(count, 1)));
 
 interface ClusterMarkerItemProps {
   cluster: StopPlaceCluster;
@@ -105,18 +103,43 @@ const ClusterMarkerItem = ({ cluster }: ClusterMarkerItemProps) => {
   );
 };
 
+/** The zoom at which the map last stopped zooming */
+const useMapZoom = (): number => {
+  const { current: map } = useMap();
+  const [zoom, setZoom] = useState(() => map?.getZoom() ?? 0);
+  useEffect(() => {
+    if (!map) return undefined;
+    const update = () => setZoom(map.getZoom());
+    update();
+    map.on("zoomend", update);
+    return () => {
+      map.off("zoomend", update);
+    };
+  }, [map]);
+  return zoom;
+};
+
 export const ClusterMarkers = () => {
   const clusters = useAppSelector(
     (state) =>
       (state.stopPlace as any).stopPlaceClusters as
         StopPlaceCluster[] | undefined,
   );
+  const zoom = useMapZoom();
+  const mergeRadius = useConfig().mapConfig?.clusterMergeRadiusPixels;
 
-  if (!clusters?.length) return null;
+  const visibleClusters = useMemo(() => {
+    if (!clusters?.length) return [];
+    return mergeRadius === undefined
+      ? clusters
+      : mergeOverlappingClusters(clusters, zoom, mergeRadius);
+  }, [clusters, zoom, mergeRadius]);
+
+  if (!visibleClusters.length) return null;
 
   return (
     <>
-      {clusters.map((cluster) => (
+      {visibleClusters.map((cluster) => (
         <ClusterMarkerItem
           key={`${cluster.longitude},${cluster.latitude}`}
           cluster={cluster}

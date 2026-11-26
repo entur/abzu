@@ -103,6 +103,11 @@ export interface MapConfig {
   overlays?: TileLayer[];
   center: [number, number];
   zoom: number;
+  /**
+   * Merges stop place clusters whose bubble centres are closer than this many pixels.
+   * Without it, clusters are shown as Tiamat returns them.
+   */
+  clusterMergeRadiusPixels?: number;
 }
 
 export interface TileLayer {
