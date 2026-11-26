@@ -17,25 +17,42 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { Tag } from "../hooks/useTagsDialog";
 import { TagItem } from "./TagItem";
+import { TagRemovedRow } from "./TagRemovedRow";
 
 interface TagsListProps {
   tags: Tag[];
+  /** A tag whose removal can still be undone; shown as an undo row. */
+  pendingRemovalName: string | null;
   onDeleteTag: (name: string) => void;
+  onUndoRemoval: () => void;
 }
 
 /**
  * List container for existing tags
  * Shows all tags or empty state message
  */
-export const TagsList: React.FC<TagsListProps> = ({ tags, onDeleteTag }) => {
+export const TagsList: React.FC<TagsListProps> = ({
+  tags,
+  pendingRemovalName,
+  onDeleteTag,
+  onUndoRemoval,
+}) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box sx={{ mb: 3, maxHeight: 300, overflowY: "auto" }}>
       {tags && tags.length > 0 ? (
-        tags.map((tag, i) => (
-          <TagItem key={`tag-${i}`} tag={tag} onDelete={onDeleteTag} />
-        ))
+        tags.map((tag) =>
+          tag.name === pendingRemovalName ? (
+            <TagRemovedRow
+              key={tag.name}
+              name={tag.name}
+              onUndo={onUndoRemoval}
+            />
+          ) : (
+            <TagItem key={tag.name} tag={tag} onDelete={onDeleteTag} />
+          ),
+        )
       ) : (
         <Typography
           variant="body2"

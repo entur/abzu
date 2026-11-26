@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useCallback, useState } from "react";
+import { useDelayedTagRemoval } from "./useDelayedTagRemoval";
 import { useTagSuggestions } from "./useTagSuggestions";
 
 export interface Tag {
@@ -84,7 +85,7 @@ export const useTagsDialog = ({
     }
   }, [idReference, tagName, comment, addTag, getTags, clearSuggestions]);
 
-  const handleDeleteTag = useCallback(
+  const removeTagNow = useCallback(
     async (name: string) => {
       if (!idReference) return;
 
@@ -101,6 +102,13 @@ export const useTagsDialog = ({
     [idReference, removeTag, getTags],
   );
 
+  const {
+    pendingName: pendingRemovalName,
+    scheduleRemoval: handleDeleteTag,
+    undoRemoval,
+    flushRemoval,
+  } = useDelayedTagRemoval(removeTagNow);
+
   return {
     isLoading,
     tagName,
@@ -113,5 +121,8 @@ export const useTagsDialog = ({
     handleChooseTag,
     handleAddTag,
     handleDeleteTag,
+    pendingRemovalName,
+    undoRemoval,
+    flushRemoval,
   };
 };
