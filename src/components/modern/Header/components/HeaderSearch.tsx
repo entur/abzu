@@ -118,6 +118,15 @@ export const HeaderSearch: React.FC = () => {
     }
   };
 
+  /* A chosen result opens on the map or in the editor; the search, favourites
+     and filter panels would cover it, so they close (F-06). The text stays. */
+  const handleSelectResult: typeof handleNewRequest = (event, result) => {
+    handleNewRequest(event, result);
+    setIsSearchExpanded(false);
+    setShowFavorites(false);
+    handleToggleFilter(false);
+  };
+
   const handleCloseSearch = () => {
     setIsSearchExpanded(false);
     setShowFavorites(false);
@@ -168,7 +177,7 @@ export const HeaderSearch: React.FC = () => {
     showFavorites,
     activeFilterCount,
     onSearchUpdate: handleSearchUpdate,
-    onNewRequest: handleNewRequest,
+    onNewRequest: handleSelectResult,
     onToggleFilters: handleToggleFilters,
     onToggleFavorites: handleToggleFavorites,
     onClose: handleCloseSearch,
@@ -221,7 +230,7 @@ export const HeaderSearch: React.FC = () => {
                   activeFilterCount={activeFilterCount}
                   showFavorites={showFavorites}
                   onSearchUpdate={handleSearchUpdate}
-                  onNewRequest={handleNewRequest}
+                  onNewRequest={handleSelectResult}
                   onToggleFilters={handleToggleFilters}
                   onToggleFavorites={handleToggleFavorites}
                 />
@@ -244,7 +253,7 @@ export const HeaderSearch: React.FC = () => {
               activeFilterCount={activeFilterCount}
               showFavorites={showFavorites}
               onSearchUpdate={handleSearchUpdate}
-              onNewRequest={handleNewRequest}
+              onNewRequest={handleSelectResult}
               onToggleFilters={handleToggleFilters}
               onToggleFavorites={handleToggleFavorites}
             />
