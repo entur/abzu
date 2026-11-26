@@ -58,14 +58,20 @@ export const MapLayersPanel: React.FC = () => {
 
   return (
     <MenuList sx={{ p: 0 }}>
+      {/* Only one base map can be active: radio rows, not checkboxes (F-27). */}
       {tiles.map((tile: any) => (
         <MenuItem
           key={tile.name}
+          role="menuitemradio"
+          aria-checked={activeBaselayer === tile.name}
           onClick={() => handleLayerChange(tile.name)}
           sx={settingItemStyle}
         >
           <ListItemIcon sx={{ minWidth: 32 }}>
-            <SettingIndicator checked={activeBaselayer === tile.name} />
+            <SettingIndicator
+              variant="radio"
+              checked={activeBaselayer === tile.name}
+            />
           </ListItemIcon>
           <ListItemText
             primary={tile.name}

@@ -18,9 +18,13 @@ import { Box } from "@mui/material";
 const INDICATOR_SIZE = 20;
 const INDICATOR_BORDER_WIDTH = 1.5;
 const CHECK_ICON_SIZE = 16;
+/** The filled dot inside an active radio indicator. */
+const RADIO_DOT_SIZE = 10;
 
 interface SettingIndicatorProps {
   checked: boolean;
+  /** "radio" for a single choice among several (e.g. the base map, F-27). */
+  variant?: "checkbox" | "radio";
 }
 
 /**
@@ -36,21 +40,44 @@ interface SettingIndicatorProps {
  *
  * Defined once because the same ternary was copied across eight settings rows in
  * four files; fixing one of them left the other seven looking unchanged.
+ *
+ * The radio variant is round with a dot, for a list where only one row can be
+ * on; it keeps the same footprint and colours.
  */
-export const SettingIndicator = ({ checked }: SettingIndicatorProps) => (
-  <Box
-    sx={{
-      width: INDICATOR_SIZE,
-      height: INDICATOR_SIZE,
-      border: `${INDICATOR_BORDER_WIDTH}px solid`,
-      borderColor: checked ? "primary.main" : "action.active",
-      borderRadius: 0.5,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      flexShrink: 0,
-    }}
-  >
-    {checked && <Check color="primary" sx={{ fontSize: CHECK_ICON_SIZE }} />}
-  </Box>
-);
+export const SettingIndicator = ({
+  checked,
+  variant = "checkbox",
+}: SettingIndicatorProps) => {
+  const isRadio = variant === "radio";
+  return (
+    <Box
+      data-variant={variant}
+      sx={{
+        width: INDICATOR_SIZE,
+        height: INDICATOR_SIZE,
+        border: `${INDICATOR_BORDER_WIDTH}px solid`,
+        borderColor: checked ? "primary.main" : "action.active",
+        borderRadius: isRadio ? "50%" : 0.5,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+      }}
+    >
+      {checked && isRadio && (
+        <Box
+          data-testid="radio-dot"
+          sx={{
+            width: RADIO_DOT_SIZE,
+            height: RADIO_DOT_SIZE,
+            borderRadius: "50%",
+            bgcolor: "primary.main",
+          }}
+        />
+      )}
+      {checked && !isRadio && (
+        <Check color="primary" sx={{ fontSize: CHECK_ICON_SIZE }} />
+      )}
+    </Box>
+  );
+};
