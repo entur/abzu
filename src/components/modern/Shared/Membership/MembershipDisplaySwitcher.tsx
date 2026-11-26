@@ -13,27 +13,28 @@
  limitations under the Licence. */
 
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { isMembershipVariant, MembershipVariant } from "./types";
 
 /**
- * Evaluation control for the parent/group membership layouts. Labels are
- * intentionally plain English rather than translated — this exists to choose
- * between the approaches, and should be removed together with the losing
- * variants once a decision is made.
+ * Evaluation control for the parent/group membership layouts. It exists to
+ * choose between the approaches and should be removed together with the
+ * losing variants once a decision is made. Labels are translated (F-11).
  */
-const OPTIONS: { value: MembershipVariant; label: string }[] = [
-  { value: "chips", label: "1 · Labelled chips (current)" },
-  { value: "card", label: "2 · Relations card" },
-  { value: "path", label: "3 · Hierarchy path" },
-  { value: "section", label: "4 · Collapsible section" },
-  { value: "list", label: "5 · Uniform list" },
-  { value: "identity", label: "6 · Identity row" },
-  { value: "stack", label: "7 · Section in the list stack" },
+const OPTIONS: { value: MembershipVariant; labelId: string }[] = [
+  { value: "chips", labelId: "membership_layout_chips" },
+  { value: "card", labelId: "membership_layout_card" },
+  { value: "path", labelId: "membership_layout_path" },
+  { value: "section", labelId: "membership_layout_section" },
+  { value: "list", labelId: "membership_layout_list" },
+  { value: "identity", labelId: "membership_layout_identity" },
+  { value: "stack", labelId: "membership_layout_stack" },
 ];
 
 export const MembershipDisplaySwitcher = () => {
+  const { formatMessage } = useIntl();
   const dispatch = useDispatch() as any;
   const selected = useSelector(
     (state: any) => state.user?.membershipDisplay as unknown,
@@ -53,7 +54,11 @@ export const MembershipDisplaySwitcher = () => {
       variant="standard"
       size="small"
       fullWidth
-      slotProps={{ input: { "aria-label": "membership display layout" } }}
+      slotProps={{
+        input: {
+          "aria-label": formatMessage({ id: "membership_layout_label" }),
+        },
+      }}
       sx={{ fontSize: "0.8125rem" }}
     >
       {OPTIONS.map((option) => (
@@ -62,7 +67,7 @@ export const MembershipDisplaySwitcher = () => {
           value={option.value}
           sx={{ fontSize: "0.8125rem" }}
         >
-          {option.label}
+          {formatMessage({ id: option.labelId })}
         </MenuItem>
       ))}
     </Select>
