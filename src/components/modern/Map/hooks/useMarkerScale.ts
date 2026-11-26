@@ -15,17 +15,30 @@ limitations under the Licence. */
 import { useEffect, useState } from "react";
 import { useMap } from "react-map-gl/maplibre";
 
-// Zoom level at which markers render at their designed (1×) size
+// Zoom level from which markers keep their full working size
 const BASE_ZOOM = 15;
 
-// Controls how aggressively size changes per zoom step.
+// Controls how quickly markers shrink per zoom step when zooming out.
 const ZOOM_SCALE_FACTOR = 0.2;
 
 const MIN_SCALE = 0.5;
-const MAX_SCALE = 2.0;
+/** Markers don't grow past their size at BASE_ZOOM when zooming in (F-93). */
+const MAX_SCALE = 1;
+/** Markers are drawn at 75 % of their designed sizes, so they cover less of the map (F-93). */
+const MARKER_SIZE_FACTOR = 0.75;
 
 /**
- * Returns a scale multiplier (0.5–2.0) based on the current map zoom level.
+ * The multiplier for every marker size at a zoom level: full working size
+ * (× MARKER_SIZE_FACTOR) from BASE_ZOOM in, shrinking when zooming out, down
+ * to MIN_SCALE × MARKER_SIZE_FACTOR.
+ */
+export const markerScaleForZoom = (zoom: number): number => {
+  const curve = Math.pow(2, (zoom - BASE_ZOOM) * ZOOM_SCALE_FACTOR);
+  return Math.min(MAX_SCALE, Math.max(MIN_SCALE, curve)) * MARKER_SIZE_FACTOR;
+};
+
+/**
+ * Returns the marker scale for the current map zoom (see markerScaleForZoom).
  * Subscribes to the MapLibre zoom event for smooth real-time updates.
  * Use this to scale marker sizes relative to zoom.
  */
@@ -57,6 +70,5 @@ export const useMarkerScale = (): number => {
     };
   }, [mapRef]);
 
-  const raw = Math.pow(2, (zoom - BASE_ZOOM) * ZOOM_SCALE_FACTOR);
-  return Math.min(MAX_SCALE, Math.max(MIN_SCALE, raw));
+  return markerScaleForZoom(zoom);
 };

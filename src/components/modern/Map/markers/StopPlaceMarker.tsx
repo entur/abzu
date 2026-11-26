@@ -106,7 +106,10 @@ export const StopPlaceMarker = () => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         anchor="center"
-        style={{ zIndex: PARENT_MARKER_Z_INDEX }}
+        /* Only a multimodal stop sits above its children. An ordinary stop
+           stays under its quays, which render after it, so a quay on top of
+           the stop (e.g. after Move quay) stays visible (F-93). */
+        style={isParent ? { zIndex: PARENT_MARKER_Z_INDEX } : undefined}
       >
         <Tooltip
           title={popupAnchor ? "" : current.name || ""}
