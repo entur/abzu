@@ -82,7 +82,7 @@ export const ReportActionBar: React.FC<ReportActionBarProps> = ({
           onClick={onToggleFilterPanel}
           color={filterPanelOpen ? "primary" : "default"}
         >
-          <Badge badgeContent={activeFilterCount} color="error">
+          <Badge badgeContent={activeFilterCount} color="primary">
             <FilterListIcon fontSize="small" />
           </Badge>
         </IconButton>

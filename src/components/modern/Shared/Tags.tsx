@@ -12,9 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Chip, Stack, Tooltip } from "@mui/material";
+import { Stack, Tooltip } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { TagChip } from "./TagChip";
 
 interface Tag {
   name: string;
@@ -27,7 +28,7 @@ interface TagsProps {
 
 /**
  * Modern replacement for TagTray component
- * Displays tags as orange chips with tooltips
+ * Displays tags as outlined tag chips with tooltips
  * Supports both Tag objects and simple strings
  */
 export const Tags: React.FC<TagsProps> = ({ tags }) => {
@@ -49,21 +50,7 @@ export const Tags: React.FC<TagsProps> = ({ tags }) => {
 
         return (
           <Tooltip key={`tag-${index}`} title={tagComment || tagName} arrow>
-            <Chip
-              label={tagName.toUpperCase()}
-              size="small"
-              sx={{
-                backgroundColor: "warning.main",
-                color: "white",
-                fontWeight: 500,
-                fontSize: "0.7rem",
-                height: 22,
-                mb: 0.5,
-                "&:hover": {
-                  backgroundColor: "warning.dark",
-                },
-              }}
-            />
+            <TagChip name={tagName} sx={{ mb: 0.5 }} />
           </Tooltip>
         );
       })}

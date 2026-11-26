@@ -13,10 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import DeleteIcon from "@mui/icons-material/DeleteForever";
-import TagIcon from "@mui/icons-material/LocalOfferOutlined";
-import { Box, Chip, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { TagChip } from "../../../Shared/TagChip";
 import { Tag } from "../hooks/useTagsDialog";
 
 /** Readable on every theme: text.secondary is 2.98:1 on Entur. */
@@ -30,7 +30,7 @@ interface TagItemProps {
 /**
  * One tag (F-59): the tag and its comment, the part people read, come first
  * in body text. Who added it and when is a small line underneath, with the
- * date in the UI's language. The chip is outlined, so it reads on any theme.
+ * date in the UI's language. The chip is the shared TagChip.
  */
 export const TagItem: React.FC<TagItemProps> = ({ tag, onDelete }) => {
   const { formatMessage, formatDate } = useIntl();
@@ -51,13 +51,7 @@ export const TagItem: React.FC<TagItemProps> = ({ tag, onDelete }) => {
         borderColor: "divider",
       }}
     >
-      <Chip
-        icon={<TagIcon />}
-        label={name}
-        size="small"
-        variant="outlined"
-        sx={{ fontWeight: 500, flexShrink: 0 }}
-      />
+      <TagChip name={name} sx={{ flexShrink: 0 }} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         {comment && (
           <Typography variant="body2" sx={{ overflowWrap: "anywhere" }}>

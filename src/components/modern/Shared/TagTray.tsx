@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Box, Chip, Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { useIntl } from "react-intl";
+import { TagChip } from "./TagChip";
 
 export interface TagTrayProps {
   tags: string[] | Array<{ name: string; comment?: string }>;
@@ -36,17 +37,7 @@ export const TagTray: React.FC<TagTrayProps> = ({ tags }) => {
 
         return (
           <Tooltip key={`tag-${index}`} title={comment} arrow>
-            <Chip
-              label={tag.name}
-              size="small"
-              sx={{
-                bgcolor: "warning.main",
-                color: "white",
-                textTransform: "uppercase",
-                fontSize: "0.7rem",
-                height: "22px",
-              }}
-            />
+            <TagChip name={tag.name} />
           </Tooltip>
         );
       })}
