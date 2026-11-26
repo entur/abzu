@@ -20,7 +20,7 @@ export const TAG_SEARCH_DEBOUNCE_MS = 200;
 export const TAG_SEARCH_MIN_LENGTH = 2;
 const MAX_SUGGESTIONS = 5;
 
-interface TagSearchResult {
+export interface TagSearchResult {
   data?: { tags?: Tag[] };
 }
 

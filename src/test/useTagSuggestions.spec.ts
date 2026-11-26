@@ -16,23 +16,24 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import {
   TAG_SEARCH_DEBOUNCE_MS,
+  type TagSearchResult,
   useTagSuggestions,
 } from "../components/modern/Dialogs/TagsDialog/hooks/useTagSuggestions";
 
-type Resolve = (value: unknown) => void;
+type Resolve = (value: TagSearchResult) => void;
 
 const deferredSearch = () => {
   const pending: Record<string, Resolve> = {};
   const findTagByName = vi.fn(
     (name: string) =>
-      new Promise((resolve) => {
-        pending[name] = resolve as Resolve;
+      new Promise<TagSearchResult>((resolve) => {
+        pending[name] = resolve;
       }),
   );
   return { findTagByName, pending };
 };
 
-const tags = (...names: string[]) => ({
+const tags = (...names: string[]): TagSearchResult => ({
   data: { tags: names.map((name) => ({ name })) },
 });
 
