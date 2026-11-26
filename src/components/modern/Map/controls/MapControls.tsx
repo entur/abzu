@@ -18,7 +18,14 @@ import {
   GridOn as MapIcon,
   Settings as SettingsIcon,
 } from "@mui/icons-material";
-import { Box, IconButton, Paper, Tooltip, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Paper,
+  Tooltip,
+  useTheme,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
@@ -33,6 +40,7 @@ import {
 import { FareZonesPanel } from "../FareZonesPanel";
 import { MapLayersPanel } from "./MapLayersPanel";
 import { MapSettingsPanel } from "./MapSettingsPanel";
+import { ZoomButtons } from "./ZoomButtons";
 
 type PanelType = "layers" | "settings" | "zones" | null;
 
@@ -131,6 +139,8 @@ export const MapControls: React.FC = () => {
             </IconButton>
           </Tooltip>
         ))}
+        <Divider />
+        <ZoomButtons buttonSx={mapControlButtonSx} />
       </Paper>
 
       {/* Sliding Panels */}
