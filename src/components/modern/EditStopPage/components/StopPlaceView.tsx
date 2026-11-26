@@ -19,7 +19,7 @@ import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityStopTab";
 import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTab";
-import FacilitiesStopTab from "../../../EditStopPage/Facility/FacilitiesStopTab";
+import { ModernFacilitiesTab } from "../facilities/ModernFacilitiesTab";
 import PARKING_TYPE from "../../../../models/parkingType";
 import { StopPlaceViewProps } from "../types";
 import { StopPlaceMembership } from "../../Shared";
@@ -156,7 +156,12 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
         )}
         {activeTab === 1 && <AccessibilityStopTab disabled={!canEdit} />}
         {activeTab === 2 && (
-          <FacilitiesStopTab disabled={!canEdit} stopPlace={stopPlace as any} />
+          <ModernFacilitiesTab
+            entity={stopPlace as any}
+            entityType="stopPlace"
+            id={stopPlace.id}
+            disabled={!canEdit}
+          />
         )}
         {activeTab === 3 && (
           <AssistanceStopTab disabled={!canEdit} stopPlace={stopPlace as any} />

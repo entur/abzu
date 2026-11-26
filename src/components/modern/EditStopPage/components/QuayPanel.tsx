@@ -36,7 +36,7 @@ import BusShelter from "../../../../static/icons/facilities/BusShelter";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import AccessibilityQuayTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityQuayTab";
-import FacilitiesQuayTab from "../../../EditStopPage/Facility/FacilitiesQuayTab";
+import { ModernFacilitiesTab } from "../facilities/ModernFacilitiesTab";
 import { CenterMapButton, CopyIdButton, ImportedId } from "../../Shared";
 import { QuayPanelProps } from "../types";
 import { BoardingPositionsTab } from "./BoardingPositionsTab";
@@ -50,7 +50,7 @@ import { getQuayTitle } from "../../Shared/quayLabels";
  * Tabs mirror the legacy EditQuayAdditional structure:
  *   General | Accessibility | Facilities | Boarding Positions
  *
- * AccessibilityQuayTab and FacilitiesQuayTab are reused from the legacy
+ * AccessibilityQuayTab is reused from the legacy
  * codebase — they are already Redux-connected and accept quay + index + disabled.
  */
 export const QuayPanel: React.FC<QuayPanelProps> = ({
@@ -285,10 +285,11 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
           />
         )}
 
-        {/* Tab 2 — Facilities (reuses legacy Redux-connected component) */}
+        {/* Tab 2 — Facilities (classic rows; modern shelter and waiting room, F-25) */}
         {activeTab === 2 && (
-          <FacilitiesQuayTab
-            quay={quay as any}
+          <ModernFacilitiesTab
+            entity={quay as any}
+            entityType="quay"
             index={quayIndex}
             disabled={!canEdit}
           />
