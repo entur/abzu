@@ -180,7 +180,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           disabled={fieldDisabled}
         />
 
-        {/* Vehicle types — read-only. Tiamat owns this field. */}
+        {/* Vehicle types — read-only. A save derives it from the capacity rows. */}
         {vehicleTypeLabels.length > 0 && (
           <TextField
             label={formatMessage({ id: "parking_vehicle_types" })}

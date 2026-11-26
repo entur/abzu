@@ -78,12 +78,15 @@ class Parking {
   }
 
   // What vehicle is this parking for? NeTEx answers this with the vehicle
-  // types, never with the parking type.
+  // types, never with the parking type. A parking is for pedal cycles only
+  // when pedalCycle is the one vehicle type. Any other type, including one
+  // this repository does not name, makes it a parking for motor vehicles too.
   get isForPedalCycle() {
+    const types = this.parking.parkingVehicleTypes ?? [];
+
     return (
-      this.parking.parkingVehicleTypes?.includes(
-        PARKING_VEHICLE_TYPE.PEDAL_CYCLE,
-      ) ?? false
+      types.length > 0 &&
+      types.every((type) => type === PARKING_VEHICLE_TYPE.PEDAL_CYCLE)
     );
   }
 
