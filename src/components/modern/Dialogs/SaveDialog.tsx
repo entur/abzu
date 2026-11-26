@@ -94,6 +94,7 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
           {formatMessage({ id: "save_dialog_title" })}
         </Typography>
         <IconButton
+          aria-label={formatMessage({ id: "close" })}
           onClick={handleCloseDialog}
           disabled={isSaving}
           size="small"

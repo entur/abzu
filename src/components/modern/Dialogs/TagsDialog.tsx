@@ -82,7 +82,11 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
           {formatMessage({ id: "tags" })}
         </Typography>
         {isLoading && <CircularProgress size={24} sx={{ mr: 1 }} />}
-        <IconButton onClick={handleClose} size="small">
+        <IconButton
+          aria-label={formatMessage({ id: "close" })}
+          onClick={handleClose}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>

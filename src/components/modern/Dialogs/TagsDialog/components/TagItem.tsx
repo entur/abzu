@@ -78,6 +78,7 @@ export const TagItem: React.FC<TagItemProps> = ({ tag, onDelete }) => {
           : formatMessage({ id: "not_assigned" })}
       </Typography>
       <IconButton
+        aria-label={formatMessage({ id: "remove" })}
         size="small"
         onClick={() => onDelete(tag.name)}
         color="error"

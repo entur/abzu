@@ -50,6 +50,7 @@ export const DefaultMapSettingsDialog: React.FC<
             "Default map location"}
         </Typography>
         <IconButton
+          aria-label={formatMessage({ id: "close" })}
           onClick={onClose}
           size="small"
           sx={dialogCloseButton(theme)}

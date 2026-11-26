@@ -13,19 +13,18 @@
  limitations under the Licence. */
 
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   AccountTree as ParentIcon,
   GroupWork as GroupIcon,
   Hub as RelationsIcon,
 } from "@mui/icons-material";
-import { Box, Chip, Collapse, Divider, Typography } from "@mui/material";
+import { Box, Collapse, Divider, Typography } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { MembershipProps } from "../types";
 import { useMembershipNavigation } from "../useMembershipNavigation";
 import { MembershipLoading } from "./MembershipLoading";
+import { CollapsibleSectionHeader } from "../../CollapsibleSectionHeader";
 
 /**
  * Variant "stack" — memberships as a full section in the same place, and with
@@ -74,30 +73,13 @@ export const MembershipSection: React.FC<MembershipProps> = ({
     <Box>
       <MembershipLoading nav={nav} />
       <Divider />
-      <Box
-        onClick={() => setExpanded((value) => !value)}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.default",
-          cursor: "pointer",
-          userSelect: "none",
-        }}
-      >
-        <RelationsIcon fontSize="small" color="action" />
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
-          {formatMessage({ id: "stop_place_relations" })}
-        </Typography>
-        <Chip label={rows.length} size="small" />
-        {expanded ? (
-          <ExpandLessIcon fontSize="small" color="action" />
-        ) : (
-          <ExpandMoreIcon fontSize="small" color="action" />
-        )}
-      </Box>
+      <CollapsibleSectionHeader
+        icon={<RelationsIcon fontSize="small" color="action" />}
+        title={formatMessage({ id: "stop_place_relations" })}
+        count={rows.length}
+        expanded={expanded}
+        onToggle={() => setExpanded((value) => !value)}
+      />
 
       <Collapse in={expanded}>
         <Divider />

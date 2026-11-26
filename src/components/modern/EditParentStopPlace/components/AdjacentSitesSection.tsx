@@ -12,24 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import AddIcon from "@mui/icons-material/Add";
+import LinkIcon from "@mui/icons-material/Link";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Box,
-  Chip,
-  Collapse,
-  Divider,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Collapse, Divider } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import { addItemButtonSx } from "../../Shared";
 import { AdjacentSite } from "../types";
 import { AdjacentSiteItem } from "./AdjacentSiteItem";
+import { CollapsibleSectionHeader } from "../../Shared/CollapsibleSectionHeader";
 
 interface AdjacentSitesSectionProps {
   adjacentSites: AdjacentSite[];
@@ -52,45 +42,20 @@ export const AdjacentSitesSection: React.FC<AdjacentSitesSectionProps> = ({
   return (
     <>
       <Divider />
-      <Box
-        onClick={() => setExpanded((v) => !v)}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.default",
-          cursor: "pointer",
-          userSelect: "none",
+      <CollapsibleSectionHeader
+        icon={<CompareArrowsIcon fontSize="small" color="action" />}
+        title={formatMessage({ id: "adjacent_sites" })}
+        count={adjacentSites.length}
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+        action={{
+          label: formatMessage({ id: "attach" }),
+          tooltip: formatMessage({ id: "add_adjacent_site" }),
+          icon: <LinkIcon fontSize="small" />,
+          onClick: onAddAdjacentSite,
+          disabled: !canEdit,
         }}
-      >
-        <CompareArrowsIcon fontSize="small" color="action" />
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
-          {formatMessage({ id: "adjacent_sites" })}
-        </Typography>
-        <Chip label={adjacentSites.length} size="small" />
-        {expanded ? (
-          <ExpandLessIcon fontSize="small" color="action" />
-        ) : (
-          <ExpandMoreIcon fontSize="small" color="action" />
-        )}
-        <Tooltip title={formatMessage({ id: "add_adjacent_site" })}>
-          <span>
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddAdjacentSite();
-              }}
-              disabled={!canEdit}
-              sx={addItemButtonSx("primary.main")}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </span>
-        </Tooltip>
-      </Box>
+      />
 
       <Collapse in={expanded}>
         <Divider />

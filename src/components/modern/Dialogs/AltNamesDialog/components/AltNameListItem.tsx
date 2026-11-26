@@ -80,6 +80,7 @@ export const AltNameListItem: React.FC<AltNameListItemProps> = ({
       {!disabled && (
         <Box sx={{ display: "flex", gap: 0.5 }}>
           <IconButton
+            aria-label={formatMessage({ id: "edit" })}
             size="small"
             onClick={() => onEdit(index)}
             color="primary"
@@ -87,6 +88,7 @@ export const AltNameListItem: React.FC<AltNameListItemProps> = ({
             <EditIcon fontSize="small" />
           </IconButton>
           <IconButton
+            aria-label={formatMessage({ id: "remove" })}
             size="small"
             onClick={() => onRemove(index)}
             color="error"

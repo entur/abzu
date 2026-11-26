@@ -57,7 +57,11 @@ export const SaveGroupDialog: React.FC<SaveGroupDialogProps> = ({
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "save_group_of_stop_places" })}
         </Typography>
-        <IconButton onClick={onClose} size="small">
+        <IconButton
+          aria-label={formatMessage({ id: "close" })}
+          onClick={onClose}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
