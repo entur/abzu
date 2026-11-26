@@ -37,9 +37,12 @@ import { DragCrosshair } from "../crosshair";
 import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
 import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
+import { useDrawerOpen } from "../../Shared/hooks/useDrawerOpen";
+import { useDrawerWidth } from "../../Shared/hooks/useDrawerWidth";
 import { ElementType, usePlacement } from "./hooks/usePlacement";
 import { NewStopConfirm } from "./NewStopConfirm";
 import { PlacementHint } from "./PlacementHint";
+import { FAB_GAP, fabLeftFor } from "./utils/fabPosition";
 
 interface StopAction {
   icon: React.ReactNode;
@@ -47,9 +50,7 @@ interface StopAction {
   elementType: ElementType;
 }
 
-const DRAWER_WIDTH = 450;
 const FAB_SIZE = 56;
-const FAB_GAP = 8;
 const FAB_TOP = 16;
 
 const STOP_ELEMENT_ACTIONS: StopAction[] = [
@@ -109,6 +110,9 @@ export const AddElementFab = () => {
   const isParentOpen = !!current?.isParent;
   const canEditOpenStop = useCanEditOnMap(current);
   const isEditingGroup = useIsEditingGroup();
+  // The + follows the editor drawer's real width and open state (F-10d).
+  const { isDrawerOpen } = useDrawerOpen();
+  const drawerWidth = useDrawerWidth();
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as
@@ -134,7 +138,9 @@ export const AddElementFab = () => {
   if (isEditorOpen && !canEditOpenStop) return null;
 
   const isPlacing = !!placementType;
-  const fabLeft = isEditorOpen ? DRAWER_WIDTH + FAB_GAP : FAB_GAP;
+  const fabLeft = fabLeftFor({ isEditorOpen, isDrawerOpen, drawerWidth });
+  // A phone-wide drawer covers the map: nothing to place on until it's collapsed.
+  if (fabLeft === null) return null;
   const fabSx = {
     // Paper background with a semantic icon colour, warning while placing.
     ...addItemButtonSx(isPlacing ? "warning.main" : "primary.main"),

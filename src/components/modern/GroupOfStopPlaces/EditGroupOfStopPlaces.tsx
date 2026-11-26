@@ -16,10 +16,8 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
-import {
-  getDrawerPreference,
-  setDrawerPreference,
-} from "../Shared/drawerPreference";
+import { useDrawerOpen } from "../Shared/hooks/useDrawerOpen";
+import { useDrawerWidth } from "../Shared/hooks/useDrawerWidth";
 import {
   GroupOfStopPlacesDialogs,
   GroupOfStopPlacesDrawerContent,
@@ -28,10 +26,6 @@ import {
 import { useEditGroupOfStopPlaces } from "./hooks/useEditGroupOfStopPlaces";
 import { useFitMapToGroupMembers } from "./hooks/useFitMapToGroupMembers";
 import { EditGroupOfStopPlacesProps, RootState } from "./types";
-
-const DRAWER_WIDTH_DESKTOP = 450;
-const DRAWER_WIDTH_TABLET = 380;
-const DRAWER_WIDTH_MOBILE = "100%";
 
 /**
  * Modern Edit Group of Stop Places component
@@ -45,10 +39,9 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   // Local state for drawer and mini dialogs (sticky: remembers user preference)
-  const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
+  const { isDrawerOpen: internalOpen, setDrawerOpen } = useDrawerOpen();
   const [stopPlacesDialogOpen, setStopPlacesDialogOpen] = useState(false);
   /* Removing a member is destructive enough to confirm, matching how deleting a
      quay is gated in the stop place editor. Holds the id until confirmed. */
@@ -65,8 +58,7 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
       controlledOnClose();
     } else {
       const next = !internalOpen;
-      setDrawerPreference(next);
-      setInternalOpen(next);
+      setDrawerOpen(next);
     }
   };
 
@@ -105,11 +97,7 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
   );
 
   // Determine drawer width based on screen size
-  const drawerWidth = isMobile
-    ? DRAWER_WIDTH_MOBILE
-    : isTablet
-      ? DRAWER_WIDTH_TABLET
-      : DRAWER_WIDTH_DESKTOP;
+  const drawerWidth = useDrawerWidth();
 
   /* The mobile drawer covers the whole map; the fit then uses the full map,
      which shows once the drawer is collapsed. */

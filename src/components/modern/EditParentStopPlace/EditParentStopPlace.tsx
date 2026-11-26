@@ -15,10 +15,8 @@ limitations under the Licence. */
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import {
-  getDrawerPreference,
-  setDrawerPreference,
-} from "../Shared/drawerPreference";
+import { useDrawerOpen } from "../Shared/hooks/useDrawerOpen";
+import { useDrawerWidth } from "../Shared/hooks/useDrawerWidth";
 import {
   NewParentStopWizard,
   ParentStopPlaceDialogs,
@@ -27,10 +25,6 @@ import {
 } from "./components";
 import { useEditParentStopPlace } from "./hooks/useEditParentStopPlace";
 import { EditParentStopPlaceProps } from "./types";
-
-const DRAWER_WIDTH_DESKTOP = 450;
-const DRAWER_WIDTH_TABLET = 380;
-const DRAWER_WIDTH_MOBILE = "100%";
 
 /**
  * Modern Edit Parent Stop Place component
@@ -45,10 +39,9 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   // Local state for drawer and mini dialogs (sticky: remembers user preference)
-  const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
+  const { isDrawerOpen: internalOpen, setDrawerOpen } = useDrawerOpen();
   const [wizardConfirmed, setWizardConfirmed] = useState(false);
   const [childrenDialogOpen, setChildrenDialogOpen] = useState(false);
 
@@ -61,8 +54,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
       controlledOnClose();
     } else {
       const next = !internalOpen;
-      setDrawerPreference(next);
-      setInternalOpen(next);
+      setDrawerOpen(next);
     }
   };
 
@@ -127,11 +119,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
   if (!stopPlace) return null;
 
   // Determine drawer width based on screen size
-  const drawerWidth = isMobile
-    ? DRAWER_WIDTH_MOBILE
-    : isTablet
-      ? DRAWER_WIDTH_TABLET
-      : DRAWER_WIDTH_DESKTOP;
+  const drawerWidth = useDrawerWidth();
 
   return (
     <>

@@ -24,10 +24,8 @@ import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { MinimizedBar } from "../Shared";
-import {
-  getDrawerPreference,
-  setDrawerPreference,
-} from "../Shared/drawerPreference";
+import { useDrawerOpen } from "../Shared/hooks/useDrawerOpen";
+import { useDrawerWidth } from "../Shared/hooks/useDrawerWidth";
 import {
   NewStopWizard,
   ParkingPanel,
@@ -45,9 +43,6 @@ import { appChromeTop, belowAppChromeHeight } from "../Header/headerMetrics";
 import { getModalityAllowance } from "../Shared/StopNameAndType";
 import { StopStatusBanner } from "../Shared/StopStatus";
 
-const DRAWER_WIDTH_DESKTOP = 450;
-const DRAWER_WIDTH_TABLET = 380;
-const DRAWER_WIDTH_MOBILE = "100%";
 /** The tab that renders the quay and parking lists. */
 const LISTS_TAB = 0;
 const ALL_LISTS_CLOSED: OpenLists = { quays: false, parking: false };
@@ -69,9 +64,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
+  const { isDrawerOpen: internalOpen, setDrawerOpen } = useDrawerOpen();
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const isOpenRef = useRef(isOpen);
   useEffect(() => {
@@ -128,8 +122,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
 
   const handleToggle = () => {
     const next = !internalOpen;
-    setDrawerPreference(next);
-    setInternalOpen(next);
+    setDrawerOpen(next);
   };
 
   /**
@@ -146,8 +139,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
       current.type === "stopPlace" ? current : { type: "stopPlace" },
     );
     if (isOpenRef.current) return;
-    setDrawerPreference(true);
-    setInternalOpen(true);
+    setDrawerOpen(true);
   }, []);
 
   const handleBackToStopPlace = useCallback(() => {
@@ -269,11 +261,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
 
   if (!stopPlace) return null;
 
-  const drawerWidth = isMobile
-    ? DRAWER_WIDTH_MOBILE
-    : isTablet
-      ? DRAWER_WIDTH_TABLET
-      : DRAWER_WIDTH_DESKTOP;
+  const drawerWidth = useDrawerWidth();
 
   /* The live value comes first: the header, the panel field and the map bubble must
    * never disagree about the name. Falling back to the saved name only covers the
