@@ -33,6 +33,7 @@ import stopTypes from "../../../../models/stopTypes";
 import weightTypes from "../../../../models/weightTypes";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import { StopPlaceMembership, TagTray } from "../../Shared";
+import { CreateMultimodalButton } from "./CreateMultimodalButton";
 import {
   getModalityAllowance,
   isModalityAllowed,
@@ -135,6 +136,7 @@ export const StopPlaceGeneralSection: React.FC<
         groups={stopPlace.groups}
         currentName={stopPlace.name}
       />
+      <CreateMultimodalButton stopPlace={stopPlace} canEdit={canEdit} />
 
       {/* Name */}
       <Box sx={sx.fieldRow}>
