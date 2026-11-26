@@ -14,6 +14,7 @@
 
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AdjustIcon from "@mui/icons-material/Adjust";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import LinkIcon from "@mui/icons-material/Link";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
@@ -179,7 +180,7 @@ export const StopPlacePopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                startIcon={<AccountTreeIcon />}
+                startIcon={<GroupWorkIcon />}
                 onClick={handleCreateGroup}
                 fullWidth
               >
@@ -190,7 +191,7 @@ export const StopPlacePopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                startIcon={<LinkIcon />}
+                startIcon={<AccountTreeIcon />}
                 onClick={handleCreateMultimodal}
                 fullWidth
               >
