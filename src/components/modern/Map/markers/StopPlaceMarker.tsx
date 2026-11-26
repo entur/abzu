@@ -36,6 +36,7 @@ import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 import { ParentChildMarker } from "./ParentChildMarker";
 import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
+import { centroidOfStop } from "./utils/stopCentroid";
 
 const MARKER_SIZE = 40;
 const ICON_SIZE = 24;
@@ -71,6 +72,8 @@ export const StopPlaceMarker = () => {
   if (!current?.location) return null;
 
   const [lat, lng] = pendingPosition ?? current.location;
+  // Through the same checked move as a drag, so it stays inside the edit area.
+  const centroid = centroidOfStop(current);
   const isParent = !!current.isParent;
   const hasUnsavedFields = isStatusEnabled && dirtyKeys.size > 0;
   const markerSize = isParent ? PARENT_MARKER_SIZE : MARKER_SIZE;
@@ -179,6 +182,7 @@ export const StopPlaceMarker = () => {
         stopPlace={current}
         lat={lat}
         lng={lng}
+        onAdjustCentroid={centroid ? () => void moveTo(centroid) : undefined}
         onEditCoordinates={
           disabled
             ? undefined

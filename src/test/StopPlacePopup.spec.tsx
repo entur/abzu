@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import "@testing-library/jest-dom/vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import { describe, expect, test, vi } from "vitest";
 import enMessages from "../static/lang/en.json";
@@ -68,5 +68,44 @@ describe("StopPlacePopup (F-82)", () => {
     expect(
       createMultimodal.querySelector("[data-testid=AccountTreeIcon]"),
     ).toBeInTheDocument();
+  });
+});
+
+const renderPopup = (
+  stopPlace: typeof SJOSTRAND_SKOLE & { hasExpired?: boolean },
+  onAdjustCentroid?: () => void,
+) =>
+  render(
+    <IntlProvider locale="en" messages={enMessages}>
+      <StopPlacePopup
+        anchorEl={document.body}
+        onClose={vi.fn()}
+        stopPlace={stopPlace}
+        lat={58.100494}
+        lng={7.976486}
+        onAdjustCentroid={onAdjustCentroid}
+      />
+    </IntlProvider>,
+  );
+
+describe("StopPlacePopup Auto-adjust centroid (F-30)", () => {
+  const centroidButton = () =>
+    screen.queryByRole("button", { name: enMessages.adjust_centroid });
+
+  test("an ordinary stop offers it, and it moves the stop", () => {
+    const onAdjustCentroid = vi.fn();
+    renderPopup(SJOSTRAND_SKOLE, onAdjustCentroid);
+    fireEvent.click(centroidButton()!);
+    expect(onAdjustCentroid).toHaveBeenCalledTimes(1);
+  });
+
+  test("hidden when there is nothing to centre on", () => {
+    renderPopup(SJOSTRAND_SKOLE);
+    expect(centroidButton()).not.toBeInTheDocument();
+  });
+
+  test("hidden on an expired stop", () => {
+    renderPopup({ ...SJOSTRAND_SKOLE, hasExpired: true }, vi.fn());
+    expect(centroidButton()).not.toBeInTheDocument();
   });
 });
