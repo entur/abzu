@@ -62,7 +62,6 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   onPublicCodeChange,
   onPrivateCodeChange,
   onDescriptionChange,
-  onCompassBearingChange,
 }) => {
   const BOARDING_POSITIONS_TAB = 3;
 
@@ -254,25 +253,18 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
               fullWidth
             />
 
-            <TextField
-              label={formatMessage({ id: "compass_bearing" })}
-              type="number"
-              value={quay.compassBearing ?? ""}
-              onChange={(e) => {
-                const raw = e.target.value;
-                onCompassBearingChange(
-                  quayIndex,
-                  raw === "" ? null : Number(raw),
-                );
-              }}
-              disabled={!canEdit}
-              size="small"
-              slotProps={{ htmlInput: { min: 0, max: 360 } }}
-              helperText={formatMessage({
-                id: "change_compass_bearing_help_text",
-              })}
-              sx={{ width: "50%" }}
-            />
+            {/* Set with the handle on the map; shown here read-only (F-23). */}
+            <Box>
+              <Typography variant="body2">
+                {formatMessage({ id: "compass_bearing" })}:{" "}
+                {quay.compassBearing != null
+                  ? `${quay.compassBearing}°`
+                  : formatMessage({ id: "compass_bearing_not_set" })}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {formatMessage({ id: "compass_bearing_map_hint" })}
+              </Typography>
+            </Box>
 
             {quay.importedId && quay.importedId.length > 0 && (
               <ImportedId

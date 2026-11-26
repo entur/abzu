@@ -77,6 +77,8 @@
   "browser_supported_browsers": "Tuetut selaimet ovat:",
   "browser_unsupported_title": "Selainta ei tueta",
   "cancel_with_escape": "Peruuta (Esc)",
+  "compass_bearing_map_hint": "Muuta kartan kahvalla",
+  "compass_bearing_not_set": "ei asetettu",
   "continue_anyway": "Jatka silti",
   "coordinates_did_you_mean": "Tarkoititko {coordinates}?",
   "coordinates_far_from_reference": "Tämä sijainti on {distance} km:n päässä kohteesta {reference}.",

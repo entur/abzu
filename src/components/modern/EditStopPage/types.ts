@@ -248,7 +248,6 @@ export interface QuayPanelProps {
   onPublicCodeChange: (index: number, value: string) => void;
   onPrivateCodeChange: (index: number, value: string) => void;
   onDescriptionChange: (index: number, value: string) => void;
-  onCompassBearingChange: (index: number, value: number | null) => void;
 }
 
 export interface ParkingPanelProps {
@@ -413,7 +412,6 @@ export interface UseEditStopPageReturn {
   handleQuayPublicCodeChange: (index: number, value: string) => void;
   handleQuayPrivateCodeChange: (index: number, value: string) => void;
   handleQuayDescriptionChange: (index: number, value: string) => void;
-  handleQuayCompassBearingChange: (index: number, value: number | null) => void;
 
   // Parking handlers
   handleDeleteParking: (index: number) => void;

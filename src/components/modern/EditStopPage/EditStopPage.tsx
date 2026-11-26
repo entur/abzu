@@ -234,7 +234,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleQuayPublicCodeChange,
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
-    handleQuayCompassBearingChange,
     handleDeleteParking,
     handleParkingNameChange,
     handleParkingCapacityChange,
@@ -318,7 +317,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           onPublicCodeChange={handleQuayPublicCodeChange}
           onPrivateCodeChange={handleQuayPrivateCodeChange}
           onDescriptionChange={handleQuayDescriptionChange}
-          onCompassBearingChange={handleQuayCompassBearingChange}
         />,
       );
     }

@@ -77,6 +77,8 @@
   "browser_supported_browsers": "Följande webbläsare stöttas:",
   "browser_unsupported_title": "Din webbläsare stöttas inte",
   "cancel_with_escape": "Avbryt (Esc)",
+  "compass_bearing_map_hint": "Ändras med handtaget på kartan",
+  "compass_bearing_not_set": "inte angiven",
   "continue_anyway": "Fortsätt ändå",
   "coordinates_did_you_mean": "Menade du {coordinates}?",
   "coordinates_far_from_reference": "Den här positionen är {distance} km från {reference}.",

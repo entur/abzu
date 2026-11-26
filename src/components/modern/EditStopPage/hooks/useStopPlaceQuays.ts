@@ -81,13 +81,6 @@ export const useStopPlaceQuays = (
     [dispatch],
   );
 
-  const handleQuayCompassBearingChange = useCallback(
-    (index: number, value: number | null) => {
-      dispatch(StopPlaceActions.changeQuayCompassBearing(index, value));
-    },
-    [dispatch],
-  );
-
   return {
     handleDeleteQuay,
     handleConfirmDeleteQuay,
@@ -95,6 +88,5 @@ export const useStopPlaceQuays = (
     handleQuayPublicCodeChange,
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
-    handleQuayCompassBearingChange,
   };
 };

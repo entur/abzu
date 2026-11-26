@@ -77,6 +77,8 @@
   "browser_supported_browsers": "Les navigateurs supportés sont :",
   "browser_unsupported_title": "Navigateur non supporté",
   "cancel_with_escape": "Annuler (Échap)",
+  "compass_bearing_map_hint": "Modifiez-la avec la poignée sur la carte",
+  "compass_bearing_not_set": "non définie",
   "continue_anyway": "Continuer quand même",
   "coordinates_did_you_mean": "Vouliez-vous dire {coordinates} ?",
   "coordinates_far_from_reference": "Cette position est à {distance} km de {reference}.",

@@ -77,6 +77,8 @@
   "browser_supported_browsers": "Supported browsers are:",
   "browser_unsupported_title": "Unsupported browser",
   "cancel_with_escape": "Cancel (Esc)",
+  "compass_bearing_map_hint": "Change it with the handle on the map",
+  "compass_bearing_not_set": "not set",
   "continue_anyway": "Continue anyway",
   "coordinates_did_you_mean": "Did you mean {coordinates}?",
   "coordinates_far_from_reference": "This position is {distance} km from {reference}.",

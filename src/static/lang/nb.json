@@ -77,6 +77,8 @@
   "browser_supported_browsers": "Følgende nettlesere er støttet:",
   "browser_unsupported_title": "Din nettleser er ikke støttet",
   "cancel_with_escape": "Avbryt (Esc)",
+  "compass_bearing_map_hint": "Endres med håndtaket på kartet",
+  "compass_bearing_not_set": "ikke satt",
   "continue_anyway": "Fortsett likevel",
   "coordinates_did_you_mean": "Mente du {coordinates}?",
   "coordinates_far_from_reference": "Denne posisjonen er {distance} km fra {reference}.",
