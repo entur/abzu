@@ -86,6 +86,7 @@
   "coordinates_reference_previous": "nuvarande position",
   "coordinates_reference_quay": "läget",
   "coordinates_reference_stop": "hållplatsen",
+  "copy_failed": "Kunde inte kopiera. Markera id:t och tryck Ctrl+C.",
   "delete_group_failed": "Borttagningen av gruppen misslyckades. Försök igen.",
   "duplicate_values_removed": "Upprepade värden tas bort när du sparar",
   "error_insufficient_privileges": "Du har inte behörighet att göra den här ändringen.",

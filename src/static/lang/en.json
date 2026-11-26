@@ -86,6 +86,7 @@
   "coordinates_reference_previous": "its current position",
   "coordinates_reference_quay": "the quay",
   "coordinates_reference_stop": "the stop place",
+  "copy_failed": "Couldn’t copy. Select the ID and press Ctrl+C.",
   "delete_group_failed": "Deleting the group failed. Please try again.",
   "duplicate_values_removed": "Repeated values are removed when saved",
   "error_insufficient_privileges": "You don't have the rights to make this change.",

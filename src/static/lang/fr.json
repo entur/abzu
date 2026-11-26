@@ -86,6 +86,7 @@
   "coordinates_reference_previous": "sa position actuelle",
   "coordinates_reference_quay": "le quai",
   "coordinates_reference_stop": "l'arrêt",
+  "copy_failed": "Copie impossible. Sélectionnez l’identifiant et appuyez sur Ctrl+C.",
   "delete_group_failed": "La suppression du groupe a échoué. Veuillez réessayer.",
   "duplicate_values_removed": "Les valeurs répétées sont supprimées à l’enregistrement",
   "error_insufficient_privileges": "Vous n'avez pas les droits pour effectuer cette modification.",

@@ -86,6 +86,7 @@
   "coordinates_reference_previous": "nåværende posisjon",
   "coordinates_reference_quay": "quayen",
   "coordinates_reference_stop": "stoppestedet",
+  "copy_failed": "Kunne ikke kopiere. Marker ID-en og trykk Ctrl+C.",
   "delete_group_failed": "Slettingen av gruppen feilet. Prøv igjen.",
   "duplicate_values_removed": "Like verdier fjernes ved lagring",
   "error_insufficient_privileges": "Du har ikke rettigheter til å gjøre denne endringen.",

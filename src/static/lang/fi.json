@@ -86,6 +86,7 @@
   "coordinates_reference_previous": "nykyinen sijainti",
   "coordinates_reference_quay": "laituri",
   "coordinates_reference_stop": "pysäkkialue",
+  "copy_failed": "Kopiointi epäonnistui. Valitse tunnus ja paina Ctrl+C.",
   "delete_group_failed": "Ryhmän poistaminen epäonnistui. Yritä uudelleen.",
   "duplicate_values_removed": "Toistuvat arvot poistetaan tallennettaessa",
   "error_insufficient_privileges": "Sinulla ei ole oikeuksia tehdä tätä muutosta.",

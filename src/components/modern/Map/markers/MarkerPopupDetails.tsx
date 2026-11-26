@@ -12,16 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EditIcon from "@mui/icons-material/Edit";
-import {
-  Box,
-  ButtonBase,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, ButtonBase, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
+import { CopyIdButton } from "../../Shared/CopyIdButton";
 
 const COORDINATE_DECIMALS = 6;
 
@@ -43,10 +37,6 @@ export const MarkerPopupDetails = ({
   const { formatMessage } = useIntl();
   const coordinates = `${lat.toFixed(COORDINATE_DECIMALS)}, ${lng.toFixed(COORDINATE_DECIMALS)}`;
 
-  const handleCopyId = () => {
-    if (id) navigator.clipboard.writeText(id);
-  };
-
   return (
     <>
       {id && (
@@ -54,11 +44,7 @@ export const MarkerPopupDetails = ({
           <Typography variant="caption" sx={{ color: "text.secondary" }}>
             {id}
           </Typography>
-          <Tooltip title={formatMessage({ id: "copy_id" })} placement="top">
-            <IconButton size="small" onClick={handleCopyId} sx={{ p: 0.25 }}>
-              <ContentCopyIcon sx={{ fontSize: "0.85rem" }} />
-            </IconButton>
-          </Tooltip>
+          <CopyIdButton idToCopy={id} />
         </Box>
       )}
 
