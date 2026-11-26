@@ -13,12 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import MdGroup from "@mui/icons-material/GroupWork";
-import React from "react";
 import { hasExpired, isFuture } from "../../../../modelUtils/validBetween";
 import { Entities } from "../../../../models/Entities";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import ModalityIconTray from "../../../ReportPage/ModalityIconTray";
 import { MenuItem, SearchResult } from "../types";
+import { SearchResultRow } from "./SearchResultRow";
 
 interface TopographicPlace {
   topographicPlace: string;
@@ -63,12 +63,11 @@ const getFutureOrExpiredLabel = (stopPlace: SearchResult): string | null => {
   return null;
 };
 
-export const topographicPlaceStyle: React.CSSProperties = {
-  color: "grey",
-  fontSize: "0.7em",
-  display: "flex",
-  justifyContent: "space-between",
-};
+const ICON_SIZE = 20;
+const iconSvgStyle = { width: ICON_SIZE, height: ICON_SIZE };
+
+const locationOf = (element: SearchResult): string =>
+  `${element.topographicPlace}, ${element.parentTopographicPlace}`;
 
 const createGroupOfStopPlacesMenuItem = (element: SearchResult): MenuItem => {
   const topographicPlaces =
@@ -79,33 +78,15 @@ const createGroupOfStopPlacesMenuItem = (element: SearchResult): MenuItem => {
     text: element.name,
     id: element.id,
     menuDiv: (
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            marginLeft: 10,
-            display: "flex",
-            flexDirection: "column",
-            minWidth: 360,
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ fontSize: "0.9em" }}>{element.name}</div>
-            <div style={{ fontSize: "0.6em", color: "grey" }}>{element.id}</div>
-          </div>
-          {topographicPlaces.length > 0 && (
-            <div style={topographicPlaceStyle}>
-              {topographicPlaces.map((place, i) => (
-                <div key={"place-" + i} style={{ marginRight: 5 }}>
-                  {`${place.topographicPlace}, ${place.parentTopographicPlace}`}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <MdGroup
-          style={{ marginTop: 10, marginLeft: 5, transform: "scale(0.8)" }}
-        />
-      </div>
+      <SearchResultRow
+        name={element.name}
+        id={element.id}
+        locations={topographicPlaces.map(
+          (place) =>
+            `${place.topographicPlace}, ${place.parentTopographicPlace}`,
+        )}
+        icons={<MdGroup fontSize="small" color="action" />}
+      />
     ),
   };
 };
@@ -120,53 +101,26 @@ const createParentStopPlaceMenuItem = (
     text: element.name,
     id: element.id,
     menuDiv: (
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div
-          style={{
-            marginLeft: 10,
-            display: "flex",
-            flexDirection: "column",
-            minWidth: 360,
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ fontSize: "0.9em" }}>
-              {element.name}
-              <span
-                style={{
-                  fontWeight: 600,
-                  fontSize: "0.7em",
-                  marginLeft: 5,
-                }}
-              >
-                MM
-              </span>
-            </div>
-            <div style={{ fontSize: "0.6em", color: "grey" }}>{element.id}</div>
-          </div>
-          <div style={topographicPlaceStyle}>
-            <div>{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
-            {futureOrExpiredLabel && (
-              <div key={"valid-label" + element.id} style={{ marginRight: 5 }}>
-                {formatMessage({ id: futureOrExpiredLabel })}
-              </div>
-            )}
-          </div>
-        </div>
-        <ModalityIconTray
-          style={{
-            marginLeft: 7,
-            display: "flex",
-            flexDirection: "column",
-          }}
-          modalities={
-            element.children?.map((child) => ({
-              submode: child.submode,
-              stopPlaceType: child.stopPlaceType,
-            })) || []
-          }
-        />
-      </div>
+      <SearchResultRow
+        name={element.name}
+        badge="MM"
+        id={element.id}
+        locations={[locationOf(element)]}
+        status={
+          futureOrExpiredLabel && formatMessage({ id: futureOrExpiredLabel })
+        }
+        icons={
+          <ModalityIconTray
+            style={{ display: "flex", alignItems: "center", gap: 2 }}
+            modalities={
+              element.children?.map((child) => ({
+                submode: child.submode,
+                stopPlaceType: child.stopPlaceType,
+              })) || []
+            }
+          />
+        }
+      />
     ),
   };
 };
@@ -181,44 +135,21 @@ const createStopPlaceMenuItem = (
     text: element.name,
     id: element.id,
     menuDiv: (
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div
-          style={{
-            marginLeft: 10,
-            display: "flex",
-            flexDirection: "column",
-            minWidth: 360,
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ fontSize: "0.9em" }}>{element.name}</div>
-            <div style={{ fontSize: "0.6em", color: "grey" }}>{element.id}</div>
-          </div>
-          <div>
-            <div
-              style={{ fontSize: "0.6em", color: "grey" }}
-            >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
-            {futureOrExpiredLabel && (
-              <div key={"valid-label" + element.id} style={{ marginRight: 5 }}>
-                {formatMessage({ id: futureOrExpiredLabel })}
-              </div>
-            )}
-          </div>
-        </div>
-        <ModalityIconImg
-          svgStyle={{
-            marginTop: -10,
-            marginRight: 0,
-            transform: "translate3d(0,0,0)",
-          }}
-          style={{ display: "inline-block", position: "relative" }}
-          iconStyle={{
-            transform: "scale(0.8)",
-          }}
-          type={element.stopPlaceType}
-          submode={element.submode}
-        />
-      </div>
+      <SearchResultRow
+        name={element.name}
+        id={element.id}
+        locations={[locationOf(element)]}
+        status={
+          futureOrExpiredLabel && formatMessage({ id: futureOrExpiredLabel })
+        }
+        icons={
+          <ModalityIconImg
+            type={element.stopPlaceType}
+            submode={element.submode}
+            svgStyle={iconSvgStyle}
+          />
+        }
+      />
     ),
   };
 };
