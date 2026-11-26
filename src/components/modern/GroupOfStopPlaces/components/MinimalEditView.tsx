@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PlaceIcon from "@mui/icons-material/Place";
 import SaveIcon from "@mui/icons-material/Save";

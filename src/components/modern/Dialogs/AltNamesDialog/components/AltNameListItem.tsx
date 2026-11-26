@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";

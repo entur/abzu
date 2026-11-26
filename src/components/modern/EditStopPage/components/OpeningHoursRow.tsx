@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 import {
   Box,
   FormControlLabel,
@@ -83,6 +83,7 @@ export const OpeningHoursRow: React.FC<OpeningHoursRowProps> = ({
           <span>
             <IconButton
               size="small"
+              color="error"
               disabled={disabled}
               onClick={onDelete}
               aria-label={formatMessage({ id: "opening_hours_delete" })}

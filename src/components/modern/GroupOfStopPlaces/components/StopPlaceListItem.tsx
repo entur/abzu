@@ -13,7 +13,7 @@
  * limitations under the Licence. */
 
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DeleteIcon from "@mui/icons-material/Delete";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
@@ -118,12 +118,11 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
             <span onClick={(e) => e.stopPropagation()}>
               <IconButton
                 size="small"
-                color="error"
                 disabled={disabled}
                 onClick={() => onRemove(stopPlace.id)}
                 sx={{ ml: 0.5 }}
               >
-                <DeleteIcon fontSize="small" />
+                <LinkOffIcon fontSize="small" />
               </IconButton>
             </span>
           </Tooltip>

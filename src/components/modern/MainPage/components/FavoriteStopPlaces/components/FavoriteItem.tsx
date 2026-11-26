@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import {
-  Delete as DeleteIcon,
+  BookmarkRemove as RemoveFavoriteIcon,
   GroupWork as GroupIcon,
   Link as LinkIcon,
 } from "@mui/icons-material";
@@ -135,18 +135,19 @@ export const FavoriteItem: React.FC<FavoriteItemProps> = ({
       </Box>
       <Tooltip title={formatMessage({ id: "remove_from_favorites" })} arrow>
         <IconButton
-          aria-label="remove from favorites"
+          aria-label={formatMessage({ id: "remove_from_favorites" })}
           onClick={(event) => onRemove(favorite.id, event)}
           size="small"
           sx={{
-            color: theme.palette.error.main,
+            // Removing a favourite deletes nothing, so it isn't red (F-73).
+            color: theme.palette.text.secondary,
             "&:hover": {
-              color: theme.palette.error.dark,
+              color: theme.palette.text.primary,
             },
             ml: 1,
           }}
         >
-          <DeleteIcon fontSize="small" />
+          <RemoveFavoriteIcon fontSize="small" />
         </IconButton>
       </Tooltip>
     </ListItem>

@@ -13,22 +13,18 @@
  * limitations under the Licence. */
 
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
   Button,
-  Chip,
   Divider,
-  IconButton,
   List,
   ListItem,
-  ListItemText,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import React from "react";
+import { KeyValueRow } from "./KeyValueRow";
 import { useIntl } from "react-intl";
 import {
   KeyValue,
@@ -87,56 +83,15 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
             <List dense disablePadding>
               {keyValues.map((kv, index) => (
                 <React.Fragment key={`${kv.key}-${index}`}>
-                  <ListItem
-                    secondaryAction={
-                      !disabled && (
-                        <Stack direction="row" spacing={0.5}>
-                          <IconButton
-                            edge="end"
-                            size="small"
-                            onClick={() => form.startEdit(kv)}
-                          >
-                            <EditIcon fontSize="small" />
-                          </IconButton>
-                          <IconButton
-                            edge="end"
-                            size="small"
-                            onClick={() => form.remove(kv.key)}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </IconButton>
-                        </Stack>
-                      )
-                    }
-                  >
-                    <ListItemText
-                      // The values are chips in a Box; render the slot as a
-                      // div so they aren't nested in a <p>.
-                      slotProps={{ secondary: { component: "div" } }}
-                      primary={
-                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                          {kv.key}
-                        </Typography>
-                      }
-                      secondary={
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: 0.5,
-                            mt: 0.5,
-                          }}
-                        >
-                          {kv.values.map((val, valueIndex) => (
-                            <Chip
-                              key={`${val}-${valueIndex}`}
-                              label={val}
-                              size="small"
-                            />
-                          ))}
-                        </Box>
-                      }
-                    />
+                  <ListItem disableGutters>
+                    <Box sx={{ width: "100%" }}>
+                      <KeyValueRow
+                        keyValue={kv}
+                        disabled={!!disabled}
+                        onEdit={() => form.startEdit(kv)}
+                        onRemove={() => form.remove(kv.key)}
+                      />
+                    </Box>
                   </ListItem>
                   <Divider component="li" />
                 </React.Fragment>

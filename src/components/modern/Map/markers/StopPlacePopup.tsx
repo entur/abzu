@@ -17,7 +17,7 @@ import AdjustIcon from "@mui/icons-material/Adjust";
 import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import LinkIcon from "@mui/icons-material/Link";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import { StopPlacesGroupActions, UserActions } from "../../../../actions";
@@ -214,8 +214,7 @@ export const StopPlacePopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                color="error"
-                startIcon={<RemoveCircleOutlineIcon />}
+                startIcon={<LinkOffIcon />}
                 onClick={handleRemoveFromGroup}
                 fullWidth
               >

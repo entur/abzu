@@ -12,7 +12,8 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Button, Divider } from "@mui/material";
@@ -97,9 +98,18 @@ export const StopPlaceActionBar = ({
         {showDelete && (
           <Button
             variant="outlined"
-            color="error"
+            color={stopPlace.hasExpired ? "error" : "warning"}
+            // warning.main text is too pale on white; .dark keeps it readable.
+            sx={
+              stopPlace.hasExpired
+                ? undefined
+                : { color: "warning.dark", borderColor: "warning.dark" }
+            }
             size="small"
-            startIcon={<DeleteIcon />}
+            startIcon={
+              /* Deactivating can be undone (F-41); deleting can not (F-73). */
+              stopPlace.hasExpired ? <DeleteForeverIcon /> : <EventBusyIcon />
+            }
             onClick={onOpenTerminateDialog}
           >
             {formatMessage({

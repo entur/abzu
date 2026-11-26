@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Button, Divider } from "@mui/material";
@@ -64,9 +65,18 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
         {hasId && canEdit && (!hasExpired || canDelete) && (
           <Button
             variant="outlined"
-            color="error"
+            color={hasExpired ? "error" : "warning"}
+            // warning.main text is too pale on white; .dark keeps it readable.
+            sx={
+              hasExpired
+                ? undefined
+                : { color: "warning.dark", borderColor: "warning.dark" }
+            }
             size="small"
-            startIcon={<DeleteIcon />}
+            startIcon={
+              /* Deactivating can be undone (F-41); deleting can not (F-73). */
+              hasExpired ? <DeleteForeverIcon /> : <EventBusyIcon />
+            }
             onClick={onTerminate}
           >
             {formatMessage({

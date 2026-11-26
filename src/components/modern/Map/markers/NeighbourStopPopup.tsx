@@ -16,7 +16,7 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import LinkIcon from "@mui/icons-material/Link";
 import MergeIcon from "@mui/icons-material/MergeType";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Box, Button, Divider } from "@mui/material";
@@ -199,8 +199,7 @@ export const NeighbourStopPopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                color="error"
-                startIcon={<RemoveCircleOutlineIcon />}
+                startIcon={<LinkOffIcon />}
                 onClick={handleRemoveFromGroup}
                 fullWidth
               >

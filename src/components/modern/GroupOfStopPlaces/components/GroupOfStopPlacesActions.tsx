@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Button, Divider, Typography } from "@mui/material";
