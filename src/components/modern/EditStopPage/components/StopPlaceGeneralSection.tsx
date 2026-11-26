@@ -143,12 +143,14 @@ export const StopPlaceGeneralSection: React.FC<
         <TextField
           label={
             <DirtyLabel dirty={isDirty("name")}>
-              {`${formatMessage({ id: "name" })} *`}
+              {formatMessage({ id: "name" })}
             </DirtyLabel>
           }
           value={stopPlace.name || ""}
           onChange={(e) => onNameChange(e.target.value)}
           disabled={!canEdit}
+          // MUI adds the asterisk and tells screen readers (F-08, F-119).
+          required
           error={isNameMissing}
           helperText={
             isNameMissing
@@ -221,18 +223,19 @@ export const StopPlaceGeneralSection: React.FC<
           size="small"
           disabled={!canEdit}
           error={isStopPlaceTypeMissing}
+          required
           fullWidth
         >
           <InputLabel>
             <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
-              {`${formatMessage({ id: "stopPlaceType" })} *`}
+              {formatMessage({ id: "stopPlaceType" })}
             </DirtyLabel>
           </InputLabel>
           <Select
             value={pickerValue}
             label={
               <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
-                {`${formatMessage({ id: "stopPlaceType" })} *`}
+                {formatMessage({ id: "stopPlaceType" })}
               </DirtyLabel>
             }
             onChange={(e) => handlePickerChange(e.target.value)}
