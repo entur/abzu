@@ -16,6 +16,7 @@ import { describe, expect, test } from "vitest";
 import {
   canOfferTerminate,
   hasSomethingToSave,
+  saveLabelId,
 } from "../components/modern/EditStopPage/utils/stopPlaceActionRules";
 
 const SAVED_STOP = { id: "NSR:StopPlace:1" };
@@ -55,5 +56,18 @@ describe("an expired stop can be saved unchanged, to reactivate it", () => {
     expect(hasSomethingToSave(true, false)).toBe(true);
     expect(hasSomethingToSave(false, true)).toBe(true);
     expect(hasSomethingToSave(false, false)).toBe(false);
+  });
+});
+
+describe("saveLabelId (F-41)", () => {
+  test("an expired stop with no other change is activated", () => {
+    expect(saveLabelId(false, true)).toBe("activate_stop_place");
+  });
+
+  test("edits are saved, also on an expired stop", () => {
+    expect(saveLabelId(true, true)).toBe("save_stop_place");
+    expect(saveLabelId(true, false)).toBe("save_stop_place");
+    expect(saveLabelId(false, false)).toBe("save_stop_place");
+    expect(saveLabelId(false, undefined)).toBe("save_stop_place");
   });
 });

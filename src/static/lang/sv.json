@@ -31,6 +31,7 @@
   "accessibilityAssessments_liftFreeAccess_true": "Tillgänglig via hiss",
   "accessibilityAssessments_liftFreeAccess_unknown": "Tillträde via hiss okänd",
   "action_failed": "Det gick inte. Försök igen.",
+  "activate_stop_place": "Aktivera hållplats",
   "add": "Lägg till",
   "add_entry_message": "Vill du lägga till",
   "add_new_element_body": "Du lägger nu till ett nytt element i kartan",

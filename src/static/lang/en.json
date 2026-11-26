@@ -31,6 +31,7 @@
   "accessibilityAssessments_liftFreeAccess_true": "Accessible by lift",
   "accessibilityAssessments_liftFreeAccess_unknown": "Access by lift unknown",
   "action_failed": "That didn't work. Please try again.",
+  "activate_stop_place": "Activate stop place",
   "add": "Add",
   "add_entry_message": "Do you want to add",
   "add_new_element_body": "You are about to add a new element to the map",

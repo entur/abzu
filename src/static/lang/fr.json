@@ -31,6 +31,7 @@
   "accessibilityAssessments_liftFreeAccess_true": "Accessible par ascenseur",
   "accessibilityAssessments_liftFreeAccess_unknown": "Accès par ascenseur inconnu",
   "action_failed": "Cela n'a pas fonctionné. Veuillez réessayer.",
+  "activate_stop_place": "Activer le point d'arrêt",
   "add": "Ajouter",
   "add_entry_message": "Voulez-vous ajouter",
   "add_new_element_body": "Vous êtes sur le point d'ajouter un nouvel élément sur la carte",

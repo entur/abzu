@@ -31,6 +31,7 @@
   "accessibilityAssessments_liftFreeAccess_true": "Pääsy hissillä",
   "accessibilityAssessments_liftFreeAccess_unknown": "Pääsy hissillä tuntematon",
   "action_failed": "Toiminto epäonnistui. Yritä uudelleen.",
+  "activate_stop_place": "Aktivoi pysäkkialue",
   "add": "Lisää",
   "add_entry_message": "Haluatko lisätä",
   "add_new_element_body": "Olet lisäämässä uutta elementtiä kartalle",

@@ -27,6 +27,7 @@ import { StopPlace } from "../types";
 import {
   canOfferTerminate,
   hasSomethingToSave,
+  saveLabelId,
 } from "../utils/stopPlaceActionRules";
 
 interface StopPlaceActionBarProps {
@@ -134,7 +135,9 @@ export const StopPlaceActionBar = ({
           >
             {/* "Save stop place": the bar also sits under the quay and parking
               panels, where a bare "Save" read as "save this quay" (F-24). */}
-            {formatMessage({ id: "save_stop_place" })}
+            {formatMessage({
+              id: saveLabelId(isModified, stopPlace.hasExpired),
+            })}
           </Button>
         )}
       </Box>

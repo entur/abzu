@@ -17,6 +17,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
+import { saveLabelId } from "../../EditStopPage/utils/stopPlaceActionRules";
 import { ParentStopPlaceActionsProps } from "../types";
 
 /**
@@ -95,7 +96,7 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
             onClick={onSave}
             disabled={isSaveDisabled}
           >
-            {formatMessage({ id: "save_stop_place" })}
+            {formatMessage({ id: saveLabelId(isModified, hasExpired) })}
           </Button>
         )}
       </Box>

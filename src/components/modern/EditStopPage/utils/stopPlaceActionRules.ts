@@ -48,3 +48,14 @@ export const hasSomethingToSave = (
   isModified: boolean,
   hasExpired: boolean | undefined,
 ): boolean => isModified || !!hasExpired;
+
+/**
+ * The save button's label. Saving an expired stop with no other change only
+ * reactivates it, so the button says so (F-41); with edits it saves them, and
+ * the reactivation comes with them.
+ */
+export const saveLabelId = (
+  isModified: boolean,
+  hasExpired: boolean | undefined,
+): "activate_stop_place" | "save_stop_place" =>
+  hasExpired && !isModified ? "activate_stop_place" : "save_stop_place";
