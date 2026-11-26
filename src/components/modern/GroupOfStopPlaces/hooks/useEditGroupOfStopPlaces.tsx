@@ -123,7 +123,8 @@ export const useEditGroupOfStopPlaces = (): UseEditGroupOfStopPlacesReturn => {
 
   // Member handlers
   const handleAddMembers = (memberIds: string[]) => {
-    dispatch(addMembersToGroup(memberIds));
+    // On a failed lookup the thunk restores the group; nothing is added.
+    dispatch(addMembersToGroup(memberIds)).catch(() => undefined);
   };
 
   const handleRemoveMember = (stopPlaceId: string) => {

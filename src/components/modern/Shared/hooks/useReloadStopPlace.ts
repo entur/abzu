@@ -40,7 +40,9 @@ export const useReloadStopPlace = (): ReloadStopPlace => {
 
   return useCallback(
     (stopPlaceId) => {
-      dispatch(getStopPlaceVersions(stopPlaceId));
+      /* A failed reload keeps the data already shown; each thunk resets its
+         own loading flag, so the rejection needs no further handling. */
+      dispatch(getStopPlaceVersions(stopPlaceId)).catch(() => undefined);
       if (activeMap) {
         dispatch(
           getNeighbourStops(
@@ -48,9 +50,9 @@ export const useReloadStopPlace = (): ReloadStopPlace => {
             activeMap.getBounds(),
             showExpiredStops,
           ),
-        );
+        ).catch(() => undefined);
       }
-      dispatch(getStopPlaceWithAll(stopPlaceId));
+      dispatch(getStopPlaceWithAll(stopPlaceId)).catch(() => undefined);
     },
     [dispatch, activeMap, showExpiredStops],
   );

@@ -130,7 +130,8 @@ export const NeighbourStopPopup = ({
 
   const handleAddToGroup = () => {
     onClose();
-    dispatch(addMembersToGroup([stop.id]));
+    // On a failed lookup the thunk restores the group; the stop is not added.
+    dispatch(addMembersToGroup([stop.id])).catch(() => undefined);
   };
 
   const handleRemoveFromGroup = () => {

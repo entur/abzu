@@ -69,11 +69,13 @@ export const useStopPlaceSave = (
 
   const reloadAfterSave = useCallback(
     (id: string, wasNewStop: boolean) => {
-      dispatch(getStopPlaceVersions(id));
+      /* The save has succeeded; a failed reload keeps the data already shown
+         and each thunk resets its own loading flag. */
+      dispatch(getStopPlaceVersions(id)).catch(() => undefined);
       if (activeMap) {
         dispatch(
           getNeighbourStops(id, activeMap.getBounds(), showExpiredStops),
-        );
+        ).catch(() => undefined);
       }
       if (wasNewStop) {
         /* Move off /stop_place/new so reload and shared links work (F-22);
@@ -83,7 +85,7 @@ export const useStopPlaceSave = (
         );
         return;
       }
-      dispatch(getStopPlaceWithAll(id));
+      dispatch(getStopPlaceWithAll(id)).catch(() => undefined);
     },
     [dispatch, activeMap, showExpiredStops],
   );
