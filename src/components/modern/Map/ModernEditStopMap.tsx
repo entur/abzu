@@ -33,6 +33,7 @@ import { MultimodalEdgesLayer } from "./layers/MultimodalEdgesLayer";
 import { PathLinkLayer } from "./layers/PathLinkLayer";
 import { StopGroupLayer } from "./layers/StopGroupLayer";
 import { TariffZonesLayer } from "./layers/TariffZonesLayer";
+import { CoordinatePinMarker } from "./coordinatePin/CoordinatePinMarker";
 import { BoardingPositionMarkers } from "./markers/BoardingPositionMarkers";
 import { NeighbourMarkers } from "./markers/NeighbourMarkers";
 import { NeighbourQuayMarkers } from "./markers/NeighbourQuayMarkers";
@@ -250,6 +251,7 @@ export const ModernEditStopMap = () => {
         <QuayMarkers />
         <ParkingMarkers />
         <BoardingPositionMarkers />
+        <CoordinatePinMarker />
       </Map>
     </Box>
   );

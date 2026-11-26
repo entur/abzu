@@ -28,6 +28,7 @@ import { MenuItem } from "../../types";
 import { useConfirmLeave } from "../../../Shared/UnsavedChangesGuard";
 import { setMarkerOnMap } from "../../../../../actions/StopPlaceActions.modern";
 import { useFlyToCoordinates } from "./useFlyToCoordinates";
+import { clearCoordinatePin } from "../../../Map/coordinatePin/coordinatePinStore";
 
 /**
  * Hook for managing search and selection handlers
@@ -93,6 +94,8 @@ export const useSearchHandlers = (
 
       // Always update the local input state
       setStopPlaceSearchValue(searchText || "");
+      // A new search replaces the last "Go to coordinates" pin (F-94).
+      clearCoordinatePin();
 
       if (!searchText || !searchText.length) {
         dispatch(UserActions.clearSearchResults());
@@ -136,7 +139,7 @@ export const useSearchHandlers = (
           result.id === "coordinates" &&
           (result.element as any).coordinates
         ) {
-          // Move the map there without creating a marker.
+          // Move the map there and pin the spot; no stop is created (F-94).
           flyToCoordinates((result.element as any).coordinates);
           setStopPlaceSearchValue("");
           dispatch(UserActions.setSearchText(""));
