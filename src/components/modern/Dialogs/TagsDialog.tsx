@@ -62,6 +62,7 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
     comment,
     searchText,
     suggestions,
+    isSearching,
     setComment,
     handleSearchTags,
     handleChooseTag,
@@ -106,6 +107,7 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
             suggestions={suggestions}
             tagName={tagName}
             isLoading={isLoading}
+            isSearching={isSearching}
             onSearchChange={handleSearchTags}
             onCommentChange={setComment}
             onChooseTag={handleChooseTag}
