@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Close as CloseIcon } from "@mui/icons-material";
-import { Box, IconButton, Paper, Typography } from "@mui/material";
+import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 
 interface Props {
@@ -67,15 +67,22 @@ export const PlacementHint = ({
         <Typography variant="body2" sx={{ fontWeight: 600 }}>
           {formatMessage({ id: messageKey })}
         </Typography>
+        {/* Esc already cancels; say so for keyboard users (F-13c). */}
+        <Typography variant="caption" sx={{ display: "block", opacity: 0.85 }}>
+          {formatMessage({ id: "placement_escape_hint" })}
+        </Typography>
       </Box>
-      <IconButton
-        size="small"
-        onClick={onCancel}
-        sx={{ color: "warning.contrastText", ml: 0.5 }}
-        aria-label={formatMessage({ id: "cancel" })}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
+      <Tooltip title={formatMessage({ id: "cancel_with_escape" })}>
+        <IconButton
+          size="small"
+          onClick={onCancel}
+          sx={{ color: "warning.contrastText", ml: 0.5 }}
+          aria-label={formatMessage({ id: "cancel_with_escape" })}
+          aria-keyshortcuts="Escape"
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
     </Paper>
   );
 };
