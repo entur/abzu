@@ -43,6 +43,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   onNewRequest,
   onToggleFilters,
   onToggleFavorites,
+  autoFocus = false,
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -104,6 +105,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           return (
             <TextField
               {...textFieldProps}
+              autoFocus={autoFocus}
               variant="outlined"
               fullWidth
               size="small"

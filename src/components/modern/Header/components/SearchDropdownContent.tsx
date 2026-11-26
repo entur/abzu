@@ -95,6 +95,8 @@ export const SearchDropdownContent: React.FC<SearchDropdownContentProps> = ({
         onNewRequest={onNewRequest}
         onToggleFilters={onToggleFilters}
         onToggleFavorites={onToggleFavorites}
+        // The panel opens from the 🔍 button: start typing at once (F-07).
+        autoFocus
       />
     )}
 

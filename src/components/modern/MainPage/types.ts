@@ -207,6 +207,8 @@ export interface SearchInputProps {
   onNewRequest: (event: any, result: MenuItem, reason?: string) => void;
   onToggleFilters?: () => void;
   onToggleFavorites?: () => void;
+  /** Focus the field when it appears, e.g. when the search panel opens (F-07). */
+  autoFocus?: boolean;
 }
 
 export interface SearchResultDetailsProps {
