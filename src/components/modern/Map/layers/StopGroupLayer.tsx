@@ -20,6 +20,10 @@ import { Entities } from "../../../../models/Entities";
 import { useAppSelector } from "../../../../store/hooks";
 import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import type { LatLng } from "../markers/types";
+import {
+  GroupMemberOnMap,
+  visibleGroupMembers,
+} from "./utils/visibleGroupMembers";
 
 const FILL_OPACITY = 0.15;
 const OUTLINE_WIDTH = 2;
@@ -78,7 +82,10 @@ export const StopGroupLayer = () => {
   const members = useAppSelector(
     (state) =>
       (state.stopPlacesGroup as any).current?.members as
-        Array<{ location?: LatLng }> | undefined,
+        GroupMemberOnMap[] | undefined,
+  );
+  const showExpiredStops = useAppSelector(
+    (state) => (state.stopPlace as any).showExpiredStops as boolean,
   );
   const groupName = useAppSelector(
     (state) =>
@@ -95,7 +102,7 @@ export const StopGroupLayer = () => {
     /* Only while the group is actually open — see useIsEditingGroup. The
        search-result polygon below is independent of the route. */
     const memberLocations = isEditingGroup
-      ? (members ?? [])
+      ? visibleGroupMembers(members ?? [], showExpiredStops)
           .map((m) => m.location)
           .filter((loc): loc is LatLng => !!loc)
       : [];
@@ -123,7 +130,13 @@ export const StopGroupLayer = () => {
     }
 
     return result;
-  }, [members, groupName, activeSearchResult, isEditingGroup]);
+  }, [
+    members,
+    groupName,
+    activeSearchResult,
+    isEditingGroup,
+    showExpiredStops,
+  ]);
 
   const geoJson = useMemo(() => buildGeoJson(groups), [groups]);
 

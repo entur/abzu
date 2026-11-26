@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { StopPlacesGroupActions, UserActions } from "../../../../actions/";
 import {
   deleteGroupOfStopPlaces,
+  getGroupOfStopPlacesById,
   mutateGroupOfStopPlace,
 } from "../../../../actions/TiamatActions.modern";
 import { addMembersToGroup } from "../../../../actions/StopPlacesGroupActions.modern";
@@ -65,6 +66,13 @@ export const useEditGroupOfStopPlaces = (): UseEditGroupOfStopPlacesReturn => {
       mapHelper.mapGroupOfStopPlaceToVariables(groupOfStopPlaces);
     const groupId = await dispatch(mutateGroupOfStopPlace(variables));
     if (!groupId) throw new Error("Group not saved");
+    /* The save response has no member validity, so expired members would
+       read as active again (F-87). An existing group stays on its route and
+       isn't refetched there; a new one is, when the route changes to its id.
+       The save has succeeded, so a failed reload keeps what is shown. */
+    if (groupOfStopPlaces.id) {
+      await dispatch(getGroupOfStopPlacesById(groupId)).catch(() => undefined);
+    }
     setConfirmSaveDialogOpen(false);
     dispatch(
       UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, groupId),

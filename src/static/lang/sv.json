@@ -86,6 +86,7 @@
   "error_insufficient_privileges": "Du har inte behörighet att göra den här ändringen.",
   "existing_stop_nearby": "Det finns redan en hållplats här: {name}.",
   "go_to_current_version": "Gå till aktuell version",
+  "group_member_expired_hint": "Hållplatsens giltighet har löpt ut. Ta bort den från gruppen om den inte längre ska ingå.",
   "group_requires_members": "Lägg till minst en hållplats för att spara gruppen",
   "key_contains_whitespace": "Nycklar får inte innehålla mellanslag",
   "merge_quay_failed": "Sammanslagningen av lägena misslyckades. Försök igen.",

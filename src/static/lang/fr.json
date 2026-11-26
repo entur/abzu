@@ -86,6 +86,7 @@
   "error_insufficient_privileges": "Vous n'avez pas les droits pour effectuer cette modification.",
   "existing_stop_nearby": "Il y a déjà un arrêt ici : {name}.",
   "go_to_current_version": "Aller à la version actuelle",
+  "group_member_expired_hint": "Ce point d'arrêt a expiré. Retirez-le du groupe s'il ne doit plus en faire partie.",
   "group_requires_members": "Ajoutez au moins un point d’arrêt pour enregistrer le groupe",
   "key_contains_whitespace": "Les clés ne peuvent pas contenir d'espaces",
   "merge_quay_failed": "La fusion des quais a échoué. Veuillez réessayer.",

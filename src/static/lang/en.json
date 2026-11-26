@@ -86,6 +86,7 @@
   "error_insufficient_privileges": "You don't have the rights to make this change.",
   "existing_stop_nearby": "There is already a stop place here: {name}.",
   "go_to_current_version": "Go to current version",
+  "group_member_expired_hint": "This stop place has expired. Remove it from the group if it should no longer be a member.",
   "group_requires_members": "Add at least one stop place to save the group",
   "key_contains_whitespace": "Keys can't contain spaces",
   "merge_quay_failed": "Merging the quays failed. Please try again.",

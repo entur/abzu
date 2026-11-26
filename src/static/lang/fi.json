@@ -86,6 +86,7 @@
   "error_insufficient_privileges": "Sinulla ei ole oikeuksia tehdä tätä muutosta.",
   "existing_stop_nearby": "Tässä on jo pysäkkialue: {name}.",
   "go_to_current_version": "Siirry nykyiseen versioon",
+  "group_member_expired_hint": "Tämä pysäkkialue on vanhentunut. Poista se ryhmästä, jos sen ei enää pitäisi kuulua siihen.",
   "group_requires_members": "Lisää vähintään yksi pysäkkialue tallentaaksesi ryhmän",
   "key_contains_whitespace": "Avaimissa ei voi olla välilyöntejä",
   "merge_quay_failed": "Laitureiden yhdistäminen epäonnistui. Yritä uudelleen.",

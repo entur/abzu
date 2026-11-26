@@ -86,6 +86,7 @@
   "error_insufficient_privileges": "Du har ikke rettigheter til å gjøre denne endringen.",
   "existing_stop_nearby": "Det finnes allerede et stoppested her: {name}.",
   "go_to_current_version": "Gå til gjeldende versjon",
+  "group_member_expired_hint": "Stoppestedet er utløpt. Fjern det fra gruppen hvis det ikke lenger skal være med.",
   "group_requires_members": "Legg til minst ett stoppested for å lagre gruppen",
   "key_contains_whitespace": "Nøkler kan ikke inneholde mellomrom",
   "merge_quay_failed": "Flettingen av quayene feilet. Prøv igjen.",

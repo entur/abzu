@@ -15,10 +15,10 @@ limitations under the Licence. */
 import { useEffect, useRef } from "react";
 import { useAppSelector } from "../../../../store/hooks";
 import {
-  groupMemberBounds,
-  LngLatBounds,
-  LocatedMember,
-} from "../utils/groupMemberBounds";
+  GroupMemberOnMap,
+  visibleGroupMembers,
+} from "../../Map/layers/utils/visibleGroupMembers";
+import { groupMemberBounds, LngLatBounds } from "../utils/groupMemberBounds";
 
 /** Space kept free around the members, in pixels. */
 const FIT_PADDING = 64;
@@ -38,12 +38,13 @@ interface FitBoundsMap {
 }
 
 /**
- * Fits the map to every member of the open group (F-89), keeping them clear
- * of the drawer. Runs when the editor opens and whenever the group is loaded,
- * created or saved again (the reducer then sets a new `centerPosition`). If
- * the map isn't ready yet, it fits once it is. Opening or closing the drawer
- * does not move the map. A group without members keeps the current view
- * (F-83).
+ * Fits the map to every member of the open group that the map draws (F-89;
+ * expired members only when the user shows expired stops, F-87), keeping them
+ * clear of the drawer. Runs when the editor opens and whenever the group is
+ * loaded, created or saved again (the reducer then sets a new
+ * `centerPosition`). If the map isn't ready yet, it fits once it is. Opening
+ * or closing the drawer, or toggling expired stops, does not move the map. A
+ * group without members keeps the current view (F-83).
  *
  * @param drawerInset pixels the open drawer covers on the left of the map
  */
@@ -51,7 +52,10 @@ export const useFitMapToGroupMembers = (drawerInset: number): void => {
   const members = useAppSelector(
     (state) =>
       (state.stopPlacesGroup as any).current?.members as
-        LocatedMember[] | undefined,
+        GroupMemberOnMap[] | undefined,
+  );
+  const showExpiredStops = useAppSelector(
+    (state) => (state.stopPlace as any).showExpiredStops as boolean,
   );
   const centerPosition = useAppSelector(
     (state) => (state.stopPlacesGroup as any).centerPosition as unknown,
@@ -60,16 +64,22 @@ export const useFitMapToGroupMembers = (drawerInset: number): void => {
     (state) => (state.mapUtils as any).activeMap as FitBoundsMap | undefined,
   );
 
-  const fitStateRef = useRef({ members, drawerInset });
-  fitStateRef.current = { members, drawerInset };
+  const fitStateRef = useRef({ members, drawerInset, showExpiredStops });
+  fitStateRef.current = { members, drawerInset, showExpiredStops };
 
   /* Fitting on mount is right: the group route shows a loader instead of the
      editor until the group is fetched, and a new group is set up before
      navigating, so the members are the open group's by the time this runs. */
   useEffect(() => {
     if (!activeMap) return;
-    const { members: currentMembers, drawerInset: inset } = fitStateRef.current;
-    const bounds = groupMemberBounds(currentMembers ?? []);
+    const {
+      members: currentMembers,
+      drawerInset: inset,
+      showExpiredStops: includeExpired,
+    } = fitStateRef.current;
+    const bounds = groupMemberBounds(
+      visibleGroupMembers(currentMembers ?? [], includeExpired),
+    );
     if (!bounds) return;
     activeMap.fitBounds(bounds, {
       padding: {

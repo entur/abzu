@@ -23,10 +23,11 @@ const DESKTOP_DRAWER = 450;
 const state = {
   stopPlacesGroup: {
     current: { members: [{ location: OSLO }, { location: BERGEN }] } as {
-      members: Array<{ location: [number, number] }>;
+      members: Array<{ location: [number, number]; hasExpired?: boolean }>;
     },
     centerPosition: [60, 8] as unknown,
   },
+  stopPlace: { showExpiredStops: false },
   mapUtils: { activeMap: { fitBounds } as unknown },
 };
 
@@ -45,7 +46,27 @@ describe("useFitMapToGroupMembers", () => {
       members: [{ location: OSLO }, { location: BERGEN }],
     };
     state.stopPlacesGroup.centerPosition = [60, 8];
+    state.stopPlace.showExpiredStops = false;
     state.mapUtils.activeMap = { fitBounds };
+  });
+
+  test("leaves an expired member out unless expired stops are shown (F-87)", () => {
+    state.stopPlacesGroup.current = {
+      members: [{ location: OSLO }, { location: BERGEN, hasExpired: true }],
+    };
+    const { rerender } = renderHook(() => useFitMapToGroupMembers(0));
+    expect(fitBounds.mock.calls[0][0]).toEqual([
+      [10.75, 59.91],
+      [10.75, 59.91],
+    ]);
+
+    state.stopPlace.showExpiredStops = true;
+    state.stopPlacesGroup.centerPosition = [60, 8];
+    rerender();
+    expect(fitBounds.mock.calls[1][0]).toEqual([
+      [5.32, 59.91],
+      [10.75, 60.39],
+    ]);
   });
 
   test("fits every member clear of the open drawer, at most zoom 17", () => {

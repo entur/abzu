@@ -25,6 +25,7 @@ import {
   useNavigateToStopPlace,
 } from "../../Shared";
 import { StopPlaceListItemProps } from "../types";
+import { ExpiredMemberChip } from "./ExpiredMemberChip";
 
 /**
  * Stop place list item — matches QuayItem row style.
@@ -89,9 +90,12 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
 
         {/* Name + ID */}
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
-            {stopPlace.name}
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
+              {stopPlace.name}
+            </Typography>
+            {stopPlace.hasExpired && <ExpiredMemberChip />}
+          </Box>
           {stopPlace.id && (
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
               <Typography
