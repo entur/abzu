@@ -14,29 +14,38 @@ limitations under the Licence. */
 
 import { describe, expect, test } from "vitest";
 import { markerScaleForZoom } from "../components/modern/Map/hooks/useMarkerScale";
+import { MARKER_SIZES } from "../components/modern/Map/markerSize/markerSizePreference";
 
-const WORKING_SCALE = 0.75;
-const SMALLEST_SCALE = 0.5 * 0.75;
+const SIZE_FACTORS = Object.values(MARKER_SIZES);
 
 describe("markerScaleForZoom (F-93)", () => {
-  test("markers keep one working size from zoom 15 in, instead of growing", () => {
-    expect(markerScaleForZoom(15)).toBe(WORKING_SCALE);
-    expect(markerScaleForZoom(18)).toBe(WORKING_SCALE);
-    expect(markerScaleForZoom(21)).toBe(WORKING_SCALE);
+  test.each(SIZE_FACTORS)(
+    "size %s keeps one working size from zoom 15 in, instead of growing",
+    (factor) => {
+      expect(markerScaleForZoom(15, factor)).toBe(factor);
+      expect(markerScaleForZoom(18, factor)).toBe(factor);
+      expect(markerScaleForZoom(21, factor)).toBe(factor);
+    },
+  );
+
+  test("markers shrink when zooming out, down to a floor", () => {
+    const factor = MARKER_SIZES.medium;
+    expect(markerScaleForZoom(10, factor)).toBeCloseTo(
+      Math.pow(2, -1) * factor,
+    );
+    expect(markerScaleForZoom(5, factor)).toBe(0.5 * factor);
+    expect(markerScaleForZoom(0, factor)).toBe(0.5 * factor);
   });
 
-  test("they shrink when zooming out, down to a floor", () => {
-    expect(markerScaleForZoom(10)).toBeCloseTo(Math.pow(2, -1) * 0.75);
-    expect(markerScaleForZoom(5)).toBe(SMALLEST_SCALE);
-    expect(markerScaleForZoom(0)).toBe(SMALLEST_SCALE);
-  });
-
-  test("zooming in never shrinks them, nor takes them past the working size", () => {
-    for (let zoom = 0; zoom < 22; zoom += 0.5) {
-      expect(markerScaleForZoom(zoom + 0.5)).toBeGreaterThanOrEqual(
-        markerScaleForZoom(zoom),
-      );
-      expect(markerScaleForZoom(zoom)).toBeLessThanOrEqual(WORKING_SCALE);
-    }
-  });
+  test.each(SIZE_FACTORS)(
+    "size %s: zooming in never shrinks markers, nor takes them past the working size",
+    (factor) => {
+      for (let zoom = 0; zoom < 22; zoom += 0.5) {
+        expect(markerScaleForZoom(zoom + 0.5, factor)).toBeGreaterThanOrEqual(
+          markerScaleForZoom(zoom, factor),
+        );
+        expect(markerScaleForZoom(zoom, factor)).toBeLessThanOrEqual(factor);
+      }
+    },
+  );
 });

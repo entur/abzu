@@ -28,6 +28,7 @@ import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import { DefaultMapSettingsDialog } from "../../Dialogs/DefaultMapSettingsDialog";
 import { CrosshairPicker } from "../crosshair";
+import { MarkerSizePicker } from "../markerSize/MarkerSizePicker";
 import { SettingIndicator } from "../../Shared";
 
 export const MapSettingsPanel: React.FC = () => {
@@ -189,6 +190,7 @@ export const MapSettingsPanel: React.FC = () => {
       </MenuList>
 
       <Divider sx={{ my: 1 }} />
+      <MarkerSizePicker />
       <CrosshairPicker />
 
       <DefaultMapSettingsDialog
