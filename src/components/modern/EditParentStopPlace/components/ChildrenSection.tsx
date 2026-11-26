@@ -26,6 +26,11 @@ import { useIntl } from "react-intl";
 import { ChildStopPlace } from "../types";
 import { ChildStopItem } from "./ChildStopItem";
 import { CollapsibleSectionHeader } from "../../Shared/CollapsibleSectionHeader";
+import { useStagedChildMarkers } from "../../Map/hooks/useStagedChildMarkers";
+import {
+  DirtyBadge,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 
 interface ChildrenSectionProps {
   children: ChildStopPlace[];
@@ -45,12 +50,21 @@ export const ChildrenSection: React.FC<ChildrenSectionProps> = ({
   navigateTo,
 }) => {
   const { formatMessage } = useIntl();
+  // Attached or detached children not saved yet, like the quay list's dot (F-38).
+  const isStatusEnabled = useElementStatusEnabled();
+  const { addedChildIds, detachedChildren } = useStagedChildMarkers();
+  const hasStagedChildChanges =
+    isStatusEnabled && (addedChildIds.size > 0 || detachedChildren.length > 0);
   const [expanded, setExpanded] = useState(false);
 
   return (
     <>
       <CollapsibleSectionHeader
-        icon={<AccountTreeIcon fontSize="small" color="action" />}
+        icon={
+          <DirtyBadge dirty={hasStagedChildChanges}>
+            <AccountTreeIcon fontSize="small" color="action" />
+          </DirtyBadge>
+        }
         title={formatMessage({ id: "children" })}
         count={children.length}
         expanded={expanded}
