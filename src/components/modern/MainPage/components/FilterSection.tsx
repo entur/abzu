@@ -82,10 +82,11 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
               "& > div": {
                 display: "flex",
                 padding: 1,
-                justifyContent: { xs: "flex-start", sm: "space-between" },
-                flexWrap: { xs: "wrap", sm: "nowrap" },
-                gap: { xs: 0.5, sm: 0 },
-                overflowX: { xs: "auto", sm: "visible" },
+                // Always wrap: a sideways-scrolling row hid the last
+                // modes in the panel (F-54).
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+                gap: 0.5,
               },
             }}
           >
@@ -145,10 +146,11 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
               "& > div": {
                 display: "flex",
                 padding: 1,
-                justifyContent: { xs: "flex-start", sm: "space-between" },
-                flexWrap: { xs: "wrap", sm: "nowrap" },
-                gap: { xs: 0.5, sm: 0 },
-                overflowX: { xs: "auto", sm: "visible" },
+                // Always wrap: a sideways-scrolling row hid the last
+                // modes in the panel (F-54).
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+                gap: 0.5,
               },
             }}
           >

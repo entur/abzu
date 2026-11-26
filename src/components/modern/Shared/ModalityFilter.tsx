@@ -61,7 +61,8 @@ const ModalityFilterInner = ({
 
   return (
     <div
-      style={{ display: "flex", padding: 8, justifyContent: "space-between" }}
+      // Wraps instead of spreading or scrolling sideways (F-54).
+      style={{ display: "flex", padding: 8, flexWrap: "wrap", gap: 4 }}
     >
       {STOP_TYPE_KEYS.map((type) => {
         const checked =
