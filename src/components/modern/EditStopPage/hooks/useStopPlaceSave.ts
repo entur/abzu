@@ -33,6 +33,7 @@ import {
 import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { findStagedDeletions } from "../utils/stagedDeletions";
+import { withNumericMachineCounts } from "../utils/numericMachineCounts";
 
 /** Rejects with a MutationErrorCodes value so SaveDialog can show it. */
 const failWith = (errorCode: string) => () => {
@@ -128,7 +129,10 @@ export const useStopPlaceSave = (
       ).catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE));
 
       const id: string = await dispatch(
-        saveStopPlaceBasedOnType(stopPlace, userInput),
+        saveStopPlaceBasedOnType(
+          withNumericMachineCounts(stopPlace),
+          userInput,
+        ),
       ).catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE));
 
       if (needsPathLinkSave) {
