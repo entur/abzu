@@ -81,9 +81,10 @@ const NeighbourQuayMarker = ({
     <>
       <Marker longitude={lng} latitude={lat} anchor="center">
         <Tooltip
-          title={fitQuayLabel(label).isTruncated ? label : ""}
+          title={!popupAnchor && fitQuayLabel(label).isTruncated ? label : ""}
           placement="top"
           arrow
+          disableInteractive
         >
           <Box
             onClick={(event) => setPopupAnchor(event.currentTarget)}

@@ -43,7 +43,12 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
   return (
     <>
       <Marker latitude={lat} longitude={lng} anchor="center">
-        <Tooltip title={stop.name || stop.id} placement="top" arrow>
+        <Tooltip
+          title={popupAnchor ? "" : stop.name || stop.id}
+          placement="top"
+          arrow
+          disableInteractive
+        >
           <Box
             onClick={(e) => setPopupAnchor(e.currentTarget)}
             sx={{

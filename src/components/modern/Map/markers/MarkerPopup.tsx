@@ -12,20 +12,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import EditIcon from "@mui/icons-material/Edit";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
-  ButtonBase,
+  ClickAwayListener,
+  Grow,
   IconButton,
-  Popover,
-  Tooltip,
+  Paper,
+  Popper,
   Typography,
 } from "@mui/material";
+import { useId } from "react";
 import { useIntl } from "react-intl";
+import { useMarkerPopupDismiss } from "../hooks/useMarkerPopupDismiss";
+import { usePopupFollowsMap } from "../hooks/usePopupFollowsMap";
+import { MarkerPopupDetails } from "./MarkerPopupDetails";
 
 /** Matches QuayMarkers' marker-scale transition and QuayItem's row transition, so focus-change feels like one motion. */
 const FOCUS_TRANSITION_MS = 200;
+/** Gap between the marker and the popup, in pixels. */
+const POPUP_OFFSET = 8;
 
 interface MarkerPopupProps {
   anchorEl: HTMLElement | null;
@@ -40,6 +46,12 @@ interface MarkerPopupProps {
   children?: React.ReactNode;
 }
 
+/**
+ * The popup for every map marker. Non-modal (F-80): the map stays usable
+ * while it is open, so another marker can be clicked straight away, hover
+ * tooltips work and the map can be panned; the popup follows its marker.
+ * It closes with ×, Esc, a click on the map or a click elsewhere.
+ */
 export const MarkerPopup = ({
   anchorEl,
   onClose,
@@ -52,79 +64,68 @@ export const MarkerPopup = ({
   children,
 }: MarkerPopupProps) => {
   const { formatMessage } = useIntl();
-
-  const handleCopyId = () => {
-    if (id) navigator.clipboard.writeText(id);
-  };
+  const titleId = useId();
+  const open = !!anchorEl;
+  const handleClickAway = useMarkerPopupDismiss(open, onClose);
+  const popperRef = usePopupFollowsMap(open);
 
   return (
-    <Popover
-      open={!!anchorEl}
+    <Popper
+      open={open}
       anchorEl={anchorEl}
-      onClose={onClose}
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      transformOrigin={{ vertical: "bottom", horizontal: "center" }}
-      disableRestoreFocus
-      transitionDuration={FOCUS_TRANSITION_MS}
-      sx={{ "& .MuiPopover-paper": { borderRadius: 2, minWidth } }}
+      placement="top"
+      role="presentation"
+      popperRef={popperRef}
+      transition
+      modifiers={[{ name: "offset", options: { offset: [0, POPUP_OFFSET] } }]}
+      sx={{ zIndex: (theme) => theme.zIndex.modal }}
     >
-      <Box sx={{ p: 1.5 }}>
-        <Typography
-          variant="subtitle2"
-          sx={{ fontWeight: 700, mb: 0.5, color: "primary.main" }}
-        >
-          {title}
-        </Typography>
-
-        {id && (
-          <Box
-            sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 0.5 }}
+      {({ TransitionProps }) => (
+        <Grow {...TransitionProps} timeout={FOCUS_TRANSITION_MS}>
+          <Paper
+            role="dialog"
+            aria-labelledby={titleId}
+            elevation={8}
+            sx={{ borderRadius: 2, minWidth }}
           >
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
-              {id}
-            </Typography>
-            <Tooltip title={formatMessage({ id: "copy_id" })} placement="top">
-              <IconButton size="small" onClick={handleCopyId} sx={{ p: 0.25 }}>
-                <ContentCopyIcon sx={{ fontSize: "0.85rem" }} />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Box sx={{ p: 1.5 }}>
+                <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                  <Typography
+                    id={titleId}
+                    variant="subtitle2"
+                    sx={{
+                      fontWeight: 700,
+                      mb: 0.5,
+                      color: "primary.main",
+                      flex: 1,
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                  <IconButton
+                    size="small"
+                    onClick={onClose}
+                    aria-label={formatMessage({ id: "close" })}
+                    sx={{ p: 0.25, mt: -0.25, mr: -0.5 }}
+                  >
+                    <CloseIcon sx={{ fontSize: "1rem" }} />
+                  </IconButton>
+                </Box>
 
-        {onEditCoordinates ? (
-          <Tooltip
-            title={formatMessage({ id: "change_coordinates" })}
-            placement="bottom"
-          >
-            <ButtonBase
-              onClick={onEditCoordinates}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 0.5,
-                color: "text.secondary",
-                borderRadius: 0.5,
-                textDecoration: "underline dotted",
-                "&:hover": { color: "primary.main" },
-              }}
-            >
-              <Typography variant="caption" color="inherit">
-                {lat.toFixed(6)}, {lng.toFixed(6)}
-              </Typography>
-              <EditIcon sx={{ fontSize: "0.85rem" }} />
-            </ButtonBase>
-          </Tooltip>
-        ) : (
-          <Typography
-            variant="caption"
-            sx={{ color: "text.secondary", display: "block" }}
-          >
-            {lat.toFixed(6)}, {lng.toFixed(6)}
-          </Typography>
-        )}
+                <MarkerPopupDetails
+                  id={id}
+                  lat={lat}
+                  lng={lng}
+                  onEditCoordinates={onEditCoordinates}
+                />
 
-        {children}
-      </Box>
-    </Popover>
+                {children}
+              </Box>
+            </ClickAwayListener>
+          </Paper>
+        </Grow>
+      )}
+    </Popper>
   );
 };

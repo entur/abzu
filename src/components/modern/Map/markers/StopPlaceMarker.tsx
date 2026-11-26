@@ -108,7 +108,12 @@ export const StopPlaceMarker = () => {
         anchor="center"
         style={{ zIndex: PARENT_MARKER_Z_INDEX }}
       >
-        <Tooltip title={current.name || ""} placement="top" arrow>
+        <Tooltip
+          title={popupAnchor ? "" : current.name || ""}
+          placement="top"
+          arrow
+          disableInteractive
+        >
           <Box
             onClick={(e) => {
               dispatch(StopPlaceActions.setElementFocus(-1, "quay"));

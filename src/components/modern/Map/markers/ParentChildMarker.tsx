@@ -90,7 +90,12 @@ export const ParentChildMarker = ({
         anchor="center"
         style={{ zIndex: CHILD_MARKER_Z_INDEX }}
       >
-        <Tooltip title={tooltip} placement="top" arrow>
+        <Tooltip
+          title={popupAnchor ? "" : tooltip}
+          placement="top"
+          arrow
+          disableInteractive
+        >
           <Box
             onClick={(e) => setPopupAnchor(e.currentTarget)}
             sx={{
