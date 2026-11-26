@@ -29,6 +29,8 @@ export interface MoveQuaysToNewStopInput {
   sourceStopId: string;
   name: string;
   stopType: string;
+  /** The preset's submode, or null for a plain type (F-17). */
+  submode: string | null;
 }
 
 export type MoveQuaysToNewStopHandler = (
@@ -48,7 +50,7 @@ export const useMoveQuaysToNewStop = (): MoveQuaysToNewStopHandler => {
   const dispatch = useAppDispatch();
 
   return useCallback(
-    async ({ quayIds, sourceStopId, name, stopType }) => {
+    async ({ quayIds, sourceStopId, name, stopType, submode }) => {
       const quayList = quayIds.join(", ");
       const versionComment = `Flyttet ${quayList} fra ${sourceStopId}`;
 
@@ -71,7 +73,7 @@ export const useMoveQuaysToNewStop = (): MoveQuaysToNewStopHandler => {
         stopPlaceType: stopType,
         transportMode:
           stopTypes[stopType as keyof typeof stopTypes]?.transportMode ?? null,
-        submode: null,
+        submode,
       };
       await dispatch(
         saveStopPlaceBasedOnType(namedStop, { comment: versionComment }),

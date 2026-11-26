@@ -16,7 +16,7 @@ import { describe, expect, test } from "vitest";
 import {
   parseModalityPickerValue,
   toModalityPickerValue,
-} from "../components/modern/EditStopPage/utils/modalityPickerValue";
+} from "../components/modern/Shared/StopNameAndType/modalityPickerValue";
 
 describe("parseModalityPickerValue (F-19)", () => {
   test("a bare stop type gives a null submode, never an empty string", () => {

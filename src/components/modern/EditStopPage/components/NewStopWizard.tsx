@@ -31,7 +31,7 @@ import {
 
 interface Props {
   open: boolean;
-  onConfirm: (name: string, stopType: string) => void;
+  onConfirm: (name: string, stopType: string, submode: string | null) => void;
   onCancel: () => void;
   /** The new stop's location permissions; illegal types are disabled (F-18). */
   allowance?: ModalityAllowance | null;
@@ -46,20 +46,22 @@ export const NewStopWizard = ({
   const { formatMessage } = useIntl();
   const [name, setName] = useState("");
   const [stopType, setStopType] = useState("");
+  const [submode, setSubmode] = useState<string | null>(null);
   const hiddenStopTypes = useHiddenStopTypes();
 
   const canConfirm =
     name.trim().length > 0 &&
     isStopPlaceTypeValid(stopType, hiddenStopTypes) &&
-    isModalityAllowed(allowance, stopType, null);
+    isModalityAllowed(allowance, stopType, submode);
 
   const handleConfirm = () => {
-    onConfirm(name.trim(), stopType);
+    onConfirm(name.trim(), stopType, submode);
   };
 
   const handleCancel = () => {
     setName("");
     setStopType("");
+    setSubmode(null);
     onCancel();
   };
 
@@ -88,8 +90,12 @@ export const NewStopWizard = ({
         <StopNameAndTypeFields
           name={name}
           stopType={stopType}
+          submode={submode}
           onNameChange={setName}
-          onStopTypeChange={setStopType}
+          onModalityChange={(nextType, nextSubmode) => {
+            setStopType(nextType);
+            setSubmode(nextSubmode);
+          }}
           autoFocus
           allowance={allowance}
         />

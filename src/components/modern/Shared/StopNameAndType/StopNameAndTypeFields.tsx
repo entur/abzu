@@ -12,23 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { TextField } from "@mui/material";
 import { useIntl } from "react-intl";
-import { useHiddenStopTypes } from "./hooks/useHiddenStopTypes";
-import { isModalityAllowed, ModalityAllowance } from "./modalityPermissions";
-import { getAllowedStopTypes } from "./stopPlaceTypeRules";
+import { ModalityAllowance } from "./modalityPermissions";
+import { StopTypePresetSelect } from "./StopTypePresetSelect";
 
 interface StopNameAndTypeFieldsProps {
   name: string;
   stopType: string;
+  submode: string | null;
   onNameChange: (name: string) => void;
-  onStopTypeChange: (stopType: string) => void;
+  /** Type and submode change together: one preset sets both (F-17). */
+  onModalityChange: (stopType: string, submode: string | null) => void;
   autoFocus?: boolean;
   /** The user's type permissions; illegal types are shown disabled (F-18). */
   allowance?: ModalityAllowance | null;
@@ -36,20 +31,19 @@ interface StopNameAndTypeFieldsProps {
 
 /**
  * Required name and stop type for a stop that is about to be created: by the
- * new-stop wizard, or by moving quays to a new stop. Lists only the types a
- * stop may be saved with (F-15).
+ * new-stop wizard, or by moving quays to a new stop. Offers the same presets
+ * as the editor, only types a stop may be saved with (F-15, F-17).
  */
 export const StopNameAndTypeFields = ({
   name,
   stopType,
+  submode,
   onNameChange,
-  onStopTypeChange,
+  onModalityChange,
   autoFocus = false,
   allowance = null,
 }: StopNameAndTypeFieldsProps) => {
   const { formatMessage } = useIntl();
-  const allowedStopTypes = getAllowedStopTypes(useHiddenStopTypes());
-  const typeLabel = formatMessage({ id: "new_stop_wizard_type_label" });
 
   return (
     <>
@@ -63,24 +57,13 @@ export const StopNameAndTypeFields = ({
         size="small"
         required
       />
-      <FormControl size="small" fullWidth required>
-        <InputLabel>{typeLabel}</InputLabel>
-        <Select
-          value={stopType}
-          label={typeLabel}
-          onChange={(event) => onStopTypeChange(event.target.value)}
-        >
-          {allowedStopTypes.map((key) => (
-            <MenuItem
-              key={key}
-              value={key}
-              disabled={!isModalityAllowed(allowance, key, null)}
-            >
-              {formatMessage({ id: `stopTypes_${key}_name` })}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <StopTypePresetSelect
+        value={{ stopPlaceType: stopType, submode }}
+        onChange={onModalityChange}
+        label={formatMessage({ id: "new_stop_wizard_type_label" })}
+        allowance={allowance}
+        required
+      />
     </>
   );
 };

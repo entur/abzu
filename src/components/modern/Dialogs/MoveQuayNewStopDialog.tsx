@@ -90,6 +90,7 @@ export const MoveQuayNewStopDialog = () => {
   const [changesUnderstood, setChangesUnderstood] = useState(false);
   const [newStopName, setNewStopName] = useState("");
   const [newStopType, setNewStopType] = useState("");
+  const [newStopSubmode, setNewStopSubmode] = useState<string | null>(null);
   const {
     isRunning: isLoading,
     errorMessageId,
@@ -106,6 +107,7 @@ export const MoveQuayNewStopDialog = () => {
       setChangesUnderstood(false);
       setNewStopName("");
       setNewStopType("");
+      setNewStopSubmode(null);
       resetError();
     }
   }, [open, movingQuay?.id]);
@@ -130,7 +132,7 @@ export const MoveQuayNewStopDialog = () => {
     selectedQuayIds.length > 0 &&
     newStopName.trim().length > 0 &&
     isStopPlaceTypeValid(newStopType, hiddenStopTypes) &&
-    isModalityAllowed(allowance, newStopType, null) &&
+    isModalityAllowed(allowance, newStopType, newStopSubmode) &&
     (!stopHasBeenModified || changesUnderstood);
 
   const handleToggleQuay = (quayId: string) => {
@@ -155,6 +157,7 @@ export const MoveQuayNewStopDialog = () => {
         sourceStopId: movingQuay.stopPlaceId ?? currentStopId,
         name: newStopName.trim(),
         stopType: newStopType,
+        submode: newStopSubmode,
       }),
     );
     if (isMoved) handleClose();
@@ -213,8 +216,12 @@ export const MoveQuayNewStopDialog = () => {
           <StopNameAndTypeFields
             name={newStopName}
             stopType={newStopType}
+            submode={newStopSubmode}
             onNameChange={setNewStopName}
-            onStopTypeChange={setNewStopType}
+            onModalityChange={(stopType, submode) => {
+              setNewStopType(stopType);
+              setNewStopSubmode(submode);
+            }}
             allowance={allowance}
           />
         </Box>

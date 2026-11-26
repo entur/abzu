@@ -467,10 +467,10 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
       <NewStopWizard
         open={!!stopPlace.isNewStop && !wizardConfirmed}
         allowance={getModalityAllowance(stopPlace.permissions)}
-        onConfirm={(name, stopType) => {
+        onConfirm={(name, stopType, submode) => {
           handleNameChange(name);
-          // Sets type, transportMode and submode together (F-15b).
-          handleSubmodeChange(stopType, null);
+          // Sets type, transportMode and submode together (F-15b, F-17).
+          handleSubmodeChange(stopType, submode);
           setWizardConfirmed(true);
         }}
         onCancel={handleGoBack}
