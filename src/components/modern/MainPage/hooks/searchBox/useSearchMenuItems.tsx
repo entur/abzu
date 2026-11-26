@@ -42,6 +42,8 @@ export const useSearchMenuItems = (
   topoiChips: any[],
   topographicalPlaces: TopographicalPlace[],
   removeFiltersAndSearch: () => void,
+  /** While a search runs, "no results" isn't known yet (F-05). */
+  loading = false,
 ) => {
   // Helper function for topographical names
   const getTopographicalNames = useCallback(
@@ -100,7 +102,7 @@ export const useSearchMenuItems = (
         createSearchMenuItem(element, formatMessage),
       );
       items = searchItems.filter(Boolean) as MenuItem[];
-    } else if (searchText) {
+    } else if (searchText && !loading) {
       items = [
         {
           element: null,
@@ -150,6 +152,7 @@ export const useSearchMenuItems = (
     stopTypeFilter,
     topoiChips,
     removeFiltersAndSearch,
+    loading,
   ]);
 
   // Topographical places data source

@@ -57,7 +57,6 @@ export const useSearchHandlers = (
           chips: any[],
           showFutureAndExpired: boolean,
         ) => {
-          setLoading(true);
           dispatch(
             findEntitiesWithFilters(
               searchText,
@@ -65,9 +64,12 @@ export const useSearchHandlers = (
               chips,
               showFutureAndExpired,
             ),
-          ).then(() => {
-            setLoading(false);
-          });
+          )
+            .then(({ isLatest }: { isLatest: boolean }) => {
+              // An older search finishing must not end a newer one's loading.
+              if (isLatest) setLoading(false);
+            })
+            .catch(() => setLoading(false));
         },
         500,
       ),
@@ -99,6 +101,9 @@ export const useSearchHandlers = (
         // Skip search for formatted results
       } else {
         dispatch(UserActions.setSearchText(searchText));
+        // Loading from the first keystroke, not after the debounce: until a
+        // response arrives, "no results" must not show (F-05).
+        setLoading(true);
         debouncedSearch(
           searchText,
           stopTypeFilter,
@@ -114,6 +119,7 @@ export const useSearchHandlers = (
       topoiChips,
       showFutureAndExpired,
       setStopPlaceSearchValue,
+      setLoading,
     ],
   );
 

@@ -31,7 +31,6 @@ export {
   deleteParking,
   deleteQuay,
   deleteStopPlace,
-  findEntitiesWithFilters,
   findStopForReport,
   findTagByName,
   findTopographicalPlace,
@@ -67,7 +66,7 @@ import { createApolloThunk, createThunk } from ".";
 import { getTiamatClient } from "../graphql/clients";
 import { groupOfStopPlacesQuery } from "../graphql/Tiamat/groupOfStopPlaces";
 import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
-import { getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
+import { findStop, getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
 import { stopPlaceWithAll } from "../graphql/Tiamat/stopPlaceWithAll";
 import type { AppDispatch, RootState } from "../store/store";
 import { cleanBBoxResult } from "../components/modern/Map/markers/utils/cleanBBoxResult";
@@ -143,6 +142,64 @@ export const getGroupOfStopPlacesById =
       ),
     );
     return result;
+  };
+
+interface TopographicChip {
+  type: string;
+  value: string;
+}
+
+/** Numbers each search, so only the newest one's results are stored (F-05). */
+let latestSearchRequest = 0;
+
+/**
+ * Search for stop places and groups. Same query as the legacy action, but a
+ * slower response for an older search is ignored instead of overwriting the
+ * results of a newer one. Resolves with `isLatest` so the caller can end its
+ * loading state only for the newest search (F-05).
+ */
+export const findEntitiesWithFilters =
+  (
+    query: string,
+    stopPlaceType: string[],
+    chips: TopographicChip[],
+    showFutureAndExpired: boolean,
+  ) =>
+  async (
+    dispatch: AppDispatch,
+    getState: () => RootState,
+  ): Promise<{ isLatest: boolean }> => {
+    const request = ++latestSearchRequest;
+    const referencesOf = (type: string) =>
+      chips.filter((chip) => chip.type === type).map((chip) => chip.value);
+    const payload = {
+      query: findStop,
+      fetchPolicy: "network-only" as const,
+      variables: {
+        query,
+        stopPlaceType,
+        municipalityReference: referencesOf("municipality"),
+        countyReference: referencesOf("county"),
+        countryReference: referencesOf("country"),
+        pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
+        versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
+      },
+      context: await getContext((getState() as any).user.auth),
+    };
+
+    const result = await (getTiamatClient() as any).query(payload);
+    const isLatest = request === latestSearchRequest;
+    if (isLatest) {
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_QUERY_RESULT,
+          result,
+          payload.query,
+          payload.variables,
+        ),
+      );
+    }
+    return { isLatest };
   };
 
 interface MapBounds {

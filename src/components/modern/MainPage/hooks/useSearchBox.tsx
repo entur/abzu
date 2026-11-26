@@ -121,6 +121,7 @@ export const useSearchBox = ({
     topoiChips,
     topographicalPlaces,
     removeFiltersAndSearch,
+    loading,
   );
 
   return {
