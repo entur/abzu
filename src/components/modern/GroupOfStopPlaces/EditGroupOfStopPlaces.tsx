@@ -26,6 +26,7 @@ import {
   GroupOfStopPlacesMinimizedBar,
 } from "./components";
 import { useEditGroupOfStopPlaces } from "./hooks/useEditGroupOfStopPlaces";
+import { useFitMapToGroupMembers } from "./hooks/useFitMapToGroupMembers";
 import { EditGroupOfStopPlacesProps, RootState } from "./types";
 
 const DRAWER_WIDTH_DESKTOP = 450;
@@ -109,6 +110,12 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
     : isTablet
       ? DRAWER_WIDTH_TABLET
       : DRAWER_WIDTH_DESKTOP;
+
+  /* The mobile drawer covers the whole map; the fit then uses the full map,
+     which shows once the drawer is collapsed. */
+  const drawerInset =
+    isOpen && typeof drawerWidth === "number" ? drawerWidth : 0;
+  useFitMapToGroupMembers(drawerInset);
 
   return (
     <>
