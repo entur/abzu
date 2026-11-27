@@ -41,6 +41,7 @@ const VERDICT_MARK: Record<Verdict, string> = {
   works: "✅",
   "not-fixed": "❌",
   "change-request": "✏️",
+  skipped: "⏭️",
 };
 
 const quote = (text: string): string =>

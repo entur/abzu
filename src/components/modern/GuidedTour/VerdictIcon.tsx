@@ -16,9 +16,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
 import type { Verdict } from "./tourSessionStore";
 
-/** A step's verdict as a small coloured icon (unanswered: an empty circle). */
+/** A step's verdict as a small coloured icon (skipped: grey, unanswered: an empty circle). */
 export const VerdictIcon = ({ verdict }: { verdict?: Verdict }) => {
   if (verdict === "works")
     return <CheckCircleIcon fontSize="small" color="success" />;
@@ -26,6 +27,8 @@ export const VerdictIcon = ({ verdict }: { verdict?: Verdict }) => {
     return <CancelIcon fontSize="small" color="error" />;
   if (verdict === "change-request")
     return <EditNoteIcon fontSize="small" color="warning" />;
+  if (verdict === "skipped")
+    return <SkipNextIcon fontSize="small" sx={{ color: "text.secondary" }} />;
   return (
     <RadioButtonUncheckedIcon
       fontSize="small"

@@ -27,16 +27,17 @@ const session: TourSession = {
     title: "Runde 3: rettinger",
     branch: "fix/modern-ui-round-3",
     appVersion: "1.688.0",
-    steps: ["F-58", "F-59", "F-60"].map((id) => ({
+    steps: ["F-58", "F-59", "F-60", "F-61"].map((id) => ({
       id,
       title: `Step ${id}`,
       instructions: ["Do it"],
     })),
   },
-  stepIndex: 3,
+  stepIndex: 4,
   answers: {
     "F-58": { verdict: "works", comment: "" },
     "F-59": { verdict: "change-request", comment: "Wider list\nplease" },
+    "F-61": { verdict: "skipped", comment: "No login" },
   },
   generalComment: "Good round",
   startedAt: "2026-11-27T10:00:00.000Z",
@@ -62,6 +63,7 @@ const labels: FeedbackLabels = {
     works: "Fungerer",
     "not-fixed": "Ikke fikset",
     "change-request": "Endringsønske",
+    skipped: "Hoppet over",
   },
   counts: "1 · 0 · 1 · 1",
 };
@@ -73,6 +75,7 @@ describe("feedback export", () => {
     expect(markdown).toContain("### F-58 · Step F-58 — ✅ Fungerer");
     expect(markdown).toContain("### F-59 · Step F-59 — ✏️ Endringsønske");
     expect(markdown).toContain("### F-60 · Step F-60 — ○ Ikke besvart");
+    expect(markdown).toContain("### F-61 · Step F-61 — ⏭️ Hoppet over");
   });
 
   test("quotes comments line by line, and the general comment", () => {
@@ -87,7 +90,13 @@ describe("feedback export", () => {
       format: "abzu-tour-feedback/1",
       tour: { title: "Runde 3: rettinger", appVersion: "1.688.0" },
       run: { appVersion: "1.689.0", exportedAt: "2026-11-27T12:30:00.000Z" },
-      counts: { works: 1, notFixed: 0, changeRequests: 1, unanswered: 1 },
+      counts: {
+        works: 1,
+        notFixed: 0,
+        changeRequests: 1,
+        skipped: 1,
+        unanswered: 1,
+      },
       steps: [
         { id: "F-58", verdict: "works", comment: "" },
         {
@@ -96,6 +105,7 @@ describe("feedback export", () => {
           comment: "Wider list\nplease",
         },
         { id: "F-60", verdict: null, comment: "" },
+        { id: "F-61", verdict: "skipped", comment: "No login" },
       ],
     });
   });

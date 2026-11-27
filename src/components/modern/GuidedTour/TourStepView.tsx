@@ -99,7 +99,11 @@ export const TourStepView = ({
       )}
 
       <Box sx={{ mt: 1.5 }}>
-        <TourVerdictPicker answer={answer} onChange={onAnswer} />
+        <TourVerdictPicker
+          answer={answer}
+          needsLogin={step.needsLogin}
+          onChange={onAnswer}
+        />
       </Box>
     </Box>
   );

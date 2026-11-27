@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import { parseTourFile, Tour } from "./tourFormat";
 
-export type Verdict = "works" | "not-fixed" | "change-request";
+export type Verdict = "works" | "not-fixed" | "change-request" | "skipped";
 
 export interface StepAnswer {
   verdict?: Verdict;
