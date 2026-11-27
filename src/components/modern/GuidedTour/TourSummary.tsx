@@ -12,8 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Box, TextField, Typography } from "@mui/material";
+import DownloadIcon from "@mui/icons-material/Download";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
+import { useFeedbackDownload } from "./hooks/useFeedbackDownload";
 import { countVerdicts } from "./tourSummaryCounts";
 import {
   answerOf,
@@ -29,6 +31,7 @@ const COMMENT_ROWS = 3;
 export const TourSummary = ({ session }: { session: TourSession }) => {
   const { formatMessage } = useIntl();
   const counts = countVerdicts(session);
+  const downloadFeedback = useFeedbackDownload(session);
   const needsWork = session.tour.steps
     .map((step, index) => ({ step, index, answer: answerOf(session, step.id) }))
     .filter(
@@ -75,6 +78,16 @@ export const TourSummary = ({ session }: { session: TourSession }) => {
         value={session.generalComment}
         onChange={(event) => setGeneralComment(event.target.value)}
       />
+      <Button
+        variant="contained"
+        startIcon={<DownloadIcon />}
+        onClick={downloadFeedback}
+      >
+        {formatMessage({ id: "guided_tour_download" })}
+      </Button>
+      <Typography variant="caption" sx={{ color: "text.secondary" }}>
+        {formatMessage({ id: "guided_tour_download_hint" })}
+      </Typography>
     </Box>
   );
 };
