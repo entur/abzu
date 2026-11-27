@@ -82,7 +82,7 @@ export const ReportActionBar: React.FC<ReportActionBarProps> = ({
           onClick={onToggleFilterPanel}
           color={filterPanelOpen ? "primary" : "default"}
         >
-          <Badge badgeContent={activeFilterCount} color="error">
+          <Badge badgeContent={activeFilterCount} color="primary">
             <FilterListIcon fontSize="small" />
           </Badge>
         </IconButton>
@@ -110,7 +110,7 @@ export const ReportActionBar: React.FC<ReportActionBarProps> = ({
 
       {/* Result count */}
       {resultCount > 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ pr: 1 }}>
+        <Typography variant="caption" sx={{ color: "text.secondary", pr: 1 }}>
           {resultCount} {formatMessage({ id: "stop_places" })}
         </Typography>
       )}

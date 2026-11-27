@@ -3,6 +3,9 @@ import { CROSSHAIR_TYPES } from "./types";
 
 const STORAGE_KEY = "map.dragCrosshair";
 const VALID_VALUES: readonly string[] = [...CROSSHAIR_TYPES, "none"];
+/* Without a crosshair, a dragged marker's exact position is hard to see, so
+   new users get the first one; "none" stays a choice (F-117). */
+const DEFAULT_CROSSHAIR: CrosshairSetting = CROSSHAIR_TYPES[0];
 
 export const getCrosshairPreference = (): CrosshairSetting => {
   try {
@@ -13,7 +16,7 @@ export const getCrosshairPreference = (): CrosshairSetting => {
   } catch {
     // localStorage unavailable
   }
-  return "none";
+  return DEFAULT_CROSSHAIR;
 };
 
 export const setCrosshairPreference = (type: CrosshairSetting): void => {

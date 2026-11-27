@@ -37,7 +37,6 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     originalStopPlace,
     isModified,
     isLoading,
-    activeMap,
     canEdit,
     canDelete,
   } = useParentStopPlaceState();
@@ -114,7 +113,6 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
   } = useParentStopPlaceCRUD(
     stopPlace,
     isModified,
-    activeMap,
     handleCloseSaveDialog,
     handleCloseGoBackDialog,
     handleCloseUndoDialog,

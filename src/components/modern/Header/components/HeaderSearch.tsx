@@ -79,7 +79,8 @@ export const HeaderSearch: React.FC = () => {
     topoiChips: state.user.searchFilters.topoiChips,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    // One setting for the map and the search, switched in the map settings.
+    showFutureAndExpired: state.stopPlace.showExpiredStops,
     stopPlaceLoading: state.stopPlace.loading,
   }));
 
@@ -97,7 +98,6 @@ export const HeaderSearch: React.FC = () => {
     handleAddChip,
     handleDeleteChip,
     handleTopographicalPlaceInput,
-    toggleShowFutureAndExpired,
     menuItems,
     topographicalPlacesDataSource,
   } = useSearchBox({
@@ -110,13 +110,21 @@ export const HeaderSearch: React.FC = () => {
     formatMessage,
   });
 
-  const activeFilterCount =
-    stopTypeFilter.length + topoiChips.length + (showFutureAndExpired ? 1 : 0);
+  const activeFilterCount = stopTypeFilter.length + topoiChips.length;
 
   const handleToggleSearch = () => {
     if (isTablet) {
       setIsSearchExpanded(!isSearchExpanded);
     }
+  };
+
+  /* A chosen result opens on the map or in the editor; the search, favourites
+     and filter panels would cover it, so they close (F-06). The text stays. */
+  const handleSelectResult: typeof handleNewRequest = (event, result) => {
+    handleNewRequest(event, result);
+    setIsSearchExpanded(false);
+    setShowFavorites(false);
+    handleToggleFilter(false);
   };
 
   const handleCloseSearch = () => {
@@ -169,7 +177,7 @@ export const HeaderSearch: React.FC = () => {
     showFavorites,
     activeFilterCount,
     onSearchUpdate: handleSearchUpdate,
-    onNewRequest: handleNewRequest,
+    onNewRequest: handleSelectResult,
     onToggleFilters: handleToggleFilters,
     onToggleFavorites: handleToggleFavorites,
     onClose: handleCloseSearch,
@@ -182,13 +190,11 @@ export const HeaderSearch: React.FC = () => {
     topographicalPlacesDataSource,
     topographicPlaceFilterValue,
     topoiChips,
-    showFutureAndExpired,
     onToggleFilter: handleToggleFilter,
     onApplyModalityFilters: handleApplyModalityFilters,
     onTopographicalPlaceInput: handleTopographicalPlaceInput,
     onAddChip: handleAddChip,
     onDeleteChip: handleDeleteChip,
-    onToggleShowFutureAndExpired: toggleShowFutureAndExpired,
   };
 
   // Condition for when to show the search panel
@@ -224,7 +230,7 @@ export const HeaderSearch: React.FC = () => {
                   activeFilterCount={activeFilterCount}
                   showFavorites={showFavorites}
                   onSearchUpdate={handleSearchUpdate}
-                  onNewRequest={handleNewRequest}
+                  onNewRequest={handleSelectResult}
                   onToggleFilters={handleToggleFilters}
                   onToggleFavorites={handleToggleFavorites}
                 />
@@ -247,7 +253,7 @@ export const HeaderSearch: React.FC = () => {
               activeFilterCount={activeFilterCount}
               showFavorites={showFavorites}
               onSearchUpdate={handleSearchUpdate}
-              onNewRequest={handleNewRequest}
+              onNewRequest={handleSelectResult}
               onToggleFilters={handleToggleFilters}
               onToggleFavorites={handleToggleFavorites}
             />

@@ -50,6 +50,7 @@ export const DefaultMapSettingsDialog: React.FC<
             "Default map location"}
         </Typography>
         <IconButton
+          aria-label={formatMessage({ id: "close" })}
           onClick={onClose}
           size="small"
           sx={dialogCloseButton(theme)}
@@ -58,7 +59,7 @@ export const DefaultMapSettingsDialog: React.FC<
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
           {formatMessage({ id: "default_map_settings_description" }) ||
             "Configure the initial map position and zoom level when opening the application."}
         </Typography>

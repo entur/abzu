@@ -16,6 +16,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { StopPlacesGroupActions, UserActions } from "../../actions/";
 import { getGroupOfStopPlacesById } from "../../actions/TiamatActions.modern";
+import { wasGroupJustPrefetched } from "../../components/modern/Shared/Membership/groupPrefetch";
 import GroupErrorDialog from "../../components/Dialogs/GroupErrorDialog";
 import Loader from "../../components/Dialogs/Loader";
 import { EditGroupOfStopPlaces } from "../../components/modern/GroupOfStopPlaces";
@@ -98,7 +99,8 @@ const GroupOfStopPlaces: React.FC = () => {
 
     if (isNewGroup) {
       handleNewGroupOfStopPlace();
-    } else {
+    } else if (!wasGroupJustPrefetched(groupId)) {
+      // The group chip already fetched it on the way here (S-3).
       handleFetchGroup(groupId);
     }
   }, [groupId, handleNewGroupOfStopPlace, handleFetchGroup]); // Re-fetch when groupId changes

@@ -17,6 +17,7 @@ import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { DirtyLabel } from "../../Shared/ElementStatus";
+import { TEXT_FIELD_MAX_LENGTH } from "../../Shared/fieldLimits";
 import { useIsStopFieldDirty } from "../../Shared/StopDetails/hooks/useIsStopFieldDirty";
 
 interface StopPlaceCodesFieldsProps {
@@ -58,6 +59,7 @@ export const StopPlaceCodesFields = ({
           dispatch(StopPlaceActions.changeStopPublicCode(event.target.value))
         }
         disabled={!canEdit}
+        slotProps={{ htmlInput: { maxLength: TEXT_FIELD_MAX_LENGTH } }}
         fullWidth
         size="small"
         variant="outlined"
@@ -73,6 +75,7 @@ export const StopPlaceCodesFields = ({
           dispatch(StopPlaceActions.changeStopPrivateCode(event.target.value))
         }
         disabled={!canEdit}
+        slotProps={{ htmlInput: { maxLength: TEXT_FIELD_MAX_LENGTH } }}
         fullWidth
         size="small"
         variant="outlined"

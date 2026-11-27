@@ -73,7 +73,6 @@ const renderPanel = (tiamatParking: object, clientOverrides: object = {}) => {
           onBack={vi.fn()}
           onDelete={vi.fn()}
           onNameChange={vi.fn()}
-          onTypeChange={vi.fn()}
           onCapacityChange={vi.fn()}
         />
       </IntlProvider>

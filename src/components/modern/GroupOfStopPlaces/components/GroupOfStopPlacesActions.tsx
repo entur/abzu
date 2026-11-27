@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Button, Divider, Typography } from "@mui/material";
@@ -32,13 +32,15 @@ export const GroupOfStopPlacesActions: React.FC<
   canDelete,
   hasName,
   hasMembers,
+  hasPurpose,
   onRemove,
   onUndo,
   onSave,
 }) => {
   const { formatMessage } = useIntl();
 
-  const isSaveDisabled = !isModified || !hasName || !hasMembers || !canEdit;
+  const isSaveDisabled =
+    !isModified || !hasName || !hasMembers || !hasPurpose || !canEdit;
   const isUndoDisabled = !isModified || !canEdit;
 
   return (
@@ -68,8 +70,7 @@ export const GroupOfStopPlacesActions: React.FC<
         {canEdit && !hasMembers && (
           <Typography
             variant="caption"
-            color="text.secondary"
-            sx={{ width: "100%", order: -1 }}
+            sx={{ color: "text.secondary", width: "100%", order: -1 }}
           >
             {formatMessage({ id: "group_requires_members" })}
           </Typography>

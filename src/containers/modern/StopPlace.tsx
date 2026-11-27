@@ -59,27 +59,33 @@ export const StopPlace = () => {
     setError((prev) => ({ ...prev, showErrorDialog: false }));
   }, [dispatch]);
 
-  const [title, setTitle] = useState(formatMessage({ id: "_title" }));
+  /* The id comes from the router, not window.location, so moving between two
+     /stop_place/:stopId URLs always reloads (F-51). */
+  const { stopId = "" } = useParams<{ stopId: string }>();
+
+  /* null until the stop in the URL has loaded: the header's default title
+     (the app name) shows meanwhile, instead of "Registry - Registry" or the
+     previous stop's name (F-45). */
+  const [title, setTitle] = useState<string | null>(null);
 
   /* Built from scratch each time: appending to the previous title made the
      location repeat once per render (F-45). */
   useEffect(() => {
     if (!stopPlace) return;
+    const isLoadedStop = stopPlace.isNewStop || stopPlace.id === stopId;
+    if (!isLoadedStop) return;
     if (stopPlace.isNewStop) {
       setTitle(formatMessage({ id: "_title_new_stop" }));
       return;
     }
     const name = originalStopPlace?.name ?? "";
+    if (!name) return;
     setTitle(
       stopPlace.topographicPlace
         ? `${name}, ${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`
         : name,
     );
-  }, [stopPlace, originalStopPlace, formatMessage]);
-
-  /* The id comes from the router, not window.location, so moving between two
-     /stop_place/:stopId URLs always reloads (F-51). */
-  const { stopId = "" } = useParams<{ stopId: string }>();
+  }, [stopPlace, originalStopPlace, formatMessage, stopId]);
 
   useEffect(() => {
     if (stopId === NEW_STOP_ROUTE_ID && !stopPlace) {
@@ -105,7 +111,7 @@ export const StopPlace = () => {
 
   return (
     <div>
-      <Helmet title={title} />
+      {title && <Helmet title={title} />}
       <LoadingDialog
         open={isLoading}
         message={formatMessage({ id: "loading" })}

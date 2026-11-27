@@ -42,7 +42,7 @@ export const CycleStorageFields: React.FC<CycleStorageFieldsProps> = ({
 
   return (
     <Box>
-      <Typography variant="caption" color="text.secondary">
+      <Typography variant="caption" sx={{ color: "text.secondary" }}>
         {formatMessage({ id: "parking_cycle_storage" })}
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mt: 1 }}>

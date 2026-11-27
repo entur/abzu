@@ -20,6 +20,7 @@ import { IntlShape } from "react-intl";
 import { MinimizedBar } from "../../Shared";
 import { ParentStopPlaceHeader } from "./ParentStopPlaceHeader";
 import { appChromeTop } from "../../Header/headerMetrics";
+import { useElementStatusEnabled } from "../../Shared/ElementStatus";
 
 interface ParentStopPlaceMinimizedBarProps {
   stopPlace: any;
@@ -55,7 +56,6 @@ export const ParentStopPlaceMinimizedBar: React.FC<
   canDelete,
   isMobile,
   drawerWidth,
-  formatMessage,
   onExpand,
   onClose,
   onOpenTerminate,
@@ -66,14 +66,21 @@ export const ParentStopPlaceMinimizedBar: React.FC<
 
   // Define minimized bar actions
 
-  if (isOpen || !originalStopPlace) return null;
-
   /* One information tab, mirroring the regular stop place's strip. The dot marks
      unsaved changes, so collapsing never hides them. */
+  const isStatusEnabled = useElementStatusEnabled();
   const tabs = useMemo(
-    () => INFO_ONLY_TABS.map((tab) => ({ ...tab, dirty: isModified })),
-    [isModified],
+    () =>
+      INFO_ONLY_TABS.map((tab) => ({
+        ...tab,
+        // Only with "Mark unsaved elements" on, as in the stop editor (F-38).
+        dirty: isStatusEnabled && isModified,
+      })),
+    [isStatusEnabled, isModified],
   );
+
+  // Hooks above: this early return must not change the hook count.
+  if (isOpen || !originalStopPlace) return null;
 
   /* The same action bar the expanded panel renders, so save, undo and terminate
      stay reachable while collapsed. */

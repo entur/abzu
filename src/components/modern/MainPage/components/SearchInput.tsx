@@ -25,12 +25,23 @@ import {
   InputAdornment,
   TextField,
   useTheme,
+  alpha,
+  Theme,
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { SearchInputProps } from "../types";
 import { searchFieldSx } from "../../styles";
 import { searchInputContainer, searchLoadingText } from "./SearchInput.styles";
+
+/** Toggle state (F-53): an open panel gets a primary tint, not warning yellow. */
+const ACTIVE_TOGGLE_TINT = 0.12;
+const activeToggleSx = (theme: Theme, isActive: boolean | undefined) => ({
+  color: isActive ? theme.palette.primary.main : theme.palette.action.active,
+  bgcolor: isActive
+    ? alpha(theme.palette.primary.main, ACTIVE_TOGGLE_TINT)
+    : "transparent",
+});
 
 export const SearchInput: React.FC<SearchInputProps> = ({
   menuItems,
@@ -43,6 +54,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   onNewRequest,
   onToggleFilters,
   onToggleFavorites,
+  autoFocus = false,
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -104,6 +116,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           return (
             <TextField
               {...textFieldProps}
+              autoFocus={autoFocus}
               variant="outlined"
               fullWidth
               size="small"
@@ -118,11 +131,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                           <IconButton
                             onClick={onToggleFavorites}
                             size="small"
+                            aria-pressed={showFavorites}
                             sx={{
                               marginRight: onToggleFilters ? 0 : -1,
-                              color: showFavorites
-                                ? theme.palette.warning.main
-                                : theme.palette.action.active,
+                              ...activeToggleSx(theme, showFavorites),
                             }}
                             aria-label={formatMessage({
                               id: "toggle_favorites",
@@ -137,23 +149,22 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                           <IconButton
                             onClick={onToggleFilters}
                             size="small"
+                            aria-pressed={showFilters}
                             sx={{
                               marginRight: -1,
-                              color: showFilters
-                                ? theme.palette.warning.main
-                                : theme.palette.action.active,
+                              ...activeToggleSx(theme, showFilters),
                             }}
                             aria-label={formatMessage({ id: "toggle_filters" })}
                           >
                             <Badge
                               badgeContent={activeFilterCount}
-                              color="error"
+                              color="primary"
                             >
                               <FilterIcon
                                 fontSize="small"
                                 sx={{
                                   color: showFilters
-                                    ? theme.palette.warning.main
+                                    ? theme.palette.primary.main
                                     : theme.palette.action.active,
                                 }}
                               />

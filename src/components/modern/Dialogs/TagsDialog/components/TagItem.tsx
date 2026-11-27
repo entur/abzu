@@ -12,11 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
-import moment from "moment";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
+import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { TagChip } from "../../../Shared/TagChip";
 import { Tag } from "../hooks/useTagsDialog";
 
 interface TagItemProps {
@@ -25,63 +25,48 @@ interface TagItemProps {
 }
 
 /**
- * Individual tag item display
- * Shows tag name, comment, created by, date, and delete button
+ * One tag (F-59): the tag and its comment, the part people read, come first
+ * in body text. Who added it and when is a small line underneath, with the
+ * date in the UI's language. The chip is the shared TagChip.
  */
 export const TagItem: React.FC<TagItemProps> = ({ tag, onDelete }) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
+  const { name, comment, createdBy, created } = tag;
+  const addedBy = createdBy || formatMessage({ id: "not_assigned" });
+  const addedAt = created
+    ? formatDate(created, { dateStyle: "short", timeStyle: "short" })
+    : formatMessage({ id: "not_assigned" });
 
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "flex-start",
+        gap: 1.5,
         py: 1.5,
         borderBottom: "1px solid",
         borderColor: "divider",
-        gap: 2,
       }}
     >
-      <Box sx={{ flex: 2 }}>
-        <Tooltip
-          title={tag.comment || formatMessage({ id: "comment_missing" })}
-        >
-          <Chip
-            label={tag.name}
-            size="small"
-            sx={{
-              bgcolor: "warning.main",
-              color: "white",
-              fontWeight: 500,
-            }}
-          />
-        </Tooltip>
-        {tag.comment && (
-          <Typography
-            variant="caption"
-            sx={{
-              display: "block",
-              mt: 0.5,
-              color: "text.secondary",
-            }}
-          >
-            {tag.comment}
+      <TagChip name={name} sx={{ flexShrink: 0 }} />
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        {comment && (
+          <Typography variant="body2" sx={{ overflowWrap: "anywhere" }}>
+            {comment}
           </Typography>
         )}
+        <Typography
+          variant="caption"
+          sx={{ display: "block", color: "text.secondary" }}
+        >
+          {formatMessage({ id: "tag_added_by" }, { name: addedBy })} · {addedAt}
+        </Typography>
       </Box>
-      <Typography variant="caption" sx={{ flex: 1.5, color: "text.secondary" }}>
-        {tag.createdBy || formatMessage({ id: "not_assigned" })}
-      </Typography>
-      <Typography variant="caption" sx={{ flex: 1.5, color: "text.secondary" }}>
-        {tag.created
-          ? moment(tag.created).locale("nb").format("DD-MM-YYYY HH:mm")
-          : formatMessage({ id: "not_assigned" })}
-      </Typography>
       <IconButton
+        aria-label={formatMessage({ id: "remove_tag" }, { name })}
         size="small"
-        onClick={() => onDelete(tag.name)}
+        onClick={() => onDelete(name)}
         color="error"
-        sx={{ flex: 0 }}
       >
         <DeleteIcon fontSize="small" />
       </IconButton>

@@ -55,7 +55,6 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
   canDelete,
   isMobile,
   drawerWidth,
-  formatMessage,
   onExpand,
   onClose,
   onOpenDelete,
@@ -84,6 +83,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
       canDelete={canDelete}
       hasName={!!groupOfStopPlaces?.name}
       hasMembers={(groupOfStopPlaces?.members?.length ?? 0) > 0}
+      hasPurpose={!!groupOfStopPlaces?.purposeOfGrouping}
       onRemove={onOpenDelete}
       onUndo={onOpenUndo}
       onSave={onOpenSave}

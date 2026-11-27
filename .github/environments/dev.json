@@ -18,7 +18,8 @@
   },
   "featureFlags": {
     "SVVStreetViewLink": true,
-    "ModernUI": true
+    "ModernUI": true,
+    "GuidedTour": true
   },
   "mapConfig": {
     "baseLayers": [

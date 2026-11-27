@@ -84,7 +84,7 @@ export const HierarchyPath: React.FC<MembershipProps> = ({
               sx={{ display: "flex", alignItems: "center", gap: 0.75 }}
             >
               {i > 0 && (
-                <Typography variant="caption" color="text.disabled">
+                <Typography variant="caption" sx={{ color: "text.disabled" }}>
                   ·
                 </Typography>
               )}

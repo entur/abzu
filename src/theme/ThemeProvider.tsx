@@ -22,6 +22,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { getFetchedConfig } from "../config/fetchConfig";
 import { getTiamatEnv } from "../config/themeConfig";
 import { createThemeFromConfig } from "./config/createThemeFromConfig";
+import { withModernFieldDefaults } from "./modernFieldDefaults";
 import { AbzuThemeConfig } from "./config/theme-config";
 import { useThemeFavicon } from "./assets";
 import { useThemeBodyFont, useThemeFonts } from "./fonts";
@@ -176,20 +177,22 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
         // Use new simplified config-driven theme
         try {
           const newTheme = createThemeFromConfig(themeConfig);
-          setTheme(newTheme);
+          setTheme(withModernFieldDefaults(newTheme));
         } catch (error) {
           console.warn(
             "Failed to create config-driven theme, falling back to standard MUI:",
             error,
           );
-          setTheme(createTheme());
+          setTheme(withModernFieldDefaults(createTheme()));
         }
       } else if (useConfigFiles && availableThemes.length === 0) {
         // No themes configured - use standard MUI theme
-        setTheme(createTheme());
+        setTheme(withModernFieldDefaults(createTheme()));
       } else {
         // Fallback to legacy theme
-        setTheme(createAbzuThemeLegacy({ environment }));
+        setTheme(
+          withModernFieldDefaults(createAbzuThemeLegacy({ environment })),
+        );
       }
     }
   }, [

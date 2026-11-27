@@ -36,12 +36,13 @@ import BusShelter from "../../../../static/icons/facilities/BusShelter";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import AccessibilityQuayTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityQuayTab";
-import FacilitiesQuayTab from "../../../EditStopPage/Facility/FacilitiesQuayTab";
+import { ModernFacilitiesTab } from "../facilities/ModernFacilitiesTab";
 import { CenterMapButton, CopyIdButton, ImportedId } from "../../Shared";
 import { QuayPanelProps } from "../types";
 import { BoardingPositionsTab } from "./BoardingPositionsTab";
 import { KeyValuesTab } from "./KeyValuesTab";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
+import { TEXT_FIELD_MAX_LENGTH } from "../../Shared/fieldLimits";
 import { getQuayTitle } from "../../Shared/quayLabels";
 
 /**
@@ -49,7 +50,7 @@ import { getQuayTitle } from "../../Shared/quayLabels";
  * Tabs mirror the legacy EditQuayAdditional structure:
  *   General | Accessibility | Facilities | Boarding Positions
  *
- * AccessibilityQuayTab and FacilitiesQuayTab are reused from the legacy
+ * AccessibilityQuayTab is reused from the legacy
  * codebase — they are already Redux-connected and accept quay + index + disabled.
  */
 export const QuayPanel: React.FC<QuayPanelProps> = ({
@@ -61,7 +62,6 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   onPublicCodeChange,
   onPrivateCodeChange,
   onDescriptionChange,
-  onCompassBearingChange,
 }) => {
   const BOARDING_POSITIONS_TAB = 3;
 
@@ -152,7 +152,11 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
                 mt: -0.25,
               }}
             >
-              <Typography variant="caption" color="text.secondary" noWrap>
+              <Typography
+                variant="caption"
+                noWrap
+                sx={{ color: "text.secondary" }}
+              >
                 {quay.id}
               </Typography>
               <CopyIdButton idToCopy={quay.id} size="small" />
@@ -229,6 +233,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
                 value={quay.publicCode || ""}
                 onChange={(e) => onPublicCodeChange(quayIndex, e.target.value)}
                 disabled={!canEdit}
+                slotProps={{ htmlInput: { maxLength: TEXT_FIELD_MAX_LENGTH } }}
                 size="small"
                 sx={{ flex: 1 }}
               />
@@ -237,6 +242,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
                 value={privateCodeValue}
                 onChange={(e) => onPrivateCodeChange(quayIndex, e.target.value)}
                 disabled={!canEdit}
+                slotProps={{ htmlInput: { maxLength: TEXT_FIELD_MAX_LENGTH } }}
                 size="small"
                 sx={{ flex: 1 }}
               />
@@ -251,25 +257,18 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
               fullWidth
             />
 
-            <TextField
-              label={formatMessage({ id: "compass_bearing" })}
-              type="number"
-              value={quay.compassBearing ?? ""}
-              onChange={(e) => {
-                const raw = e.target.value;
-                onCompassBearingChange(
-                  quayIndex,
-                  raw === "" ? null : Number(raw),
-                );
-              }}
-              disabled={!canEdit}
-              size="small"
-              slotProps={{ htmlInput: { min: 0, max: 360 } }}
-              helperText={formatMessage({
-                id: "change_compass_bearing_help_text",
-              })}
-              sx={{ width: "50%" }}
-            />
+            {/* Set with the handle on the map; shown here read-only (F-23). */}
+            <Box>
+              <Typography variant="body2">
+                {formatMessage({ id: "compass_bearing" })}:{" "}
+                {quay.compassBearing != null
+                  ? `${quay.compassBearing}°`
+                  : formatMessage({ id: "compass_bearing_not_set" })}
+              </Typography>
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                {formatMessage({ id: "compass_bearing_map_hint" })}
+              </Typography>
+            </Box>
 
             {quay.importedId && quay.importedId.length > 0 && (
               <ImportedId
@@ -290,10 +289,11 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
           />
         )}
 
-        {/* Tab 2 — Facilities (reuses legacy Redux-connected component) */}
+        {/* Tab 2 — Facilities (classic rows; modern shelter and waiting room, F-25) */}
         {activeTab === 2 && (
-          <FacilitiesQuayTab
-            quay={quay as any}
+          <ModernFacilitiesTab
+            entity={quay as any}
+            entityType="quay"
             index={quayIndex}
             disabled={!canEdit}
           />

@@ -68,13 +68,6 @@ export const useStopPlaceParking = (
     [dispatch],
   );
 
-  const handleParkingTypeChange = useCallback(
-    (index: number, value: string) => {
-      dispatch(StopPlaceActions.changeParkingLayout(index, value));
-    },
-    [dispatch],
-  );
-
   const handleParkingCapacityChange = useCallback(
     (index: number, value: string) => {
       dispatch(
@@ -88,7 +81,6 @@ export const useStopPlaceParking = (
     handleDeleteParking,
     handleConfirmDeleteParking,
     handleParkingNameChange,
-    handleParkingTypeChange,
     handleParkingCapacityChange,
   };
 };

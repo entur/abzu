@@ -51,12 +51,20 @@ import { StopPlaces } from "./StopPlaces";
  * the camera and loaded tiles survive a visit to Reports. It is hidden there
  * with `visibility` rather than `display`: the canvas keeps its size, so
  * MapLibre needs no resize when it shows again, and hidden elements take no
- * pointer events. Lives inside <Router> so the route hooks are available.
+ * pointer events. MapLibre's attribution sets `visibility: visible` itself,
+ * so it is hidden explicitly, or it covers the Reports footer (S-17).
+ * Lives inside <Router> so the route hooks are available.
  */
+const hiddenMapSx = {
+  visibility: "hidden",
+  // MapLibre's own rule is `.maplibregl-ctrl-attrib.maplibregl-compact-show`.
+  "& .maplibregl-ctrl-attrib.maplibregl-compact-show": { visibility: "hidden" },
+} as const;
+
 const PersistentMap = () => {
   const isReportsRoute = useIsReportsRoute();
   return (
-    <Box sx={{ visibility: isReportsRoute ? "hidden" : "visible" }}>
+    <Box sx={isReportsRoute ? hiddenMapSx : { visibility: "visible" }}>
       <ModernEditStopMap />
     </Box>
   );

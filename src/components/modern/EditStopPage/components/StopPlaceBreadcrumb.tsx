@@ -50,15 +50,15 @@ export const StopPlaceBreadcrumb: React.FC<StopPlaceBreadcrumbProps> = ({
           svgStyle={{ width: 14, height: 14 }}
         />
       </Box>
-      <Typography variant="caption" color="text.secondary" noWrap>
+      <Typography variant="caption" noWrap sx={{ color: "text.secondary" }}>
         {stopPlace.name || formatMessage({ id: "new_stop_title" })}
       </Typography>
       {stopPlace.id && (
         <Typography
           variant="caption"
-          color="text.primary"
+
           noWrap
-          sx={{ ml: 0.25 }}
+          sx={{ color: "text.primary", ml: 0.25 }}
         >
           · {stopPlace.id}
         </Typography>

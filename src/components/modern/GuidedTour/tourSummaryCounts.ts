@@ -18,6 +18,7 @@ export interface VerdictCounts {
   works: number;
   notFixed: number;
   changeRequests: number;
+  skipped: number;
   unanswered: number;
 }
 
@@ -29,8 +30,9 @@ export const countVerdicts = (session: TourSession): VerdictCounts =>
       if (verdict === "works") counts.works += 1;
       else if (verdict === "not-fixed") counts.notFixed += 1;
       else if (verdict === "change-request") counts.changeRequests += 1;
+      else if (verdict === "skipped") counts.skipped += 1;
       else counts.unanswered += 1;
       return counts;
     },
-    { works: 0, notFixed: 0, changeRequests: 0, unanswered: 0 },
+    { works: 0, notFixed: 0, changeRequests: 0, skipped: 0, unanswered: 0 },
   );

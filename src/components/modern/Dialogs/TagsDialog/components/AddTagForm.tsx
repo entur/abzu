@@ -13,7 +13,13 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { Tag } from "../hooks/useTagsDialog";
@@ -24,15 +30,24 @@ interface AddTagFormProps {
   suggestions: Tag[];
   tagName: string;
   isLoading: boolean;
+  isSearching: boolean;
   onSearchChange: (value: string) => void;
   onCommentChange: (value: string) => void;
   onChooseTag: (tag: Tag) => void;
   onAddTag: () => void;
 }
 
+/** Tiamat already filters by name; the list is shown as it comes. */
+const keepServerOrder = (options: Tag[]): Tag[] => options;
+
+const labelOf = (option: Tag | string): string =>
+  typeof option === "string" ? option : option.name;
+
 /**
- * Form to add a new tag
- * Includes search input with suggestions, comment field, and add button
+ * Form to add a tag: a tag-name field that suggests existing tags, a comment
+ * field and the add button. A new name can be typed freely. The suggestions
+ * open in a popup above the dialog, so nothing shows through them and they
+ * aren't clipped by the dialog, and ↑/↓/Enter pick one (F-58).
  */
 export const AddTagForm: React.FC<AddTagFormProps> = ({
   searchText,
@@ -40,6 +55,7 @@ export const AddTagForm: React.FC<AddTagFormProps> = ({
   suggestions,
   tagName,
   isLoading,
+  isSearching,
   onSearchChange,
   onCommentChange,
   onChooseTag,
@@ -60,66 +76,43 @@ export const AddTagForm: React.FC<AddTagFormProps> = ({
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {/* Tag name input with autocomplete */}
-        <Box sx={{ position: "relative" }}>
-          <TextField
-            label={formatMessage({ id: "tags" })}
-            fullWidth
-            value={searchText}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder={formatMessage({
-              id: "search_for_existing_tags",
-            })}
-          />
-          {suggestions.length > 0 && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: "100%",
-                left: 0,
-                right: 0,
-                bgcolor: "background.paper",
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 1,
-                mt: 0.5,
-                maxHeight: 200,
-                overflowY: "auto",
-                zIndex: 1,
-                boxShadow: 2,
-              }}
-            >
-              {suggestions.map((suggestion, idx) => (
-                <Box
-                  key={`suggestion-${idx}`}
-                  onClick={() => onChooseTag(suggestion)}
-                  sx={{
-                    p: 1.5,
-                    cursor: "pointer",
-                    "&:hover": {
-                      bgcolor: "action.hover",
-                    },
-                    borderBottom:
-                      idx < suggestions.length - 1 ? "1px solid" : "none",
-                    borderColor: "divider",
-                  }}
-                >
-                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                    {suggestion.name}
+        <Autocomplete<Tag, false, false, true>
+          freeSolo
+          options={suggestions}
+          value={null}
+          inputValue={searchText}
+          loading={isSearching}
+          loadingText={formatMessage({ id: "loading" })}
+          filterOptions={keepServerOrder}
+          getOptionLabel={labelOf}
+          onInputChange={(_event, value, reason) => {
+            if (reason === "input" || reason === "clear") onSearchChange(value);
+          }}
+          onChange={(_event, value) => {
+            if (value && typeof value !== "string") onChooseTag(value);
+          }}
+          renderOption={({ key, ...optionProps }, option) => (
+            <Box component="li" key={key} {...optionProps}>
+              <Box>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  {option.name}
+                </Typography>
+                {option.comment && (
+                  <Typography variant="body2" sx={{ color: "text.primary" }}>
+                    {option.comment}
                   </Typography>
-                  {suggestion.comment && (
-                    <Typography
-                      variant="caption"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      {suggestion.comment}
-                    </Typography>
-                  )}
-                </Box>
-              ))}
+                )}
+              </Box>
             </Box>
           )}
-        </Box>
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={formatMessage({ id: "tags" })}
+              placeholder={formatMessage({ id: "search_for_existing_tags" })}
+            />
+          )}
+        />
 
         {/* Comment input */}
         <TextField

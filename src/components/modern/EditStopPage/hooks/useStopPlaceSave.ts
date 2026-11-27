@@ -33,6 +33,7 @@ import {
 import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { findStagedDeletions } from "../utils/stagedDeletions";
+import { withNumericMachineCounts } from "../utils/numericMachineCounts";
 
 /** Rejects with a MutationErrorCodes value so SaveDialog can show it. */
 const failWith = (errorCode: string) => () => {
@@ -63,11 +64,20 @@ export const useStopPlaceSave = (
   const originalStopPlace = useAppSelector(
     (state) => (state.stopPlace as any).originalCurrent,
   );
+  const showExpiredStops = useAppSelector(
+    (state) => (state.stopPlace as any).showExpiredStops as boolean,
+  );
 
   const reloadAfterSave = useCallback(
     (id: string, wasNewStop: boolean) => {
-      dispatch(getStopPlaceVersions(id));
-      dispatch(getNeighbourStops(id, activeMap?.getBounds()));
+      /* The save has succeeded; a failed reload keeps the data already shown
+         and each thunk resets its own loading flag. */
+      dispatch(getStopPlaceVersions(id)).catch(() => undefined);
+      if (activeMap) {
+        dispatch(
+          getNeighbourStops(id, activeMap.getBounds(), showExpiredStops),
+        ).catch(() => undefined);
+      }
       if (wasNewStop) {
         /* Move off /stop_place/new so reload and shared links work (F-22);
            the route loader then fetches the saved stop. */
@@ -76,9 +86,9 @@ export const useStopPlaceSave = (
         );
         return;
       }
-      dispatch(getStopPlaceWithAll(id));
+      dispatch(getStopPlaceWithAll(id)).catch(() => undefined);
     },
-    [dispatch, activeMap],
+    [dispatch, activeMap, showExpiredStops],
   );
 
   return useCallback(
@@ -119,7 +129,10 @@ export const useStopPlaceSave = (
       ).catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE));
 
       const id: string = await dispatch(
-        saveStopPlaceBasedOnType(stopPlace, userInput),
+        saveStopPlaceBasedOnType(
+          withNumericMachineCounts(stopPlace),
+          userInput,
+        ),
       ).catch(failWith(MutationErrorCodes.ERROR_STOP_PLACE));
 
       if (needsPathLinkSave) {

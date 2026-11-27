@@ -18,8 +18,15 @@ import { Marker } from "react-map-gl/maplibre";
 import { useNavigate } from "react-router-dom";
 import { StopPlaceActions } from "../../../../actions";
 import AppRoutes from "../../../../routes";
+import { useIntl } from "react-intl";
 import { useAppDispatch } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
+import {
+  type ElementChangeStatus,
+  ElementStatusMapBadge,
+  getElementMarkerStatusSx,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 import { useConfirmLeave } from "../../Shared/UnsavedChangesGuard";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { StopPlacePopup } from "./StopPlacePopup";
@@ -32,9 +39,20 @@ const CHILD_MARKER_Z_INDEX = 1;
 
 interface ParentChildMarkerProps {
   child: MapStopPlace;
+  /** `new`: attached, not saved yet. `deleted`: detached, not saved yet. */
+  changeStatus?: ElementChangeStatus;
 }
 
-export const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
+/**
+ * A multimodal stop's child. Unsaved attaches get the unsaved dot (F-91);
+ * unsaved detaches stay drawn as a ghost until the save (F-92).
+ */
+export const ParentChildMarker = ({
+  child,
+  changeStatus = "unchanged",
+}: ParentChildMarkerProps) => {
+  const { formatMessage } = useIntl();
+  const isStatusEnabled = useElementStatusEnabled();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
   const scale = useMarkerScale();
   const dispatch = useAppDispatch();
@@ -46,6 +64,10 @@ export const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
 
   const [lat, lng] = location;
   const icon = getSvgIconByTypeOrSubmode(child.submode, child.stopPlaceType);
+  const isPendingDetach = changeStatus === "deleted";
+  const tooltip = isPendingDetach
+    ? `${child.name || child.id}: ${formatMessage({ id: "multimodal_child_pending_detach" })}`
+    : child.name || "";
 
   const handleOpen = () => {
     setPopupAnchor(null);
@@ -68,7 +90,12 @@ export const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
         anchor="center"
         style={{ zIndex: CHILD_MARKER_Z_INDEX }}
       >
-        <Tooltip title={child.name || ""} placement="top" arrow>
+        <Tooltip
+          title={popupAnchor ? "" : tooltip}
+          placement="top"
+          arrow
+          disableInteractive
+        >
           <Box
             onClick={(e) => setPopupAnchor(e.currentTarget)}
             sx={{
@@ -85,8 +112,15 @@ export const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
               borderColor: "background.paper",
               "&:hover": { transform: "scale(1.1)" },
               transition: "transform 0.15s",
+              // Containing block for ElementStatusMapBadge.
+              position: "relative",
+              ...getElementMarkerStatusSx(changeStatus),
             }}
           >
+            <ElementStatusMapBadge
+              visible={isStatusEnabled && changeStatus === "new"}
+              scale={scale}
+            />
             <img
               src={icon}
               alt=""

@@ -1,4 +1,5 @@
 export { StopNameAndTypeFields } from "./StopNameAndTypeFields";
+export { StopTypePresetSelect } from "./StopTypePresetSelect";
 export { useHiddenStopTypes } from "./hooks/useHiddenStopTypes";
 export {
   getAllowedStopTypes,

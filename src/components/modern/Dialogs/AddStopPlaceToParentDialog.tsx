@@ -105,7 +105,11 @@ export const AddStopPlaceToParentDialog: React.FC<
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "add_stop_place" })}
         </Typography>
-        <IconButton onClick={handleCloseDialog} size="small">
+        <IconButton
+          aria-label={formatMessage({ id: "close" })}
+          onClick={handleCloseDialog}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>

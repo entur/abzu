@@ -13,24 +13,24 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import AddIcon from "@mui/icons-material/Add";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import LinkIcon from "@mui/icons-material/Link";
 import {
   Box,
-  Chip,
   CircularProgress,
   Collapse,
   Divider,
-  IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import { addItemButtonSx } from "../../Shared";
 import { ChildStopPlace } from "../types";
 import { ChildStopItem } from "./ChildStopItem";
+import { CollapsibleSectionHeader } from "../../Shared/CollapsibleSectionHeader";
+import { useStagedChildMarkers } from "../../Map/hooks/useStagedChildMarkers";
+import {
+  DirtyBadge,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 
 interface ChildrenSectionProps {
   children: ChildStopPlace[];
@@ -50,49 +50,33 @@ export const ChildrenSection: React.FC<ChildrenSectionProps> = ({
   navigateTo,
 }) => {
   const { formatMessage } = useIntl();
+  // Attached or detached children not saved yet, like the quay list's dot (F-38).
+  const isStatusEnabled = useElementStatusEnabled();
+  const { addedChildIds, detachedChildren } = useStagedChildMarkers();
+  const hasStagedChildChanges =
+    isStatusEnabled && (addedChildIds.size > 0 || detachedChildren.length > 0);
   const [expanded, setExpanded] = useState(false);
 
   return (
     <>
-      <Box
-        onClick={() => setExpanded((v) => !v)}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.default",
-          cursor: "pointer",
-          userSelect: "none",
+      <CollapsibleSectionHeader
+        icon={
+          <DirtyBadge dirty={hasStagedChildChanges}>
+            <AccountTreeIcon fontSize="small" color="action" />
+          </DirtyBadge>
+        }
+        title={formatMessage({ id: "children" })}
+        count={children.length}
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+        action={{
+          label: formatMessage({ id: "attach" }),
+          tooltip: formatMessage({ id: "add_stop_place" }),
+          icon: <LinkIcon fontSize="small" />,
+          onClick: onAddChildren,
+          disabled: !canEdit || isLoading,
         }}
-      >
-        <AccountTreeIcon fontSize="small" color="action" />
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
-          {formatMessage({ id: "children" })}
-        </Typography>
-        <Chip label={children.length} size="small" />
-        {expanded ? (
-          <ExpandLessIcon fontSize="small" color="action" />
-        ) : (
-          <ExpandMoreIcon fontSize="small" color="action" />
-        )}
-        <Tooltip title={formatMessage({ id: "add_stop_place" })}>
-          <span>
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddChildren();
-              }}
-              disabled={!canEdit || isLoading}
-              sx={addItemButtonSx("primary.main")}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </span>
-        </Tooltip>
-      </Box>
+      />
 
       <Collapse in={expanded}>
         <Divider />

@@ -133,9 +133,6 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   handleGetTags,
   handleRemoveTag,
   handleFindTagByName,
-  handleNameChange,
-  handleDescriptionChange,
-  handleUrlChange,
   handleRemoveAdjacentSite,
   handleOpenAddChildDialog,
   handleOpenRemoveChildDialog,
@@ -207,6 +204,7 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
         isLoading={false}
         serverTimeDiff={serverTimeDiff}
         warningInfo={terminateWarning}
+        childrenToDetach={originalStopPlace?.children}
       />
 
       {/* Remove Child from Parent Dialog */}

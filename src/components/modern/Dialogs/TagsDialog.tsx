@@ -62,11 +62,15 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
     comment,
     searchText,
     suggestions,
+    isSearching,
     setComment,
     handleSearchTags,
     handleChooseTag,
     handleAddTag,
     handleDeleteTag,
+    pendingRemovalName,
+    undoRemoval,
+    flushRemoval,
   } = useTagsDialog({
     idReference,
     addTag,
@@ -75,14 +79,24 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
     findTagByName,
   });
 
+  // A tag waiting to be removed is removed when the dialog closes (F-59).
+  const closeDialog = () => {
+    flushRemoval();
+    handleClose();
+  };
+
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={closeDialog} maxWidth="md" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "tags" })}
         </Typography>
         {isLoading && <CircularProgress size={24} sx={{ mr: 1 }} />}
-        <IconButton onClick={handleClose} size="small">
+        <IconButton
+          aria-label={formatMessage({ id: "close" })}
+          onClick={closeDialog}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
@@ -95,13 +109,19 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
           <Alert severity="info" sx={{ mb: 2 }}>
             {formatMessage({ id: "tags_saved_immediately" })}
           </Alert>
-          <TagsList tags={tags} onDeleteTag={handleDeleteTag} />
+          <TagsList
+            tags={tags}
+            pendingRemovalName={pendingRemovalName}
+            onDeleteTag={handleDeleteTag}
+            onUndoRemoval={undoRemoval}
+          />
           <AddTagForm
             searchText={searchText}
             comment={comment}
             suggestions={suggestions}
             tagName={tagName}
             isLoading={isLoading}
+            isSearching={isSearching}
             onSearchChange={handleSearchTags}
             onCommentChange={setComment}
             onChooseTag={handleChooseTag}

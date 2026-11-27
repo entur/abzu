@@ -24,7 +24,6 @@ import {
   MenuItem,
   Select,
   Switch,
-  TextField,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -53,7 +52,6 @@ interface ParkAndRideFieldsProps {
 export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
   parking,
   parkingIndex,
-  canEdit,
   fieldDisabled,
   derivedCapacity,
 }) => {
@@ -285,7 +283,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
 
       {/* Capacity */}
       <Box>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
           {formatMessage({
             id: "parking_parkAndRide_capacity_sub_header",
           })}{" "}
@@ -319,13 +317,18 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
 
       {/* Recharging */}
       <Box>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
           {formatMessage({ id: "parking_recharging_sub_header" })}
         </Typography>
         <Typography
           variant="caption"
-          color="text.secondary"
-          sx={{ display: "block", mt: 0.25, mb: 0.5, fontStyle: "italic" }}
+          sx={{
+            color: "text.secondary",
+            display: "block",
+            mt: 0.25,
+            mb: 0.5,
+            fontStyle: "italic",
+          }}
         >
           {formatMessage({ id: "parking_recharging_available_info" })}
         </Typography>
@@ -363,7 +366,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
 
       {/* Step-free accessibility */}
       <Box>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
           {formatMessage({ id: "parking_accessibility" })}
         </Typography>
         <FormControl

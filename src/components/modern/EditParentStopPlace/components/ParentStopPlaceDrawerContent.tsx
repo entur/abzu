@@ -22,6 +22,7 @@ import {
   ParentStopPlaceHeader,
 } from ".";
 import { appChromeTop, belowAppChromeHeight } from "../../Header/headerMetrics";
+import { useElementStatusEnabled } from "../../Shared/ElementStatus";
 
 interface ParentStopPlaceDrawerContentProps {
   stopPlace: any;
@@ -83,9 +84,15 @@ export const ParentStopPlaceDrawerContent: React.FC<
   onOpenSave,
 }) => {
   /* One information tab; the dot marks unsaved changes. */
+  const isStatusEnabled = useElementStatusEnabled();
   const tabs = useMemo(
-    () => INFO_ONLY_TABS.map((tab) => ({ ...tab, dirty: isModified })),
-    [isModified],
+    () =>
+      INFO_ONLY_TABS.map((tab) => ({
+        ...tab,
+        // Only with "Mark unsaved elements" on, as in the stop editor (F-38).
+        dirty: isStatusEnabled && isModified,
+      })),
+    [isStatusEnabled, isModified],
   );
 
   return (

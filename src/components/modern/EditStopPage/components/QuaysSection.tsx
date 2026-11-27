@@ -12,10 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Box, Chip, Collapse, Divider, Typography } from "@mui/material";
+import { Box, Collapse, Divider } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
@@ -29,6 +27,7 @@ import { useScrollToReturnedRow } from "../hooks/useScrollToReturnedRow";
 import { QuaysSectionProps } from "../types";
 
 import { QuayItem } from "./QuayItem";
+import { CollapsibleSectionHeader } from "../../Shared/CollapsibleSectionHeader";
 
 export const QuaysSection: React.FC<QuaysSectionProps> = ({
   quays,
@@ -72,32 +71,17 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
     <Box>
       <Divider />
       {/* Section header — click to toggle */}
-      <Box
-        onClick={handleToggle}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.default",
-          cursor: "pointer",
-          userSelect: "none",
-        }}
-      >
-        <DirtyBadge dirty={isStatusEnabled && hasPendingEntry}>
-          <LocationOnIcon fontSize="small" color="action" />
-        </DirtyBadge>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
-          {formatMessage({ id: "quays" })}
-        </Typography>
-        <Chip label={quays.length} size="small" />
-        {expanded ? (
-          <ExpandLessIcon fontSize="small" color="action" />
-        ) : (
-          <ExpandMoreIcon fontSize="small" color="action" />
-        )}
-      </Box>
+      <CollapsibleSectionHeader
+        icon={
+          <DirtyBadge dirty={isStatusEnabled && hasPendingEntry}>
+            <LocationOnIcon fontSize="small" color="action" />
+          </DirtyBadge>
+        }
+        title={formatMessage({ id: "quays" })}
+        count={quays.length}
+        expanded={expanded}
+        onToggle={handleToggle}
+      />
 
       {/* Collapsible quay list */}
       <Collapse in={expanded}>

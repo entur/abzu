@@ -17,6 +17,11 @@ const KEY = "stopPlace.drawerOpen";
 /** Panel state on a user's first visit, before any preference has been stored. */
 const DEFAULT_DRAWER_OPEN = true;
 
+type Listener = () => void;
+const listeners = new Set<Listener>();
+/** The last value set, used while localStorage is unavailable. */
+let inMemoryPreference: boolean | null = null;
+
 /**
  * Reads the user's sticky drawer preference from localStorage.
  * Defaults to expanded on a first visit; an explicitly stored preference always wins,
@@ -26,21 +31,32 @@ export const getDrawerPreference = (): boolean => {
   try {
     const stored = localStorage.getItem(KEY);
     if (stored === null) {
-      return DEFAULT_DRAWER_OPEN;
+      return inMemoryPreference ?? DEFAULT_DRAWER_OPEN;
     }
     return stored === "true";
   } catch {
-    return DEFAULT_DRAWER_OPEN;
+    return inMemoryPreference ?? DEFAULT_DRAWER_OPEN;
   }
 };
 
 /**
- * Saves the user's drawer preference to localStorage so it survives navigation.
+ * Saves the user's drawer preference to localStorage so it survives navigation,
+ * and tells everything that follows the drawer (e.g. the map's + button, F-10d).
  */
 export const setDrawerPreference = (open: boolean): void => {
+  inMemoryPreference = open;
   try {
     localStorage.setItem(KEY, String(open));
   } catch {
-    // localStorage unavailable — preference is lost on navigation but that's acceptable
+    // localStorage unavailable — the in-memory value lasts until reload
   }
+  listeners.forEach((listener) => listener());
+};
+
+/** For useSyncExternalStore; returns the unsubscribe function. */
+export const subscribeToDrawerOpen = (listener: Listener): (() => void) => {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 };

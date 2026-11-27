@@ -37,7 +37,7 @@ export const ExpiredWarning: React.FC<ExpiredWarningProps> = ({ show }) => {
     >
       <Chip
         icon={<WarningIcon />}
-        label={formatMessage({ id: "expired" })}
+        label={formatMessage({ id: "has_expired" })}
         color="warning"
         size="small"
         sx={{ mb: 1 }}

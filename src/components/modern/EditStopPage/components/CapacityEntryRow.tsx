@@ -104,9 +104,8 @@ export const CapacityEntryRow: React.FC<CapacityEntryRowProps> = ({
       {entry.parkingStayType ? (
         <Typography
           variant="caption"
-          color="text.secondary"
           data-testid="parking-capacity-entry-stay-type"
-          sx={{ gridColumn: "1 / -1" }}
+          sx={{ color: "text.secondary", gridColumn: "1 / -1" }}
         >
           {formatMessage({ id: "parking_stay_type" })}:{" "}
           <span>

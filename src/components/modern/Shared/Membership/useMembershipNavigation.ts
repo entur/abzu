@@ -20,6 +20,7 @@ import { getGroupOfStopPlacesById } from "../../../../actions/TiamatActions.mode
 import Routes from "../../../../routes";
 import { useNavigateToStopPlace } from "../useNavigateToStopPlace";
 import { useConfirmLeave } from "../UnsavedChangesGuard";
+import { markGroupPrefetched } from "./groupPrefetch";
 
 /**
  * One navigation surface for both membership targets, so each layout variant
@@ -47,7 +48,12 @@ export const useMembershipNavigation = () => {
         });
 
         dispatch(getGroupOfStopPlacesById(id))
-          .then(() => {
+          .then((result: any) => {
+            // Only a found group counts; otherwise the route fetches again
+            // and shows "not found".
+            if (result?.data?.groupOfStopPlaces?.length) {
+              markGroupPrefetched(id);
+            }
             dispatch(
               UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, id),
             );

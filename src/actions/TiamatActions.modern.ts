@@ -31,13 +31,10 @@ export {
   deleteParking,
   deleteQuay,
   deleteStopPlace,
-  findEntitiesWithFilters,
   findStopForReport,
   findTagByName,
   findTopographicalPlace,
-  getAddStopPlaceInfo,
   getContext,
-  getGroupOfStopPlacesById,
   getLocationPermissionsForCoordinates,
   getMergeInfoForStops,
   getNeighbourStopPlaceQuays,
@@ -66,10 +63,14 @@ export {
 
 import { createApolloThunk, createThunk } from ".";
 import { getTiamatClient } from "../graphql/clients";
+import { addMemberLookupQuery } from "../graphql/Tiamat/addMemberLookup";
+import { groupOfStopPlacesQuery } from "../graphql/Tiamat/groupOfStopPlaces";
 import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
+import { findStopWithMemberValidity } from "../graphql/Tiamat/findStopModern";
 import { getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
 import { stopPlaceWithAll } from "../graphql/Tiamat/stopPlaceWithAll";
 import type { AppDispatch, RootState } from "../store/store";
+import { cleanBBoxResult } from "../components/modern/Map/markers/utils/cleanBBoxResult";
 import { getContext } from "./TiamatActions";
 import * as types from "./Types";
 
@@ -117,6 +118,111 @@ export const getStopPlaceWithAll =
       });
   };
 
+/**
+ * Loads one group of stop places. Same as the legacy getGroupOfStopPlacesById,
+ * but with the modern query, which carries each member's validity so expired
+ * members can be flagged and left off the map (F-87).
+ */
+export const getGroupOfStopPlacesById =
+  (id: string) =>
+  async (dispatch: AppDispatch, getState: () => RootState): Promise<any> => {
+    const payload = {
+      query: groupOfStopPlacesQuery,
+      fetchPolicy: "network-only" as const,
+      variables: { id },
+      context: await getContext((getState() as any).user.auth),
+    };
+
+    const result = await (getTiamatClient() as any).query(payload);
+    dispatch(
+      createApolloThunk(
+        types.APOLLO_QUERY_RESULT,
+        result,
+        payload.query,
+        payload.variables,
+      ),
+    );
+    return result;
+  };
+
+/**
+ * Looks up stops to add to a group. Same as the classic getAddStopPlaceInfo,
+ * but the query carries each stop's validity, so an expired stop is flagged
+ * as soon as it is added (S-7).
+ */
+export const getAddStopPlaceInfo =
+  (stopPlaceIds: string[]) =>
+  async (dispatch: AppDispatch, getState: () => RootState): Promise<any> => {
+    const payload = {
+      query: addMemberLookupQuery(stopPlaceIds),
+      fetchPolicy: "network-only" as const,
+      context: await getContext((getState() as any).user.auth),
+    };
+    const result = await (getTiamatClient() as any).query(payload);
+    dispatch(
+      createApolloThunk(types.APOLLO_QUERY_RESULT, result, payload.query, {}),
+    );
+    return result;
+  };
+
+interface TopographicChip {
+  type: string;
+  value: string;
+}
+
+/** Numbers each search, so only the newest one's results are stored (F-05). */
+let latestSearchRequest = 0;
+
+/**
+ * Search for stop places and groups. Same query as the legacy action, but a
+ * slower response for an older search is ignored instead of overwriting the
+ * results of a newer one. Resolves with `isLatest` so the caller can end its
+ * loading state only for the newest search (F-05).
+ */
+export const findEntitiesWithFilters =
+  (
+    query: string,
+    stopPlaceType: string[],
+    chips: TopographicChip[],
+    showFutureAndExpired: boolean,
+  ) =>
+  async (
+    dispatch: AppDispatch,
+    getState: () => RootState,
+  ): Promise<{ isLatest: boolean }> => {
+    const request = ++latestSearchRequest;
+    const referencesOf = (type: string) =>
+      chips.filter((chip) => chip.type === type).map((chip) => chip.value);
+    const payload = {
+      query: findStopWithMemberValidity,
+      fetchPolicy: "network-only" as const,
+      variables: {
+        query,
+        stopPlaceType,
+        municipalityReference: referencesOf("municipality"),
+        countyReference: referencesOf("county"),
+        countryReference: referencesOf("country"),
+        pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
+        versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
+      },
+      context: await getContext((getState() as any).user.auth),
+    };
+
+    const result = await (getTiamatClient() as any).query(payload);
+    const isLatest = request === latestSearchRequest;
+    if (isLatest) {
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_QUERY_RESULT,
+          result,
+          payload.query,
+          payload.variables,
+        ),
+      );
+    }
+    return { isLatest };
+  };
+
 interface MapBounds {
   getSouthWest: () => { lat: number; lng: number };
   getNorthEast: () => { lat: number; lng: number };
@@ -125,7 +231,8 @@ interface MapBounds {
 /**
  * The stops in the map's bounds, except the open one. Same as the legacy
  * getNeighbourStops, but with the modern query, which names multimodal
- * children (F-48).
+ * children (F-48), and with the stale versions Tiamat also returns cleaned
+ * out before the reducer sees them (F-85, F-92).
  */
 export const getNeighbourStops =
   (
@@ -154,7 +261,18 @@ export const getNeighbourStops =
     };
 
     try {
-      const result = await (getTiamatClient() as any).query(payload);
+      const response = await (getTiamatClient() as any).query(payload);
+      // Apollo may freeze its result, so the cleaned list goes into a copy.
+      const result = {
+        ...response,
+        data: {
+          ...response.data,
+          stopPlaceBBox: cleanBBoxResult(
+            response.data?.stopPlaceBBox ?? [],
+            !!includeExpired,
+          ),
+        },
+      };
       dispatch(
         createApolloThunk(
           types.APOLLO_QUERY_RESULT,

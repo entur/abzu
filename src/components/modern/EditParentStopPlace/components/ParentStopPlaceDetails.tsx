@@ -31,6 +31,11 @@ import { ImportedId, StopPlaceMembership, TagTray } from "../../Shared";
 import { ParentStopPlaceDetailsProps } from "../types";
 import { StopPostalAddressFields } from "../../Shared/StopDetails/StopPostalAddressFields";
 import { useIsViewingOlderVersion } from "../../Shared/StopStatus";
+import {
+  DirtyLabel,
+  useElementStatusEnabled,
+  useStopPlaceDirtyKeys,
+} from "../../Shared/ElementStatus";
 
 /**
  * Details section for parent stop place
@@ -45,7 +50,6 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
   version,
   tags,
   importedId,
-  alternativeNames,
   belongsToGroup,
   groups,
   canEdit,
@@ -60,6 +64,10 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
   const { formatMessage } = useIntl();
   // An older version from the history is not "expired" (F-42).
   const isViewingOlderVersion = useIsViewingOlderVersion();
+  // Same field marks as the stop editor, behind the same setting (F-38).
+  const isStatusEnabled = useElementStatusEnabled();
+  const dirtyKeys = useStopPlaceDirtyKeys();
+  const isDirty = (key: string) => isStatusEnabled && dirtyKeys.has(key);
 
   return (
     <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
@@ -67,7 +75,7 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
       {hasExpired && !isViewingOlderVersion && (
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <WarningIcon sx={{ color: "warning.main", fontSize: "1rem" }} />
-          <Typography variant="caption" color="error.main">
+          <Typography variant="caption" sx={{ color: "error.main" }}>
             {formatMessage({ id: "stop_has_expired" })}
           </Typography>
         </Box>
@@ -107,7 +115,11 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
 
       {/* Name */}
       <TextField
-        label={`${formatMessage({ id: "name" })} *`}
+        label={
+          <DirtyLabel dirty={isDirty("name")}>
+            {formatMessage({ id: "name" })}
+          </DirtyLabel>
+        }
         value={name}
         onChange={(e) => onNameChange(e.target.value)}
         disabled={!canEdit}
@@ -121,7 +133,11 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
 
       {/* Description */}
       <TextField
-        label={formatMessage({ id: "description" })}
+        label={
+          <DirtyLabel dirty={isDirty("description")}>
+            {formatMessage({ id: "description" })}
+          </DirtyLabel>
+        }
         value={description || ""}
         onChange={(e) => onDescriptionChange(e.target.value)}
         disabled={!canEdit}
@@ -135,7 +151,11 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
       {/* URL (optional, feature-flagged in legacy) */}
       {url !== undefined && (
         <TextField
-          label={formatMessage({ id: "url" })}
+          label={
+            <DirtyLabel dirty={isDirty("url")}>
+              {formatMessage({ id: "url" })}
+            </DirtyLabel>
+          }
           value={url || ""}
           onChange={(e) => onUrlChange(e.target.value)}
           disabled={!canEdit}

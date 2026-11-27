@@ -39,6 +39,7 @@ export const useFeedbackDownload = (session: TourSession): (() => void) => {
         "change-request": formatMessage({
           id: "guided_tour_verdict_change_request",
         }),
+        skipped: formatMessage({ id: "guided_tour_verdict_skipped" }),
       },
       counts: formatMessage(
         { id: "guided_tour_summary_counts" },

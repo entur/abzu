@@ -87,8 +87,7 @@ export const TopographicFilterSection: React.FC<
               </Typography>
               <Typography
                 variant="caption"
-                color="text.secondary"
-                sx={{ flexShrink: 0 }}
+                sx={{ color: "text.secondary", flexShrink: 0 }}
               >
                 {formatMessage({ id: (option as TopographicChip).type })}
               </Typography>

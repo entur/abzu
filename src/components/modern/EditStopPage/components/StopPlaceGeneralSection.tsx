@@ -20,7 +20,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -29,14 +28,14 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import stopTypes from "../../../../models/stopTypes";
 import weightTypes from "../../../../models/weightTypes";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import { StopPlaceMembership, TagTray } from "../../Shared";
+import { CreateMultimodalButton } from "./CreateMultimodalButton";
 import {
   getModalityAllowance,
-  isModalityAllowed,
   isStopPlaceTypeValid,
+  StopTypePresetSelect,
   useHiddenStopTypes,
 } from "../../Shared/StopNameAndType";
 import {
@@ -46,10 +45,6 @@ import {
   useStopPlaceDirtyKeys,
 } from "../../Shared/ElementStatus";
 import { StopPlaceGeneralSectionProps } from "../types";
-import {
-  parseModalityPickerValue,
-  toModalityPickerValue,
-} from "../utils/modalityPickerValue";
 import { StopPostalAddressFields } from "../../Shared/StopDetails/StopPostalAddressFields";
 import { StopUrlField } from "../../Shared/StopDetails/StopUrlField";
 import { StopPlaceCodesFields } from "./StopPlaceCodesFields";
@@ -87,42 +82,9 @@ export const StopPlaceGeneralSection: React.FC<
     hiddenStopTypes,
   );
 
-  const pickerValue = toModalityPickerValue(
-    stopPlace.stopPlaceType,
-    stopPlace.submode,
-  );
-
-  const handlePickerChange = (value: string) => {
-    const { stopPlaceType, submode } = parseModalityPickerValue(value);
-    // Single atomic change: the reducer sets stopPlaceType + submode together,
-    // so dispatching type and submode separately would let the second overwrite
-    // the first with a stale type.
-    onModalityChange(stopPlaceType, submode);
-  };
-
-  // Types and submodes outside the user's permissions are shown but
-  // disabled, as in legacy (F-18); the current value always stays selectable.
+  // Presets outside the user's permissions are shown but disabled, as in
+  // legacy (F-18); the current value always stays selectable.
   const allowance = getModalityAllowance((stopPlace as any).permissions);
-  const isOptionAllowed = (stopPlaceType: string, submode: string | null) =>
-    isModalityAllowed(allowance, stopPlaceType, submode);
-
-  const unifiedOptions = Object.entries(stopTypes)
-    .filter(([key]) => !hiddenStopTypes.includes(key))
-    .flatMap(([key, config]) => {
-      const typeLabel = formatMessage({ id: `stopTypes_${key}_name` });
-      const submodes = (config as any).submodes as string[] | null | undefined;
-      const bare = {
-        value: toModalityPickerValue(key, null),
-        label: typeLabel,
-        allowed: isOptionAllowed(key, null),
-      };
-      const submodeItems = (submodes ?? []).map((sub) => ({
-        value: toModalityPickerValue(key, sub),
-        label: formatMessage({ id: `stopTypes_${key}_submodes_${sub}` }),
-        allowed: isOptionAllowed(key, sub),
-      }));
-      return [bare, ...submodeItems];
-    });
 
   return (
     <Box sx={sx.container}>
@@ -135,18 +97,21 @@ export const StopPlaceGeneralSection: React.FC<
         groups={stopPlace.groups}
         currentName={stopPlace.name}
       />
+      <CreateMultimodalButton stopPlace={stopPlace} canEdit={canEdit} />
 
       {/* Name */}
       <Box sx={sx.fieldRow}>
         <TextField
           label={
             <DirtyLabel dirty={isDirty("name")}>
-              {`${formatMessage({ id: "name" })} *`}
+              {formatMessage({ id: "name" })}
             </DirtyLabel>
           }
           value={stopPlace.name || ""}
           onChange={(e) => onNameChange(e.target.value)}
           disabled={!canEdit}
+          // MUI adds the asterisk and tells screen readers (F-08, F-119).
+          required
           error={isNameMissing}
           helperText={
             isNameMissing
@@ -215,42 +180,29 @@ export const StopPlaceGeneralSection: React.FC<
             svgStyle={{ width: 28, height: 28 }}
           />
         </Box>
-        <FormControl
-          size="small"
+        <StopTypePresetSelect
+          value={{
+            stopPlaceType: stopPlace.stopPlaceType ?? "",
+            submode: stopPlace.submode ?? null,
+          }}
+          // One atomic change: the reducer sets type and submode together,
+          // so a second dispatch can't overwrite the first with a stale type.
+          onChange={onModalityChange}
+          label={
+            <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
+              {formatMessage({ id: "stopPlaceType" })}
+            </DirtyLabel>
+          }
+          allowance={allowance}
           disabled={!canEdit}
           error={isStopPlaceTypeMissing}
-          fullWidth
-        >
-          <InputLabel>
-            <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
-              {`${formatMessage({ id: "stopPlaceType" })} *`}
-            </DirtyLabel>
-          </InputLabel>
-          <Select
-            value={pickerValue}
-            label={
-              <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
-                {`${formatMessage({ id: "stopPlaceType" })} *`}
-              </DirtyLabel>
-            }
-            onChange={(e) => handlePickerChange(e.target.value)}
-          >
-            {unifiedOptions.map((option) => (
-              <MenuItem
-                key={option.value}
-                value={option.value}
-                disabled={!option.allowed && option.value !== pickerValue}
-              >
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-          {isStopPlaceTypeMissing && (
-            <FormHelperText>
-              {formatMessage({ id: "field_is_required" })}
-            </FormHelperText>
-          )}
-        </FormControl>
+          helperText={
+            isStopPlaceTypeMissing
+              ? formatMessage({ id: "field_is_required" })
+              : undefined
+          }
+          required
+        />
       </Box>
 
       {/* Interchange weighting */}
@@ -286,8 +238,7 @@ export const StopPlaceGeneralSection: React.FC<
       <Box sx={{ ...sx.fieldRow, display: "flex", gap: 1 }}>
         <Typography
           variant="caption"
-          color="text.secondary"
-          sx={{ minWidth: 80, pt: 0.25 }}
+          sx={{ color: "text.secondary", minWidth: 80, pt: 0.25 }}
         >
           {formatMessage({ id: "tariffZones" })}
         </Typography>

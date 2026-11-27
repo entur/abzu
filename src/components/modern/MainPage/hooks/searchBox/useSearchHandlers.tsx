@@ -16,7 +16,7 @@ import debounce from "lodash.debounce";
 import { useCallback, useMemo } from "react";
 import { flushSync } from "react-dom";
 import { useDispatch } from "react-redux";
-import { StopPlaceActions, UserActions } from "../../../../../actions/";
+import { UserActions } from "../../../../../actions/";
 import {
   findEntitiesWithFilters,
   getGroupOfStopPlacesById,
@@ -28,6 +28,7 @@ import { MenuItem } from "../../types";
 import { useConfirmLeave } from "../../../Shared/UnsavedChangesGuard";
 import { setMarkerOnMap } from "../../../../../actions/StopPlaceActions.modern";
 import { useFlyToCoordinates } from "./useFlyToCoordinates";
+import { clearCoordinatePin } from "../../../Map/coordinatePin/coordinatePinStore";
 
 /**
  * Hook for managing search and selection handlers
@@ -57,7 +58,6 @@ export const useSearchHandlers = (
           chips: any[],
           showFutureAndExpired: boolean,
         ) => {
-          setLoading(true);
           dispatch(
             findEntitiesWithFilters(
               searchText,
@@ -65,9 +65,12 @@ export const useSearchHandlers = (
               chips,
               showFutureAndExpired,
             ),
-          ).then(() => {
-            setLoading(false);
-          });
+          )
+            .then(({ isLatest }: { isLatest: boolean }) => {
+              // An older search finishing must not end a newer one's loading.
+              if (isLatest) setLoading(false);
+            })
+            .catch(() => setLoading(false));
         },
         500,
       ),
@@ -91,6 +94,8 @@ export const useSearchHandlers = (
 
       // Always update the local input state
       setStopPlaceSearchValue(searchText || "");
+      // A new search replaces the last "Go to coordinates" pin (F-94).
+      clearCoordinatePin();
 
       if (!searchText || !searchText.length) {
         dispatch(UserActions.clearSearchResults());
@@ -99,6 +104,9 @@ export const useSearchHandlers = (
         // Skip search for formatted results
       } else {
         dispatch(UserActions.setSearchText(searchText));
+        // Loading from the first keystroke, not after the debounce: until a
+        // response arrives, "no results" must not show (F-05).
+        setLoading(true);
         debouncedSearch(
           searchText,
           stopTypeFilter,
@@ -114,6 +122,7 @@ export const useSearchHandlers = (
       topoiChips,
       showFutureAndExpired,
       setStopPlaceSearchValue,
+      setLoading,
     ],
   );
 
@@ -130,7 +139,7 @@ export const useSearchHandlers = (
           result.id === "coordinates" &&
           (result.element as any).coordinates
         ) {
-          // Move the map there without creating a marker.
+          // Move the map there and pin the spot; no stop is created (F-94).
           flyToCoordinates((result.element as any).coordinates);
           setStopPlaceSearchValue("");
           dispatch(UserActions.setSearchText(""));

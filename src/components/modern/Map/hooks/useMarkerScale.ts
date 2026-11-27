@@ -14,23 +14,40 @@ limitations under the Licence. */
 
 import { useEffect, useState } from "react";
 import { useMap } from "react-map-gl/maplibre";
+import { MARKER_SIZES } from "../markerSize/markerSizePreference";
+import { useMarkerSize } from "../markerSize/useMarkerSize";
 
-// Zoom level at which markers render at their designed (1×) size
+// Zoom level from which markers keep their full working size
 const BASE_ZOOM = 15;
 
-// Controls how aggressively size changes per zoom step.
+// Controls how quickly markers shrink per zoom step when zooming out.
 const ZOOM_SCALE_FACTOR = 0.2;
 
 const MIN_SCALE = 0.5;
-const MAX_SCALE = 2.0;
+/** Markers don't grow past their size at BASE_ZOOM when zooming in (F-93). */
+const MAX_SCALE = 1;
 
 /**
- * Returns a scale multiplier (0.5–2.0) based on the current map zoom level.
- * Subscribes to the MapLibre zoom event for smooth real-time updates.
- * Use this to scale marker sizes relative to zoom.
+ * The multiplier for every marker size at a zoom level: the chosen working
+ * size (`sizeFactor`, see MARKER_SIZES) from BASE_ZOOM in, shrinking when
+ * zooming out, down to MIN_SCALE × sizeFactor.
+ */
+export const markerScaleForZoom = (
+  zoom: number,
+  sizeFactor: number,
+): number => {
+  const curve = Math.pow(2, (zoom - BASE_ZOOM) * ZOOM_SCALE_FACTOR);
+  return Math.min(MAX_SCALE, Math.max(MIN_SCALE, curve)) * sizeFactor;
+};
+
+/**
+ * Returns the marker scale for the current map zoom and the user's chosen
+ * marker size (see markerScaleForZoom). Subscribes to the MapLibre zoom event
+ * for smooth real-time updates. Use this to scale marker sizes.
  */
 export const useMarkerScale = (): number => {
   const { current: mapRef } = useMap();
+  const { markerSize } = useMarkerSize();
   const [zoom, setZoom] = useState<number>(
     () => mapRef?.getZoom() ?? BASE_ZOOM,
   );
@@ -57,6 +74,5 @@ export const useMarkerScale = (): number => {
     };
   }, [mapRef]);
 
-  const raw = Math.pow(2, (zoom - BASE_ZOOM) * ZOOM_SCALE_FACTOR);
-  return Math.min(MAX_SCALE, Math.max(MIN_SCALE, raw));
+  return markerScaleForZoom(zoom, MARKER_SIZES[markerSize]);
 };

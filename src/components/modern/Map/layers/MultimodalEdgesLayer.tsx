@@ -13,63 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useTheme } from "@mui/material";
-import type { Feature, FeatureCollection, LineString } from "geojson";
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
-import type {
-  ChildStop,
-  LatLng,
-  MapStopPlace,
-  NeighbourStop,
-} from "../markers/types";
-import { resolveChildLocation } from "../markers/utils/resolveChildLocation";
+import type { NeighbourStop } from "../markers/types";
 import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
-
-const buildEdgesForParent = (
-  parentLocation: LatLng,
-  children: ChildStop[],
-): Feature<LineString>[] => {
-  const [parentLat, parentLng] = parentLocation;
-
-  return children
-    .map((child) => {
-      const childLocation = resolveChildLocation(child);
-      if (!childLocation) return null;
-      const [childLat, childLng] = childLocation;
-      return {
-        type: "Feature" as const,
-        geometry: {
-          type: "LineString" as const,
-          coordinates: [
-            [parentLng, parentLat],
-            [childLng, childLat],
-          ] as [number, number][],
-        },
-        properties: {},
-      };
-    })
-    .filter(Boolean) as Feature<LineString>[];
-};
-
-const buildGeoJson = (
-  current: MapStopPlace | null,
-  neighbours: NeighbourStop[],
-): FeatureCollection<LineString> => {
-  const features: Feature<LineString>[] = [];
-
-  if (current?.isParent && current.location && current.children?.length) {
-    features.push(...buildEdgesForParent(current.location, current.children));
-  }
-
-  for (const stop of neighbours) {
-    if (stop.isParent && stop.location && stop.children?.length) {
-      features.push(...buildEdgesForParent(stop.location, stop.children));
-    }
-  }
-
-  return { type: "FeatureCollection", features };
-};
+import { buildMultimodalEdges } from "./utils/buildMultimodalEdges";
 
 /* The parent's link to its children has to stay readable over aerial imagery,
    so it is a chunky dash on a translucent white band rather than a hairline.
@@ -89,10 +38,13 @@ export const MultimodalEdgesLayer = () => {
   const showEdges = useAppSelector(
     (state) => (state.stopPlace as any).showMultimodalEdges as boolean,
   );
+  const showExpiredStops = useAppSelector(
+    (state) => (state.stopPlace as any).showExpiredStops as boolean,
+  );
 
   const geoJson = useMemo(
-    () => buildGeoJson(current, neighbours ?? []),
-    [current, neighbours],
+    () => buildMultimodalEdges(current, neighbours ?? [], showExpiredStops),
+    [current, neighbours, showExpiredStops],
   );
 
   if (!showEdges || !geoJson.features.length) return null;

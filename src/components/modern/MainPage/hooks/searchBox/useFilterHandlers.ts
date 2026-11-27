@@ -18,18 +18,11 @@ import { UserActions } from "../../../../../actions/";
 
 /**
  * Hook for managing filter operations
- * Handles modality filters and future/expired toggle
+ * Handles modality filters. "Show expired stops" lives in the map settings
+ * (see useRerunSearchOnExpiredToggle).
  */
 export const useFilterHandlers = (
   searchText: string,
-  stopTypeFilter: string[],
-  topoiChips: any[],
-  debouncedSearch: (
-    searchText: string,
-    stopPlaceTypes: string[],
-    chips: any[],
-    showFutureAndExpired: boolean,
-  ) => void,
   handleSearchUpdate: (event: any, searchText: string, reason?: string) => void,
 ) => {
   const dispatch = useDispatch() as any;
@@ -44,16 +37,6 @@ export const useFilterHandlers = (
     [dispatch, handleSearchUpdate, searchText],
   );
 
-  const toggleShowFutureAndExpired = useCallback(
-    (value: boolean) => {
-      if (searchText) {
-        debouncedSearch(searchText, stopTypeFilter, topoiChips, value);
-      }
-      dispatch(UserActions.toggleShowFutureAndExpired(value));
-    },
-    [dispatch, debouncedSearch, searchText, stopTypeFilter, topoiChips],
-  );
-
   const removeFiltersAndSearch = useCallback(() => {
     dispatch(UserActions.removeAllFilters());
     handleSearchUpdate(null, searchText);
@@ -61,7 +44,6 @@ export const useFilterHandlers = (
 
   return {
     handleApplyModalityFilters,
-    toggleShowFutureAndExpired,
     removeFiltersAndSearch,
   };
 };

@@ -40,8 +40,6 @@ import { ParkingOrganisationRefField } from "./ParkingOrganisationRefField";
 import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
-const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
-
 /**
  * Full parking editor panel.
  *
@@ -62,7 +60,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   onBack,
   onDelete,
   onNameChange,
-  onTypeChange,
   onCapacityChange,
 }) => {
   const { formatMessage } = useIntl();
@@ -84,9 +81,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   const derivedCapacity = hasFullFieldSet
     ? capacityEntriesTotal(parking)
     : null;
-
-  const stepFreeAccess =
-    parking.accessibilityAssessment?.limitations?.stepFreeAccess ?? "";
 
   const isExpired = !!parking.hasExpired;
   const fieldDisabled = !canEdit || isExpired;
@@ -123,7 +117,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             {displayName}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {formatMessage({
                 id: parkingTitleMessageId(parking.parkingType),
               })}
@@ -139,7 +133,11 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
         </Box>
         {parking.id && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-            <Typography variant="caption" color="text.secondary" noWrap>
+            <Typography
+              variant="caption"
+              noWrap
+              sx={{ color: "text.secondary" }}
+            >
               {parking.id}
             </Typography>
             <CopyIdButton idToCopy={parking.id} size="small" />
@@ -180,8 +178,9 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
           disabled={fieldDisabled}
         />
 
-        {/* Vehicle types — read-only. Tiamat owns this field. */}
-        {vehicleTypeLabels.length > 0 && (
+        {/* Vehicle types — read-only. Tiamat owns this field. A single
+            type only repeats the parking type, and read as a menu (F-120). */}
+        {vehicleTypeLabels.length > 1 && (
           <TextField
             label={formatMessage({ id: "parking_vehicle_types" })}
             value={vehicleTypeLabels.join(", ")}

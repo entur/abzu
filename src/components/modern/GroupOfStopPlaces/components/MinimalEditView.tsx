@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PlaceIcon from "@mui/icons-material/Place";
 import SaveIcon from "@mui/icons-material/Save";
@@ -78,8 +78,8 @@ export const MinimalEditView: React.FC<MinimalEditViewProps> = ({
         {description && (
           <Typography
             variant="body2"
-            color="text.secondary"
             sx={{
+              color: "text.secondary",
               overflow: "hidden",
               textOverflow: "ellipsis",
               display: "-webkit-box",
@@ -116,7 +116,7 @@ export const MinimalEditView: React.FC<MinimalEditViewProps> = ({
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
                 {formatMessage({ id: "name_and_description" })}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
                 {name ? name : formatMessage({ id: "no_name" })}
               </Typography>
             </Box>
@@ -161,7 +161,7 @@ export const MinimalEditView: React.FC<MinimalEditViewProps> = ({
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
                 {formatMessage({ id: "stop_places" })}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
                 {stopPlacesCount}{" "}
                 {formatMessage({
                   id: stopPlacesCount === 1 ? "stop_place" : "stop_places",

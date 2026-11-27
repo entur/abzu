@@ -160,7 +160,7 @@ const verboseQuayFragment = gql`
 `;
 
 const verboseStopPlaceFragment = gql`
-  fragment VerboseStopPlace on StopPlace {
+  fragment ModernVerboseStopPlace on StopPlace {
     id
     name {
       value
@@ -276,7 +276,7 @@ const verboseStopPlaceFragment = gql`
 `;
 
 const verboseParentStopPlaceFragment = gql`
-  fragment VerboseParentStopPlace on ParentStopPlace {
+  fragment ModernVerboseParentStopPlace on ParentStopPlace {
     id
     name {
       value
@@ -308,7 +308,7 @@ const verboseParentStopPlaceFragment = gql`
       }
     }
     children {
-      ...VerboseStopPlace
+      ...ModernVerboseStopPlace
     }
     version
     validBetween {
@@ -497,8 +497,8 @@ export const stopPlaceWithAll = gql`
       ...VerbosePathLink
     }
     stopPlace(id: $id, versionValidity: MAX_VERSION) {
-      ...VerboseStopPlace
-      ...VerboseParentStopPlace
+      ...ModernVerboseStopPlace
+      ...ModernVerboseParentStopPlace
     }
     parking: parking(stopPlaceId: $id) {
       ...VerboseParking

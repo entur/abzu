@@ -23,6 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
+import { useIntl } from "react-intl";
 import { ConfirmDialogProps } from "../GroupOfStopPlaces";
 import { DialogErrorAlert } from "./DialogErrorAlert";
 import { useDialogMutation } from "./hooks/useDialogMutation";
@@ -44,6 +45,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   additionalContent,
   failureMessageId = DEFAULT_FAILURE_MESSAGE_ID,
 }) => {
+  const { formatMessage } = useIntl();
   const { isRunning, errorMessageId, run, resetError } =
     useDialogMutation(failureMessageId);
 
@@ -67,7 +69,11 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {title}
         </Typography>
-        <IconButton onClick={onClose} size="small">
+        <IconButton
+          aria-label={formatMessage({ id: "close" })}
+          onClick={onClose}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>

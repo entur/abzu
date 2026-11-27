@@ -106,7 +106,11 @@ export const AddAdjacentStopsDialog: React.FC = () => {
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "connect_to_adjacent_stop_title" })}
         </Typography>
-        <IconButton onClick={handleClose} size="small">
+        <IconButton
+          aria-label={formatMessage({ id: "close" })}
+          onClick={handleClose}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>

@@ -28,7 +28,7 @@ interface PurposeOfGroupingFieldProps {
 /**
  * The group's required "Formål med gruppering" (legacy parity). Missing in
  * the modern editor, so new groups got none and it couldn't be changed.
- * Like legacy, an empty value is flagged but doesn't block saving.
+ * An empty value is flagged here and blocks Save (F-121; legacy allowed it).
  */
 export const PurposeOfGroupingField = ({
   canEdit,

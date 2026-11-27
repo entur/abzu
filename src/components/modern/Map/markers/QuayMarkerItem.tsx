@@ -156,9 +156,12 @@ export const QuayMarkerItem = ({
               />
             )}
             <Tooltip
-              title={fitQuayLabel(label).isTruncated ? label : ""}
+              title={
+                !popupAnchor && fitQuayLabel(label).isTruncated ? label : ""
+              }
               placement="top"
               arrow
+              disableInteractive
             >
               <Box
                 onClick={(e) => {

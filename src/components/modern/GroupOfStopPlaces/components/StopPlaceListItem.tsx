@@ -13,7 +13,7 @@
  * limitations under the Licence. */
 
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DeleteIcon from "@mui/icons-material/Delete";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
@@ -25,6 +25,7 @@ import {
   useNavigateToStopPlace,
 } from "../../Shared";
 import { StopPlaceListItemProps } from "../types";
+import { ExpiredMemberChip } from "./ExpiredMemberChip";
 
 /**
  * Stop place list item — matches QuayItem row style.
@@ -89,15 +90,17 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
 
         {/* Name + ID */}
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
-            {stopPlace.name}
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
+              {stopPlace.name}
+            </Typography>
+            {stopPlace.hasExpired && <ExpiredMemberChip />}
+          </Box>
           {stopPlace.id && (
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
               <Typography
                 variant="caption"
-                color="text.secondary"
-                sx={{ fontFamily: "monospace" }}
+                sx={{ color: "text.secondary", fontFamily: "monospace" }}
               >
                 {stopPlace.id}
               </Typography>
@@ -108,18 +111,16 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
 
         {/* Remove button */}
         {onRemove && (
-          <Tooltip
-            title={formatMessage({ id: "remove_stop_from_parent_title" })}
-          >
+          <Tooltip title={formatMessage({ id: "remove_from_group" })}>
             <span onClick={(e) => e.stopPropagation()}>
               <IconButton
                 size="small"
-                color="error"
                 disabled={disabled}
+                aria-label={formatMessage({ id: "remove_from_group" })}
                 onClick={() => onRemove(stopPlace.id)}
                 sx={{ ml: 0.5 }}
               >
-                <DeleteIcon fontSize="small" />
+                <LinkOffIcon fontSize="small" />
               </IconButton>
             </span>
           </Tooltip>

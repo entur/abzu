@@ -17,47 +17,50 @@ import { IconButton, Tooltip, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { CopyIdButtonProps } from "../GroupOfStopPlaces";
+import { CopyStatus, useCopyToClipboard } from "./clipboard/useCopyToClipboard";
+
+const TOOLTIP_ID_BY_STATUS: Record<CopyStatus, string> = {
+  idle: "copy_id",
+  copied: "copied",
+  failed: "copy_failed",
+};
 
 /**
- * Modern TypeScript copy ID button component
- * Copies provided ID to clipboard with visual feedback
+ * Copies an ID and says how it went (F-44): "Copied!", or, when the browser
+ * refuses the clipboard, how to copy it by hand. Never fails silently.
  */
 export const CopyIdButton: React.FC<CopyIdButtonProps> = ({
   idToCopy,
   size = "small",
   color,
 }) => {
-  const [copied, setCopied] = useState(false);
   const { formatMessage } = useIntl();
   const theme = useTheme();
+  const { status, copy } = useCopyToClipboard();
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleCopy = (event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
-
-    if (navigator.clipboard && idToCopy) {
-      navigator.clipboard.writeText(idToCopy).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-      });
-    }
+    if (idToCopy) copy(idToCopy);
   };
 
   return (
     <Tooltip
-      title={
-        copied
-          ? formatMessage({ id: "copied" })
-          : formatMessage({ id: "copy_id" })
-      }
+      title={formatMessage({ id: TOOLTIP_ID_BY_STATUS[status] })}
       placement="top"
-      onClose={() => setCopied(false)}
+      // Feedback stays up until it times out, even if focus or the pointer
+      // moves (the fallback copy briefly takes focus).
+      open={isHovered || status !== "idle"}
+      onOpen={() => setIsHovered(true)}
+      onClose={() => setIsHovered(false)}
     >
       <span>
         <IconButton
           size={size}
           onClick={handleCopy}
           disabled={!idToCopy}
+          aria-label={formatMessage({ id: "copy_id" })}
           sx={{
             padding: 0.25,
             color: color || theme.palette.primary.main,

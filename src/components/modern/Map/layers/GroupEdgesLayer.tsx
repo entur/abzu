@@ -19,6 +19,10 @@ import { Layer, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
 import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import type { LatLng } from "../markers/types";
+import {
+  GroupMemberOnMap,
+  visibleGroupMembers,
+} from "./utils/visibleGroupMembers";
 
 /* Two members can't make a polygon, so they are joined through their centre.
  * From three members StopGroupLayer draws the polygon, and the centre lines
@@ -56,17 +60,20 @@ export const GroupEdgesLayer = () => {
   const members = useAppSelector(
     (state) =>
       (state as any).stopPlacesGroup?.current?.members as
-        Array<{ location?: LatLng }> | undefined,
+        GroupMemberOnMap[] | undefined,
+  );
+  const showExpiredStops = useAppSelector(
+    (state) => (state.stopPlace as any).showExpiredStops as boolean,
   );
 
   const isEditingGroup = useIsEditingGroup();
 
   const locations = useMemo(
     () =>
-      (members ?? [])
+      visibleGroupMembers(members ?? [], showExpiredStops)
         .map((m) => m.location)
         .filter((loc): loc is LatLng => !!loc),
-    [members],
+    [members, showExpiredStops],
   );
 
   const geoJson = useMemo(() => buildGeoJson(locations), [locations]);

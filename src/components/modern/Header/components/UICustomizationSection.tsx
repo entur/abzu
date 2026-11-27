@@ -66,7 +66,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
 
   // Translations
   const appearance = formatMessage({ id: "appearance" }) || "Appearance";
-  const modernUILabel = "Modern UI";
+  const modernUILabel = formatMessage({ id: "settings_new_ui" });
 
   // Handlers
   const handleToggleUIMode = (value: boolean) => {
@@ -136,6 +136,8 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
           <MenuList sx={{ pl: 2 }}>
             {showUiModeToggle && (
               <MenuItem
+                role="menuitemcheckbox"
+                aria-checked={uiMode === "modern"}
                 onClick={() => handleToggleUIMode(uiMode !== "modern")}
                 sx={settingItemStyle}
               >
@@ -178,7 +180,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
                     <Palette fontSize="small" color="primary" />
                   </ListItemIcon>
                   <ListItemText
-                    primary="Theme"
+                    primary={formatMessage({ id: "settings_theme" })}
                     slotProps={{
                       primary: {
                         sx: {
@@ -217,14 +219,21 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
                 <ListItemIcon sx={{ minWidth: 32 }}>
                   <Hub fontSize="small" color="primary" />
                 </ListItemIcon>
-                <ListItemText primary="Memberships" />
+                <ListItemText
+                  primary={formatMessage({ id: "settings_memberships" })}
+                />
               </Box>
               <Box sx={{ width: "100%", pl: 4 }}>
                 <MembershipDisplaySwitcher />
               </Box>
             </MenuItem>
 
-            <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
+            <MenuItem
+              role="menuitemcheckbox"
+              aria-checked={isElementStatusEnabled}
+              onClick={handleToggleElementStatus}
+              sx={settingItemStyle}
+            >
               <ListItemIcon sx={{ minWidth: 32 }}>
                 <SettingIndicator checked={isElementStatusEnabled} />
               </ListItemIcon>
@@ -278,6 +287,8 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
         <MenuList sx={{ pl: 2 }}>
           {showUiModeToggle && (
             <MenuItem
+              role="menuitemcheckbox"
+              aria-checked={uiMode === "modern"}
               onClick={() => handleToggleUIMode(uiMode !== "modern")}
               sx={settingItemStyle}
             >
@@ -307,7 +318,9 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
                 <ListItemIcon sx={{ minWidth: 32 }}>
                   <Palette fontSize="small" color="primary" />
                 </ListItemIcon>
-                <ListItemText primary="Theme" />
+                <ListItemText
+                  primary={formatMessage({ id: "settings_theme" })}
+                />
               </Box>
               <Box sx={{ width: "100%", pl: 4 }}>
                 <ThemeSwitcher
@@ -338,14 +351,21 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
               <ListItemIcon sx={{ minWidth: 32 }}>
                 <Hub fontSize="small" color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Memberships" />
+              <ListItemText
+                primary={formatMessage({ id: "settings_memberships" })}
+              />
             </Box>
             <Box sx={{ width: "100%", pl: 4 }}>
               <MembershipDisplaySwitcher />
             </Box>
           </MenuItem>
 
-          <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
+          <MenuItem
+            role="menuitemcheckbox"
+            aria-checked={isElementStatusEnabled}
+            onClick={handleToggleElementStatus}
+            sx={settingItemStyle}
+          >
             <ListItemIcon sx={{ minWidth: 32 }}>
               <SettingIndicator checked={isElementStatusEnabled} />
             </ListItemIcon>

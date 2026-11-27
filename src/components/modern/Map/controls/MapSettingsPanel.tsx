@@ -28,6 +28,7 @@ import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import { DefaultMapSettingsDialog } from "../../Dialogs/DefaultMapSettingsDialog";
 import { CrosshairPicker } from "../crosshair";
+import { MarkerSizePicker } from "../markerSize/MarkerSizePicker";
 import { SettingIndicator } from "../../Shared";
 
 export const MapSettingsPanel: React.FC = () => {
@@ -54,7 +55,9 @@ export const MapSettingsPanel: React.FC = () => {
   // Translations
   const showPathLinks = formatMessage({ id: "show_path_links" });
   const showCompassBearing = formatMessage({ id: "show_compass_bearing" });
-  const showExpiredStopsLabel = formatMessage({ id: "show_expired_stops" });
+  const showExpiredStopsLabel = formatMessage({
+    id: "show_future_expired_and_terminated",
+  });
   const showMultimodalEdgesLabel = formatMessage({
     id: "show_multimodal_edges",
   });
@@ -163,6 +166,8 @@ export const MapSettingsPanel: React.FC = () => {
         {/* Other settings items */}
         {settingItems.map((item) => (
           <MenuItem
+            role="menuitemcheckbox"
+            aria-checked={item.checked}
             key={item.key}
             onClick={() => item.onChange(!item.checked)}
             sx={settingItemStyle}
@@ -176,6 +181,8 @@ export const MapSettingsPanel: React.FC = () => {
                 primary: {
                   sx: {
                     fontSize: "0.875rem",
+                    // MenuItem doesn't wrap; long labels were cut off.
+                    whiteSpace: "normal",
                   },
                 },
               }}
@@ -185,6 +192,7 @@ export const MapSettingsPanel: React.FC = () => {
       </MenuList>
 
       <Divider sx={{ my: 1 }} />
+      <MarkerSizePicker />
       <CrosshairPicker />
 
       <DefaultMapSettingsDialog

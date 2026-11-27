@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DeleteIcon from "@mui/icons-material/Delete";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { CopyIdButton } from "../../Shared";
@@ -54,9 +54,9 @@ export const AdjacentSiteItem: React.FC<AdjacentSiteListItemProps> = ({
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
             <Typography
               variant="caption"
-              color="text.secondary"
+
               noWrap
-              sx={{ fontFamily: "monospace" }}
+              sx={{ color: "text.secondary", fontFamily: "monospace" }}
             >
               {site.id}
             </Typography>
@@ -69,12 +69,11 @@ export const AdjacentSiteItem: React.FC<AdjacentSiteListItemProps> = ({
           <span onClick={(e) => e.stopPropagation()}>
             <IconButton
               size="small"
-              color="error"
               disabled={disabled}
               onClick={() => onRemove(site.id, site.ref)}
               sx={{ ml: 0.5 }}
             >
-              <DeleteIcon fontSize="small" />
+              <LinkOffIcon fontSize="small" />
             </IconButton>
           </span>
         </Tooltip>

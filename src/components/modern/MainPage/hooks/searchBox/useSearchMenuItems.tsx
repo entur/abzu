@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import { Box } from "@mui/material";
 import { useCallback, useMemo } from "react";
-import { extractCoordinates } from "../../../../../utils/";
+import { parseCoordinates } from "../../../Shared/coordinates/parseCoordinates";
 import { createSearchMenuItem } from "../../components";
 import {
   MenuItem,
@@ -42,6 +42,8 @@ export const useSearchMenuItems = (
   topoiChips: any[],
   topographicalPlaces: TopographicalPlace[],
   removeFiltersAndSearch: () => void,
+  /** While a search runs, "no results" isn't known yet (F-05). */
+  loading = false,
 ) => {
   // Helper function for topographical names
   const getTopographicalNames = useCallback(
@@ -63,14 +65,15 @@ export const useSearchMenuItems = (
     let items: MenuItem[] = [];
 
     // Check if searchText contains valid coordinates
-    const coordinates = searchText ? extractCoordinates(searchText) : null;
+    // Decimal, DMS (Google Maps) and N/S/E/W forms (F-94).
+    const coordinates = searchText ? parseCoordinates(searchText) : null;
 
     if (coordinates) {
       // If valid coordinates detected, show "Go to coordinates" option
       items = [
         {
           element: { coordinates } as any,
-          text: `Go to ${coordinates[0]}, ${coordinates[1]}`,
+          text: `${formatMessage({ id: "go_to_coordinates" })} ${coordinates[0]}, ${coordinates[1]}`,
           id: "coordinates",
           menuDiv: (
             <Box sx={searchMenuItem}>
@@ -100,7 +103,7 @@ export const useSearchMenuItems = (
         createSearchMenuItem(element, formatMessage),
       );
       items = searchItems.filter(Boolean) as MenuItem[];
-    } else if (searchText) {
+    } else if (searchText && !loading) {
       items = [
         {
           element: null,
@@ -150,6 +153,7 @@ export const useSearchMenuItems = (
     stopTypeFilter,
     topoiChips,
     removeFiltersAndSearch,
+    loading,
   ]);
 
   // Topographical places data source

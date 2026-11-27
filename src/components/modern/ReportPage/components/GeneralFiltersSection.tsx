@@ -55,8 +55,8 @@ export const GeneralFiltersSection: React.FC<GeneralFiltersSectionProps> = ({
   const sectionLabel = (labelId: string) => (
     <Typography
       variant="caption"
-      color="text.secondary"
       sx={{
+        color: "text.secondary",
         fontWeight: 600,
         display: "block",
         mb: 0.5,

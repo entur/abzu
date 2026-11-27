@@ -126,9 +126,10 @@ export const TimetableDialog: React.FC<TimetableDialogProps> = ({
         </Typography>
         <Typography
           variant="body2"
-          color="text.secondary"
+
           noWrap
           component="span"
+          sx={{ color: "text.secondary" }}
         >
           — {stopPlaceName}
         </Typography>
@@ -151,13 +152,13 @@ export const TimetableDialog: React.FC<TimetableDialogProps> = ({
         )}
 
         {!loading && error && (
-          <Typography color="error" variant="body2">
+          <Typography variant="body2" sx={{ color: "error.main" }}>
             {error}
           </Typography>
         )}
 
         {!loading && !error && lines.length === 0 && (
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {formatMessage({ id: "no_active_lines" })}
           </Typography>
         )}
@@ -170,8 +171,12 @@ export const TimetableDialog: React.FC<TimetableDialogProps> = ({
               {i > 0 && <Divider sx={{ my: 1 }} />}
               <Typography
                 variant="caption"
-                color="text.secondary"
-                sx={{ display: "block", mb: 0.5, fontWeight: 600 }}
+                sx={{
+                  color: "text.secondary",
+                  display: "block",
+                  mb: 0.5,
+                  fontWeight: 600,
+                }}
               >
                 {authority}
               </Typography>
@@ -196,7 +201,11 @@ export const TimetableDialog: React.FC<TimetableDialogProps> = ({
                   <Typography variant="body2" sx={{ flex: 1 }}>
                     {line.lineName ?? ""}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" noWrap>
+                  <Typography
+                    variant="caption"
+                    noWrap
+                    sx={{ color: "text.secondary" }}
+                  >
                     {line.serviceJourneyCount}{" "}
                     {formatMessage({ id: "service_journeys" })}
                   </Typography>
@@ -205,7 +214,10 @@ export const TimetableDialog: React.FC<TimetableDialogProps> = ({
                       sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                     >
                       <CalendarMonthIcon sx={{ fontSize: 14 }} color="action" />
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography
+                        variant="caption"
+                        sx={{ color: "text.secondary" }}
+                      >
                         {line.latestActiveDate}
                       </Typography>
                     </Box>

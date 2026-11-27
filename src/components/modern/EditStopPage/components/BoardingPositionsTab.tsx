@@ -62,8 +62,7 @@ export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
       >
         <Typography
           variant="caption"
-          color="text.secondary"
-          sx={{ flex: 1, fontWeight: 600 }}
+          sx={{ color: "text.secondary", flex: 1, fontWeight: 600 }}
         >
           {formatMessage({ id: "boarding_positions_tab_label" })}
         </Typography>
@@ -74,7 +73,7 @@ export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
       {/* Boarding position list */}
       {!quay.boardingPositions || quay.boardingPositions.length === 0 ? (
         <Box sx={{ px: 2, py: 1 }}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {formatMessage({ id: "no_boarding_positions" })}
           </Typography>
         </Box>
@@ -108,7 +107,9 @@ export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
                 slotProps={{ htmlInput: { maxLength: 3 } }}
               />
               {canEdit && (
-                <Tooltip title={formatMessage({ id: "delete" })}>
+                <Tooltip
+                  title={formatMessage({ id: "delete_boarding_position" })}
+                >
                   <IconButton
                     size="small"
                     color="error"
@@ -136,7 +137,7 @@ export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
                   mt: 0.5,
                 }}
               >
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" sx={{ color: "text.secondary" }}>
                   {bp.id}
                 </Typography>
                 <CopyIdButton idToCopy={bp.id} size="small" />

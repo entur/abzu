@@ -30,6 +30,7 @@ import AppRoutes from "../../../../routes";
 import { useAppDispatch } from "../../../../store/hooks";
 import type { MapPosition } from "./hooks/usePlacement";
 import { useNewStopPositionCheck } from "./hooks/useNewStopPositionCheck";
+import { usePopupFollowsMap } from "../hooks/usePopupFollowsMap";
 
 const PIN_SIZE = 36;
 
@@ -54,6 +55,8 @@ export const NewStopConfirm = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [pinElement, setPinElement] = useState<HTMLElement | null>(null);
+  // MapLibre moves the pin with a CSS transform; keep the box on it (S-9).
+  const popperRef = usePopupFollowsMap(!!pinElement);
   const [isCreating, setIsCreating] = useState(false);
   const { areaStatus, nearbyStopName } = useNewStopPositionCheck(position);
   const isOutsideArea = areaStatus === "outside";
@@ -71,7 +74,8 @@ export const NewStopConfirm = ({
         }),
       );
       onCreated();
-      navigate(`/${AppRoutes.STOP_PLACE}/new`);
+      // navigate may return a promise (React Router 7); handle it here.
+      await navigate(`/${AppRoutes.STOP_PLACE}/new`);
     } finally {
       setIsCreating(false);
     }
@@ -92,6 +96,7 @@ export const NewStopConfirm = ({
       <Popper
         open={!!pinElement}
         anchorEl={pinElement}
+        popperRef={popperRef}
         placement="top"
         modifiers={[{ name: "offset", options: { offset: [0, 8] } }]}
         sx={{ zIndex: (theme) => theme.zIndex.modal }}

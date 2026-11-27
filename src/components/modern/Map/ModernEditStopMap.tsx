@@ -33,6 +33,7 @@ import { MultimodalEdgesLayer } from "./layers/MultimodalEdgesLayer";
 import { PathLinkLayer } from "./layers/PathLinkLayer";
 import { StopGroupLayer } from "./layers/StopGroupLayer";
 import { TariffZonesLayer } from "./layers/TariffZonesLayer";
+import { CoordinatePinMarker } from "./coordinatePin/CoordinatePinMarker";
 import { BoardingPositionMarkers } from "./markers/BoardingPositionMarkers";
 import { NeighbourMarkers } from "./markers/NeighbourMarkers";
 import { NeighbourQuayMarkers } from "./markers/NeighbourQuayMarkers";
@@ -43,7 +44,6 @@ import { buildMaplibreStyle } from "./tile-sources/buildMaplibreStyle";
 
 const NEIGHBOUR_STOPS_MIN_ZOOM = 13;
 const STOP_PLACE_FLY_TO_ZOOM = 17;
-const GROUP_FLY_TO_ZOOM = 16;
 
 const DEFAULT_MAP_CONFIG: MapConfig = {
   baseLayers: [
@@ -78,19 +78,6 @@ export const ModernEditStopMap = () => {
   const currentStop = useMapCurrentStop();
   const currentStopId = currentStop?.id;
   const currentLocation = currentStop?.location;
-  const currentGroupId = useAppSelector(
-    (state) =>
-      (state as any).stopPlacesGroup?.current?.id as string | undefined,
-  );
-  const groupMemberCount = useAppSelector(
-    (state) =>
-      ((state as any).stopPlacesGroup?.current?.members?.length ?? 0) as number,
-  );
-  const groupCenterPosition = useAppSelector(
-    (state) =>
-      (state as any).stopPlacesGroup?.centerPosition as
-        [number, number] | undefined,
-  );
   const showExpiredStops = useAppSelector(
     (state) => (state.stopPlace as any).showExpiredStops as boolean,
   );
@@ -154,10 +141,19 @@ export const ModernEditStopMap = () => {
     [],
   );
 
+  /* A stop already open when the map mounts (e.g. right after switching from
+     the classic UI) never changes currentStopId, so the fly-to effect below
+     doesn't run: start on the stop. The jump's moveend loads its neighbours
+     (F-122). */
+  const currentLocationRef = useRef(currentLocation);
+  currentLocationRef.current = currentLocation;
   const handleMapLoad = useCallback(() => {
-    if (mapRef.current) {
-      dispatch(StopPlaceActions.setActiveMap(mapRef.current.getMap()));
-    }
+    if (!mapRef.current) return;
+    dispatch(StopPlaceActions.setActiveMap(mapRef.current.getMap()));
+    const openStopLocation = currentLocationRef.current;
+    if (!openStopLocation) return;
+    const [lat, lng] = openStopLocation;
+    mapRef.current.jumpTo({ center: [lng, lat], zoom: STOP_PLACE_FLY_TO_ZOOM });
   }, [dispatch]);
 
   const handleMoveEnd = useMemo(
@@ -202,21 +198,8 @@ export const ModernEditStopMap = () => {
     });
   }, [currentStopId]);
 
-  useEffect(() => {
-    if (!currentGroupId || !groupCenterPosition || !mapRef.current) return;
-    // A group without members has no centre of its own; the reducer falls
-    // back to the config default, so flying there left a blank map (F-83).
-    if (groupMemberCount === 0) return;
-    const [lat, lng] = groupCenterPosition;
-    mapRef.current.flyTo({
-      center: [lng, lat],
-      zoom: GROUP_FLY_TO_ZOOM,
-      duration: 800,
-    });
-    // groupCenterPosition is included so re-navigating to the same group (same currentGroupId)
-    // still triggers flyTo — the reducer always produces a new array reference on fetch.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentGroupId, groupCenterPosition]);
+  /* The group view fits its own members: GroupOfStopPlaces/hooks/
+     useFitMapToGroupMembers.ts (F-89). */
 
   const mapStyle = useMemo(
     () => buildMaplibreStyle(config, activeBaseLayer, resolvedComponentUrl),
@@ -268,6 +251,7 @@ export const ModernEditStopMap = () => {
         <QuayMarkers />
         <ParkingMarkers />
         <BoardingPositionMarkers />
+        <CoordinatePinMarker />
       </Map>
     </Box>
   );

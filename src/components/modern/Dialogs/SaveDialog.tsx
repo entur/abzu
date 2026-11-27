@@ -28,9 +28,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { MutationErrorCodes } from "../../../models/ErrorCodes";
-
-/** Matches Tiamat's stop_place.version_comment varchar(255) column (F-39). */
-const VERSION_COMMENT_MAX_LENGTH = 255;
+import { TEXT_FIELD_MAX_LENGTH } from "../Shared/fieldLimits";
 
 const isKnownErrorCode = (error: unknown): error is string =>
   typeof error === "string" &&
@@ -96,6 +94,7 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
           {formatMessage({ id: "save_dialog_title" })}
         </Typography>
         <IconButton
+          aria-label={formatMessage({ id: "close" })}
           onClick={handleCloseDialog}
           disabled={isSaving}
           size="small"
@@ -113,9 +112,9 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
             autoFocus
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            helperText={`${comment.length}/${VERSION_COMMENT_MAX_LENGTH}`}
+            helperText={`${comment.length}/${TEXT_FIELD_MAX_LENGTH}`}
             slotProps={{
-              htmlInput: { maxLength: VERSION_COMMENT_MAX_LENGTH },
+              htmlInput: { maxLength: TEXT_FIELD_MAX_LENGTH },
               formHelperText: { sx: { textAlign: "right" } },
             }}
             sx={{ mb: 2 }}

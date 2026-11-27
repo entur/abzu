@@ -23,18 +23,30 @@ const FLY_TO_DURATION = 800;
 
 interface Props {
   location: [number, number] | undefined;
+  /** Replaces flying to `location`, e.g. fitting a whole group (S-5). */
+  onLocate?: () => void;
+  labelId?: string;
 }
 
-export const CenterMapButton = ({ location }: Props) => {
+export const CenterMapButton = ({
+  location,
+  onLocate,
+  labelId = "center_map_on_stop",
+}: Props) => {
   const { formatMessage } = useIntl();
   const activeMap = useAppSelector(
     (state) => (state as any).mapUtils?.activeMap as MapLibreMap | undefined,
   );
 
-  if (!location) return null;
+  if (!location && !onLocate) return null;
+  const label = formatMessage({ id: labelId });
 
   const handleClick = () => {
-    if (!activeMap) return;
+    if (onLocate) {
+      onLocate();
+      return;
+    }
+    if (!activeMap || !location) return;
     const [lat, lng] = location;
     activeMap.flyTo({
       center: [lng, lat],
@@ -44,13 +56,11 @@ export const CenterMapButton = ({ location }: Props) => {
   };
 
   return (
-    <Tooltip
-      title={formatMessage({ id: "center_map_on_stop" })}
-      placement="bottom"
-    >
+    <Tooltip title={label} placement="bottom">
       <IconButton
         size="small"
         onClick={handleClick}
+        aria-label={label}
         sx={{ color: "text.primary" }}
       >
         <MyLocationIcon fontSize="small" />

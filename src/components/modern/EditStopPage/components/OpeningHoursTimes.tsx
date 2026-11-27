@@ -100,7 +100,7 @@ export const OpeningHoursTimes: React.FC<OpeningHoursTimesProps> = ({
         label={formatMessage({ id: "opening_hours_end_of_day" })}
       />
       {showNextDay && !condition.endOfDay && (
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
           {formatMessage({ id: "opening_hours_next_day" })}
         </Typography>
       )}

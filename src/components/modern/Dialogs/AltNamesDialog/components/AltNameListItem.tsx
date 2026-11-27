@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
@@ -80,6 +80,7 @@ export const AltNameListItem: React.FC<AltNameListItemProps> = ({
       {!disabled && (
         <Box sx={{ display: "flex", gap: 0.5 }}>
           <IconButton
+            aria-label={formatMessage({ id: "edit" })}
             size="small"
             onClick={() => onEdit(index)}
             color="primary"
@@ -87,6 +88,7 @@ export const AltNameListItem: React.FC<AltNameListItemProps> = ({
             <EditIcon fontSize="small" />
           </IconButton>
           <IconButton
+            aria-label={formatMessage({ id: "remove" })}
             size="small"
             onClick={() => onRemove(index)}
             color="error"

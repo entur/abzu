@@ -20,6 +20,7 @@ import { Entities } from "../../../../models/Entities";
 import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { GroupOfStopPlacesHeaderProps, GroupTopographicPlace } from "../types";
 import { PanelToggleIcon } from "../../Shared";
+import { useGroupMemberFit } from "../hooks/useGroupMemberFit";
 
 /**
  * Header component for group of stop places editor.
@@ -29,6 +30,7 @@ import { PanelToggleIcon } from "../../Shared";
 export const GroupOfStopPlacesHeader: React.FC<
   GroupOfStopPlacesHeaderProps
 > = ({ groupOfStopPlaces, centerPosition, onGoBack, onToggle, isExpanded }) => {
+  const fitToMembers = useGroupMemberFit();
   const { formatMessage } = useIntl();
 
   const headerText = groupOfStopPlaces.id
@@ -65,9 +67,9 @@ export const GroupOfStopPlacesHeader: React.FC<
         {firstPlace && (
           <Typography
             variant="caption"
-            color="text.secondary"
+
             noWrap
-            sx={{ display: "block" }}
+            sx={{ color: "text.secondary", display: "block" }}
           >
             {formatPlace(firstPlace)}
             {otherPlaces.length > 0 && (
@@ -94,7 +96,11 @@ export const GroupOfStopPlacesHeader: React.FC<
           <Box
             sx={{ display: "flex", alignItems: "center", gap: 0.25, mt: -0.25 }}
           >
-            <Typography variant="caption" color="text.secondary" noWrap>
+            <Typography
+              variant="caption"
+              noWrap
+              sx={{ color: "text.secondary" }}
+            >
               {groupOfStopPlaces.id}
             </Typography>
             <CopyIdButton idToCopy={groupOfStopPlaces.id} size="small" />
@@ -102,7 +108,11 @@ export const GroupOfStopPlacesHeader: React.FC<
         )}
       </Box>
 
-      <CenterMapButton location={centerPosition} />
+      <CenterMapButton
+        location={centerPosition}
+        onLocate={fitToMembers}
+        labelId="center_map_on_group"
+      />
       {groupOfStopPlaces.id && (
         <FavoriteButton
           id={groupOfStopPlaces.id}

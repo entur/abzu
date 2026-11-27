@@ -85,6 +85,7 @@ export const CoordinatesDialog: React.FC<CoordinatesDialogProps> = ({
           {formatMessage({ id: titleId || "change_coordinates" })}
         </Box>
         <IconButton
+          aria-label={formatMessage({ id: "close" })}
           onClick={onClose}
           size="small"
           sx={dialogCloseButton(theme)}

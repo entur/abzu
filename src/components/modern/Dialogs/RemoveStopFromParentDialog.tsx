@@ -65,7 +65,11 @@ export const RemoveStopFromParentDialog: React.FC<
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "remove_stop_from_parent_title" })}
         </Typography>
-        <IconButton onClick={handleCloseDialog} size="small">
+        <IconButton
+          aria-label={formatMessage({ id: "close" })}
+          onClick={handleCloseDialog}
+          size="small"
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>

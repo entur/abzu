@@ -17,7 +17,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Chip,
   FormControlLabel,
   Menu,
   MenuItem,
@@ -26,6 +25,7 @@ import {
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
+import { TagChip } from "../../Shared/TagChip";
 
 interface TagFilterProps {
   selectedTags: string[];
@@ -76,17 +76,10 @@ export const TagFilter: React.FC<TagFilterProps> = ({
           {formatMessage({ id: "add_tag" })}
         </Button>
         {selectedTags.map((tag) => (
-          <Chip
+          <TagChip
             key={tag}
-            label={tag}
-            size="small"
+            name={tag}
             onDelete={() => onTagCheck(tag, false)}
-            sx={{
-              bgcolor: "warning.main",
-              color: "warning.contrastText",
-              textTransform: "uppercase",
-              fontSize: "0.7rem",
-            }}
           />
         ))}
       </Box>

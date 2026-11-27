@@ -16,13 +16,14 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import LinkIcon from "@mui/icons-material/Link";
 import MergeIcon from "@mui/icons-material/MergeType";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { StopPlacesGroupActions, UserActions } from "../../../../actions";
+import { addMembersToGroup } from "../../../../actions/StopPlacesGroupActions.modern";
 import { getNeighbourStopPlaceQuays } from "../../../../actions/TiamatActions.modern";
 import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -86,7 +87,11 @@ export const NeighbourStopPopup = ({
     isEditingGroup &&
     (groupCurrent?.members ?? []).some((m: { id: string }) => m.id === stop.id);
 
-  const showAddToGroup = isEditingGroup && canEdit && !isGroupMember;
+  // Group membership belongs to the parent, and looking a child up returns
+  // the parent, so "add" on a child added the parent again on every click
+  // (F-90).
+  const showAddToGroup =
+    isEditingGroup && canEdit && !isGroupMember && !stop.isChildOfParent;
   const showRemoveFromGroup = isEditingGroup && canEdit && isGroupMember;
 
   const isCurrentStopParent = !!currentStopPlace?.isParent;
@@ -125,7 +130,8 @@ export const NeighbourStopPopup = ({
 
   const handleAddToGroup = () => {
     onClose();
-    dispatch(StopPlacesGroupActions.addMemberToGroup(stop.id));
+    // On a failed lookup the thunk restores the group; the stop is not added.
+    dispatch(addMembersToGroup([stop.id])).catch(() => undefined);
   };
 
   const handleRemoveFromGroup = () => {
@@ -193,8 +199,7 @@ export const NeighbourStopPopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                color="error"
-                startIcon={<RemoveCircleOutlineIcon />}
+                startIcon={<LinkOffIcon />}
                 onClick={handleRemoveFromGroup}
                 fullWidth
               >

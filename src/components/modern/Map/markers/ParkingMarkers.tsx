@@ -214,7 +214,7 @@ const ParkingMarkerItem = ({
         )}
         {parking.hasExpired && (
           <Chip
-            label={formatMessage({ id: "expired" })}
+            label={formatMessage({ id: "has_expired" })}
             size="small"
             color="error"
             sx={{ mt: 0.5, height: 18, fontSize: "0.65rem" }}

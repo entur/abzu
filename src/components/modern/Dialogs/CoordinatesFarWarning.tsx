@@ -21,6 +21,13 @@ import type {
 
 const METERS_PER_KILOMETER = 1000;
 
+/* A button-link resets the font, so it read as faint small print (F-114). */
+const swapLinkSx = {
+  font: "inherit",
+  fontWeight: 600,
+  verticalAlign: "baseline",
+} as const;
+
 const REFERENCE_LABEL_ID: Record<CoordinatesReference["kind"], string> = {
   stop: "coordinates_reference_stop",
   quay: "coordinates_reference_quay",
@@ -57,7 +64,14 @@ export const CoordinatesFarWarning = ({
       {swapped && (
         <>
           {" "}
-          <Link component="button" type="button" onClick={onUseSwapped}>
+          <Link
+            component="button"
+            type="button"
+            color="inherit"
+            underline="always"
+            onClick={onUseSwapped}
+            sx={swapLinkSx}
+          >
             {formatMessage(
               { id: "coordinates_did_you_mean" },
               { coordinates: `${swapped[0]}, ${swapped[1]}` },

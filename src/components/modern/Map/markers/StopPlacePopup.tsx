@@ -14,16 +14,13 @@
 
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AdjustIcon from "@mui/icons-material/Adjust";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import LinkIcon from "@mui/icons-material/Link";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
-import {
-  StopPlaceActions,
-  StopPlacesGroupActions,
-  UserActions,
-} from "../../../../actions";
+import { StopPlacesGroupActions, UserActions } from "../../../../actions";
 import { useConfig } from "../../../../config/ConfigContext";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
@@ -40,6 +37,9 @@ interface StopPlacePopupProps {
   onOpen?: () => void;
   /** Opens the exact-coordinates dialog (F-76); omitted when read-only. */
   onEditCoordinates?: () => void;
+  /** Moves the stop to the centre of its quays or children (F-30); omitted
+   *  when there's nothing to centre on or the popup isn't the open stop's. */
+  onAdjustCentroid?: () => void;
 }
 
 /**
@@ -54,6 +54,7 @@ export const StopPlacePopup = ({
   lng,
   onOpen,
   onEditCoordinates,
+  onAdjustCentroid,
 }: StopPlacePopupProps) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
@@ -95,7 +96,8 @@ export const StopPlacePopup = ({
     !stopPlace.isParent &&
     !stopPlace.isChildOfParent;
 
-  const showAdjustCentroid = !!stopPlace.isParent && canEdit;
+  // Ordinary stops too, as in legacy (F-30): centred on quays or children.
+  const showAdjustCentroid = !!onAdjustCentroid && canEdit && !expired;
 
   const showConnectAdjacent =
     hasSavedId && !expired && !!stopPlace.isChildOfParent && canEdit;
@@ -121,7 +123,7 @@ export const StopPlacePopup = ({
 
   const handleAdjustCentroid = () => {
     onClose();
-    dispatch(StopPlaceActions.adjustCentroid());
+    onAdjustCentroid?.();
   };
 
   const handleConnectAdjacent = () => {
@@ -179,7 +181,7 @@ export const StopPlacePopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                startIcon={<AccountTreeIcon />}
+                startIcon={<GroupWorkIcon />}
                 onClick={handleCreateGroup}
                 fullWidth
               >
@@ -190,7 +192,7 @@ export const StopPlacePopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                startIcon={<LinkIcon />}
+                startIcon={<AccountTreeIcon />}
                 onClick={handleCreateMultimodal}
                 fullWidth
               >
@@ -212,8 +214,7 @@ export const StopPlacePopup = ({
               <Button
                 size="small"
                 variant="outlined"
-                color="error"
-                startIcon={<RemoveCircleOutlineIcon />}
+                startIcon={<LinkOffIcon />}
                 onClick={handleRemoveFromGroup}
                 fullWidth
               >

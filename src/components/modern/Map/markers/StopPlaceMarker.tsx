@@ -30,11 +30,13 @@ import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useCanEditOnMap } from "../hooks/useCanEditOnMap";
 import { useCheckedMove } from "../hooks/useCheckedMove";
 import { useMapCurrentStop } from "../hooks/useMapCurrentStop";
+import { useStagedChildMarkers } from "../hooks/useStagedChildMarkers";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerCoordinatesDialog } from "./MarkerCoordinatesDialog";
 import { ParentChildMarker } from "./ParentChildMarker";
 import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
+import { centroidOfStop } from "./utils/stopCentroid";
 
 const MARKER_SIZE = 40;
 const ICON_SIZE = 24;
@@ -65,10 +67,13 @@ export const StopPlaceMarker = () => {
   const { pendingPosition, moveTo } = useCheckedMove((position) =>
     dispatch(moveStopIfAllowed(position)),
   );
+  const { addedChildIds, detachedChildren } = useStagedChildMarkers();
 
   if (!current?.location) return null;
 
   const [lat, lng] = pendingPosition ?? current.location;
+  // Through the same checked move as a drag, so it stays inside the edit area.
+  const centroid = centroidOfStop(current);
   const isParent = !!current.isParent;
   const hasUnsavedFields = isStatusEnabled && dirtyKeys.size > 0;
   const markerSize = isParent ? PARENT_MARKER_SIZE : MARKER_SIZE;
@@ -104,9 +109,17 @@ export const StopPlaceMarker = () => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         anchor="center"
-        style={{ zIndex: PARENT_MARKER_Z_INDEX }}
+        /* Only a multimodal stop sits above its children. An ordinary stop
+           stays under its quays, which render after it, so a quay on top of
+           the stop (e.g. after Move quay) stays visible (F-93). */
+        style={isParent ? { zIndex: PARENT_MARKER_Z_INDEX } : undefined}
       >
-        <Tooltip title={current.name || ""} placement="top" arrow>
+        <Tooltip
+          title={popupAnchor ? "" : current.name || ""}
+          placement="top"
+          arrow
+          disableInteractive
+        >
           <Box
             onClick={(e) => {
               dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
@@ -169,6 +182,7 @@ export const StopPlaceMarker = () => {
         stopPlace={current}
         lat={lat}
         lng={lng}
+        onAdjustCentroid={centroid ? () => void moveTo(centroid) : undefined}
         onEditCoordinates={
           disabled
             ? undefined
@@ -189,8 +203,19 @@ export const StopPlaceMarker = () => {
 
       {isParent &&
         ((current as any).children ?? []).map((child: MapStopPlace) => (
-          <ParentChildMarker key={child.id} child={child} />
+          <ParentChildMarker
+            key={child.id}
+            child={child}
+            changeStatus={addedChildIds.has(child.id) ? "new" : "unchanged"}
+          />
         ))}
+      {detachedChildren.map((child) => (
+        <ParentChildMarker
+          key={child.id}
+          child={child}
+          changeStatus="deleted"
+        />
+      ))}
     </>
   );
 };

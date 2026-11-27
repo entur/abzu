@@ -15,9 +15,10 @@ limitations under the Licence. */
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useCallback } from "react";
 import { useAppSelector } from "../../../../../store/hooks";
+import { setCoordinatePin } from "../../../Map/coordinatePin/coordinatePinStore";
 
-/** Neighbour stops load above zoom 13, so 14 shows the stops around the spot. */
-const COORDINATE_ZOOM = 14;
+/** Street level for a precise point, the zoom a stop opens at (F-94). */
+const COORDINATE_ZOOM = 17;
 const FLY_TO_DURATION = 800;
 
 export type FlyToCoordinates = (coordinates: [number, number]) => void;
@@ -35,6 +36,8 @@ export const useFlyToCoordinates = (): FlyToCoordinates => {
 
   return useCallback(
     ([lat, lng]) => {
+      // Pin the exact spot until the next map click or search (F-94).
+      setCoordinatePin([Number(lat), Number(lng)]);
       activeMap?.flyTo({
         center: [Number(lng), Number(lat)],
         zoom: COORDINATE_ZOOM,

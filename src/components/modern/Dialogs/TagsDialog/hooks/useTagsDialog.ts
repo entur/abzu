@@ -13,6 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useCallback, useState } from "react";
+import { useDelayedTagRemoval } from "./useDelayedTagRemoval";
+import { useTagSuggestions } from "./useTagSuggestions";
 
 export interface Tag {
   name: string;
@@ -41,37 +43,29 @@ export const useTagsDialog = ({
   const [tagName, setTagName] = useState("");
   const [comment, setComment] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [suggestions, setSuggestions] = useState<Tag[]>([]);
+  const { suggestions, isSearching, searchTags, clearSuggestions } =
+    useTagSuggestions(findTagByName);
 
   const handleSearchTags = useCallback(
-    async (searchValue: string) => {
+    (searchValue: string) => {
       setSearchText(searchValue);
       setTagName(searchValue);
-
-      if (searchValue.length >= 2) {
-        try {
-          const result = await findTagByName(searchValue);
-          if (result && result.data && result.data.tags) {
-            setSuggestions(result.data.tags.slice(0, 5)); // Limit to 5 suggestions
-          }
-        } catch {
-          setSuggestions([]);
-        }
-      } else {
-        setSuggestions([]);
-      }
+      searchTags(searchValue);
     },
-    [findTagByName],
+    [searchTags],
   );
 
-  const handleChooseTag = useCallback((tag: Tag) => {
-    setTagName(tag.name);
-    setSearchText(tag.name);
-    if (tag.comment) {
-      setComment(tag.comment);
-    }
-    setSuggestions([]);
-  }, []);
+  const handleChooseTag = useCallback(
+    (tag: Tag) => {
+      setTagName(tag.name);
+      setSearchText(tag.name);
+      if (tag.comment) {
+        setComment(tag.comment);
+      }
+      clearSuggestions();
+    },
+    [clearSuggestions],
+  );
 
   const handleAddTag = useCallback(async () => {
     if (!idReference || !tagName) return;
@@ -83,15 +77,15 @@ export const useTagsDialog = ({
       setTagName("");
       setComment("");
       setSearchText("");
-      setSuggestions([]);
+      clearSuggestions();
     } catch {
       // error intentionally swallowed; loading state cleaned up in finally
     } finally {
       setIsLoading(false);
     }
-  }, [idReference, tagName, comment, addTag, getTags]);
+  }, [idReference, tagName, comment, addTag, getTags, clearSuggestions]);
 
-  const handleDeleteTag = useCallback(
+  const removeTagNow = useCallback(
     async (name: string) => {
       if (!idReference) return;
 
@@ -108,16 +102,27 @@ export const useTagsDialog = ({
     [idReference, removeTag, getTags],
   );
 
+  const {
+    pendingName: pendingRemovalName,
+    scheduleRemoval: handleDeleteTag,
+    undoRemoval,
+    flushRemoval,
+  } = useDelayedTagRemoval(removeTagNow);
+
   return {
     isLoading,
     tagName,
     comment,
     searchText,
     suggestions,
+    isSearching,
     setComment,
     handleSearchTags,
     handleChooseTag,
     handleAddTag,
     handleDeleteTag,
+    pendingRemovalName,
+    undoRemoval,
+    flushRemoval,
   };
 };
