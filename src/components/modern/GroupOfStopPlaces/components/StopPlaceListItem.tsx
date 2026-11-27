@@ -112,13 +112,12 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
 
         {/* Remove button */}
         {onRemove && (
-          <Tooltip
-            title={formatMessage({ id: "remove_stop_from_parent_title" })}
-          >
+          <Tooltip title={formatMessage({ id: "remove_from_group" })}>
             <span onClick={(e) => e.stopPropagation()}>
               <IconButton
                 size="small"
                 disabled={disabled}
+                aria-label={formatMessage({ id: "remove_from_group" })}
                 onClick={() => onRemove(stopPlace.id)}
                 sx={{ ml: 0.5 }}
               >

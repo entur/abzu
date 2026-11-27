@@ -108,7 +108,9 @@ export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
                 slotProps={{ htmlInput: { maxLength: 3 } }}
               />
               {canEdit && (
-                <Tooltip title={formatMessage({ id: "delete" })}>
+                <Tooltip
+                  title={formatMessage({ id: "delete_boarding_position" })}
+                >
                   <IconButton
                     size="small"
                     color="error"

@@ -44,13 +44,13 @@ export const AdjacentSitesSection: React.FC<AdjacentSitesSectionProps> = ({
       <Divider />
       <CollapsibleSectionHeader
         icon={<CompareArrowsIcon fontSize="small" color="action" />}
-        title={formatMessage({ id: "adjacent_sites" })}
+        title={formatMessage({ id: "connected_with_adjacent_stop_places" })}
         count={adjacentSites.length}
         expanded={expanded}
         onToggle={() => setExpanded((v) => !v)}
         action={{
           label: formatMessage({ id: "attach" }),
-          tooltip: formatMessage({ id: "add_adjacent_site" }),
+          tooltip: formatMessage({ id: "connect_to_adjacent_stop" }),
           icon: <LinkIcon fontSize="small" />,
           onClick: onAddAdjacentSite,
           disabled: !canEdit,
