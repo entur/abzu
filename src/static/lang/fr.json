@@ -79,6 +79,7 @@
   "browser_supported_browsers": "Les navigateurs supportés sont :",
   "browser_unsupported_title": "Navigateur non supporté",
   "cancel_with_escape": "Annuler (Échap)",
+  "center_map_on_group": "Afficher tout le groupe sur la carte",
   "compass_bearing_map_hint": "Modifiez-la avec la poignée sur la carte",
   "compass_bearing_not_set": "non définie",
   "continue_anyway": "Continuer quand même",

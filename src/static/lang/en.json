@@ -79,6 +79,7 @@
   "browser_supported_browsers": "Supported browsers are:",
   "browser_unsupported_title": "Unsupported browser",
   "cancel_with_escape": "Cancel (Esc)",
+  "center_map_on_group": "Show the whole group on the map",
   "compass_bearing_map_hint": "Change it with the handle on the map",
   "compass_bearing_not_set": "not set",
   "continue_anyway": "Continue anyway",

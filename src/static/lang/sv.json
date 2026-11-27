@@ -79,6 +79,7 @@
   "browser_supported_browsers": "Följande webbläsare stöttas:",
   "browser_unsupported_title": "Din webbläsare stöttas inte",
   "cancel_with_escape": "Avbryt (Esc)",
+  "center_map_on_group": "Visa hela gruppen på kartan",
   "compass_bearing_map_hint": "Ändras med handtaget på kartan",
   "compass_bearing_not_set": "inte angiven",
   "continue_anyway": "Fortsätt ändå",

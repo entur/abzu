@@ -14,28 +14,11 @@ limitations under the Licence. */
 
 import { useEffect, useRef } from "react";
 import { useAppSelector } from "../../../../store/hooks";
+import type { GroupMemberOnMap } from "../../Map/layers/utils/visibleGroupMembers";
 import {
-  GroupMemberOnMap,
-  visibleGroupMembers,
-} from "../../Map/layers/utils/visibleGroupMembers";
-import { groupMemberBounds, LngLatBounds } from "../utils/groupMemberBounds";
-
-/** Space kept free around the members, in pixels. */
-const FIT_PADDING = 64;
-/** The zoom a single stop opens at; a one-member group stops there too. */
-const GROUP_FIT_MAX_ZOOM = 17;
-const FIT_DURATION_MS = 800;
-
-interface FitBoundsMap {
-  fitBounds: (
-    bounds: LngLatBounds,
-    options: {
-      padding: { top: number; right: number; bottom: number; left: number };
-      maxZoom: number;
-      duration: number;
-    },
-  ) => void;
-}
+  FitBoundsMap,
+  fitMapToGroupMembers,
+} from "../utils/fitMapToGroupMembers";
 
 /**
  * Fits the map to every member of the open group that the map draws (F-89;
@@ -77,19 +60,11 @@ export const useFitMapToGroupMembers = (drawerInset: number): void => {
       drawerInset: inset,
       showExpiredStops: includeExpired,
     } = fitStateRef.current;
-    const bounds = groupMemberBounds(
-      visibleGroupMembers(currentMembers ?? [], includeExpired),
+    fitMapToGroupMembers(
+      activeMap,
+      currentMembers ?? [],
+      includeExpired,
+      inset,
     );
-    if (!bounds) return;
-    activeMap.fitBounds(bounds, {
-      padding: {
-        top: FIT_PADDING,
-        right: FIT_PADDING,
-        bottom: FIT_PADDING,
-        left: FIT_PADDING + inset,
-      },
-      maxZoom: GROUP_FIT_MAX_ZOOM,
-      duration: FIT_DURATION_MS,
-    });
   }, [activeMap, centerPosition]);
 };

@@ -79,6 +79,7 @@
   "browser_supported_browsers": "Tuetut selaimet ovat:",
   "browser_unsupported_title": "Selainta ei tueta",
   "cancel_with_escape": "Peruuta (Esc)",
+  "center_map_on_group": "Näytä koko ryhmä kartalla",
   "compass_bearing_map_hint": "Muuta kartan kahvalla",
   "compass_bearing_not_set": "ei asetettu",
   "continue_anyway": "Jatka silti",
