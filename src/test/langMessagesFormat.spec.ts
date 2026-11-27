@@ -68,4 +68,13 @@ describe("language files", () => {
       "<Mangler navn>",
     );
   });
+
+  test.each(Object.keys(LANGUAGES))(
+    "%s keys are in alphabetical order (S-10)",
+    (locale) => {
+      const keys = Object.keys(LANGUAGES[locale]);
+      const sorted = [...keys].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+      expect(keys).toEqual(sorted);
+    },
+  );
 });
