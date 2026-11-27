@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useCloseLeftoverEditor } from "./hooks/useCloseLeftoverEditor";
+import { useMoveMapToUrlResult } from "./hooks/useMoveMapToUrlResult";
 import { useStopPlacesUrlParams } from "./hooks/useStopPlacesUrlParams";
 
 /**
@@ -23,5 +24,6 @@ import { useStopPlacesUrlParams } from "./hooks/useStopPlacesUrlParams";
 export const StopPlaces = (): null => {
   useCloseLeftoverEditor();
   useStopPlacesUrlParams();
+  useMoveMapToUrlResult();
   return null;
 };
