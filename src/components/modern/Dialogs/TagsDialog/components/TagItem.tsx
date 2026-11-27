@@ -19,9 +19,6 @@ import { useIntl } from "react-intl";
 import { TagChip } from "../../../Shared/TagChip";
 import { Tag } from "../hooks/useTagsDialog";
 
-/** Readable on every theme: text.secondary is 2.98:1 on Entur. */
-const META_TEXT_OPACITY = 0.72;
-
 interface TagItemProps {
   tag: Tag;
   onDelete: (name: string) => void;
@@ -60,7 +57,7 @@ export const TagItem: React.FC<TagItemProps> = ({ tag, onDelete }) => {
         )}
         <Typography
           variant="caption"
-          sx={{ display: "block", opacity: META_TEXT_OPACITY }}
+          sx={{ display: "block", color: "text.secondary" }}
         >
           {formatMessage({ id: "tag_added_by" }, { name: addedBy })} · {addedAt}
         </Typography>

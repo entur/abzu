@@ -15,14 +15,11 @@ limitations under the Licence. */
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-/** Readable on every theme: text.secondary is 2.98:1 on Entur (#949699). */
-const SECONDARY_TEXT_OPACITY = 0.72;
 const SECONDARY_TEXT_SIZE = "0.75rem";
 
 const secondaryTextSx = {
   display: "block",
-  color: "text.primary",
-  opacity: SECONDARY_TEXT_OPACITY,
+  color: "text.secondary",
   fontSize: SECONDARY_TEXT_SIZE,
 } as const;
 
@@ -82,9 +79,7 @@ export const SearchResultRow = ({
         {id}
       </Typography>
       {status && (
-        <Typography
-          sx={{ ...secondaryTextSx, opacity: 1, color: "warning.dark" }}
-        >
+        <Typography sx={{ ...secondaryTextSx, color: "warning.dark" }}>
           {status}
         </Typography>
       )}

@@ -23,7 +23,6 @@ import { useIntl } from "react-intl";
 import type { DetailAnswer } from "./equipmentDetails";
 
 const YES = "yes";
-const NOT_SET_OPACITY = 0.72;
 const ICON_SIZE = 20;
 const NO = "no";
 
@@ -66,7 +65,7 @@ export const EquipmentDetailRow = ({
         {answer === null && (
           <Typography
             variant="caption"
-            sx={{ display: "block", opacity: NOT_SET_OPACITY }}
+            sx={{ display: "block", color: "text.secondary" }}
           >
             {formatMessage({ id: "detail_not_set" })}
           </Typography>
