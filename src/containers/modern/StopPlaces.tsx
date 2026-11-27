@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { useCloseLeftoverEditor } from "./hooks/useCloseLeftoverEditor";
 import { useStopPlacesUrlParams } from "./hooks/useStopPlacesUrlParams";
 
 /**
@@ -20,6 +21,7 @@ import { useStopPlacesUrlParams } from "./hooks/useStopPlacesUrlParams";
  * The persistent map is rendered separately in App.tsx (PersistentMap).
  */
 export const StopPlaces = (): null => {
+  useCloseLeftoverEditor();
   useStopPlacesUrlParams();
   return null;
 };
