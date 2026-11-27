@@ -40,8 +40,6 @@ import { ParkingOrganisationRefField } from "./ParkingOrganisationRefField";
 import { OpeningHoursFields } from "./OpeningHoursFields";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
-const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
-
 /**
  * Full parking editor panel.
  *
@@ -83,9 +81,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
   const derivedCapacity = hasFullFieldSet
     ? capacityEntriesTotal(parking)
     : null;
-
-  const stepFreeAccess =
-    parking.accessibilityAssessment?.limitations?.stepFreeAccess ?? "";
 
   const isExpired = !!parking.hasExpired;
   const fieldDisabled = !canEdit || isExpired;
