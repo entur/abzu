@@ -54,9 +54,9 @@ export const AdjacentSiteItem: React.FC<AdjacentSiteListItemProps> = ({
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
             <Typography
               variant="caption"
-              color="text.secondary"
+
               noWrap
-              sx={{ fontFamily: "monospace" }}
+              sx={{ color: "text.secondary", fontFamily: "monospace" }}
             >
               {site.id}
             </Typography>

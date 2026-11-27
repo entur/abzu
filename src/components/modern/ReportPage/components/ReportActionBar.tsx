@@ -110,7 +110,7 @@ export const ReportActionBar: React.FC<ReportActionBarProps> = ({
 
       {/* Result count */}
       {resultCount > 0 && (
-        <Typography variant="caption" color="text.secondary" sx={{ pr: 1 }}>
+        <Typography variant="caption" sx={{ color: "text.secondary", pr: 1 }}>
           {resultCount} {formatMessage({ id: "stop_places" })}
         </Typography>
       )}

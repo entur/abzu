@@ -12,12 +12,14 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
+import { alpha, Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { ReportResult } from "../types";
 
 const PAGE_SIZE = 20;
+const DISABLED_TEXT_ALPHA = 0.6;
+const DISABLED_FILL_ALPHA = 0.16;
 
 interface ReportFooterProps {
   results: ReportResult[];
@@ -57,7 +59,7 @@ export const ReportFooter: React.FC<ReportFooterProps> = ({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Typography variant="body2" color="primary.contrastText">
+        <Typography variant="body2" sx={{ color: "primary.contrastText" }}>
           {formatMessage({ id: "page" })}:
         </Typography>
         {pages.map((page) => (
@@ -85,6 +87,19 @@ export const ReportFooter: React.FC<ReportFooterProps> = ({
         <Button
           variant="contained"
           disabled={!totalCount}
+          // The footer is primary.dark; MUI's default disabled grey vanished on it.
+          sx={(theme) => ({
+            "&.Mui-disabled": {
+              color: alpha(
+                theme.palette.primary.contrastText,
+                DISABLED_TEXT_ALPHA,
+              ),
+              bgcolor: alpha(
+                theme.palette.primary.contrastText,
+                DISABLED_FILL_ALPHA,
+              ),
+            },
+          })}
           onClick={(e) => setExportAnchorEl(e.currentTarget)}
         >
           {formatMessage({ id: "export_to_csv" })}

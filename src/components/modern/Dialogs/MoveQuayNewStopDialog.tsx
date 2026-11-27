@@ -227,7 +227,7 @@ export const MoveQuayNewStopDialog = () => {
         </Box>
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {formatMessage({ id: "move_quay_new_stop_info" })}
           </Typography>
 

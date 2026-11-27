@@ -108,9 +108,9 @@ export const MembershipSection: React.FC<MembershipProps> = ({
               </Typography>
               <Typography
                 variant="caption"
-                color="text.secondary"
+
                 noWrap
-                sx={{ display: "block" }}
+                sx={{ color: "text.secondary", display: "block" }}
               >
                 {row.type}
               </Typography>

@@ -71,12 +71,12 @@ export const MoveQuayDialog = () => {
 
         <Box sx={{ display: "flex", gap: 2, mb: 1.5 }}>
           {movingQuay.publicCode && (
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {formatMessage({ id: "publicCode" })}: {movingQuay.publicCode}
             </Typography>
           )}
           {movingQuay.privateCode && (
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {formatMessage({ id: "privateCode" })}: {movingQuay.privateCode}
             </Typography>
           )}

@@ -33,11 +33,11 @@ export const EmptyFavorites: React.FC = () => {
           mb: 1,
         }}
       />
-      <Typography variant="body1" color="text.secondary">
+      <Typography variant="body1" sx={{ color: "text.secondary" }}>
         {formatMessage({ id: "no_favorite_stop_places" }) ||
           "No favorite stop places"}
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+      <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
         {formatMessage({ id: "add_favorites_by_clicking_star" }) ||
           "Add favorites by clicking the star icon in search results"}
       </Typography>

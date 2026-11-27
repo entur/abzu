@@ -76,7 +76,7 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
       {mode === "list" && (
         <>
           {keyValues.length === 0 ? (
-            <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
+            <Typography variant="body2" sx={{ color: "text.secondary", py: 1 }}>
               {formatMessage({ id: "key_values_no" })}
             </Typography>
           ) : (

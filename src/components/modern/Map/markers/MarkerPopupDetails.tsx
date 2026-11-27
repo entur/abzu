@@ -65,7 +65,7 @@ export const MarkerPopupDetails = ({
               "&:hover": { color: "primary.main" },
             }}
           >
-            <Typography variant="caption" color="inherit">
+            <Typography variant="caption" sx={{ color: "inherit" }}>
               {coordinates}
             </Typography>
             <EditIcon sx={{ fontSize: "0.85rem" }} />

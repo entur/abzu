@@ -32,7 +32,7 @@ export const SearchBoxUsingTempGeo: React.FC<SearchBoxUsingTempGeoProps> = ({
   if (userSuppliedCoordinates && result.isMissingLocation) {
     return (
       <Box sx={{ mt: 1, mb: 1, p: 1, bgcolor: "info.light", borderRadius: 1 }}>
-        <Typography variant="body2" color="info.dark">
+        <Typography variant="body2" sx={{ color: "info.dark" }}>
           <FormattedMessage id="you_are_using_temporary_coordinates" />
         </Typography>
         <Box sx={{ mt: 1 }}>

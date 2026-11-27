@@ -62,8 +62,7 @@ export const ChildStopItem: React.FC<ChildStopPlaceListItemProps> = ({
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
             <Typography
               variant="caption"
-              color="text.secondary"
-              sx={{ fontFamily: "monospace" }}
+              sx={{ color: "text.secondary", fontFamily: "monospace" }}
             >
               {child.id}
             </Typography>

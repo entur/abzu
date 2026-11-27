@@ -124,7 +124,7 @@ export const CollapsibleSection: React.FC<MembershipProps> = ({
               <Typography variant="body2" noWrap>
                 {row.name}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
                 {row.type}
               </Typography>
             </Box>

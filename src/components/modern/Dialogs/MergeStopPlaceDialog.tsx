@@ -164,7 +164,7 @@ export const MergeStopPlaceDialog = () => {
         {isFetchingMergeInfo ? (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, my: 1 }}>
             <CircularProgress size={16} />
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
               {formatMessage({ id: "loading" })}
             </Typography>
           </Box>

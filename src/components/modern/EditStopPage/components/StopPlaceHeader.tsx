@@ -130,9 +130,9 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
           {stopPlace.topographicPlace && (
             <Typography
               variant="caption"
-              color="text.secondary"
+
               noWrap
-              sx={{ display: "block" }}
+              sx={{ color: "text.secondary", display: "block" }}
             >
               {stopPlace.parentTopographicPlace
                 ? `${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`
@@ -148,7 +148,11 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
                 mt: -0.25,
               }}
             >
-              <Typography variant="caption" color="text.secondary" noWrap>
+              <Typography
+                variant="caption"
+                noWrap
+                sx={{ color: "text.secondary" }}
+              >
                 {stopPlace.id}
               </Typography>
               <CopyIdButton idToCopy={stopPlace.id} size="small" />

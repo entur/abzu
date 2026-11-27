@@ -113,18 +113,16 @@ export const FavoriteItem: React.FC<FavoriteItemProps> = ({
               {favorite.topographicPlace && favorite.parentTopographicPlace && (
                 <Typography
                   variant="caption"
-                  color="text.secondary"
                   component="span"
-                  sx={{ display: "block" }}
+                  sx={{ color: "text.secondary", display: "block" }}
                 >
                   {`${favorite.topographicPlace}, ${favorite.parentTopographicPlace}`}
                 </Typography>
               )}
               <Typography
                 variant="caption"
-                color="text.secondary"
                 component="span"
-                sx={{ display: "block" }}
+                sx={{ color: "text.secondary", display: "block" }}
               >
                 {formatMessage({ id: "added" }) || "Added"}:{" "}
                 {new Date(favorite.addedAt).toLocaleDateString()}

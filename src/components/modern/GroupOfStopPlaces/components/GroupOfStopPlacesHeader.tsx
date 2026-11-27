@@ -65,9 +65,9 @@ export const GroupOfStopPlacesHeader: React.FC<
         {firstPlace && (
           <Typography
             variant="caption"
-            color="text.secondary"
+
             noWrap
-            sx={{ display: "block" }}
+            sx={{ color: "text.secondary", display: "block" }}
           >
             {formatPlace(firstPlace)}
             {otherPlaces.length > 0 && (
@@ -94,7 +94,11 @@ export const GroupOfStopPlacesHeader: React.FC<
           <Box
             sx={{ display: "flex", alignItems: "center", gap: 0.25, mt: -0.25 }}
           >
-            <Typography variant="caption" color="text.secondary" noWrap>
+            <Typography
+              variant="caption"
+              noWrap
+              sx={{ color: "text.secondary" }}
+            >
               {groupOfStopPlaces.id}
             </Typography>
             <CopyIdButton idToCopy={groupOfStopPlaces.id} size="small" />

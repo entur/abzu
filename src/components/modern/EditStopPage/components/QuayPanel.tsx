@@ -152,7 +152,11 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
                 mt: -0.25,
               }}
             >
-              <Typography variant="caption" color="text.secondary" noWrap>
+              <Typography
+                variant="caption"
+                noWrap
+                sx={{ color: "text.secondary" }}
+              >
                 {quay.id}
               </Typography>
               <CopyIdButton idToCopy={quay.id} size="small" />
@@ -261,7 +265,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
                   ? `${quay.compassBearing}°`
                   : formatMessage({ id: "compass_bearing_not_set" })}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
                 {formatMessage({ id: "compass_bearing_map_hint" })}
               </Typography>
             </Box>

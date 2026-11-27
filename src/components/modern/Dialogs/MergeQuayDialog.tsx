@@ -145,7 +145,7 @@ export const MergeQuayDialog = () => {
         {fetchOTPInfoMergeLoading ? (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, my: 1.5 }}>
             <CircularProgress size={16} />
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
               {formatMessage({ id: "checking_quay_usage" })}
             </Typography>
           </Box>

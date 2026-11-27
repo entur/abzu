@@ -120,11 +120,11 @@ export const SearchResultDetails: React.FC<
                   {`${result.topographicPlace}, ${result.parentTopographicPlace}`}
                 </Typography>
               )}
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {formatMessage({ id: "multimodal" })}
               </Typography>
             </Box>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
               {result.id}
             </Typography>
           </Box>
@@ -225,7 +225,7 @@ export const SearchResultDetails: React.FC<
             {result.belongsToGroup && (
               <GroupMembership groups={(result.groups as any) || []} />
             )}
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
               {result.id}
             </Typography>
           </Box>
@@ -311,7 +311,7 @@ export const SearchResultDetails: React.FC<
         </Typography>
         <GroupIcon sx={{ m: 0.5 }} />
       </Box>
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="body2" sx={{ color: "text.secondary" }}>
         {formatMessage({ id: "group_of_stop_places" })}
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "space-between", p: 1 }}>

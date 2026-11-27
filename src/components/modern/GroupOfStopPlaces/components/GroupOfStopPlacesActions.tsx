@@ -70,8 +70,7 @@ export const GroupOfStopPlacesActions: React.FC<
         {canEdit && !hasMembers && (
           <Typography
             variant="caption"
-            color="text.secondary"
-            sx={{ width: "100%", order: -1 }}
+            sx={{ color: "text.secondary", width: "100%", order: -1 }}
           >
             {formatMessage({ id: "group_requires_members" })}
           </Typography>

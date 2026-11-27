@@ -144,11 +144,11 @@ export const FareZonesLayer = () => {
           <Box sx={{ p: 0.5 }}>
             <Typography variant="subtitle2">{popup.name}</Typography>
             {popup.privateCode && (
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {popup.privateCode}
               </Typography>
             )}
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {popup.id}
             </Typography>
           </Box>

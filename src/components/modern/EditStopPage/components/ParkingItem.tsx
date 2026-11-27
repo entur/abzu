@@ -79,16 +79,20 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
         {parking.parkingType && (
           <Typography
             variant="caption"
-            color="text.secondary"
+
             noWrap
-            sx={{ display: "block" }}
+            sx={{ color: "text.secondary", display: "block" }}
           >
             {formatMessage({ id: parkingTitleMessageId(parking.parkingType) })}
           </Typography>
         )}
         {parking.id && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-            <Typography variant="caption" color="text.secondary" noWrap>
+            <Typography
+              variant="caption"
+              noWrap
+              sx={{ color: "text.secondary" }}
+            >
               {parking.id}
             </Typography>
             <CopyIdButton idToCopy={parking.id} size="small" />

@@ -238,8 +238,7 @@ export const StopPlaceGeneralSection: React.FC<
       <Box sx={{ ...sx.fieldRow, display: "flex", gap: 1 }}>
         <Typography
           variant="caption"
-          color="text.secondary"
-          sx={{ minWidth: 80, pt: 0.25 }}
+          sx={{ color: "text.secondary", minWidth: 80, pt: 0.25 }}
         >
           {formatMessage({ id: "tariffZones" })}
         </Typography>

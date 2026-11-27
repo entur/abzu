@@ -76,7 +76,7 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
       {hasExpired && !isViewingOlderVersion && (
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <WarningIcon sx={{ color: "warning.main", fontSize: "1rem" }} />
-          <Typography variant="caption" color="error.main">
+          <Typography variant="caption" sx={{ color: "error.main" }}>
             {formatMessage({ id: "stop_has_expired" })}
           </Typography>
         </Box>

@@ -117,7 +117,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             {displayName}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {formatMessage({
                 id: parkingTitleMessageId(parking.parkingType),
               })}
@@ -133,7 +133,11 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
         </Box>
         {parking.id && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-            <Typography variant="caption" color="text.secondary" noWrap>
+            <Typography
+              variant="caption"
+              noWrap
+              sx={{ color: "text.secondary" }}
+            >
               {parking.id}
             </Typography>
             <CopyIdButton idToCopy={parking.id} size="small" />

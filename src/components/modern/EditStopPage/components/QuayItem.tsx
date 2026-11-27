@@ -79,16 +79,20 @@ export const QuayItem: React.FC<QuayItemProps> = ({
         {quay.description && (
           <Typography
             variant="caption"
-            color="text.secondary"
+
             noWrap
-            sx={{ display: "block" }}
+            sx={{ color: "text.secondary", display: "block" }}
           >
             {quay.description}
           </Typography>
         )}
         {quay.id && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-            <Typography variant="caption" color="text.secondary" noWrap>
+            <Typography
+              variant="caption"
+              noWrap
+              sx={{ color: "text.secondary" }}
+            >
               {quay.id}
             </Typography>
             <CopyIdButton idToCopy={quay.id} size="small" />

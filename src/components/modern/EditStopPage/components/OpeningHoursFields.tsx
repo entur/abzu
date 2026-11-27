@@ -68,7 +68,7 @@ export const OpeningHoursFields: React.FC<OpeningHoursFieldsProps> = ({
       </Typography>
 
       {conditions.length === 0 && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {formatMessage({ id: "opening_hours_none" })}
         </Typography>
       )}

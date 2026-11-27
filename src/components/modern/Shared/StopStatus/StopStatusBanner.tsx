@@ -53,12 +53,11 @@ export const StopStatusBanner = ({ stopPlace }: StopStatusBannerProps) => {
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
           <Typography
             variant="caption"
-            color="inherit"
-            sx={{ fontWeight: 500 }}
+            sx={{ color: "inherit", fontWeight: 500 }}
           >
             {formatMessage({ id: "viewing_older_version" })}
           </Typography>
-          <Typography variant="caption" color="inherit">
+          <Typography variant="caption" sx={{ color: "inherit" }}>
             {formatMessage({ id: "viewing_older_version_live_data" })}
           </Typography>
         </Box>
@@ -86,7 +85,7 @@ export const StopStatusBanner = ({ stopPlace }: StopStatusBannerProps) => {
       }}
     >
       <WarningAmberIcon sx={{ fontSize: "1rem", color: "inherit" }} />
-      <Typography variant="caption" color="inherit" sx={{ fontWeight: 500 }}>
+      <Typography variant="caption" sx={{ color: "inherit", fontWeight: 500 }}>
         {formatMessage({ id: "stop_has_expired_last_version" })}
       </Typography>
     </Box>

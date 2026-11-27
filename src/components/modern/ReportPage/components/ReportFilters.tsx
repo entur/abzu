@@ -111,7 +111,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
                   <Typography variant="body2">
                     {(option as TopographicChip).text}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography
+                    variant="caption"
+                    sx={{ color: "text.secondary" }}
+                  >
                     {formatMessage({
                       id: (option as TopographicChip).type,
                     })}
