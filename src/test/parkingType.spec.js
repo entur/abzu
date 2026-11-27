@@ -89,14 +89,29 @@ describe("Parking vehicle signal", () => {
     expect(parking.isForPedalCycle).toBe(false);
   });
 
-  it("reports both vehicles when a parking carries both", () => {
+  it("does not report a parking for cars and pedal cycles as a bicycle parking", () => {
     const parking = makeParking({
       parkingType: "parkAndRide",
       parkingVehicleTypes: ["car", "pedalCycle"],
     });
 
-    expect(parking.isForPedalCycle).toBe(true);
+    expect(parking.isForPedalCycle).toBe(false);
     expect(parking.hasFullFieldSet).toBe(true);
+  });
+
+  it("does not report a parking with a type this repository does not name", () => {
+    const parking = makeParking({
+      parkingType: "parkAndRide",
+      parkingVehicleTypes: ["pedalCycle", "minibus"],
+    });
+
+    expect(parking.isForPedalCycle).toBe(false);
+  });
+
+  it("does not report a parking with no vehicle types", () => {
+    expect(makeParking({ parkingVehicleTypes: [] }).isForPedalCycle).toBe(
+      false,
+    );
   });
 });
 

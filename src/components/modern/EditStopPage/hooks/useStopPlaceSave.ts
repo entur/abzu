@@ -25,6 +25,7 @@ import {
   saveStopPlaceBasedOnType,
 } from "../../../../actions/TiamatActions.modern";
 import { MutationErrorCodes } from "../../../../models/ErrorCodes";
+import { toModernParkingVariables } from "../../../../models/modernParkingSave";
 import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
 import {
   shouldMutateParking,
@@ -128,7 +129,7 @@ export const useStopPlaceSave = (
         );
       }
       if (needsParkingSave) {
-        const parkingVariables = mapToMutationVariables.mapParkingToVariables(
+        const parkingVariables = toModernParkingVariables(
           stopPlace.parking,
           stopPlace.id || id,
         );
