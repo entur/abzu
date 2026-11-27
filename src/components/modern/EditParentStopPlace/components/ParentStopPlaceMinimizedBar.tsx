@@ -56,7 +56,6 @@ export const ParentStopPlaceMinimizedBar: React.FC<
   canDelete,
   isMobile,
   drawerWidth,
-  formatMessage,
   onExpand,
   onClose,
   onOpenTerminate,

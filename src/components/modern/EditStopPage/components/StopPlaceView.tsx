@@ -14,7 +14,6 @@
 
 import { Box, Divider } from "@mui/material";
 import React, { useState } from "react";
-import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityStopTab";
@@ -67,7 +66,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
   onOpenAltNamesDialog,
   onOpenVersionsDialog,
 }) => {
-  const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
   const [timetableOpen, setTimetableOpen] = useState(false);
 

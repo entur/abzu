@@ -16,7 +16,7 @@ import debounce from "lodash.debounce";
 import { useCallback, useMemo } from "react";
 import { flushSync } from "react-dom";
 import { useDispatch } from "react-redux";
-import { StopPlaceActions, UserActions } from "../../../../../actions/";
+import { UserActions } from "../../../../../actions/";
 import {
   findEntitiesWithFilters,
   getGroupOfStopPlacesById,

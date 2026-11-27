@@ -24,7 +24,6 @@ import {
   MenuItem,
   Select,
   Switch,
-  TextField,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -53,7 +52,6 @@ interface ParkAndRideFieldsProps {
 export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
   parking,
   parkingIndex,
-  canEdit,
   fieldDisabled,
   derivedCapacity,
 }) => {

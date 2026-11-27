@@ -50,7 +50,6 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
   version,
   tags,
   importedId,
-  alternativeNames,
   belongsToGroup,
   groups,
   canEdit,

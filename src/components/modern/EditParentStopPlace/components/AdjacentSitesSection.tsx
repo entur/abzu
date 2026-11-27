@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import LinkIcon from "@mui/icons-material/Link";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import { Box, Collapse, Divider } from "@mui/material";
+import { Collapse, Divider } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { AdjacentSite } from "../types";

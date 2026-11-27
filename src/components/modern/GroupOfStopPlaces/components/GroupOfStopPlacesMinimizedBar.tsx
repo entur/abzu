@@ -55,7 +55,6 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
   canDelete,
   isMobile,
   drawerWidth,
-  formatMessage,
   onExpand,
   onClose,
   onOpenDelete,
