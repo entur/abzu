@@ -66,7 +66,8 @@ import { getTiamatClient } from "../graphql/clients";
 import { addMemberLookupQuery } from "../graphql/Tiamat/addMemberLookup";
 import { groupOfStopPlacesQuery } from "../graphql/Tiamat/groupOfStopPlaces";
 import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
-import { findStop, getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
+import { findStopWithMemberValidity } from "../graphql/Tiamat/findStopModern";
+import { getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
 import { stopPlaceWithAll } from "../graphql/Tiamat/stopPlaceWithAll";
 import type { AppDispatch, RootState } from "../store/store";
 import { cleanBBoxResult } from "../components/modern/Map/markers/utils/cleanBBoxResult";
@@ -193,7 +194,7 @@ export const findEntitiesWithFilters =
     const referencesOf = (type: string) =>
       chips.filter((chip) => chip.type === type).map((chip) => chip.value);
     const payload = {
-      query: findStop,
+      query: findStopWithMemberValidity,
       fetchPolicy: "network-only" as const,
       variables: {
         query,

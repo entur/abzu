@@ -115,8 +115,10 @@ export const StopGroupLayer = () => {
       activeSearchResult?.entityType === Entities.GROUP_OF_STOP_PLACE &&
       activeSearchResult?.members?.length
     ) {
-      const searchLocations = (
-        activeSearchResult.members as Array<{ location?: LatLng }>
+      // Expired members only when expired stops are shown (S-8).
+      const searchLocations = visibleGroupMembers(
+        activeSearchResult.members as GroupMemberOnMap[],
+        showExpiredStops,
       )
         .map((m) => m.location)
         .filter((loc): loc is LatLng => !!loc);
