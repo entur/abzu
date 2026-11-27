@@ -30,6 +30,7 @@ import { useIsReportsRoute } from "../../components/modern/Header/hooks/useIsRep
 import { ModernHeader } from "../../components/modern/Header/ModernHeader";
 import { ModernEditStopMap } from "../../components/modern/Map/ModernEditStopMap";
 import SnackbarWrapper from "../../components/SnackbarWrapper";
+import { GuidedTourRoot } from "../../components/modern/GuidedTour";
 import { ConfigContext } from "../../config/ConfigContext";
 import { OPEN_STREET_MAP } from "../../config/mapDefaults";
 import configureLocalization from "../../localization/localization";
@@ -171,6 +172,7 @@ const App: React.FC<ModernAppProps> = () => {
             </Routes>
           </MapNoticeProvider>
           <SnackbarWrapper />
+          <GuidedTourRoot />
         </Router>
       </div>
     </UnsavedChangesGuard>

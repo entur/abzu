@@ -26,6 +26,7 @@ import { useIntl } from "react-intl";
 import { ConfigContext } from "../../../../config/ConfigContext";
 import { useTheme as useAbzuTheme } from "../../../../theme/ThemeProvider";
 import { SettingsMenuSection } from "./SettingsMenuSection";
+import { GuidedTourMenuItem } from "../../GuidedTour";
 import { UICustomizationSection } from "./UICustomizationSection";
 
 const SETTINGS_SECTION = "settings";
@@ -128,6 +129,13 @@ export const SettingsControl: React.FC<SettingsControlProps> = ({
                 isOpen={openSection === APPEARANCE_SECTION}
                 onToggle={() => handleSectionToggle(APPEARANCE_SECTION)}
               />
+            </>
+          )}
+
+          {config.featureFlags?.GuidedTour && (
+            <>
+              <Divider />
+              <GuidedTourMenuItem onClose={handleClose} />
             </>
           )}
         </Box>
