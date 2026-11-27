@@ -71,7 +71,8 @@ export const NewStopConfirm = ({
         }),
       );
       onCreated();
-      navigate(`/${AppRoutes.STOP_PLACE}/new`);
+      // navigate may return a promise (React Router 7); handle it here.
+      await navigate(`/${AppRoutes.STOP_PLACE}/new`);
     } finally {
       setIsCreating(false);
     }
