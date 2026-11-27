@@ -7,6 +7,8 @@ export type FeatureFlags = {
   StopPlaceUrl: boolean;
   StopPlacePostalAddress: boolean;
   LoadTimerBadge?: boolean;
+  /** The guided test tour in the settings menu (dev and test only). */
+  GuidedTour?: boolean;
 };
 
 export type Features = keyof FeatureFlags;

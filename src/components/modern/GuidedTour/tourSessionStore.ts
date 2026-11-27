@@ -41,6 +41,9 @@ const listeners = new Set<Listener>();
 const tourKey = (tour: Tour): string =>
   `${tour.title}::${tour.steps.map((step) => step.id).join("|")}`;
 
+export const isSameTour = (a: Tour, b: Tour): boolean =>
+  tourKey(a) === tourKey(b);
+
 const load = (): TourSession | null => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
