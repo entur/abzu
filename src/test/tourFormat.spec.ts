@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import { describe, expect, test } from "vitest";
 import { parseTourFile } from "../components/modern/GuidedTour/tourFormat";
+import guideMarkdown from "../../docs/GUIDED_TOUR.md?raw";
 
 const step = (id: string, extra: object = {}) => ({
   id,
@@ -104,5 +105,16 @@ describe("parseTourFile", () => {
   test("keeps texts as plain strings (no markup is interpreted)", () => {
     const result = parseTourFile(tourJson({ title: "<b>Round</b>" }));
     expect("tour" in result && result.tour.title).toBe("<b>Round</b>");
+  });
+
+  test("the example in docs/GUIDED_TOUR.md is a valid tour", () => {
+    const example = guideMarkdown.match(
+      /### Example\s+```json\n([\s\S]*?)\n```/,
+    )![1];
+    const result = parseTourFile(example);
+    expect("tour" in result && result.tour.steps.map((s) => s.id)).toEqual([
+      "SEARCH-1",
+      "SEARCH-2",
+    ]);
   });
 });
