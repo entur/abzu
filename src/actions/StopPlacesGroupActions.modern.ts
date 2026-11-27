@@ -23,7 +23,7 @@ import {
 } from "../components/modern/GroupOfStopPlaces/utils/keepNewMembers";
 import type { AppDispatch, RootState } from "../store/store";
 import { createThunk } from "./index";
-import { getAddStopPlaceInfo } from "./TiamatActions";
+import { getAddStopPlaceInfo } from "./TiamatActions.modern";
 import * as types from "./Types";
 
 interface GroupMember {

@@ -34,7 +34,6 @@ export {
   findStopForReport,
   findTagByName,
   findTopographicalPlace,
-  getAddStopPlaceInfo,
   getContext,
   getLocationPermissionsForCoordinates,
   getMergeInfoForStops,
@@ -64,6 +63,7 @@ export {
 
 import { createApolloThunk, createThunk } from ".";
 import { getTiamatClient } from "../graphql/clients";
+import { addMemberLookupQuery } from "../graphql/Tiamat/addMemberLookup";
 import { groupOfStopPlacesQuery } from "../graphql/Tiamat/groupOfStopPlaces";
 import { neighbourStopsQuery } from "../graphql/Tiamat/neighbourStops";
 import { findStop, getPurposeOfGroupingQuery } from "../graphql/Tiamat/queries";
@@ -140,6 +140,26 @@ export const getGroupOfStopPlacesById =
         payload.query,
         payload.variables,
       ),
+    );
+    return result;
+  };
+
+/**
+ * Looks up stops to add to a group. Same as the classic getAddStopPlaceInfo,
+ * but the query carries each stop's validity, so an expired stop is flagged
+ * as soon as it is added (S-7).
+ */
+export const getAddStopPlaceInfo =
+  (stopPlaceIds: string[]) =>
+  async (dispatch: AppDispatch, getState: () => RootState): Promise<any> => {
+    const payload = {
+      query: addMemberLookupQuery(stopPlaceIds),
+      fetchPolicy: "network-only" as const,
+      context: await getContext((getState() as any).user.auth),
+    };
+    const result = await (getTiamatClient() as any).query(payload);
+    dispatch(
+      createApolloThunk(types.APOLLO_QUERY_RESULT, result, payload.query, {}),
     );
     return result;
   };
