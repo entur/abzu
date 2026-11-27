@@ -123,6 +123,8 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
           <MenuList sx={{ pl: 2 }}>
             {settingItems.map((item) => (
               <MenuItem
+                role="menuitemcheckbox"
+                aria-checked={item.checked}
                 key={item.key}
                 onClick={() => item.onChange(!item.checked)}
                 sx={settingItemStyle}
@@ -181,6 +183,8 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
         <MenuList sx={{ pl: 2 }}>
           {settingItems.map((item) => (
             <MenuItem
+              role="menuitemcheckbox"
+              aria-checked={item.checked}
               key={item.key}
               onClick={() => item.onChange(!item.checked)}
               sx={settingItemStyle}

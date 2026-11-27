@@ -136,6 +136,8 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
           <MenuList sx={{ pl: 2 }}>
             {showUiModeToggle && (
               <MenuItem
+                role="menuitemcheckbox"
+                aria-checked={uiMode === "modern"}
                 onClick={() => handleToggleUIMode(uiMode !== "modern")}
                 sx={settingItemStyle}
               >
@@ -226,7 +228,12 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
               </Box>
             </MenuItem>
 
-            <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
+            <MenuItem
+              role="menuitemcheckbox"
+              aria-checked={isElementStatusEnabled}
+              onClick={handleToggleElementStatus}
+              sx={settingItemStyle}
+            >
               <ListItemIcon sx={{ minWidth: 32 }}>
                 <SettingIndicator checked={isElementStatusEnabled} />
               </ListItemIcon>
@@ -280,6 +287,8 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
         <MenuList sx={{ pl: 2 }}>
           {showUiModeToggle && (
             <MenuItem
+              role="menuitemcheckbox"
+              aria-checked={uiMode === "modern"}
               onClick={() => handleToggleUIMode(uiMode !== "modern")}
               sx={settingItemStyle}
             >
@@ -351,7 +360,12 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
             </Box>
           </MenuItem>
 
-          <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
+          <MenuItem
+            role="menuitemcheckbox"
+            aria-checked={isElementStatusEnabled}
+            onClick={handleToggleElementStatus}
+            sx={settingItemStyle}
+          >
             <ListItemIcon sx={{ minWidth: 32 }}>
               <SettingIndicator checked={isElementStatusEnabled} />
             </ListItemIcon>

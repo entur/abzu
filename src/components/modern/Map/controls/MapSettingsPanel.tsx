@@ -166,6 +166,8 @@ export const MapSettingsPanel: React.FC = () => {
         {/* Other settings items */}
         {settingItems.map((item) => (
           <MenuItem
+            role="menuitemcheckbox"
+            aria-checked={item.checked}
             key={item.key}
             onClick={() => item.onChange(!item.checked)}
             sx={settingItemStyle}
